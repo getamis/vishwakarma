@@ -30,26 +30,26 @@ resource "aws_route" "igw_route" {
 }
 
 resource "aws_subnet" "public_subnet" {
-  count             = "${length(data.aws_availability_zones.azs.names)}"
+  count             = "${length(local.aws_azs)}"
   vpc_id            = "${aws_vpc.new_vpc.id}"
   cidr_block        = "${cidrsubnet(aws_vpc.new_vpc.cidr_block, 4, count.index)}"
-  availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
+  availability_zone = "${local.aws_azs[count.index]}"
 
   tags = "${merge(map(
-     "Name", "${var.phase}-${var.project}-public-${data.aws_availability_zones.azs.names[count.index]}",
+     "Name", "${var.phase}-${var.project}-public-${local.aws_azs[count.index]}",
      "Phase", "${var.phase}",
      "Project", "${var.project}"
     ), var.extra_tags)}"
 }
 
 resource "aws_route_table_association" "route_net" {
-  count          = "${length(data.aws_availability_zones.azs.names)}"
+  count          = "${length(local.aws_azs)}"
   route_table_id = "${aws_route_table.default.id}"
   subnet_id      = "${aws_subnet.public_subnet.*.id[count.index]}"
 }
 
 resource "aws_eip" "nat_eip" {
-  count = "${length(data.aws_availability_zones.azs.names)}"
+  count = "${length(local.aws_azs)}"
   vpc   = true
 
   # Terraform does not declare an explicit dependency towards the internet gateway.
@@ -59,7 +59,7 @@ resource "aws_eip" "nat_eip" {
 }
 
 resource "aws_nat_gateway" "nat_gw" {
-  count         = "${length(data.aws_availability_zones.azs.names)}"
+  count         = "${length(local.aws_azs)}"
   allocation_id = "${aws_eip.nat_eip.*.id[count.index]}"
   subnet_id     = "${aws_subnet.public_subnet.*.id[count.index]}"
 }

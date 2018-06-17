@@ -1,16 +1,16 @@
 resource "aws_route_table" "private_routes" {
-  count  = "${length(data.aws_availability_zones.azs.names)}"
+  count  = "${length(local.aws_azs)}"
   vpc_id = "${aws_vpc.new_vpc.id}"
 
   tags = "${merge(map(
-      "Name", "${var.phase}-${var.project}-private-${data.aws_availability_zones.azs.names[count.index]}",
+      "Name", "${var.phase}-${var.project}-private-${local.aws_azs[count.index]}",
       "Phase", "${var.phase}",
       "Project", "${var.project}"
     ), var.extra_tags)}"
 }
 
 resource "aws_route" "to_nat_gw" {
-  count                  = "${length(data.aws_availability_zones.azs.names)}"
+  count                  = "${length(local.aws_azs)}"
   route_table_id         = "${aws_route_table.private_routes.*.id[count.index]}"
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = "${element(aws_nat_gateway.nat_gw.*.id, count.index)}"
@@ -18,20 +18,20 @@ resource "aws_route" "to_nat_gw" {
 }
 
 resource "aws_subnet" "private_subnet" {
-  count             = "${length(data.aws_availability_zones.azs.names)}"
+  count             = "${length(local.aws_azs)}"
   vpc_id            = "${aws_vpc.new_vpc.id}"
-  cidr_block        = "${cidrsubnet(aws_vpc.new_vpc.cidr_block, 4, count.index + length(data.aws_availability_zones.azs.names))}"
-  availability_zone = "${data.aws_availability_zones.azs.names[count.index]}"
+  cidr_block        = "${cidrsubnet(aws_vpc.new_vpc.cidr_block, 4, count.index + length(local.aws_azs))}"
+  availability_zone = "${local.aws_azs[count.index]}"
 
   tags = "${merge(map(
-    "Name", "${var.phase}-${var.project}-private-${data.aws_availability_zones.azs.names[count.index]}",
+    "Name", "${var.phase}-${var.project}-private-${local.aws_azs[count.index]}",
     "Phase", "${var.phase}",
     "Project", "${var.project}"
     ), var.extra_tags)}"
 }
 
 resource "aws_route_table_association" "private_routing" {
-  count          = "${length(data.aws_availability_zones.azs.names)}"
+  count          = "${length(local.aws_azs)}"
   route_table_id = "${aws_route_table.private_routes.*.id[count.index]}"
   subnet_id      = "${aws_subnet.private_subnet.*.id[count.index]}"
 }
