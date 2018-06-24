@@ -1,23 +1,22 @@
 variable "aws_region" {
   description = "The AWS region to build network infrastructure"
   type        = "string"
-  default     = ""
 }
 
 variable "aws_az_number" {
-  description = "How many AZs want to build"
+  description = "How many AZs want to be used"
   type    = "string"
   default = "3"
 }
 
 variable "cidr_block" {
-  description = "The CIDR block AWS VPC"
+  description = "The CIDR block for AWS VPC"
   type        = "string"
   default     = "10.0.0.0/16"
 }
 
 variable "phase" {
-  description = "Specific which phase service will host"
+  description = "Specific which phase service will be hosted"
   type        = "string"
   default     = "dev"
 }

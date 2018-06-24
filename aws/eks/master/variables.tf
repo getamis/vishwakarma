@@ -1,11 +1,11 @@
 variable "aws_region" {
-  description = "The AWS region to build network infrastructure"
+  description = "The AWS region to build eks cluster"
   type        = "string"
   default     = ""
 }
 
 variable "vpc_cidr_block" {
-  description = "The CIDR block AWS VPC"
+  description = "The CIDR block of AWS VPC for eks cluster"
   type        = "string"
   default     = "10.0.0.0/16"
 }
@@ -21,13 +21,13 @@ variable "exist_subnet_ids" {
 }
 
 variable "phase" {
-  description = "Specific which phase service will host"
+  description = "Specific which phase is used for this eks cluster, and phase + project become cluster name"
   type        = "string"
   default     = "dev"
 }
 
 variable "project" {
-  description = "Specific which project service will host"
+  description = "Specific which project is used by eks cluster, and phase + project become cluster name"
   type        = "string"
   default     = "vishwakarma"
 }
@@ -39,8 +39,9 @@ variable "config_output_path" {
 }
 
 variable "lb_sg_ids" {
-  type    = "list"
-  default = []
+  description = "The security group id which used by load balancer"
+  type        = "list"
+  default     = []
 }
 
 variable "extra_tags" {

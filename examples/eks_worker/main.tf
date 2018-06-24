@@ -104,5 +104,5 @@ resource "null_resource" "patch_aws_auth_cm" {
     worker_spot_role_arn = "${module.workers_spot.aws_iam_role_arn}"
   }
 
-  depends_on = ["local_file.patch_aws_auth_cm"]
+  depends_on = ["module.workers_asg"]
 }
