@@ -1,5 +1,5 @@
 resource "aws_eks_cluster" "eks" {
-  name     = "${var.phase}-${var.project}-eks"
+  name     = "${var.phase}-${var.project}"
   role_arn = "${aws_iam_role.eks.arn}"
 
   vpc_config {

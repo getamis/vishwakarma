@@ -9,3 +9,15 @@ variable "aws_region" {
   type        = "string"
   default     = "us-east-1"
 }
+
+variable "config_output_path" {
+  description = "The path to store config, e.g. kubeconfig"
+  type        = "string"
+  default     = ".terraform"
+}
+
+variable "extra_tags" {
+  description = "Extra AWS tags to be applied to created resources."
+  type        = "map"
+  default     = {}
+}

@@ -1,0 +1,20 @@
+[Unit]
+Description=Download Heptio Authenticator
+ConditionPathExists=!/opt/heptio-authenticator-aws.done
+Before=kubelet.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+
+User=root
+Group=root
+
+ExecStartPre=/bin/mkdir -p /opt/bin
+ExecStart=/usr/bin/curl -o /opt/bin/heptio-authenticator-aws ${heptio_authenticator_aws_url}
+ExecStartPost=/bin/chmod +x /opt/bin/heptio-authenticator-aws
+ExecStartPost=/bin/touch /opt/heptio-authenticator-aws.done
+
+[Install]
+WantedBy=multi-user.target
+RequiredBy=kubelet.service

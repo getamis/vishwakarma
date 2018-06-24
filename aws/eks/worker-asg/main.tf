@@ -7,6 +7,10 @@ provider "aws" {
   version = "1.23.0"
 }
 
-provider "random" {
-  version = "1.3.1"
+provider "ignition" {
+  version = "1.0.0"
+}
+
+provider "template" {
+  version = "1.0.0"
 }

@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "cluster_assume_role_policy" {
 }
 
 resource "aws_iam_role" "eks" {
-  name_prefix        = "${var.phase}-${var.project}-eks"
+  name_prefix        = "${var.phase}-${var.project}-master-"
   assume_role_policy = "${data.aws_iam_policy_document.cluster_assume_role_policy.json}"
 }
 

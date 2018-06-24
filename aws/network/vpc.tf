@@ -4,9 +4,10 @@ resource "aws_vpc" "new_vpc" {
   enable_dns_support   = true
 
   tags = "${merge(map(
-      "Name", "${var.phase}-${var.project}-vpc",
+      "Name", "${var.phase}-${var.project}",
       "Phase", "${var.phase}",
-      "Project", "${var.project}"
+      "Project", "${var.project}",
+      "kubernetes.io/cluster/${var.phase}-${var.project}", "shared"
     ), var.extra_tags)}"
 }
 

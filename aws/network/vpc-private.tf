@@ -5,7 +5,8 @@ resource "aws_route_table" "private_routes" {
   tags = "${merge(map(
       "Name", "${var.phase}-${var.project}-private-${local.aws_azs[count.index]}",
       "Phase", "${var.phase}",
-      "Project", "${var.project}"
+      "Project", "${var.project}",
+      "kubernetes.io/cluster/${var.phase}-${var.project}", "shared"
     ), var.extra_tags)}"
 }
 
@@ -26,7 +27,8 @@ resource "aws_subnet" "private_subnet" {
   tags = "${merge(map(
     "Name", "${var.phase}-${var.project}-private-${local.aws_azs[count.index]}",
     "Phase", "${var.phase}",
-    "Project", "${var.project}"
+    "Project", "${var.project}",
+    "kubernetes.io/cluster/${var.phase}-${var.project}", "shared"
     ), var.extra_tags)}"
 }
 
