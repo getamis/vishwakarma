@@ -4,16 +4,20 @@ variable "aws_region" {
   default     = ""
 }
 
-variable "aws_az_number" {
-  description = "How many AZs want to build"
-  type    = "string"
-  default = "3"
-}
-
-variable "cidr_block" {
+variable "vpc_cidr_block" {
   description = "The CIDR block AWS VPC"
   type        = "string"
   default     = "10.0.0.0/16"
+}
+
+variable "exist_vpc_id" {
+  description = "The exist AWS VPC id for EKS cluster"
+  type        = "string"
+}
+
+variable "exist_subnet_ids" {
+  description = "The exist AWS subnet ids for EKS cluster"
+  type        = "list"
 }
 
 variable "phase" {
@@ -28,21 +32,15 @@ variable "project" {
   default     = "vishwakarma"
 }
 
-variable "bastion_ami_id" {
-  description = "The AWS AMI id for bastion"
+variable "config_output_path" {
+  description = "The path to store config, e.g. kubeconfig"
   type        = "string"
-  default     = ""
+  default     = ".terraform"
 }
 
-variable "bastion_instance_type" {
-  description = "The AWS instance type for bastion"
-  type        = "string"
-  default     = "t2.micro"
-}
-
-variable "bastion_key_name" {
-  description = "The AWS EC2 key name for bastion"
-  type        = "string"
+variable "lb_sg_ids" {
+  type    = "list"
+  default = []
 }
 
 variable "extra_tags" {

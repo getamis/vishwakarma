@@ -48,7 +48,7 @@ data "aws_ami" "latest_ubuntu" {
 
 resource "random_integer" "subnet_id_index" {
   min     = 0
-  max     = "${length(aws_subnet.public_subnet.*.id)}"
+  max     = "${var.aws_az_number - 1}"
 
   keepers = {
     vpc_id = "${aws_vpc.new_vpc.id}"

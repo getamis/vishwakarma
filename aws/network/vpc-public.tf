@@ -4,7 +4,8 @@ resource "aws_internet_gateway" "igw" {
   tags = "${merge(map(
       "Name", "${var.phase}-${var.project}-igw",
       "Phase", "${var.phase}",
-      "Project", "${var.project}"
+      "Project", "${var.project}",
+      "kubernetes.io/cluster/${var.phase}-${var.project}", "shared"
     ), var.extra_tags)}"
 }
 
@@ -38,7 +39,8 @@ resource "aws_subnet" "public_subnet" {
   tags = "${merge(map(
      "Name", "${var.phase}-${var.project}-public-${local.aws_azs[count.index]}",
      "Phase", "${var.phase}",
-     "Project", "${var.project}"
+     "Project", "${var.project}",
+     "kubernetes.io/cluster/${var.phase}-${var.project}", "shared"
     ), var.extra_tags)}"
 }
 
