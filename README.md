@@ -61,7 +61,7 @@ Verify the Kubernetes cluster is up! (Still keep in the same folder)
 
 ~$ export KUBECONFIG=.terraform/kubeconfig
 
-# check whether there is 4 worker register successfully, it will takes several 
+# check whether there is 4 worker register successfully, it will takes several
 minutes...
 
 ~$ kubectl get node
@@ -87,13 +87,13 @@ This module creates the AWS EKS cluster, I think this is the most simple part he
 - Refer [**Here**](VARIABLES.md#eks/master) for the detailf variable inputs
 
 
-###aws/eks/worker-asg
+### aws/eks/worker-asg
 Create a AWS auto-scaling group with CoreOS container linux and leverage ignition to provision and register to EKS cluster automatically
 
 - Refer [**Here**](VARIABLES.md#eks/worker-asg) for the detailf variable inputs
 
 
-###aws/eks/worker-spot
+### aws/eks/worker-spot
 Module worker-spot almost do the same thing like worker-asg, but it uses spot fleet to launch worker node group, that means comparing to worker-asg, the cost is only half
 
 - Refer [**Here**](VARIABLES.md#eks/worker-spot) for the detailf variable inputs
@@ -115,4 +115,3 @@ The [changelog](CHANGELOG.md) captures all important release notes.
 ## License
 
 This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details
-
