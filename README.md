@@ -1,6 +1,6 @@
 # vishwakarma
 
-In order to demonstrate the idea, I create one open source project named Vishwakarma, it can be used to create a Kubernetes cluster in AWS by leveraging HashiCorp Terraform and CoreOS. Of course, I didn't develop it from scratch, I refer to [CoreOS Tectonic](https://github.com/coreos/tectonic-installer) and [terraform-aws-eks](https://github.com/terraform-aws-modules/terraform-aws-eks), before starting to dive into the detail, let's experience it first
+Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging HashiCorp Terraform and CoreOS. Of course, I didn't develop it from scratch, I refer to [CoreOS Tectonic](https://github.com/coreos/tectonic-installer) and [terraform-aws-eks](https://github.com/terraform-aws-modules/terraform-aws-eks), before starting to dive into the detail, let's experience it first
 
 ## Dependencies
 
