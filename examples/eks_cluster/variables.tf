@@ -6,7 +6,7 @@ variable "bastion_key_name" {
 variable "aws_region" {
   description = "The AWS region to build network infrastructure"
   type        = "string"
-  default     = "us-east-1"
+  default     = "us-west-2"
 }
 
 variable "config_output_path" {

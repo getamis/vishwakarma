@@ -79,24 +79,24 @@ Vishwakarma include 4 major module:
 ### aws/network
 Create one AWS VPC including private and public subnet, and one ec2 instance called bastion hosts in public subnet, hence, one can access the resource hosting in the private subnet.
 
-- Refer [**Here**](VARIABLES.md#aws/network) for the detailf variable inputs
+- Refer [**Here**](VARIABLES.md#aws/network) for the detail variable inputs
 
 ### aws/eks/master
 This module creates the AWS EKS cluster, I think this is the most simple part here, but it takes about 8~10 minutes
 
-- Refer [**Here**](VARIABLES.md#eks/master) for the detailf variable inputs
+- Refer [**Here**](VARIABLES.md#eks/master) for the detail variable inputs
 
 
 ### aws/eks/worker-asg
 Create a AWS auto-scaling group with CoreOS container linux and leverage ignition to provision and register to EKS cluster automatically
 
-- Refer [**Here**](VARIABLES.md#eks/worker-asg) for the detailf variable inputs
+- Refer [**Here**](VARIABLES.md#eks/worker-asg) for the detail variable inputs
 
 
 ### aws/eks/worker-spot
 Module worker-spot almost do the same thing like worker-asg, but it uses spot fleet to launch worker node group, that means comparing to worker-asg, the cost is only half
 
-- Refer [**Here**](VARIABLES.md#eks/worker-spot) for the detailf variable inputs
+- Refer [**Here**](VARIABLES.md#eks/worker-spot) for the detail variable inputs
 
 ## Contributing
 
