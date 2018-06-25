@@ -1,7 +1,6 @@
 variable "bastion_key_name" {
-  description = "The key for access bastion"
+  description = "The key pair name for access bastion ec2"
   type        = "string"
-  default     = "vishwakarma"
 }
 
 variable "aws_region" {
