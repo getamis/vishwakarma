@@ -59,6 +59,10 @@ resource "aws_autoscaling_group" "workers" {
   lifecycle {
     create_before_destroy = true
   }
+
+  depends_on = [
+    "module.worker_common"
+  ]
 }
 
 resource "aws_autoscaling_attachment" "workers" {

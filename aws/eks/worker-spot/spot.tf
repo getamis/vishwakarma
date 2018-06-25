@@ -1,8 +1,6 @@
-
-
 resource "aws_spot_fleet_request" "workers" {
   count                               = "${var.aws_az_number}"
-  iam_fleet_role                      = "${aws_iam_role.spot_fleet.arn}"
+  iam_fleet_role                      = "${data.aws_iam_role.spot_fleet.arn}"
   load_balancers                      = "${var.load_balancers}"
   target_group_arns                   = "${var.target_group_arns}"
   spot_price                          = "0.1"
@@ -67,29 +65,12 @@ resource "aws_spot_fleet_request" "workers" {
           "Project", "${var.project}"
         ), var.extra_tags)}"
   }
-}
 
-resource "aws_iam_role" "spot_fleet" {
-  name = "${var.cluster_name}-${var.worker_name}-fleet-role"
-
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "spotfleet.amazonaws.com"
-      },
-      "Effect": "Allow",
-      "Sid": ""
-    }
+  depends_on = [
+    "module.worker_common"
   ]
 }
-EOF
-}
 
-resource "aws_iam_role_policy_attachment" "spot_fleet" {
-  role       = "${aws_iam_role.spot_fleet.name}"
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2SpotFleetTaggingRole"
+data "aws_iam_role" "spot_fleet" {
+  name = "AWSServiceRoleForEC2SpotFleet"
 }
