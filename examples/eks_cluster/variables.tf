@@ -1,4 +1,4 @@
-variable "bastion_key_name" {
+variable "key_pair_name" {
   description = "The key pair name for access bastion ec2"
   type        = "string"
 }
