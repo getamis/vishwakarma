@@ -10,6 +10,7 @@ Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging Hash
 
 - **heptio-authenticator-aws**: AWS EKS access permission integrate with AWS IAM, in order to let AWS EKS know whether you have the right to access, heptio-authenticator-aws need to be [**installed**](https://docs.aws.amazon.com/eks/latest/userguide/configure-kubectl.html) in the client side
 
+- **Key Pair**: In order to access worker node through ssh protocol, please create a key pair in example region **US West (Oregon) us-west-2**
 
 ## Getting Started
 
@@ -37,6 +38,11 @@ Terraform has been successfully initialized!
 
 ~$ terraform plan
 
+# need to input the key pair name
+var.key_pair_name
+  The key pair name for access bastion ec2
+Enter a value:
+
 Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
 persisted to local or remote state storage.
@@ -46,6 +52,11 @@ Plan: 74 to add, 0 to change, 0 to destroy.
 # start to create Kubernetes cluster
 
 ~$ terraform apply
+
+# need to input the key pair name
+var.key_pair_name
+  The key pair name for access bastion ec2
+Enter a value:
 
 data.ignition_systemd_unit.locksmithd: Refreshing state...
 data.template_file.aws_auth_cm: Refreshing state...
@@ -77,26 +88,18 @@ ip-10-0-86-182.ec2.internal   Ready     node      2m        v1.10.3+coreos.0
 Vishwakarma include 4 major module:
 
 ### aws/network
-Create one AWS VPC including private and public subnet, and one ec2 instance called bastion hosts in public subnet, hence, one can access the resource hosting in the private subnet.
-
-- Refer [**Here**](VARIABLES.md#aws/network) for the detail variable inputs
+Create one AWS VPC including private and public subnet, and one ec2 instance called bastion hosts in public subnet, hence, one can access the resource hosting in the private subnet, refer [**Here**](VARIABLES.md#aws/network) for the detail variable inputs
 
 ### aws/eks/master
-This module creates the AWS EKS cluster, I think this is the most simple part here, but it takes about 8~10 minutes
-
-- Refer [**Here**](VARIABLES.md#eks/master) for the detail variable inputs
+This module creates the AWS EKS cluster, I think this is the most simple part here, but it takes about 8~10 minutes, refer [**Here**](VARIABLES.md#eks/master) for the detail variable inputs
 
 
 ### aws/eks/worker-asg
-Create a AWS auto-scaling group with CoreOS container linux and leverage ignition to provision and register to EKS cluster automatically
-
-- Refer [**Here**](VARIABLES.md#eks/worker-asg) for the detail variable inputs
+Create a AWS auto-scaling group with CoreOS container linux and leverage ignition to provision and register to EKS cluster automatically, refer [**Here**](VARIABLES.md#eks/worker-asg) for the detail variable inputs
 
 
 ### aws/eks/worker-spot
-Module worker-spot almost do the same thing like worker-asg, but it uses spot fleet to launch worker node group, that means comparing to worker-asg, the cost is only half
-
-- Refer [**Here**](VARIABLES.md#eks/worker-spot) for the detail variable inputs
+Module worker-spot almost do the same thing like worker-asg, but it uses spot fleet to launch worker node group, that means comparing to worker-asg, the cost is only half, refer [**Here**](VARIABLES.md#eks/worker-spot) for the detail variable inputs
 
 ## Contributing
 

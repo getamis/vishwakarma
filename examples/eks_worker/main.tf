@@ -5,7 +5,7 @@
 module "network" {
   source           = "../../aws//network"
   aws_region       = "${var.aws_region}"
-  bastion_key_name = "${var.bastion_key_name}"
+  bastion_key_name = "${var.key_pair_name}"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ module "workers_asg" {
   root_volume_type                     = "${var.worker_asg["root_volume_type"]}"
   sg_ids                               = ["${module.master.worker_sg_id}"]
   s3_bucket                            = "${module.master.s3_bucket}"
-  ssh_key                              = "${var.bastion_key_name}"
+  ssh_key                              = "${var.key_pair_name}"
   subnet_ids                           = "${module.network.private_subnet_ids}"
   vpc_id                               = "${module.network.vpc_id}"
   aws_region                           = "${var.aws_region}"
@@ -65,7 +65,7 @@ module "workers_spot" {
   root_volume_type                     = "${var.worker_spot["root_volume_type"]}"
   sg_ids                               = ["${module.master.worker_sg_id}"]
   s3_bucket                            = "${module.master.s3_bucket}"
-  ssh_key                              = "${var.bastion_key_name}"
+  ssh_key                              = "${var.key_pair_name}"
   subnet_ids                           = "${module.network.private_subnet_ids}"
   vpc_id                               = "${module.network.vpc_id}"
   aws_region                           = "${var.aws_region}"

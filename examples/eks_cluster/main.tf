@@ -1,7 +1,7 @@
 module "network" {
   source           = "../../aws//network"
   aws_region       = "${var.aws_region}"
-  bastion_key_name = "${var.bastion_key_name}"
+  bastion_key_name = "${var.key_pair_name}"
 }
 
 module "master" {
