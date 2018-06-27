@@ -1,5 +1,7 @@
 # vishwakarma
 
+![Alt text](https://cdn-images-1.medium.com/max/800/1*ziRO27izCd6d9f6ReBVxcQ.png)
+
 Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging HashiCorp Terraform and CoreOS. Of course, I didn't develop it from scratch, I refer to [CoreOS Tectonic](https://github.com/coreos/tectonic-installer) and [terraform-aws-eks](https://github.com/terraform-aws-modules/terraform-aws-eks), before starting to dive into the detail, let's experience it first
 
 ## Dependencies
@@ -47,7 +49,7 @@ Refreshing Terraform state in-memory prior to plan...
 The refreshed state will be used to calculate this plan, but will not be
 persisted to local or remote state storage.
 ...
-Plan: 74 to add, 0 to change, 0 to destroy.
+Plan: 76 to add, 0 to change, 0 to destroy.
 
 # start to create Kubernetes cluster
 
@@ -62,7 +64,7 @@ data.ignition_systemd_unit.locksmithd: Refreshing state...
 data.template_file.aws_auth_cm: Refreshing state...
 data.template_file.max_user_watches: Refreshing state...
 ...
-Apply complete! Resources: 74 added, 0 changed, 0 destroyed.
+Apply complete! Resources: 76 added, 0 changed, 0 destroyed.
 ```
 
 Verify the Kubernetes cluster is up! (Still keep in the same folder)
@@ -83,6 +85,11 @@ ip-10-0-66-127.ec2.internal   Ready     node      2m        v1.10.3+coreos.0
 ip-10-0-71-121.ec2.internal   Ready     node      22s       v1.10.3+coreos.0
 ip-10-0-86-182.ec2.internal   Ready     node      2m        v1.10.3+coreos.0
 ```
+
+## What’s Going On?
+You have completed one Kubernetes cluster the same as below picture, and let me briefly explain how Vishwakarma achieves it
+
+![Alt text](https://cdn-images-1.medium.com/max/800/1*dsoCax8m6kpuAothThbrXQ.png)
 
 ## Modules
 Vishwakarma include 4 major module:
