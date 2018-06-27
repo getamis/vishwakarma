@@ -170,3 +170,9 @@ variable "worker_iam_role" {
 variable "s3_bucket" {
   type = "string"
 }
+
+variable "spot_fleet_role" {
+  type        = "string"
+  default     = ""
+  description = "Spot fleet role for spot fleet request spot instance"
+}

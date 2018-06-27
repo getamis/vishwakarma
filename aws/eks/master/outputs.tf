@@ -21,3 +21,7 @@ output "worker_sg_id" {
 output "s3_bucket" {
   value = "${aws_s3_bucket.vishwakarma.bucket}"
 }
+
+output "spot_fleet_role_arn" {
+  value = "${aws_iam_role.spot_fleet.arn}"
+}

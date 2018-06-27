@@ -63,6 +63,7 @@ module "workers_spot" {
   instance_count                       = "${var.worker_spot["instance_count"]}"
   root_volume_size                     = "${var.worker_spot["root_volume_size"]}"
   root_volume_type                     = "${var.worker_spot["root_volume_type"]}"
+  spot_fleet_role                      = "${module.master.spot_fleet_role_arn}"
   sg_ids                               = ["${module.master.worker_sg_id}"]
   s3_bucket                            = "${module.master.s3_bucket}"
   ssh_key                              = "${var.key_pair_name}"
