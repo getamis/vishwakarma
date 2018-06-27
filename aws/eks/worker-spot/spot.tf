@@ -1,6 +1,6 @@
 resource "aws_spot_fleet_request" "workers" {
   count                               = "${var.aws_az_number}"
-  iam_fleet_role                      = "${data.aws_iam_role.spot_fleet.arn}"
+  iam_fleet_role                      = "${var.spot_fleet_role}"
   load_balancers                      = "${var.load_balancers}"
   target_group_arns                   = "${var.target_group_arns}"
   spot_price                          = "0.1"
@@ -69,8 +69,4 @@ resource "aws_spot_fleet_request" "workers" {
   depends_on = [
     "module.worker_common"
   ]
-}
-
-data "aws_iam_role" "spot_fleet" {
-  name = "AWSServiceRoleForEC2SpotFleet"
 }
