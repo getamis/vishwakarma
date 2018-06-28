@@ -89,7 +89,7 @@ ip-10-0-86-182.ec2.internal   Ready     node      2m        v1.10.3+coreos.0
 ## What’s Going On?
 You have completed one Kubernetes cluster the same as below picture, and let me briefly explain how Vishwakarma achieves it
 
-![Alt text](https://cdn-images-1.medium.com/max/800/1*dsoCax8m6kpuAothThbrXQ.png)
+![Alt text](https://cdn-images-1.medium.com/max/2000/1*9WyA00hJfdLKWe4nhw7Zrg.png)
 
 ## Modules
 Vishwakarma include 4 major module:
