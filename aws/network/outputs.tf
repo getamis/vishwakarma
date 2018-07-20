@@ -13,3 +13,7 @@ output "private_subnet_ids" {
 output "bastion_id" {
   value = "${aws_instance.bastion.public_ip}"
 }
+
+output "zone_id" {
+  value = "${var.private_zone ? join("", aws_route53_zone.zone.*.zone_id) : ""}"
+}

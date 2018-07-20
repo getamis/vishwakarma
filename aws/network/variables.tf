@@ -5,8 +5,8 @@ variable "aws_region" {
 
 variable "aws_az_number" {
   description = "How many AZs want to be used"
-  type    = "string"
-  default = "3"
+  type        = "string"
+  default     = "3"
 }
 
 variable "cidr_block" {
@@ -42,6 +42,11 @@ variable "bastion_instance_type" {
 variable "bastion_key_name" {
   description = "The AWS EC2 key name for bastion"
   type        = "string"
+}
+
+variable "private_zone" {
+  description = "Create a private Route53 host zone"
+  default     = false
 }
 
 variable "extra_tags" {
