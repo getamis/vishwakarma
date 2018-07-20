@@ -1,0 +1,17 @@
+data "template_file" "ntp_dropin" {
+  template = "${file("${path.module}/resources/dropins/10-timesyncd.conf")}"
+
+  vars {
+    ntp_servers = "${join(" ", var.ntp_servers)}"
+  }
+}
+
+data "ignition_file" "ntp_dropin" {
+  path       = "/etc/systemd/timesyncd.conf.d/10-timesyncd.conf"
+  filesystem = "root"
+  mode       = 0644
+
+  content {
+    content = "${data.template_file.ntp_dropin.rendered}"
+  }
+}
