@@ -1,0 +1,101 @@
+locals {
+  project      = "elastikube"
+  phase        = "demo"
+  cluster_name = "${local.phase}-${local.project}"
+
+  kubernetes_version = "v1.10.5"
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Network
+# ---------------------------------------------------------------------------------------------------------------------
+
+provider "aws" {
+  version = "1.23.0"
+  region  = "${var.aws_region}"
+}
+
+resource "aws_key_pair" "ssh_key" {
+  public_key = "${file(pathexpand("~/.ssh/id_rsa.pub"))}"
+}
+
+module "network" {
+  source           = "../../aws/network"
+  aws_region       = "${var.aws_region}"
+  bastion_key_name = "${aws_key_pair.ssh_key.key_name}"
+  project          = "${local.project}"
+  phase            = "${local.phase}"
+
+  extra_tags = "${var.extra_tags}"
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# ElastiKube
+# ---------------------------------------------------------------------------------------------------------------------
+
+module "kubernetes" {
+  source = "../../aws/elastikube"
+
+  name         = "${local.cluster_name}"
+  aws_region   = "${var.aws_region}"
+  version      = "${local.kubernetes_version}"
+  service_cidr = "${var.service_cidr}"
+  cluster_cidr = "${var.cluster_cidr}"
+
+  etcd_config = {
+    instance_count   = "3"
+    ec2_type         = "t2.medium"
+    root_volume_iops = "0"
+    root_volume_size = "256"
+    root_volume_type = "gp2"
+  }
+
+  master_config = {
+    instance_count   = "2"
+    ec2_type         = "t2.medium"
+    root_volume_iops = "0"
+    root_volume_size = "256"
+    root_volume_type = "gp2"
+  }
+
+  hostzone   = "${local.project}.cluster"
+  subnet_ids = ["${module.network.private_subnet_ids}"]
+  ssh_key    = "${aws_key_pair.ssh_key.key_name}"
+
+  extra_tags = "${merge(map(
+      "Phase", "${local.phase}",
+      "Project", "${local.project}",
+    ), var.extra_tags)}"
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Worker Node (On Demand Instance)
+# ---------------------------------------------------------------------------------------------------------------------
+
+module "worker_general" {
+  source = "../../aws/kube-worker-general"
+
+  name              = "${local.cluster_name}"
+  aws_region        = "${var.aws_region}"
+  version           = "${local.kubernetes_version}"
+  kube_service_cidr = "${var.service_cidr}"
+
+  security_group_ids = ["${module.kubernetes.worker_sg_ids}"]
+  subnet_ids         = ["${module.network.private_subnet_ids}"]
+
+  worker_config = {
+    instance_count   = "2"
+    ec2_type         = "t2.medium"
+    root_volume_iops = "0"
+    root_volume_size = "64"
+    root_volume_type = "gp2"
+  }
+
+  s3_bucket = "${module.kubernetes.s3_bucket}"
+  ssh_key   = "${aws_key_pair.ssh_key.key_name}"
+
+  extra_tags = "${merge(map(
+      "Phase", "${local.phase}",
+      "Project", "${local.project}",
+    ), var.extra_tags)}"
+}
