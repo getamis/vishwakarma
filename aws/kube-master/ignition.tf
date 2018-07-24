@@ -30,6 +30,7 @@ data "ignition_config" "main" {
     module.ignition_kube_addon_dns.files,
     module.ignition_kube_addon_proxy.files,
     module.ignition_kube_addon_manager.files,
+    var.extra_ignition_file_ids,
   ))}"]
 
   systemd = ["${compact(concat(
@@ -42,6 +43,7 @@ data "ignition_config" "main" {
     module.ignition_kube_addon_dns.systemd_units,
     module.ignition_kube_addon_proxy.systemd_units,
     module.ignition_kube_addon_manager.systemd_units,
+    var.extra_ignition_systemd_unit_ids,
   ))}"]
 }
 

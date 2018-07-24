@@ -40,12 +40,14 @@ data "ignition_config" "main" {
     module.ignition_docker.files,
     module.ignition_kubelet.files,
     module.ignition_kube_config.files,
+    var.extra_ignition_file_ids,
   ))}"]
 
   systemd = ["${compact(concat(
     module.ignition_docker.systemd_units,
     module.ignition_kubelet.systemd_units,
     module.ignition_kube_config.systemd_units,
+    var.extra_ignition_systemd_unit_ids,
   ))}"]
 }
 

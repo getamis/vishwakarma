@@ -92,6 +92,30 @@ variable "s3_bucket" {
 EOF
 }
 
+variable "extra_ignition_file_ids" {
+  type        = "list"
+  default     = []
+  description = "(Optional) Additional ignition file IDs. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details."
+}
+
+variable "extra_ignition_systemd_unit_ids" {
+  type        = "list"
+  default     = []
+  description = "(Optional) Additional ignition systemd unit IDs. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details."
+}
+
+variable "load_balancer_ids" {
+  type        = "list"
+  default     = []
+  description = "(Optional) A list of elastic load balancer names to add to the autoscaling group names. Only valid for classic load balancers. For ALBs, use target_group_arns instead."
+}
+
+variable "target_group_arns" {
+  type        = "list"
+  default     = []
+  description = "(Optional) A list of aws_alb_target_group ARNs, for use with Application Load Balancing."
+}
+
 variable "extra_tags" {
   type        = "map"
   default     = {}

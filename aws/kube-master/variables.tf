@@ -72,10 +72,6 @@ variable "etcd_endpoints" {
 
 variable "etcd_certs_config" {
   type = "map"
-
-  default = {
-    # ca_cert_pem     = ""  # client_key_pem  = ""  # client_cert_pem = ""
-  }
 }
 
 variable "certs_validity_period_hours" {
@@ -124,6 +120,18 @@ variable "s3_bucket" {
     (Optional) Unique name under which the Amazon S3 bucket will be created. Bucket name must start with a lower case name and is limited to 63 characters.
     If name is not provided the installer will construct the name using "name" and current AWS region.
 EOF
+}
+
+variable "extra_ignition_file_ids" {
+  type        = "list"
+  default     = []
+  description = "(Optional) Additional ignition file IDs. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details."
+}
+
+variable "extra_ignition_systemd_unit_ids" {
+  type        = "list"
+  default     = []
+  description = "(Optional) Additional ignition systemd unit IDs. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details."
 }
 
 variable "extra_tags" {

@@ -117,6 +117,30 @@ variable "extra_master_node_taints" {
 EOF
 }
 
+variable "extra_etcd_ignition_file_ids" {
+  type        = "list"
+  default     = []
+  description = "(Optional) Additional ignition file IDs for etcds. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details."
+}
+
+variable "extra_etcd_ignition_systemd_unit_ids" {
+  type        = "list"
+  default     = []
+  description = "(Optional) Additional ignition systemd unit IDs for etcds. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details."
+}
+
+variable "extra_ignition_file_ids" {
+  type        = "list"
+  default     = []
+  description = "(Optional) Additional ignition file IDs for masters. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details."
+}
+
+variable "extra_ignition_systemd_unit_ids" {
+  type        = "list"
+  default     = []
+  description = "(Optional) Additional ignition systemd unit IDs for masters. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details."
+}
+
 variable "extra_tags" {
   description = "(Optional) Extra AWS tags to be applied to the resources."
   type        = "map"

@@ -34,7 +34,9 @@ module "master" {
       ))}",
   ]
 
-  s3_bucket = "${aws_s3_bucket.ignition.id}"
+  s3_bucket                       = "${aws_s3_bucket.ignition.id}"
+  extra_ignition_file_ids         = ["${var.extra_ignition_file_ids}"]
+  extra_ignition_systemd_unit_ids = ["${var.extra_ignition_systemd_unit_ids}"]
 
   extra_tags = "${var.extra_tags}"
 }

@@ -108,6 +108,18 @@ variable "s3_bucket" {
 EOF
 }
 
+variable "extra_ignition_file_ids" {
+  type        = "list"
+  default     = []
+  description = "(Optional) Additional ignition file IDs. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details."
+}
+
+variable "extra_ignition_systemd_unit_ids" {
+  type        = "list"
+  default     = []
+  description = "(Optional) Additional ignition systemd unit IDs. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details."
+}
+
 variable "extra_tags" {
   type        = "map"
   default     = {}
