@@ -9,13 +9,13 @@ resource "aws_security_group_rule" "master_ingress_flannel" {
 }
 
 resource "aws_security_group_rule" "master_ingress_flannel_from_worker" {
-  type              = "ingress"
-  security_group_id = "${aws_security_group.master.id}"
+  type                     = "ingress"
+  security_group_id        = "${aws_security_group.master.id}"
+  source_security_group_id = "${aws_security_group.workers.id}"
 
-  protocol    = "udp"
-  cidr_blocks = ["${data.aws_vpc.master.cidr_block}"]
-  from_port   = 4789
-  to_port     = 4789
+  protocol  = "udp"
+  from_port = 4789
+  to_port   = 4789
 }
 
 module "ignition_kube_addon_flannel_vxlan" {

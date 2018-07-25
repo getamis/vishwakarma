@@ -19,6 +19,15 @@ variable "role_arn" {
 EOF
 }
 
+variable "master_security_group_id" {
+  type = "string"
+
+  description = <<EOF
+    (Required) Main security group ID to use to allow communication between your etcd nodes
+    and the Kubernetes control plane.
+EOF
+}
+
 variable "security_group_ids" {
   type    = "list"
   default = []

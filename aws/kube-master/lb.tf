@@ -34,7 +34,7 @@ resource "aws_security_group" "master_lb" {
 
   ingress {
     protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["${data.aws_vpc.master.cidr_block}"]
     from_port   = 443
     to_port     = 443
   }

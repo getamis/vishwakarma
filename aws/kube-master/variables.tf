@@ -15,6 +15,15 @@ variable "role_arn" {
   description = "(Optional) The Amazon Resource Name (ARN) of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
 }
 
+variable "master_security_group_id" {
+  type    = "string"
+  default = ""
+
+  description = <<EOF
+    (Optional) Main security group ID of the Kubernetes control plane.
+EOF
+}
+
 variable "security_group_ids" {
   type    = "list"
   default = []

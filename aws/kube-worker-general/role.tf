@@ -54,11 +54,9 @@ resource "aws_iam_policy" "worker" {
     },
     {
       "Action" : [
-        "s3:GetObject",
-        "s3:ListBucket",
-        "s3:PutObject"
+        "s3:GetObject"
       ],
-      "Resource": "arn:${local.arn}:s3:::*",
+      "Resource": "arn:aws:s3:::${var.s3_bucket}*",
       "Effect": "Allow"
     },
     {

@@ -33,7 +33,7 @@ resource "aws_security_group_rule" "workers_ingress_cluster" {
   description              = "Allow workers Kubelets and pods to receive communication from the cluster control plane."
   protocol                 = "tcp"
   security_group_id        = "${aws_security_group.workers.id}"
-  source_security_group_id = "${aws_security_group.master.id}"
+  source_security_group_id = "${local.master_sg_id}"
   from_port                = 1025
   to_port                  = 65535
   type                     = "ingress"

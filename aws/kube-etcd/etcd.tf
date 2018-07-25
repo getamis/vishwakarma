@@ -20,7 +20,6 @@ resource "aws_instance" "etcd" {
   vpc_security_group_ids = [
     "${var.security_group_ids}",
     "${aws_security_group.etcd.id}",
-    "${aws_security_group.etcd_ssh.id}",
   ]
 
   user_data = "${data.ignition_config.s3.rendered}"
