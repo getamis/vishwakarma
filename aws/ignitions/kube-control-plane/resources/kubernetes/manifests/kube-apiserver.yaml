@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-apiserver
+  namespace: kube-system
+  labels:
+    tier: control-plane
+    k8s-app: kube-apiserver
+spec:
+  containers:
+  - name: kube-apiserver
+    image: ${hyperkube_image}
+    command:
+    - /usr/bin/flock
+    - /var/lock/api-server.lock
+    - /hyperkube
+    - apiserver
+    - --bind-address=0.0.0.0
+    - --secure-port=443
+    - --advertise-address=${advertise_address}
+    - --etcd-servers=${etcd_servers}
+    ${etcd_ca_flag}
+    ${etcd_cert_flag}
+    ${etcd_key_flag}
+    - --storage-backend=etcd3
+    - --allow-privileged=true
+    - --service-cluster-ip-range=${service_cidr}
+    - --enable-admission-plugins=NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultTolerationSeconds,DefaultStorageClass,MutatingAdmissionWebhook,ValidatingAdmissionWebhook,ResourceQuota
+    - --tls-cert-file=${secret_path}/apiserver.crt
+    - --tls-private-key-file=${secret_path}/apiserver.key
+    - --kubelet-client-certificate=${secret_path}/apiserver.crt
+    - --kubelet-client-key=${secret_path}/apiserver.key
+    - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+    - --service-account-key-file=${secret_path}/service-account.pub
+    - --client-ca-file=${secret_path}/ca.crt
+    - --authorization-mode=RBAC
+    - --anonymous-auth=${anonymous_auth}
+    - --cloud-provider=${cloud_provider}
+    ${cloud_provider_config_flag}
+    - --audit-log-path=/var/log/kubernetes/kube-apiserver-audit.log
+    - --audit-log-maxage=30
+    - --audit-log-maxbackup=3
+    - --audit-log-maxsize=100
+    volumeMounts:
+    - mountPath: /etc/ssl/certs
+      name: ssl-certs-host
+      readOnly: true
+    - mountPath: ${secret_path}
+      name: secrets
+      readOnly: true
+    - mountPath: /var/lock
+      name: var-lock
+      readOnly: false
+    - mountPath: /var/log/kubernetes
+      name: var-log-kubernetes
+      readOnly: false
+    ports:
+    - containerPort: 443
+      hostPort: 443
+      name: https
+    - containerPort: 8080
+      hostPort: 8080
+      name: local
+  hostNetwork: true
+  volumes:
+  - name: ssl-certs-host
+    hostPath:
+      path: /etc/ssl/certs
+  - name: secrets
+    hostPath:
+      path: ${secret_path}
+  - name: var-lock
+    hostPath:
+      path: /var/lock
+  - name: var-log-kubernetes
+    hostPath:
+      path: /var/log/kubernetes

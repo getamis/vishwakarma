@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kube-scheduler
+  namespace: kube-system
+  labels:
+    tier: control-plane
+    k8s-app: kube-scheduler
+spec:
+  hostNetwork: true
+  containers:
+  - name: kube-scheduler
+    image: ${hyperkube_image}
+    command:
+    - ./hyperkube
+    - scheduler
+    - --leader-elect=true
+    - --kubeconfig=/etc/kubernetes/kubeconfig
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: 10251  # Note: Using default port. Update if --port option is set differently.
+      initialDelaySeconds: 15
+      timeoutSeconds: 15
+    volumeMounts:
+    - name: etc-kubernetes
+      mountPath: /etc/kubernetes
+      readOnly: true
+  volumes:
+  - name: etc-kubernetes
+    hostPath:
+      path: /etc/kubernetes
