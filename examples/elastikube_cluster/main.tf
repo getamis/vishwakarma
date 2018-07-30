@@ -58,9 +58,10 @@ module "kubernetes" {
     root_volume_type = "gp2"
   }
 
-  hostzone   = "${local.project}.cluster"
-  subnet_ids = ["${module.network.private_subnet_ids}"]
-  ssh_key    = "${aws_key_pair.ssh_key.key_name}"
+  hostzone        = "${local.project}.cluster"
+  subnet_ids      = ["${module.network.private_subnet_ids}"]
+  ssh_key         = "${aws_key_pair.ssh_key.key_name}"
+  reboot_strategy = "off"
 
   extra_tags = "${merge(map(
       "Phase", "${local.phase}",
