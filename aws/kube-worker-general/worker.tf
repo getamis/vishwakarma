@@ -21,7 +21,7 @@ data "null_data_source" "tags" {
 }
 
 resource "aws_autoscaling_group" "worker" {
-  name                 = "${var.name}-worker-general"
+  name                 = "${var.name}-worker-${var.worker_config["name"]}"
   desired_capacity     = "${var.worker_config["instance_count"]}"
   max_size             = "${var.worker_config["instance_count"] * 3}"
   min_size             = "${var.worker_config["instance_count"]}"
@@ -33,7 +33,7 @@ resource "aws_autoscaling_group" "worker" {
   tags = [
     {
       key                 = "Name"
-      value               = "${var.name}-worker-general"
+      value               = "${var.name}-worker-${var.worker_config["name"]}"
       propagate_at_launch = true
     },
     {
@@ -49,7 +49,7 @@ resource "aws_autoscaling_group" "worker" {
 resource "aws_launch_configuration" "worker" {
   instance_type = "${var.worker_config["ec2_type"]}"
   image_id      = "${data.aws_ami.coreos_ami.image_id}"
-  name_prefix   = "${var.name}-worker-general-"
+  name_prefix   = "${var.name}-worker-${var.worker_config["name"]}-"
 
   security_groups = [
     "${var.security_group_ids}",

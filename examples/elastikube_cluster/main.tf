@@ -85,11 +85,50 @@ module "worker_general" {
   subnet_ids         = ["${module.network.private_subnet_ids}"]
 
   worker_config = {
+    name             = "general"
     instance_count   = "2"
     ec2_type         = "t2.medium"
     root_volume_iops = "0"
     root_volume_size = "64"
     root_volume_type = "gp2"
+  }
+
+  s3_bucket = "${module.kubernetes.s3_bucket}"
+  ssh_key   = "${aws_key_pair.ssh_key.key_name}"
+
+  extra_tags = "${merge(map(
+      "Phase", "${local.phase}",
+      "Project", "${local.project}",
+    ), var.extra_tags)}"
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Worker Node (On Spot Instance)
+# ---------------------------------------------------------------------------------------------------------------------
+
+module "worker_spot" {
+  source = "../../aws/kube-worker-spot"
+
+  name              = "${local.cluster_name}"
+  aws_region        = "${var.aws_region}"
+  version           = "${local.kubernetes_version}"
+  kube_service_cidr = "${var.service_cidr}"
+
+  security_group_ids = ["${module.kubernetes.worker_sg_ids}"]
+  subnet_ids         = ["${module.network.private_subnet_ids}"]
+
+  spot_fleet_tagging_role_arn     = "${module.kubernetes.spot_fleet_tagging_role_arn}"
+  spot_fleet_autoscale_role_arn   = "${module.kubernetes.spot_fleet_autoscale_role_arn}"
+
+  worker_config = {
+    name               = "spot"
+    min_instance_count = "2"
+    max_instance_count = "2"
+    ec2_type           = "m4.large"
+    price              = "0.04"
+    root_volume_iops   = "0"
+    root_volume_size   = "64"
+    root_volume_type   = "gp2"
   }
 
   s3_bucket = "${module.kubernetes.s3_bucket}"

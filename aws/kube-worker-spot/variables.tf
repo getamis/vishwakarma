@@ -15,6 +15,16 @@ variable "role_arn" {
   description = "(Optional) The Amazon Resource Name (ARN) of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
 }
 
+variable "spot_fleet_tagging_role_arn" {
+  type        = "string"
+  description = "Spot fleet role for spot fleet request spot instance"
+}
+
+variable "spot_fleet_autoscale_role_arn" {
+  type        = "string"
+  description = "Spot fleet role for spot fleet request spot instance"
+}
+
 variable "security_group_ids" {
   type    = "list"
   default = []
@@ -46,12 +56,14 @@ variable "worker_config" {
   type = "map"
 
   default = {
-    instance_count   = "1"
-    ec2_type         = "t2.medium"
-    name             = "general"
-    root_volume_iops = "100"
-    root_volume_size = "256"
-    root_volume_type = "gp2"
+    min_instance_count = "1"
+    max_instance_count = "1"
+    ec2_type           = "t2.medium"
+    name               = "spot"
+    price              = "0.02"
+    root_volume_iops   = "100"
+    root_volume_size   = "256"
+    root_volume_type   = "gp2"
   }
 
   description = "(Optional) Desired worker nodes configuration."

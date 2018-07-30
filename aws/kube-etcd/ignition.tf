@@ -48,10 +48,6 @@ data "ignition_config" "main" {
   ))}"]
 }
 
-data "aws_region" "current" {
-  current = true
-}
-
 resource "aws_s3_bucket_object" "ignition" {
   bucket  = "${var.s3_bucket}"
   key     = "ign-etcd-${var.name}.json"
