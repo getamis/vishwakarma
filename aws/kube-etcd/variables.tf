@@ -9,7 +9,7 @@ variable "name" {
   description = " (Required) Name of the etcd cluster."
 }
 
-variable "role_arn" {
+variable "role_name" {
   type    = "string"
   default = ""
 

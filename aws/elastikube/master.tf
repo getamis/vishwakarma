@@ -6,6 +6,7 @@ module "master" {
 
   ssh_key       = "${var.ssh_key}"
   master_config = "${var.master_config}"
+  role_name     = "${var.master_role_name}"
 
   security_group_ids    = [
     "${aws_security_group.master2etcd.id}",

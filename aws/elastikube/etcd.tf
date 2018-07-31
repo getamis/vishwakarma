@@ -6,6 +6,7 @@ module "etcd" {
 
   ssh_key     = "${var.ssh_key}"
   etcd_config = "${var.etcd_config}"
+  role_name   = "${var.etcd_role_name}"
 
   subnet_ids               = ["${var.subnet_ids}"]
   master_security_group_id = "${aws_security_group.master2etcd.id}"
