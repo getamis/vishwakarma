@@ -2,7 +2,10 @@ resource "aws_elb" "master_internal" {
   name            = "${var.name}-master"
   subnets         = ["${var.subnet_ids}"]
   internal        = true
-  security_groups = ["${aws_security_group.master_lb.id}"]
+  security_groups = [
+    "${aws_security_group.master_lb.id}",
+    "${var.lb_security_group_ids}"
+  ]
 
   idle_timeout                = 3600
   connection_draining         = true
@@ -21,26 +24,33 @@ resource "aws_elb" "master_internal" {
     ), var.extra_tags)}"
 }
 
+
 resource "aws_security_group" "master_lb" {
-  vpc_id = "${data.aws_vpc.master.id}"
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    self        = true
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  ingress {
-    protocol    = "tcp"
-    cidr_blocks = ["${data.aws_vpc.master.cidr_block}"]
-    from_port   = 443
-    to_port     = 443
-  }
+  name_prefix = "${var.name}-master-lb-"
+  vpc_id      = "${data.aws_vpc.master.id}"
 
   tags = "${merge(map(
-      "Name", "${var.name}-master-lb-sg",
+      "Name", "${var.name}-master-lb",
       "kubernetes.io/cluster/${var.name}", "owned",
     ), var.extra_tags)}"
+}
+
+resource "aws_security_group_rule" "master_lb_egress" {
+  type              = "egress"
+  security_group_id = "${aws_security_group.master_lb.id}"
+
+  protocol    = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
+  from_port   = 0
+  to_port     = 0
+}
+
+resource "aws_security_group_rule" "master_lb_ingress_from_internal" {
+  type                     = "ingress"
+  security_group_id        = "${aws_security_group.master_lb.id}"
+  cidr_blocks              = ["${data.aws_vpc.master.cidr_block}"]
+
+  protocol  = "tcp"
+  from_port = 443
+  to_port   = 443
 }

@@ -7,7 +7,7 @@ module "master" {
   ssh_key       = "${var.ssh_key}"
   master_config = "${var.master_config}"
 
-  security_group_ids = ["${aws_security_group.master.id}"]
+  security_group_ids = "${var.security_group_ids}"
   subnet_ids         = ["${var.subnet_ids}"]
 
   etcd_endpoints = ["${module.etcd.endpoints}"]
@@ -41,14 +41,4 @@ module "master" {
   extra_ignition_systemd_unit_ids = ["${var.extra_ignition_systemd_unit_ids}"]
 
   extra_tags = "${var.extra_tags}"
-}
-
-resource "aws_security_group" "master" {
-  name_prefix = "${var.name}-master-"
-  vpc_id      = "${local.vpc_id}"
-
-  tags = "${merge(map(
-      "Name", "${var.name}-master",
-      "kubernetes.io/cluster/${var.name}", "owned",
-    ), var.extra_tags)}"
 }
