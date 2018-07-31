@@ -55,6 +55,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "etcd" {
+  count      = "${var.role_name == "" ? 1 : 0}"
   policy_arn = "${aws_iam_policy.etcd.arn}"
   role       = "${aws_iam_role.etcd.name}"
 }

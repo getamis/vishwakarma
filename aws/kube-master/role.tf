@@ -125,6 +125,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "spot_fleet_autoscale" {
+  count      = "${var.role_name == "" ? 1 : 0}"
   role       = "${aws_iam_role.spot_fleet_autoscale.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2SpotFleetAutoscaleRole"
 }

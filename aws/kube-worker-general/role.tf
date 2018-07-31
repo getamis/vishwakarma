@@ -73,6 +73,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "worker" {
+  count      = "${var.role_name == "" ? 1 : 0}"
   policy_arn = "${aws_iam_policy.worker.arn}"
   role       = "${aws_iam_role.worker.name}"
 }
