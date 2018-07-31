@@ -102,6 +102,12 @@ variable "hostzone" {
   description = "(Optional) The cluster private hostname. If not specified, <cluster name>.com will be used."
 }
 
+variable "reboot_strategy" {
+  type    = "string"
+  default = "etcd-lock"
+  description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
+}
+
 variable "extra_master_node_labels" {
   type        = "list"
   default     = []

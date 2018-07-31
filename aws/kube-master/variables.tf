@@ -131,6 +131,11 @@ variable "s3_bucket" {
 EOF
 }
 
+variable "reboot_strategy" {
+  type    = "string"
+  description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
+}
+
 variable "extra_ignition_file_ids" {
   type        = "list"
   default     = []

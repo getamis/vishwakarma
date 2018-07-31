@@ -9,3 +9,11 @@ output "endpoint" {
 output "worker_sg_ids" {
   value = ["${aws_security_group.workers.id}"]
 }
+
+output "spot_fleet_tagging_role_arn" {
+  value = "${aws_iam_role.spot_fleet_tagging.arn}"
+}
+
+output "spot_fleet_autoscale_role_arn" {
+  value = "${aws_iam_role.spot_fleet_autoscale.arn}"
+}

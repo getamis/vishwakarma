@@ -25,3 +25,11 @@ output "s3_bucket" {
 output "worker_sg_ids" {
   value = ["${module.master.worker_sg_ids}"]
 }
+
+output "spot_fleet_tagging_role_arn" {
+  value = "${module.master.spot_fleet_tagging_role_arn}"
+}
+
+output "spot_fleet_autoscale_role_arn" {
+  value = "${module.master.spot_fleet_autoscale_role_arn}"
+}

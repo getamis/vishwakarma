@@ -76,3 +76,55 @@ resource "aws_iam_role_policy_attachment" "master" {
   policy_arn = "${aws_iam_policy.master.arn}"
   role       = "${aws_iam_role.master.name}"
 }
+
+# Role for Spot Fleet
+resource "aws_iam_role" "spot_fleet_tagging" {
+  name = "${var.name}-spot-fleet-tagging"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "spotfleet.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "spot_fleet_tagging" {
+  role       = "${aws_iam_role.spot_fleet_tagging.name}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2SpotFleetTaggingRole"
+}
+
+
+resource "aws_iam_role" "spot_fleet_autoscale" {
+  name = "${var.name}-spot-fleet-autoscale"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "spot_fleet_autoscale" {
+  role       = "${aws_iam_role.spot_fleet_autoscale.name}"
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2SpotFleetAutoscaleRole"
+}

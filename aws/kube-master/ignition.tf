@@ -6,6 +6,11 @@ module "ignition_docker" {
   source = "../ignitions/docker"
 }
 
+module "ignition_locksmithd" {
+  source          = "../ignitions/locksmithd"
+  reboot_strategy = "${var.reboot_strategy}"
+}
+
 module "ignition_kube_config" {
   source = "../ignitions/kube-config"
 
@@ -23,6 +28,7 @@ data "ignition_config" "main" {
   files = ["${compact(concat(
     module.ignition_docker.files,
     module.ignition_node_exporter.files,
+    module.ignition_locksmithd.files,
     module.ignition_kube_control_plane.files,
     module.ignition_kubelet.files,
     module.ignition_kube_config.files,
@@ -36,6 +42,7 @@ data "ignition_config" "main" {
   systemd = ["${compact(concat(
     module.ignition_docker.systemd_units,
     module.ignition_node_exporter.systemd_units,
+    module.ignition_locksmithd.systemd_units,
     module.ignition_kube_control_plane.systemd_units,
     module.ignition_kubelet.systemd_units,
     module.ignition_kube_config.systemd_units,

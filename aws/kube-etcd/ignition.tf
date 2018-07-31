@@ -25,11 +25,17 @@ module "ignition_node_exporter" {
   source = "../ignitions/node-exporter"
 }
 
+module "ignition_locksmithd" {
+  source          = "../ignitions/locksmithd"
+  reboot_strategy = "${var.reboot_strategy}"
+}
+
 data "ignition_config" "main" {
   files = ["${compact(concat(
     module.ignition_docker.files,
     module.ignition_etcd.files,
     module.ignition_node_exporter.files,
+    module.ignition_locksmithd.files,
     var.extra_ignition_file_ids,
   ))}"]
 
@@ -37,12 +43,9 @@ data "ignition_config" "main" {
     module.ignition_docker.systemd_units,
     module.ignition_etcd.systemd_units,
     module.ignition_node_exporter.systemd_units,
+    module.ignition_locksmithd.systemd_units,
     var.extra_ignition_systemd_unit_ids,
   ))}"]
-}
-
-data "aws_region" "current" {
-  current = true
 }
 
 resource "aws_s3_bucket_object" "ignition" {
