@@ -7,11 +7,12 @@ module "master" {
   ssh_key       = "${var.ssh_key}"
   master_config = "${var.master_config}"
 
-  security_group_ids = [
+  security_group_ids    = [
     "${aws_security_group.master2etcd.id}",
     "${var.security_group_ids}"
   ]
-  subnet_ids         = ["${var.subnet_ids}"]
+  lb_security_group_ids = ["${var.lb_security_group_ids}"]
+  subnet_ids            = ["${var.subnet_ids}"]
 
   etcd_endpoints = ["${module.etcd.endpoints}"]
 
