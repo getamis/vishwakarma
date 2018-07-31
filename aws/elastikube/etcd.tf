@@ -8,7 +8,7 @@ module "etcd" {
   etcd_config = "${var.etcd_config}"
 
   subnet_ids               = ["${var.subnet_ids}"]
-  master_security_group_id = "${aws_security_group.master.id}"
+  master_security_group_id = "${aws_security_group.master2etcd.id}"
   zone_id                  = "${aws_route53_zone.private.zone_id}"
   s3_bucket                = "${aws_s3_bucket.ignition.id}"
   reboot_strategy          = "${var.reboot_strategy}"
