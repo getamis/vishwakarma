@@ -23,6 +23,16 @@ variable "security_group_ids" {
 EOF
 }
 
+variable "lb_security_group_ids" {
+  type    = "list"
+  default = []
+
+  description = <<EOF
+    (Optional) List of security group IDs for the cross-account elastic network interfaces
+    to use to allow communication to the kubernetes api server load balancer.
+EOF
+}
+
 variable "subnet_ids" {
   type    = "list"
   default = []
