@@ -1,8 +1,3 @@
-data "aws_iam_role" "external" {
-  count = "${var.role_arn == "" ? 0 : 1}"
-  arn   = "${var.role_arn}"
-}
-
 data "aws_iam_policy_document" "default" {
   statement {
     sid = "KubeWorkerAssumeRole"
@@ -26,14 +21,14 @@ resource "aws_iam_role" "worker" {
 resource "aws_iam_instance_profile" "worker" {
   name = "${var.name}-worker-${var.worker_config["name"]}"
 
-  role = "${var.role_arn == "" ?
+  role = "${var.role_name == "" ?
     join("|", aws_iam_role.worker.*.name) :
-    join("|", data.aws_iam_role.external.*.name)
+    var.role_name
   }"
 }
 
 resource "aws_iam_policy" "worker" {
-  count       = "${var.role_arn == "" ? 1 : 0}"
+  count       = "${var.role_name == "" ? 1 : 0}"
   name        = "${var.name}-worker-${var.worker_config["name"]}"
   path        = "/"
   description = "policy for kubernetes workers"
@@ -73,6 +68,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "worker" {
+  count      = "${var.role_name == "" ? 1 : 0}"
   policy_arn = "${aws_iam_policy.worker.arn}"
   role       = "${aws_iam_role.worker.name}"
 }

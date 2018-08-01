@@ -9,16 +9,6 @@ variable "name" {
   description = " (Required) Name of the etcd cluster."
 }
 
-variable "role_arn" {
-  type    = "string"
-  default = ""
-
-  description = <<EOF
-    (Optional) The Amazon Resource Name (ARN) of the IAM role that provides permissions for
-    the etcd nodes to make calls to AWS API operations on your behalf.
-EOF
-}
-
 variable "master_security_group_id" {
   type = "string"
 

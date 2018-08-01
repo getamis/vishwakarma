@@ -1,8 +1,3 @@
-data "aws_iam_role" "external" {
-  count = "${var.role_arn == "" ? 0 : 1}"
-  arn   = "${var.role_arn}"
-}
-
 data "aws_iam_policy_document" "default" {
   statement {
     sid = "KubeMasterAssumeRole"
@@ -26,14 +21,14 @@ resource "aws_iam_role" "master" {
 resource "aws_iam_instance_profile" "master" {
   name = "${var.name}-master"
 
-  role = "${var.role_arn == "" ?
+  role = "${var.role_name == "" ?
     join("|", aws_iam_role.master.*.name) :
-    join("|", data.aws_iam_role.external.*.name)
+    var.role_name
   }"
 }
 
 resource "aws_iam_policy" "master" {
-  count       = "${var.role_arn == "" ? 1 : 0}"
+  count       = "${var.role_name == "" ? 1 : 0}"
   name        = "${var.name}-master"
   path        = "/"
   description = "policy for kubernetes masters"
@@ -125,6 +120,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "spot_fleet_autoscale" {
+  count      = "${var.role_name == "" ? 1 : 0}"
   role       = "${aws_iam_role.spot_fleet_autoscale.name}"
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2SpotFleetAutoscaleRole"
 }

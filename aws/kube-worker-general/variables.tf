@@ -9,10 +9,10 @@ variable "name" {
   description = " (Required) Name of the cluster."
 }
 
-variable "role_arn" {
+variable "role_name" {
   type        = "string"
   default     = ""
-  description = "(Optional) The Amazon Resource Name (ARN) of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
+  description = "(Optional) The Amazon Resource Name of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
 }
 
 variable "security_group_ids" {

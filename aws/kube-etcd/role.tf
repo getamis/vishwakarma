@@ -1,8 +1,3 @@
-data "aws_iam_role" "external" {
-  count = "${var.role_arn == "" ? 0 : 1}"
-  arn   = "${var.role_arn}"
-}
-
 data "aws_iam_policy_document" "default" {
   statement {
     sid = "KubeEtcdAssumeRole"
@@ -25,15 +20,10 @@ resource "aws_iam_role" "etcd" {
 
 resource "aws_iam_instance_profile" "etcd" {
   name = "${var.name}-etcd"
-
-  role = "${var.role_arn == "" ?
-    join("|", aws_iam_role.etcd.*.name) :
-    join("|", data.aws_iam_role.external.*.name)
-  }"
+  role = "${aws_iam_role.etcd.name}"
 }
 
 resource "aws_iam_policy" "etcd" {
-  count       = "${var.role_arn == "" ? 1 : 0}"
   name        = "${var.name}-etcd"
   path        = "/"
   description = "policy for kubernetes etcds"
