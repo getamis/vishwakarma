@@ -7,13 +7,7 @@ variable "name" {
   description = " (Required) Name of the cluster."
 }
 
-variable "master_role_name" {
-  type        = "string"
-  default     = ""
-  description = "(Optional) The Amazon Resource Name (ARN) of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
-}
-
-variable "etcd_role_name" {
+variable "role_name" {
   type        = "string"
   default     = ""
   description = "(Optional) The Amazon Resource Name (ARN) of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
