@@ -1,8 +1,3 @@
-data "aws_iam_role" "external" {
-  count = "${var.role_name == "" ? 0 : 1}"
-  name  = "${var.role_name}"
-}
-
 data "aws_iam_policy_document" "default" {
   statement {
     sid = "KubeWorkerAssumeRole"
@@ -28,7 +23,7 @@ resource "aws_iam_instance_profile" "worker" {
 
   role = "${var.role_name == "" ?
     join("|", aws_iam_role.worker.*.name) :
-    join("|", data.aws_iam_role.external.*.name)
+    var.role_name
   }"
 }
 
