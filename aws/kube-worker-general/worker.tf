@@ -21,7 +21,7 @@ data "null_data_source" "tags" {
 }
 
 resource "aws_autoscaling_group" "worker" {
-  name                 = "${var.name}-worker-${var.worker_config["name"]}"
+  name_prefix          = "${var.name}-worker-${var.worker_config["name"]}-"
   desired_capacity     = "${var.worker_config["instance_count"]}"
   max_size             = "${var.worker_config["instance_count"] * 3}"
   min_size             = "${var.worker_config["instance_count"]}"

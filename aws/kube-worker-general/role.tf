@@ -19,12 +19,8 @@ resource "aws_iam_role" "worker" {
 }
 
 resource "aws_iam_instance_profile" "worker" {
-  name = "${var.name}-worker-${var.worker_config["name"]}"
-
-  role = "${var.role_name == "" ?
-    join("|", aws_iam_role.worker.*.name) :
-    var.role_name
-  }"
+  name_prefix = "${var.name}-worker-${var.worker_config["name"]}-"
+  role        = "${var.role_name == "" ? join("|", aws_iam_role.worker.*.name) : var.role_name}"
 }
 
 resource "aws_iam_policy" "worker" {

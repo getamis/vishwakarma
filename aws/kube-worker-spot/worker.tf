@@ -3,25 +3,12 @@ data "aws_subnet" "subnet" {
 }
 
 locals {
-  vpc_id     = "${data.aws_subnet.subnet.vpc_id}"
-
-  extra_tags_keys   = "${keys(var.extra_tags)}"
-  extra_tags_values = "${values(var.extra_tags)}"
-}
-
-data "null_data_source" "tags" {
-  count = "${length(keys(var.extra_tags))}"
-
-  inputs = {
-    key                 = "${local.extra_tags_keys[count.index]}"
-    value               = "${local.extra_tags_values[count.index]}"
-    propagate_at_launch = true
-  }
+  vpc_id = "${data.aws_subnet.subnet.vpc_id}"
 }
 
 resource "aws_spot_fleet_request" "worker" {
   count                               = "${length(var.subnet_ids)}"
-  iam_fleet_role                      = "${var.spot_fleet_tagging_role_arn}"
+  iam_fleet_role                      = "${aws_iam_role.spot_fleet.arn}"
   load_balancers                      = ["${var.load_balancer_ids}"]
   target_group_arns                   = ["${var.target_group_arns}"]
   spot_price                          = "${var.worker_config["price"]}"
@@ -49,7 +36,6 @@ resource "aws_spot_fleet_request" "worker" {
       iops        = "${var.worker_config["root_volume_type"] == "io1" ? var.worker_config["root_volume_iops"] : var.worker_config["root_volume_type"] == "gp2" ? 0 : min(10000, max(100, 3 * var.worker_config["root_volume_size"]))}"
     }
 
-
     tags = "${merge(map(
           "Name", "${var.name}-worker-${var.worker_config["name"]}-${count.index}",
           "kubernetes.io/cluster/${var.name}", "owned"
@@ -62,14 +48,14 @@ resource "aws_appautoscaling_target" "worker" {
   min_capacity       = "${var.worker_config["min_instance_count"]}"
   max_capacity       = "${var.worker_config["max_instance_count"]}"
   resource_id        = "spot-fleet-request/${aws_spot_fleet_request.worker.*.id[count.index]}"
-  role_arn           = "${var.spot_fleet_autoscale_role_arn}"
+  role_arn           = "${aws_iam_role.spot_fleet.arn}"
   scalable_dimension = "ec2:spot-fleet-request:TargetCapacity"
   service_namespace  = "ec2"
 }
 
 resource "aws_appautoscaling_policy" "worker" {
   count              = "${length(var.subnet_ids)}"
-  name               = "${var.name}-${var.worker_config["name"]}-${count.index}"
+  name               = "${join("", aws_spot_fleet_request.worker.*.id)}-${count.index}"
   policy_type        = "TargetTrackingScaling"
   resource_id        = "${aws_appautoscaling_target.worker.*.resource_id[count.index]}"
   scalable_dimension = "${aws_appautoscaling_target.worker.*.scalable_dimension[count.index]}"

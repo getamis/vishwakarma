@@ -7,7 +7,7 @@ locals {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# Network
+# SSH
 # ---------------------------------------------------------------------------------------------------------------------
 
 provider "aws" {
@@ -19,14 +19,17 @@ resource "aws_key_pair" "ssh_key" {
   public_key = "${file(pathexpand("~/.ssh/id_rsa.pub"))}"
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Network
+# ---------------------------------------------------------------------------------------------------------------------
+
 module "network" {
   source           = "../../aws/network"
   aws_region       = "${var.aws_region}"
   bastion_key_name = "${aws_key_pair.ssh_key.key_name}"
   project          = "${local.project}"
   phase            = "${local.phase}"
-
-  extra_tags = "${var.extra_tags}"
+  extra_tags       = "${var.extra_tags}"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -116,9 +119,6 @@ module "worker_spot" {
 
   security_group_ids = ["${module.kubernetes.worker_sg_ids}"]
   subnet_ids         = ["${module.network.private_subnet_ids}"]
-
-  spot_fleet_tagging_role_arn     = "${module.kubernetes.spot_fleet_tagging_role_arn}"
-  spot_fleet_autoscale_role_arn   = "${module.kubernetes.spot_fleet_autoscale_role_arn}"
 
   worker_config = {
     name               = "spot"
