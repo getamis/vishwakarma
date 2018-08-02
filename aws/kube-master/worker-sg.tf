@@ -48,3 +48,23 @@ resource "aws_security_group_rule" "workers_ingress_ssh" {
   to_port           = 22
   type              = "ingress"
 }
+
+resource "aws_security_group_rule" "worker_ingress_flannel" {
+  type              = "ingress"
+  security_group_id = "${aws_security_group.workers.id}"
+
+  protocol  = "udp"
+  from_port = 4789
+  to_port   = 4789
+  self      = true
+}
+
+resource "aws_security_group_rule" "worker_ingress_flannel_from_master" {
+  type                     = "ingress"
+  security_group_id        = "${aws_security_group.workers.id}"
+  source_security_group_id = "${local.master_sg_id}"
+
+  protocol  = "udp"
+  from_port = 4789
+  to_port   = 4789
+}

@@ -1,3 +1,4 @@
+locals {
   cluster_dns_ip = "${cidrhost(var.kube_service_cidr, 10)}"
 }
 
