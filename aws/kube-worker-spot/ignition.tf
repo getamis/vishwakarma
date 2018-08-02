@@ -11,6 +11,10 @@ module "ignition_locksmithd" {
   reboot_strategy = "${var.reboot_strategy}"
 }
 
+module "ignition_update_ca_certificates" {
+  source = "../../ignitions/update-ca-certificates"
+}
+
 data "aws_s3_bucket_object" "kubeconfig" {
   bucket = "${var.s3_bucket}"
   key    = "kubeconfig"
@@ -44,6 +48,8 @@ data "ignition_config" "main" {
   files = ["${compact(concat(
     module.ignition_docker.files,
     module.ignition_locksmithd.files,
+    module.ignition_update_ca_certificates.files,
+    module.ignition_update_ca_certificates.systemd_units,
     module.ignition_kubelet.files,
     module.ignition_kube_config.files,
     var.extra_ignition_file_ids,

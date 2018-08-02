@@ -1,5 +1,5 @@
 data "template_file" "ntp_dropin" {
-  template = "${file("${path.module}/resources/dropins/10-timesyncd.conf")}"
+  template = "${file("${path.module}/resources/systemd/timesyncd.conf.d/10-timesyncd.conf")}"
 
   vars {
     ntp_servers = "${join(" ", var.ntp_servers)}"

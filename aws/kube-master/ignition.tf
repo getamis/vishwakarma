@@ -1,4 +1,3 @@
-locals {
   cluster_dns_ip = "${cidrhost(var.kube_service_cidr, 10)}"
 }
 
@@ -9,6 +8,10 @@ module "ignition_docker" {
 module "ignition_locksmithd" {
   source          = "../../ignitions/locksmithd"
   reboot_strategy = "${var.reboot_strategy}"
+}
+
+module "ignition_update_ca_certificates" {
+  source = "../../ignitions/update-ca-certificates"
 }
 
 module "ignition_kube_config" {
@@ -29,6 +32,7 @@ data "ignition_config" "main" {
     module.ignition_docker.files,
     module.ignition_node_exporter.files,
     module.ignition_locksmithd.files,
+    module.ignition_update_ca_certificates.files,
     module.ignition_kube_control_plane.files,
     module.ignition_kubelet.files,
     module.ignition_kube_config.files,
@@ -43,6 +47,7 @@ data "ignition_config" "main" {
     module.ignition_docker.systemd_units,
     module.ignition_node_exporter.systemd_units,
     module.ignition_locksmithd.systemd_units,
+    module.ignition_update_ca_certificates.systemd_units,
     module.ignition_kube_control_plane.systemd_units,
     module.ignition_kubelet.systemd_units,
     module.ignition_kube_config.systemd_units,
