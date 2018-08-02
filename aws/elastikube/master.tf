@@ -8,10 +8,11 @@ module "master" {
   master_config = "${var.master_config}"
   role_name     = "${var.role_name}"
 
-  security_group_ids    = [
-    "${aws_security_group.master2etcd.id}",
-    "${var.security_group_ids}"
+  security_group_ids = [
+    "${aws_security_group.master.id}",
+    "${var.security_group_ids}",
   ]
+
   lb_security_group_ids = ["${var.lb_security_group_ids}"]
   subnet_ids            = ["${var.subnet_ids}"]
 
@@ -40,20 +41,28 @@ module "master" {
       ))}",
   ]
 
-  s3_bucket                       = "${aws_s3_bucket.ignition.id}"
-  reboot_strategy                 = "${var.reboot_strategy}"
-  extra_ignition_file_ids         = ["${var.extra_ignition_file_ids}"]
-  extra_ignition_systemd_unit_ids = ["${var.extra_ignition_systemd_unit_ids}"]
+  s3_bucket       = "${aws_s3_bucket.ignition.id}"
+  reboot_strategy = "${var.reboot_strategy}"
+
+  extra_ignition_file_ids = [
+    "${module.ignition_kube_addon_manager.files}",
+    "${module.ignition_kube_addon_dns.files}",
+    "${module.ignition_kube_addon_proxy.files}",
+    "${module.ignition_kube_addon_flannel_vxlan.files}",
+    "${module.ignition_node_exporter.files}",
+    "${module.ignition_locksmithd.files}",
+    "${var.extra_ignition_file_ids}",
+  ]
+
+  extra_ignition_systemd_unit_ids = [
+    "${module.ignition_kube_addon_manager.systemd_units}",
+    "${module.ignition_kube_addon_dns.systemd_units}",
+    "${module.ignition_kube_addon_proxy.systemd_units}",
+    "${module.ignition_kube_addon_flannel_vxlan.systemd_units}",
+    "${module.ignition_node_exporter.systemd_units}",
+    "${module.ignition_locksmithd.systemd_units}",
+    "${var.extra_ignition_systemd_unit_ids}",
+  ]
 
   extra_tags = "${var.extra_tags}"
-}
-
-resource "aws_security_group" "master2etcd" {
-  name_prefix = "${var.name}-master2etcd-"
-  vpc_id      = "${local.vpc_id}"
-
-  tags = "${merge(map(
-      "Name", "${var.name}-master2etcd",
-      "kubernetes.io/cluster/${var.name}", "owned",
-    ), var.extra_tags)}"
 }

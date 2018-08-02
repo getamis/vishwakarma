@@ -1,10 +1,11 @@
 resource "aws_elb" "master_internal" {
-  name            = "${var.name}-master"
-  subnets         = ["${var.subnet_ids}"]
-  internal        = true
+  name     = "${var.name}-master"
+  subnets  = ["${var.subnet_ids}"]
+  internal = true
+
   security_groups = [
     "${aws_security_group.master_lb.id}",
-    "${var.lb_security_group_ids}"
+    "${var.lb_security_group_ids}",
   ]
 
   idle_timeout                = 3600
@@ -23,7 +24,6 @@ resource "aws_elb" "master_internal" {
       "kubernetes.io/cluster/${var.name}", "owned",
     ), var.extra_tags)}"
 }
-
 
 resource "aws_security_group" "master_lb" {
   name_prefix = "${var.name}-master-lb-"
@@ -46,9 +46,9 @@ resource "aws_security_group_rule" "master_lb_egress" {
 }
 
 resource "aws_security_group_rule" "master_lb_ingress_from_internal" {
-  type                     = "ingress"
-  security_group_id        = "${aws_security_group.master_lb.id}"
-  cidr_blocks              = ["${data.aws_vpc.master.cidr_block}"]
+  type              = "ingress"
+  security_group_id = "${aws_security_group.master_lb.id}"
+  cidr_blocks       = ["${data.aws_vpc.master.cidr_block}"]
 
   protocol  = "tcp"
   from_port = 443

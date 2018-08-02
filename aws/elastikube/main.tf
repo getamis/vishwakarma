@@ -10,3 +10,7 @@ provider "template" {
 provider "ignition" {
   version = "~>1.0"
 }
+
+locals {
+  cluster_dns_ip = "${cidrhost(var.service_cidr, 10)}"
+}

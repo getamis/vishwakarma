@@ -1,7 +1,7 @@
 resource "aws_security_group" "workers" {
   name_prefix = "${var.name}-worker-"
   description = "Security group for all nodes in the cluster."
-  vpc_id      = "${data.aws_vpc.master.id}"
+  vpc_id      = "${local.vpc_id}"
 
   tags = "${merge(map(
       "Name", "${var.name}-worker",
@@ -10,43 +10,47 @@ resource "aws_security_group" "workers" {
 }
 
 resource "aws_security_group_rule" "workers_egress_internet" {
-  description       = "Allow nodes all egress to the Internet."
-  protocol          = "-1"
-  security_group_id = "${aws_security_group.workers.id}"
-  cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 0
-  to_port           = 0
   type              = "egress"
+  description       = "Allow nodes all egress to the Internet."
+  security_group_id = "${aws_security_group.workers.id}"
+
+  protocol    = "-1"
+  cidr_blocks = ["0.0.0.0/0"]
+  from_port   = 0
+  to_port     = 0
 }
 
 resource "aws_security_group_rule" "workers_ingress_self" {
-  description       = "Allow node to communicate with each other."
-  protocol          = "-1"
-  security_group_id = "${aws_security_group.workers.id}"
-  self              = true
-  from_port         = 0
-  to_port           = 65535
   type              = "ingress"
+  description       = "Allow node to communicate with each other."
+  security_group_id = "${aws_security_group.workers.id}"
+
+  protocol  = "-1"
+  from_port = 0
+  to_port   = 65535
+  self      = true
 }
 
 resource "aws_security_group_rule" "workers_ingress_cluster" {
-  description              = "Allow workers Kubelets and pods to receive communication from the cluster control plane."
-  protocol                 = "tcp"
-  security_group_id        = "${aws_security_group.workers.id}"
-  source_security_group_id = "${local.master_sg_id}"
-  from_port                = 1025
-  to_port                  = 65535
   type                     = "ingress"
+  description              = "Allow workers Kubelets and pods to receive communication from the cluster control plane."
+  security_group_id        = "${aws_security_group.workers.id}"
+  source_security_group_id = "${aws_security_group.master.id}"
+
+  protocol  = "tcp"
+  from_port = 1025
+  to_port   = 65535
 }
 
 resource "aws_security_group_rule" "workers_ingress_ssh" {
-  description       = "Allow access from ssh."
-  protocol          = "tcp"
-  security_group_id = "${aws_security_group.workers.id}"
-  cidr_blocks       = ["0.0.0.0/0"]
-  from_port         = 22
-  to_port           = 22
   type              = "ingress"
+  description       = "Allow access from ssh."
+  security_group_id = "${aws_security_group.workers.id}"
+
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+  from_port   = 22
+  to_port     = 22
 }
 
 resource "aws_security_group_rule" "worker_ingress_flannel" {
@@ -61,10 +65,10 @@ resource "aws_security_group_rule" "worker_ingress_flannel" {
 }
 
 resource "aws_security_group_rule" "worker_ingress_flannel_from_master" {
-  description       = "Allow access from other master flannel."
+  description              = "Allow access from other master flannel."
   type                     = "ingress"
   security_group_id        = "${aws_security_group.workers.id}"
-  source_security_group_id = "${local.master_sg_id}"
+  source_security_group_id = "${aws_security_group.master.id}"
 
   protocol  = "udp"
   from_port = 4789

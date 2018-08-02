@@ -3,8 +3,7 @@ data "aws_subnet" "subnet" {
 }
 
 locals {
-  cluster_id = "${aws_autoscaling_group.worker.id}"
-  vpc_id     = "${data.aws_subnet.subnet.vpc_id}"
+  vpc_id = "${data.aws_subnet.subnet.vpc_id}"
 
   extra_tags_keys   = "${keys(var.extra_tags)}"
   extra_tags_values = "${values(var.extra_tags)}"

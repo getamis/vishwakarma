@@ -23,5 +23,5 @@ output "s3_bucket" {
 }
 
 output "worker_sg_ids" {
-  value = ["${module.master.worker_sg_ids}"]
+  value = ["${aws_security_group.workers.id}"]
 }
