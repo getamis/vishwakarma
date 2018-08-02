@@ -8,3 +8,9 @@ variable "pod_checkpointer" {
 
   description = "The hyperkube container image path and tag"
 }
+
+variable "addon_path" {
+  type        = "string"
+  default     = "/etc/kubernetes/addons"
+  description = "(Optional) The absolute path of the addons to be installed."
+}
