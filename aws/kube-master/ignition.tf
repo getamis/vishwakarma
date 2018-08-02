@@ -3,16 +3,16 @@ locals {
 }
 
 module "ignition_docker" {
-  source = "../ignitions/docker"
+  source = "../../ignitions/docker"
 }
 
 module "ignition_locksmithd" {
-  source          = "../ignitions/locksmithd"
+  source          = "../../ignitions/locksmithd"
   reboot_strategy = "${var.reboot_strategy}"
 }
 
 module "ignition_kube_config" {
-  source = "../ignitions/kube-config"
+  source = "../../ignitions/kube-config"
 
   name                = "${var.name}"
   api_server_endpoint = "https://${aws_elb.master_internal.dns_name}"

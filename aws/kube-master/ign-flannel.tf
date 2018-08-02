@@ -19,7 +19,7 @@ resource "aws_security_group_rule" "master_ingress_flannel_from_worker" {
 }
 
 module "ignition_kube_addon_flannel_vxlan" {
-  source = "../ignitions/kube-addon-flannel-vxlan"
+  source = "../../ignitions/kube-addon-flannel-vxlan"
 
   cluster_cidr = "${var.kube_cluster_cidr}"
 

@@ -23,7 +23,7 @@ resource "aws_security_group_rule" "master_ingress_node_exporter_from_worker" {
 }
 
 module "ignition_node_exporter" {
-  source = "../ignitions/node-exporter"
+  source = "../../ignitions/node-exporter"
 
   listen_port = "${local.node_exporter_port}"
 }

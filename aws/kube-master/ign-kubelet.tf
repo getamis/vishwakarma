@@ -19,7 +19,7 @@ resource "aws_security_group_rule" "master_ingress_kubelet_secure_from_worker" {
 }
 
 module "ignition_kubelet" {
-  source = "../ignitions/kubelet"
+  source = "../../ignitions/kubelet"
 
   kubelet_flag_cloud_provider       = "aws"
   kubelet_flag_cluster_dns          = "${local.cluster_dns_ip}"

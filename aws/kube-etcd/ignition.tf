@@ -1,9 +1,9 @@
 module "ignition_docker" {
-  source = "../ignitions/docker"
+  source = "../../ignitions/docker"
 }
 
 module "ignition_etcd" {
-  source = "../ignitions/etcd"
+  source = "../../ignitions/etcd"
 
   name              = "${var.name}"
   discovery_service = "${local.discovery_service}"
@@ -22,11 +22,11 @@ module "ignition_etcd" {
 }
 
 module "ignition_node_exporter" {
-  source = "../ignitions/node-exporter"
+  source = "../../ignitions/node-exporter"
 }
 
 module "ignition_locksmithd" {
-  source          = "../ignitions/locksmithd"
+  source          = "../../ignitions/locksmithd"
   reboot_strategy = "${var.reboot_strategy}"
 }
 
