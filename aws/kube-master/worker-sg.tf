@@ -50,6 +50,7 @@ resource "aws_security_group_rule" "workers_ingress_ssh" {
 }
 
 resource "aws_security_group_rule" "worker_ingress_flannel" {
+  description       = "Allow access from other worker flannel."
   type              = "ingress"
   security_group_id = "${aws_security_group.workers.id}"
 
@@ -60,6 +61,7 @@ resource "aws_security_group_rule" "worker_ingress_flannel" {
 }
 
 resource "aws_security_group_rule" "worker_ingress_flannel_from_master" {
+  description       = "Allow access from other master flannel."
   type                     = "ingress"
   security_group_id        = "${aws_security_group.workers.id}"
   source_security_group_id = "${local.master_sg_id}"
