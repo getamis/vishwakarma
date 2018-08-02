@@ -1,5 +1,5 @@
 module "ignition_kube_addon_manager" {
-  source = "../ignitions/kube-addon-manager"
+  source = "../../ignitions/kube-addon-manager"
 
   hyperkube = {
     image_path = "quay.io/coreos/hyperkube"

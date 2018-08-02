@@ -3,11 +3,11 @@ locals {
 }
 
 module "ignition_docker" {
-  source = "../ignitions/docker"
+  source = "../../ignitions/docker"
 }
 
 module "ignition_locksmithd" {
-  source          = "../ignitions/locksmithd"
+  source          = "../../ignitions/locksmithd"
   reboot_strategy = "${var.reboot_strategy}"
 }
 
@@ -17,12 +17,12 @@ data "aws_s3_bucket_object" "kubeconfig" {
 }
 
 module "ignition_kube_config" {
-  source  = "../ignitions/kube-config"
+  source  = "../../ignitions/kube-config"
   content = "${data.aws_s3_bucket_object.kubeconfig.body}"
 }
 
 module "ignition_kubelet" {
-  source = "../ignitions/kubelet"
+  source = "../../ignitions/kubelet"
 
   kubelet_flag_cloud_provider = "aws"
   kubelet_flag_cluster_dns    = "${local.cluster_dns_ip}"

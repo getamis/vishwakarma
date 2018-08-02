@@ -1,5 +1,5 @@
 module "ignition_kube_addon_proxy" {
-  source = "../ignitions/kube-addon-proxy"
+  source = "../../ignitions/kube-addon-proxy"
 
   cluster_cidr = "${var.kube_cluster_cidr}"
 

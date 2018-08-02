@@ -9,7 +9,7 @@ resource "aws_security_group_rule" "master_ingress" {
 }
 
 module "ignition_kube_control_plane" {
-  source = "../ignitions/kube-control-plane"
+  source = "../../ignitions/kube-control-plane"
 
   kube_certs = {
     ca_cert_pem        = "${module.kube_root_ca.cert_pem}"
