@@ -15,16 +15,6 @@ variable "role_name" {
   description = "(Optional) The Amazon Resource Name of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
 }
 
-variable "spot_fleet_tagging_role_arn" {
-  type        = "string"
-  description = "Spot fleet role for spot fleet request spot instance"
-}
-
-variable "spot_fleet_autoscale_role_arn" {
-  type        = "string"
-  description = "Spot fleet role for spot fleet request spot instance"
-}
-
 variable "security_group_ids" {
   type    = "list"
   default = []
@@ -106,8 +96,8 @@ EOF
 }
 
 variable "reboot_strategy" {
-  type    = "string"
-  default = "etcd-lock"
+  type        = "string"
+  default     = "etcd-lock"
   description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
 }
 
