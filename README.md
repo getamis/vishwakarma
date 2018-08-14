@@ -1,8 +1,8 @@
 # vishwakarma
 
-![Alt text](https://cdn-images-1.medium.com/max/800/1*ziRO27izCd6d9f6ReBVxcQ.png)
+![Alt text](https://cdn-images-1.medium.com/max/800/1*ocPrvGrCORzJiF3rK3GG_g.png)
 
-Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging HashiCorp Terraform and CoreOS. Of course, I didn't develop it from scratch, I refer to [CoreOS Tectonic](https://github.com/coreos/tectonic-installer) and [terraform-aws-eks](https://github.com/terraform-aws-modules/terraform-aws-eks), before starting to dive into the detail, let's experience it first
+Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging HashiCorp Terraform and CoreOS. And **There are two kind of K8S Master within vishwakarma, one leverages AWS EKS, the other one is ElastiKube (Self-Hosted)**. Of course, we didn't develop it from scratch, we refer to [CoreOS Tectonic](https://github.com/coreos/tectonic-installer) and [terraform-aws-eks](https://github.com/terraform-aws-modules/terraform-aws-eks), before starting to dive into the detail, let's experience it first
 
 ## Dependencies
 
@@ -15,17 +15,25 @@ Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging Hash
 - **Key Pair**: In order to access worker node through ssh protocol, please create a key pair in example region **US West (Oregon) us-west-2**
 
 ## Getting Started
+Before to start to create the K8S cluster, Below are two kind of K8S cluster building block, depend on you requirement to choose one
 
-Acquire Vishwakarma from github, and switch to the example folder
+- **AWS EKS**: AWS Kubernetes Cluster As A Service, it can solve most people's problem, and user don't need to worry how to maintain it, but it only supprt in the US East (N. Virginia) and US West (Oregon) Regions now, and there are some limitions. 
+
+- **ElastiKube (Self-Hosted)**: If you want to use K8S in AWS un-support region, and you want more customized feature of the K8S cluster, then you should use ElastiKube
+
+First, Acquire Vishwakarma from github!!
 
 ```
 ~$ git clone https://github.com/getamis/vishwakarma.git
+```
+
+### AWS EKS
+
+```
+# switch to eks_worker example folder
+
 ~$ cd examples/eks_worker
-```
 
-Then execute Terraform command to create AWS resource
-
-```
 # initial for sync terraform module and install provider plugins
 
 ~$ terraform init
@@ -86,10 +94,56 @@ ip-10-0-71-121.ec2.internal   Ready     node      22s       v1.10.3+coreos.0
 ip-10-0-86-182.ec2.internal   Ready     node      2m        v1.10.3+coreos.0
 ```
 
+### ElastiKube (Self-Hosted)
+Please create a ssh key pair in ~/.ssh/ with the name id_rsa.pub and id_rsa, this example use the key pair for the etcd, k8s master, k8s node EC2 instance (refer to [**Here**](https://medium.com/getamis/elastikube-self-hosted-and-highly-configurable-kubernetes-building-blocks-97cd7afccef) for the more detail information)
+
+```
+# switch to elastikube_cluster example folder
+~$ cd examples/elastikube_cluster
+
+# initial for sync terraform module and install provider plugins
+
+~$ terraform init
+
+# create the network infrastructure
+
+~$ terraform apply -target=module.network
+
+# create the kubernetes master compoment
+
+~$ terraform apply -target=module.kubernetes
+
+# create the general and spot k8s worker group
+~$ terraform apply
+```
+
+Verify the Kubernetes cluster is up! (Still keep in the same folder)
+
+```
+# Get the kubeconfig from S3 (The bucket name is demo-elastikube-xxxxxxxx. The prefix demo-elastikube is the cluster name defined in main.tf and the rest part is an MD5
+
+# setup kubeconfig for kubectl to access eks
+
+~$ export KUBECONFIG=#{The Path You Put kubeconfig}/kubeconfig
+
+# check whether there is 4 worker register successfully, it will takes several
+minutes...
+
+~$ kubectl get node
+
+NAME                          STATUS    ROLES     AGE       VERSION
+ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.10.5+coreos.0
+ip-10-0-48-117.ec2.internal   Ready     master    9m        v1.10.5+coreos.0
+ip-10-0-66-127.ec2.internal   Ready     general   5m        v1.10.5+coreos.0
+ip-10-0-66-127.ec2.internal   Ready     general   6m        v1.10.5+coreos.0
+ip-10-0-71-121.ec2.internal   Ready     spot      3m        v1.10.5+coreos.0
+ip-10-0-86-182.ec2.internal   Ready     spot      4m        v1.10.5+coreos.0
+```
+
 ## What’s Going On?
 You have completed one Kubernetes cluster the same as below picture, and let me briefly explain how Vishwakarma achieves it
 
-![Alt text](https://cdn-images-1.medium.com/max/2000/1*9WyA00hJfdLKWe4nhw7Zrg.png)
+![Alt text](https://cdn-images-1.medium.com/max/800/1*tvAY88CzHhxo4lBB6OUSyA.png)
 
 ## Modules
 Vishwakarma include 4 major module:
@@ -97,15 +151,15 @@ Vishwakarma include 4 major module:
 ### aws/network
 Create one AWS VPC including private and public subnet, and one ec2 instance called bastion hosts in public subnet, hence, one can access the resource hosting in the private subnet, refer [**Here**](VARIABLES.md#aws/network) for the detail variable inputs
 
-### aws/eks/master
-This module creates the AWS EKS cluster, I think this is the most simple part here, but it takes about 8~10 minutes, refer [**Here**](VARIABLES.md#eks/master) for the detail variable inputs
+### aws/eks/master or aws/elastikube
+This module creates the AWS EKS cluster / ElastiKube, Terraform is responsible for the complicated k8s compoments, and it takes about 8~10 minutes to complete, refer [**Here**](VARIABLES.md#eks/master) for the detail variable inputs
 
 
-### aws/eks/worker-asg
-Create a AWS auto-scaling group with CoreOS container linux and leverage ignition to provision and register to EKS cluster automatically, refer [**Here**](VARIABLES.md#eks/worker-asg) for the detail variable inputs
+### aws/eks/worker-asg or aws/kube-worker-general
+Create a AWS auto-scaling group with CoreOS container linux and leverage ignition to provision and register to EKS cluster / ElastiKube automatically, refer [**Here**](VARIABLES.md#eks/worker-asg) for the detail variable inputs
 
 
-### aws/eks/worker-spot
+### aws/eks/worker-spot or aws/kube-worker-spot
 Module worker-spot almost do the same thing like worker-asg, but it uses spot fleet to launch worker node group, that means comparing to worker-asg, the cost is only half, refer [**Here**](VARIABLES.md#eks/worker-spot) for the detail variable inputs
 
 ## Contributing
