@@ -5,3 +5,7 @@ output "certificate_authority" {
 output "endpoint" {
   value = "https://${aws_elb.master_internal.dns_name}"
 }
+
+output "master_sg_id" {
+  value = "${local.master_sg_id}"
+}

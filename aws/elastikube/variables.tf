@@ -114,7 +114,7 @@ variable "hostzone" {
 
 variable "reboot_strategy" {
   type    = "string"
-  default = "etcd-lock"
+  default = "off"
   description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
 }
 

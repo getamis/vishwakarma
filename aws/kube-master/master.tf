@@ -51,7 +51,7 @@ resource "aws_launch_configuration" "master" {
 
   security_groups = [
     "${var.security_group_ids}",
-    "${aws_security_group.master.id}",
+    "${local.master_sg_id}",
   ]
 
   iam_instance_profile = "${aws_iam_instance_profile.master.id}"

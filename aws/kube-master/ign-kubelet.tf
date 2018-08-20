@@ -1,6 +1,6 @@
 resource "aws_security_group_rule" "master_ingress_kubelet_secure" {
   type              = "ingress"
-  security_group_id = "${aws_security_group.master.id}"
+  security_group_id = "${local.master_sg_id}"
 
   protocol  = "tcp"
   from_port = 10255
@@ -10,7 +10,7 @@ resource "aws_security_group_rule" "master_ingress_kubelet_secure" {
 
 resource "aws_security_group_rule" "master_ingress_kubelet_secure_from_worker" {
   type              = "ingress"
-  security_group_id = "${aws_security_group.master.id}"
+  security_group_id = "${local.master_sg_id}"
 
   protocol    = "tcp"
   cidr_blocks = ["${data.aws_vpc.master.cidr_block}"]

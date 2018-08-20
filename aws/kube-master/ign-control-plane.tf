@@ -1,6 +1,6 @@
 resource "aws_security_group_rule" "master_ingress" {
   type              = "ingress"
-  security_group_id = "${aws_security_group.master.id}"
+  security_group_id = "${local.master_sg_id}"
 
   protocol    = "tcp"
   cidr_blocks = ["${data.aws_vpc.master.cidr_block}"]
