@@ -5,7 +5,3 @@ output "certificate_authority" {
 output "endpoint" {
   value = "https://${aws_elb.master_internal.dns_name}"
 }
-
-output "worker_sg_ids" {
-  value = ["${aws_security_group.workers.id}"]
-}

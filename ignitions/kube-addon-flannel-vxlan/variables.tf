@@ -20,17 +20,6 @@ variable "container_images" {
   }
 }
 
-variable "kube_apiserver_config" {
-  type = "map"
-
-  default = {
-    host = "https://localhost"
-    port = 443
-  }
-
-  description = "(Required) The API server endpoint and port."
-}
-
 variable "cluster_cidr" {
   description = "A CIDR notation IP range from which to assign pod IPs"
   type        = "string"

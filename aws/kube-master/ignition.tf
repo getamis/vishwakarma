@@ -6,15 +6,6 @@ module "ignition_docker" {
   source = "../../ignitions/docker"
 }
 
-module "ignition_locksmithd" {
-  source          = "../../ignitions/locksmithd"
-  reboot_strategy = "${var.reboot_strategy}"
-}
-
-module "ignition_update_ca_certificates" {
-  source = "../../ignitions/update-ca-certificates"
-}
-
 module "ignition_kube_config" {
   source = "../../ignitions/kube-config"
 
@@ -31,31 +22,17 @@ module "ignition_kube_config" {
 data "ignition_config" "main" {
   files = ["${compact(concat(
     module.ignition_docker.files,
-    module.ignition_node_exporter.files,
-    module.ignition_locksmithd.files,
-    module.ignition_update_ca_certificates.files,
     module.ignition_kube_control_plane.files,
     module.ignition_kubelet.files,
     module.ignition_kube_config.files,
-    module.ignition_kube_addon_flannel_vxlan.files,
-    module.ignition_kube_addon_dns.files,
-    module.ignition_kube_addon_proxy.files,
-    module.ignition_kube_addon_manager.files,
     var.extra_ignition_file_ids,
   ))}"]
 
   systemd = ["${compact(concat(
     module.ignition_docker.systemd_units,
-    module.ignition_node_exporter.systemd_units,
-    module.ignition_locksmithd.systemd_units,
-    module.ignition_update_ca_certificates.systemd_units,
     module.ignition_kube_control_plane.systemd_units,
     module.ignition_kubelet.systemd_units,
     module.ignition_kube_config.systemd_units,
-    module.ignition_kube_addon_flannel_vxlan.systemd_units,
-    module.ignition_kube_addon_dns.systemd_units,
-    module.ignition_kube_addon_proxy.systemd_units,
-    module.ignition_kube_addon_manager.systemd_units,
     var.extra_ignition_systemd_unit_ids,
   ))}"]
 }

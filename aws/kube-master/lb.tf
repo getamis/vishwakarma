@@ -1,10 +1,11 @@
 resource "aws_elb" "master_internal" {
-  name            = "${var.name}-master"
-  subnets         = ["${var.subnet_ids}"]
-  internal        = true
+  name     = "${var.name}-master"
+  subnets  = ["${var.subnet_ids}"]
+  internal = true
+
   security_groups = [
     "${aws_security_group.master_lb.id}",
-    "${var.lb_security_group_ids}"
+    "${var.lb_security_group_ids}",
   ]
 
   idle_timeout                = 3600
@@ -18,12 +19,19 @@ resource "aws_elb" "master_internal" {
     lb_protocol       = "tcp"
   }
 
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "SSL:443"
+    interval            = 5
+  }
+
   tags = "${merge(map(
       "Name", "${var.name}-master",
       "kubernetes.io/cluster/${var.name}", "owned",
     ), var.extra_tags)}"
 }
-
 
 resource "aws_security_group" "master_lb" {
   name_prefix = "${var.name}-master-lb-"
@@ -46,11 +54,11 @@ resource "aws_security_group_rule" "master_lb_egress" {
 }
 
 resource "aws_security_group_rule" "master_lb_ingress_from_internal" {
-  type                     = "ingress"
-  security_group_id        = "${aws_security_group.master_lb.id}"
-  cidr_blocks              = ["${data.aws_vpc.master.cidr_block}"]
+  type              = "ingress"
+  security_group_id = "${aws_security_group.master_lb.id}"
 
-  protocol  = "tcp"
-  from_port = 443
-  to_port   = 443
+  protocol    = "tcp"
+  cidr_blocks = ["${data.aws_vpc.master.cidr_block}"]
+  from_port   = 443
+  to_port     = 443
 }
