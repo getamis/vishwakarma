@@ -32,7 +32,6 @@ ExecStart=/usr/lib/coreos/kubelet-wrapper \
   --minimum-container-ttl-duration=6m0s \
   --client-ca-file=/etc/kubernetes/ca.crt \
   --cluster-domain=cluster.local \
-  --authentication-token-webhook=true \
   ${kubelet_flag_cloud_provider} \
   ${kubelet_flag_node_labels} \
   ${kubelet_flag_register_with_taints} \

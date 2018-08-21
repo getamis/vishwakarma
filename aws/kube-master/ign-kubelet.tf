@@ -25,6 +25,7 @@ module "ignition_kubelet" {
   kubelet_flag_cluster_dns          = "${local.cluster_dns_ip}"
   kubelet_flag_node_labels          = "${join(",", var.kube_node_labels)}"
   kubelet_flag_register_with_taints = "${join(",", var.kube_node_taints)}"
+  kubelet_flag_extra_flags          = "${var.kubelet_flag_extra_flags}"
 
   hyperkube = {
     image_path = "quay.io/coreos/hyperkube"

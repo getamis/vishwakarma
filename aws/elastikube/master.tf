@@ -59,5 +59,7 @@ module "master" {
     "${var.extra_ignition_systemd_unit_ids}"
   ]
 
+  kubelet_flag_extra_flags = "${var.kubelet_flag_extra_flags}"
+
   extra_tags = "${var.extra_tags}"
 }

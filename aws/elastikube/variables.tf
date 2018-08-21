@@ -157,6 +157,12 @@ variable "extra_ignition_systemd_unit_ids" {
   description = "(Optional) Additional ignition systemd unit IDs for masters. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details."
 }
 
+variable "kubelet_flag_extra_flags" {
+  type        = "list"
+  default     = []
+  description = "Extra user-provided flags to kubelet."
+}
+
 variable "extra_tags" {
   description = "(Optional) Extra AWS tags to be applied to the resources."
   type        = "map"
