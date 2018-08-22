@@ -37,6 +37,7 @@ module "ignition_kubelet" {
   )))}"
 
   kubelet_flag_register_with_taints = "${join(",", var.kube_node_taints)}"
+  kubelet_flag_extra_flags          = "${var.kubelet_flag_extra_flags}"
 
   hyperkube = {
     image_path = "quay.io/coreos/hyperkube"

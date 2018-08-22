@@ -114,7 +114,7 @@ variable "hostzone" {
 
 variable "reboot_strategy" {
   type    = "string"
-  default = "etcd-lock"
+  default = "off"
   description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
 }
 
@@ -155,6 +155,12 @@ variable "extra_ignition_systemd_unit_ids" {
   type        = "list"
   default     = []
   description = "(Optional) Additional ignition systemd unit IDs for masters. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details."
+}
+
+variable "kubelet_flag_extra_flags" {
+  type        = "list"
+  default     = []
+  description = "Extra user-provided flags to kubelet."
 }
 
 variable "extra_tags" {

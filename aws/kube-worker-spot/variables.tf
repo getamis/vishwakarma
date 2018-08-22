@@ -125,6 +125,12 @@ variable "target_group_arns" {
   description = "(Optional) A list of aws_alb_target_group ARNs, for use with Application Load Balancing."
 }
 
+variable "kubelet_flag_extra_flags" {
+  type        = "list"
+  default     = []
+  description = "Extra user-provided flags to kubelet."
+}
+
 variable "extra_tags" {
   type        = "map"
   default     = {}

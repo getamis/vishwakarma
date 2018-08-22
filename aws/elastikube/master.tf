@@ -9,8 +9,7 @@ module "master" {
   role_name     = "${var.role_name}"
 
   security_group_ids = [
-    "${aws_security_group.master.id}",
-    "${var.security_group_ids}",
+    "${var.security_group_ids}"
   ]
 
   lb_security_group_ids = ["${var.lb_security_group_ids}"]
@@ -49,9 +48,7 @@ module "master" {
     "${module.ignition_kube_addon_dns.files}",
     "${module.ignition_kube_addon_proxy.files}",
     "${module.ignition_kube_addon_flannel_vxlan.files}",
-    "${module.ignition_node_exporter.files}",
-    "${module.ignition_locksmithd.files}",
-    "${var.extra_ignition_file_ids}",
+    "${var.extra_ignition_file_ids}"
   ]
 
   extra_ignition_systemd_unit_ids = [
@@ -59,10 +56,10 @@ module "master" {
     "${module.ignition_kube_addon_dns.systemd_units}",
     "${module.ignition_kube_addon_proxy.systemd_units}",
     "${module.ignition_kube_addon_flannel_vxlan.systemd_units}",
-    "${module.ignition_node_exporter.systemd_units}",
-    "${module.ignition_locksmithd.systemd_units}",
-    "${var.extra_ignition_systemd_unit_ids}",
+    "${var.extra_ignition_systemd_unit_ids}"
   ]
+
+  kubelet_flag_extra_flags = "${var.kubelet_flag_extra_flags}"
 
   extra_tags = "${var.extra_tags}"
 }
