@@ -168,3 +168,9 @@ variable "extra_tags" {
   type        = "map"
   default     = {}
 }
+
+variable "auth_webhook_path" {
+  type        = "string"
+  default     = ""
+  description = "(Optional) A path for using customize machine to authenticate to a Kubernetes cluster."
+}

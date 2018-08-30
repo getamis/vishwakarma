@@ -62,4 +62,6 @@ module "master" {
   kubelet_flag_extra_flags = "${var.kubelet_flag_extra_flags}"
 
   extra_tags = "${var.extra_tags}"
+
+  auth_webhook_path = "${var.auth_webhook_path}"
 }

@@ -30,6 +30,7 @@ module "ignition_kube_control_plane" {
   apiserver_config = {
     anonymous_auth    = false
     advertise_address = "0.0.0.0"
+    auth_webhook_path = "${var.auth_webhook_path}"
   }
 
   cloud_provider = {
