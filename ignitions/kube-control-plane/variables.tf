@@ -54,6 +54,7 @@ variable "apiserver_config" {
   default = {
     anonymous_auth    = false
     advertise_address = "0.0.0.0"
+    auth_webhook_path = ""
   }
 }
 

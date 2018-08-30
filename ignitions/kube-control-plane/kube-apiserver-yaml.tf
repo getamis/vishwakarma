@@ -14,6 +14,11 @@ data "template_file" "kube_apiserver_yaml" {
     advertise_address = "${var.apiserver_config["advertise_address"]}"
     service_cidr      = "${var.cluster_config["service_cidr"]}"
 
+    auth_webhook_flag       = "${var.apiserver_config["auth_webhook_path"] != "" ? "- --authentication-token-webhook-config-file=${var.apiserver_config["auth_webhook_path"]}/kubeconfig" : "# no authentication token webhook provider"}"
+    auth_mount_volume_block = "${var.apiserver_config["auth_webhook_path"] != "" ? "${join("\n      ", list("${local.auth_volume_mount_name}", "${local.auth_volume_mount_path}", "${local.auth_volume_read_only}"))}" : "# no authentication token webhook provider"}"
+    auth_volume_block       = "${var.apiserver_config["auth_webhook_path"] != "" ? "${join("\n    ", list("${local.auth_volume_name}", "${local.auth_volume_host_path}", "${local.auth_volume_path}"))}" : "# no authentication token webhook provider"}"
+
+
     cloud_provider             = "${var.cloud_provider["name"]}"
     cloud_provider_config_flag = "${var.cloud_provider["config"] != "" ? "- --cloud-config=/etc/kubernetes/cloud/config" : "# no cloud provider config given"}"
   }
@@ -28,4 +33,14 @@ data "ignition_file" "kube_apiserver_yaml" {
   content {
     content = "${data.template_file.kube_apiserver_yaml.rendered}"
   }
+}
+
+locals {
+  auth_volume_mount_name = "- name: auth-webhook-path"
+  auth_volume_mount_path = "mountPath: ${var.apiserver_config["auth_webhook_path"]}"
+  auth_volume_read_only  = "readOnly: true"
+
+  auth_volume_name      = "${local.auth_volume_mount_name}"
+  auth_volume_host_path = "hostPath:"
+  auth_volume_path      = "  path: ${var.apiserver_config["auth_webhook_path"]}"
 }
