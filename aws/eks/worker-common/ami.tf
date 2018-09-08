@@ -6,7 +6,7 @@ module "container_linux" {
 }
 
 locals {
-  ami_owner = "595879546273"
+  ami_owner = "595879546273" # Amazon Account ID
   arn       = "aws"
 }
 
