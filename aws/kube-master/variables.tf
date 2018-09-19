@@ -169,3 +169,9 @@ variable "extra_tags" {
   default     = {}
   description = "Extra AWS tags to be applied to created resources."
 }
+
+variable "auth_webhook_path" {
+  type        = "string"
+  default     = ""
+  description = "(Optional) A path for using customized machine to authenticate to a Kubernetes cluster."
+}

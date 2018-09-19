@@ -41,6 +41,7 @@ spec:
     - --audit-log-maxage=30
     - --audit-log-maxbackup=3
     - --audit-log-maxsize=100
+    ${auth_webhook_flag}
     volumeMounts:
     - mountPath: /etc/ssl/certs
       name: ssl-certs-host
@@ -54,6 +55,7 @@ spec:
     - mountPath: /var/log/kubernetes
       name: var-log-kubernetes
       readOnly: false
+    ${auth_mount_volume_block}
     ports:
     - containerPort: 443
       hostPort: 443
@@ -75,3 +77,4 @@ spec:
   - name: var-log-kubernetes
     hostPath:
       path: /var/log/kubernetes
+  ${auth_volume_block}
