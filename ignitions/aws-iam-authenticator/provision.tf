@@ -13,7 +13,7 @@ data "template_file" "provision" {
 }
 
 data "ignition_systemd_unit" "provision" {
-  name    = "vault-provision.service"
+  name    = "authenticator-provision.service"
   enabled = true
   content = "${data.template_file.provision.rendered}"
 }

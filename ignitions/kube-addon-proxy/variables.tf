@@ -2,8 +2,8 @@ variable "hyperkube" {
   type = "map"
 
   default = {
-    image_path = "quay.io/coreos/hyperkube"
-    image_tag  = "v1.10.5_coreos.0"
+    image_path = "gcr.io/google-containers/hyperkube-amd64"
+    image_tag  = "v1.13.0"
   }
 
   description = "(Optional) The hyperkube container image path and tag."

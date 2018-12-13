@@ -64,4 +64,6 @@ module "master" {
   extra_tags = "${var.extra_tags}"
 
   auth_webhook_path = "${var.auth_webhook_path}"
+  audit_policy_path = "${var.audit_policy_path}"
+  audit_log_backend = "${var.audit_log_backend}"
 }

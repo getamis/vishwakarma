@@ -46,7 +46,7 @@ EOF
 
 variable "version" {
   type        = "string"
-  default     = "v1.10.5"
+  default     = "v1.13.0"
   description = "(Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
 }
 
@@ -173,4 +173,24 @@ variable "auth_webhook_path" {
   type        = "string"
   default     = ""
   description = "(Optional) A path for using customize machine to authenticate to a Kubernetes cluster."
+}
+
+variable "audit_policy_path" {
+  type        = "string"
+  default     = ""
+  description = "(Optional) A policy path for Kubernetes apiserver to enable auditing log."
+}
+
+variable "audit_log_backend" {
+  type        = "map"
+  default     = {
+    path      = ""
+    maxage    = ""
+    maxbackup = ""
+    maxsize   = ""
+  }
+  description = <<EOF
+    (Optional) Kubernetes apiserver auditing log backend configuration,
+    there are four parameters: path, maxage, maxbackup, maxsize.
+EOF
 }

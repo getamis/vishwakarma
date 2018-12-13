@@ -40,8 +40,8 @@ module "ignition_kubelet" {
   kubelet_flag_extra_flags          = "${var.kubelet_flag_extra_flags}"
 
   hyperkube = {
-    image_path = "quay.io/coreos/hyperkube"
-    image_tag  = "${var.version}_coreos.0"
+    image_path = "gcr.io/google-containers/hyperkube-amd64"
+    image_tag  = "${var.version}"
   }
 }
 

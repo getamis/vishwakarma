@@ -37,11 +37,8 @@ spec:
     - --anonymous-auth=${anonymous_auth}
     - --cloud-provider=${cloud_provider}
     ${cloud_provider_config_flag}
-    - --audit-log-path=/var/log/kubernetes/kube-apiserver-audit.log
-    - --audit-log-maxage=30
-    - --audit-log-maxbackup=3
-    - --audit-log-maxsize=100
     ${auth_webhook_flag}
+    ${audit_policy_flag}
     volumeMounts:
     - mountPath: /etc/ssl/certs
       name: ssl-certs-host
@@ -56,6 +53,7 @@ spec:
       name: var-log-kubernetes
       readOnly: false
     ${auth_mount_volume_block}
+    ${audit_mount_volume_block}
     ports:
     - containerPort: 443
       hostPort: 443
@@ -78,3 +76,4 @@ spec:
     hostPath:
       path: /var/log/kubernetes
   ${auth_volume_block}
+  ${audit_volume_block}

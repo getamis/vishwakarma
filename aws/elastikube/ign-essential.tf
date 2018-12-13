@@ -9,8 +9,8 @@ module "ignition_kube_addon_manager" {
   source = "../../ignitions/kube-addon-manager"
 
   hyperkube = {
-    image_path = "quay.io/coreos/hyperkube"
-    image_tag  = "${var.version}_coreos.0"
+    image_path = "gcr.io/google-containers/hyperkube-amd64"
+    image_tag  = "${var.version}"
   }
 }
 
@@ -21,6 +21,7 @@ module "ignition_kube_addon_manager" {
 module "ignition_kube_addon_dns" {
   source = "../../ignitions/kube-addon-dns"
 
+  reverse_cidrs  = "${var.service_cidr}"
   cluster_dns_ip = "${local.cluster_dns_ip}"
 }
 
@@ -34,8 +35,8 @@ module "ignition_kube_addon_proxy" {
   cluster_cidr = "${var.cluster_cidr}"
 
   hyperkube = {
-    image_path = "quay.io/coreos/hyperkube"
-    image_tag  = "${var.version}_coreos.0"
+    image_path = "gcr.io/google-containers/hyperkube-amd64"
+    image_tag  = "${var.version}"
   }
 }
 

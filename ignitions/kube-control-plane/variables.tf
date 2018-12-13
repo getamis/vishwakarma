@@ -55,8 +55,15 @@ variable "apiserver_config" {
     anonymous_auth    = false
     advertise_address = "0.0.0.0"
     auth_webhook_path = ""
+    audit_policy_path = ""
   }
 }
+
+variable "audit_log_backend" {
+  type = "map"
+  default = {}
+}
+
 
 variable "cloud_provider" {
   type = "map"
@@ -87,8 +94,8 @@ variable "hyperkube" {
   type = "map"
 
   default = {
-    image_path = "quay.io/coreos/hyperkube"
-    image_tag  = "v1.10.5_coreos.0"
+    image_path = "gcr.io/google-containers/hyperkube-amd64"
+    image_tag  = "v1.13.0"
   }
 
   description = "The hyperkube container image path and tag"
