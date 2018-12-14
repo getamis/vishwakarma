@@ -46,14 +46,16 @@ variable "worker_config" {
   type = "map"
 
   default = {
-    min_instance_count = "1"
-    max_instance_count = "1"
-    ec2_type           = "t2.medium"
-    name               = "spot"
-    price              = "0.02"
-    root_volume_iops   = "100"
-    root_volume_size   = "256"
-    root_volume_type   = "gp2"
+    instance_count   = "1"
+    ec2_type         = "t2.medium"
+    name             = "general"
+    root_volume_iops = "100"
+    root_volume_size = "256"
+    root_volume_type = "gp2"
+
+    on_demand_base_capacity                  = 0
+    on_demand_percentage_above_base_capacity = 100
+    spot_instance_pools                      = 1
   }
 
   description = "(Optional) Desired worker nodes configuration."
@@ -96,8 +98,8 @@ EOF
 }
 
 variable "reboot_strategy" {
-  type        = "string"
-  default     = "etcd-lock"
+  type    = "string"
+  default = "etcd-lock"
   description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
 }
 

@@ -90,9 +90,7 @@ spec:
           mountPath: /host/opt/cni/bin/
       hostNetwork: true
       tolerations:
-      - key: "node-role.kubernetes.io/master"
-        operator: "Exists"
-        effect: "NoSchedule"
+      - operator: "Exists"
       volumes:
         - name: run
           hostPath:
