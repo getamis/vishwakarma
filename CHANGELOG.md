@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [[v0.0.11](https://github.com/getamis/vishwakarma/compare/v0.0.11...v0.0.10)] - 2018-12-18]
+
+### Added
+- Upgrade Kubernetes from v1.10.5 to v1.13.1
+- Replace Kube-Dns with CoreDNS
+- Adopt AWS new mixed instance policy for worker asg
+- Add new ign for support Kubernetes auditing
+
+### Changed
+
+
+## [[v0.0.10](https://github.com/getamis/vishwakarma/compare/v0.0.10...v0.0.9)] - 2018-09-19]
+
+### Added
+- Support AWS IAM Authenticator
+
+### Changed
+
 ## [[v0.0.9](https://github.com/getamis/vishwakarma/compare/v0.0.9...v0.0.8)] - 2018-06-24]
 
 ### Added
