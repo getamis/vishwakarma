@@ -4,18 +4,42 @@ variable "addon_path" {
   description = "Path to the directory containing Kubernetes addons"
 }
 
-variable "images" {
-  type = "map"
+variable "image" {
+  type        = "string"
+  default     = "coredns/coredns:1.2.6"
+  description = "The CoreDNS image name and tag"
+}
 
-  default = {
-    kubedns         = "gcr.io/google_containers/k8s-dns-kube-dns-amd64:1.14.5"
-    kubednsmasq     = "gcr.io/google_containers/k8s-dns-dnsmasq-nanny-amd64:1.14.5"
-    kubedns_sidecar = "gcr.io/google_containers/k8s-dns-sidecar-amd64:1.14.5"
-  }
+variable "reverse_cidrs" {
+  type        = "string"
+  description = "CoreDNS reverse cidrs"
 }
 
 variable "cluster_dns_ip" {
-  type = "string"
+  type        = "string"
+  description = "K8S cluster dns ip"
+}
 
-  description = "The DNS service IP address"
+variable "cluster_domain" {
+  type        = "string"
+  default     = "cluster.local."
+  description = "K8S cluster domain"
+}
+
+variable "federations" {
+  type        = "string"
+  default     = ""
+  description = "federations"
+}
+
+variable "subdomains" {
+  type        = "string"
+  default     = ""
+  description = "subdomains"
+}
+
+variable "upstream_nameserver" {
+  type        = "string"
+  default     = "/etc/resolv.conf"
+  description = "upstream nameserver"
 }

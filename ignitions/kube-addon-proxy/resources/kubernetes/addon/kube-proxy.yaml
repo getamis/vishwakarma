@@ -47,9 +47,7 @@ spec:
           readOnly: true
       hostNetwork: true
       tolerations:
-      - key: "node-role.kubernetes.io/master"
-        operator: "Exists"
-        effect: "NoSchedule"
+      - operator: "Exists"
       volumes:
       - hostPath:
           path: /etc/ssl/certs

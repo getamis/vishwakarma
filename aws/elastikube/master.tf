@@ -7,6 +7,7 @@ module "master" {
   ssh_key       = "${var.ssh_key}"
   master_config = "${var.master_config}"
   role_name     = "${var.role_name}"
+  version       = "${var.version}"
 
   security_group_ids = [
     "${var.security_group_ids}"
@@ -64,4 +65,6 @@ module "master" {
   extra_tags = "${var.extra_tags}"
 
   auth_webhook_path = "${var.auth_webhook_path}"
+  audit_policy_path = "${var.audit_policy_path}"
+  audit_log_backend = "${var.audit_log_backend}"
 }

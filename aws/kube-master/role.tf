@@ -19,7 +19,7 @@ resource "aws_iam_role" "master" {
 }
 
 resource "aws_iam_instance_profile" "master" {
-  name = "${var.name}-master"
+  name_prefix = "${var.name}-master-"
 
   role = "${var.role_name == "" ?
     join("|", aws_iam_role.master.*.name) :

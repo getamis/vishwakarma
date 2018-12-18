@@ -3,7 +3,7 @@ locals {
   phase        = "auth"
   cluster_name = "${local.phase}-${local.project}"
   hostzone     = "${local.cluster_name}.cluster"
-  kubernetes_version = "v1.10.5"
+  kubernetes_version = "v1.13.1"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -11,7 +11,7 @@ locals {
 # ---------------------------------------------------------------------------------------------------------------------
 
 provider "aws" {
-  version = "1.23.0"
+  version = "1.51.0"
   region  = "${var.aws_region}"
 }
 
@@ -47,7 +47,7 @@ module "kubernetes" {
 
   etcd_config = {
     instance_count   = "3"
-    ec2_type         = "t2.medium"
+    ec2_type         = "t3.medium"
     root_volume_iops = "0"
     root_volume_size = "256"
     root_volume_type = "gp2"
@@ -55,7 +55,7 @@ module "kubernetes" {
 
   master_config = {
     instance_count   = "2"
-    ec2_type         = "t2.medium"
+    ec2_type         = "t3.medium"
     root_volume_iops = "0"
     root_volume_size = "256"
     root_volume_type = "gp2"
@@ -95,9 +95,9 @@ module "worker_general" {
   worker_config = {
     name             = "general"
     instance_count   = "2"
-    ec2_type         = "t2.medium"
+    ec2_type         = "t3.medium"
     root_volume_iops = "0"
-    root_volume_size = "64"
+    root_volume_size = "40"
     root_volume_type = "gp2"
   }
 
@@ -115,7 +115,7 @@ module "worker_general" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "worker_spot" {
-  source = "../../aws/kube-worker-spot"
+  source = "../../aws/kube-worker-mixed"
 
   name              = "${local.cluster_name}"
   aws_region        = "${var.aws_region}"
@@ -126,14 +126,17 @@ module "worker_spot" {
   subnet_ids         = ["${module.network.private_subnet_ids}"]
 
   worker_config = {
-    name               = "spot"
-    min_instance_count = "2"
-    max_instance_count = "2"
-    ec2_type           = "m4.large"
-    price              = "0.04"
-    root_volume_iops   = "0"
-    root_volume_size   = "64"
-    root_volume_type   = "gp2"
+    name             = "spot"
+    instance_count   = "2"
+    ec2_type_1       = "m5.large"
+    ec2_type_2       = "m4.large"
+    root_volume_iops = "0"
+    root_volume_size = "40"
+    root_volume_type = "gp2"
+
+    on_demand_base_capacity                  = 0
+    on_demand_percentage_above_base_capacity = 0
+    spot_instance_pools                      = 1
   }
 
   s3_bucket = "${module.kubernetes.s3_bucket}"

@@ -4,6 +4,6 @@ output "systemd_units" {
 
 output "files" {
   value = [
-    "${data.ignition_file.coredns_yaml.id}",
+    "${data.ignition_file.policy_yaml.id}",
   ]
 }

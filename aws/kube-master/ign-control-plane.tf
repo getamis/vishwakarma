@@ -31,7 +31,10 @@ module "ignition_kube_control_plane" {
     anonymous_auth    = false
     advertise_address = "0.0.0.0"
     auth_webhook_path = "${var.auth_webhook_path}"
+    audit_policy_path = "${var.audit_policy_path}"
   }
+
+  audit_log_backend = "${var.audit_log_backend}"
 
   cloud_provider = {
     name   = "aws"
@@ -46,7 +49,7 @@ module "ignition_kube_control_plane" {
   }
 
   hyperkube = {
-    image_path = "quay.io/coreos/hyperkube"
-    image_tag  = "${var.version}_coreos.0"
+    image_path = "gcr.io/google-containers/hyperkube-amd64"
+    image_tag  = "${var.version}"
   }
 }

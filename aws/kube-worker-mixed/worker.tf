@@ -28,9 +28,27 @@ resource "aws_autoscaling_group" "worker" {
   load_balancers       = ["${var.load_balancer_ids}"]
   target_group_arns    = ["${var.target_group_arns}"]
 
-  launch_template = {
-    id      = "${aws_launch_template.worker.id}"
-    version = "$$Latest"
+  mixed_instances_policy {
+    launch_template {
+      launch_template_specification {
+        launch_template_id = "${aws_launch_template.worker.id}"
+        version = "$$Latest"
+      }
+
+      override {
+        instance_type = "${var.worker_config["ec2_type_1"]}"
+      }
+
+      override {
+        instance_type = "${var.worker_config["ec2_type_2"]}"
+      }
+    }
+
+    instances_distribution {
+      on_demand_base_capacity                  = "${var.worker_config["on_demand_base_capacity"]}"
+      on_demand_percentage_above_base_capacity = "${var.worker_config["on_demand_percentage_above_base_capacity"]}"
+      spot_instance_pools                      = "${var.worker_config["spot_instance_pools"]}"
+    }
   }
 
   tags = [
@@ -50,7 +68,7 @@ resource "aws_autoscaling_group" "worker" {
 }
 
 resource "aws_launch_template" "worker" {
-  instance_type = "${var.worker_config["ec2_type"]}"
+  instance_type = "${var.worker_config["ec2_type_1"]}"
   image_id      = "${data.aws_ami.coreos_ami.image_id}"
   name_prefix   = "${var.name}-worker-${var.worker_config["name"]}-"  
 
