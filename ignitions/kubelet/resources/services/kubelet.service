@@ -29,7 +29,6 @@ ExecStart=/usr/lib/coreos/kubelet-wrapper \
   --exit-on-lock-contention \
   --allow-privileged \
   --anonymous-auth=false \
-  --minimum-container-ttl-duration=6m0s \
   --client-ca-file=/etc/kubernetes/ca.crt \
   --cluster-domain=cluster.local \
   ${kubelet_flag_cloud_provider} \

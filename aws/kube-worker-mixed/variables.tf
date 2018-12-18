@@ -38,8 +38,8 @@ EOF
 
 variable "version" {
   type        = "string"
-  default     = "v1.13.0"
-  description = "(Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
+  default     = "v1.13.1"
+  description = "(Optional) Desired Kubernetes kubelet version. If you do not specify a value, the latest available version is used."
 }
 
 variable "worker_config" {
