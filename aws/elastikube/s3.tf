@@ -7,3 +7,12 @@ resource "aws_s3_bucket" "ignition" {
       "kubernetes.io/cluster/${var.name}", "owned",
     ), var.extra_tags)}"
 }
+
+resource "aws_s3_bucket_public_access_block" "ignition" {
+  bucket = "${aws_s3_bucket.ignition.id}"
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
