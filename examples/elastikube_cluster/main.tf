@@ -39,11 +39,11 @@ module "network" {
 module "kubernetes" {
   source = "../../aws/elastikube"
 
-  name         = "${local.cluster_name}"
-  aws_region   = "${var.aws_region}"
-  version      = "${local.kubernetes_version}"
-  service_cidr = "${var.service_cidr}"
-  cluster_cidr = "${var.cluster_cidr}"
+  name               = "${local.cluster_name}"
+  aws_region         = "${var.aws_region}"
+  kubernetes_version = "${local.kubernetes_version}"
+  service_cidr       = "${var.service_cidr}"
+  cluster_cidr       = "${var.cluster_cidr}"
 
   etcd_config = {
     instance_count   = "3"
@@ -79,10 +79,10 @@ module "kubernetes" {
 module "worker_general" {
   source = "../../aws/kube-worker-general"
 
-  name              = "${local.cluster_name}"
-  aws_region        = "${var.aws_region}"
-  version           = "${local.kubernetes_version}"
-  kube_service_cidr = "${var.service_cidr}"
+  name               = "${local.cluster_name}"
+  aws_region         = "${var.aws_region}"
+  kubernetes_version = "${local.kubernetes_version}"
+  kube_service_cidr  = "${var.service_cidr}"
 
   security_group_ids = ["${module.kubernetes.worker_sg_ids}"]
   subnet_ids         = ["${module.network.private_subnet_ids}"]
@@ -112,10 +112,10 @@ module "worker_general" {
 module "worker_spot" {
   source = "../../aws/kube-worker-mixed"
 
-  name              = "${local.cluster_name}"
-  aws_region        = "${var.aws_region}"
-  version           = "${local.kubernetes_version}"
-  kube_service_cidr = "${var.service_cidr}"
+  name               = "${local.cluster_name}"
+  aws_region         = "${var.aws_region}"
+  kubernetes_version = "${local.kubernetes_version}"
+  kube_service_cidr  = "${var.service_cidr}"
 
   security_group_ids = ["${module.kubernetes.worker_sg_ids}"]
   subnet_ids         = ["${module.network.private_subnet_ids}"]

@@ -36,7 +36,7 @@ variable "subnet_ids" {
 EOF
 }
 
-variable "version" {
+variable "kubernetes_version" {
   type        = "string"
   default     = "v1.13.1"
   description = "(Optional) Desired Kubernetes kubelet version. If you do not specify a value, the latest available version is used."

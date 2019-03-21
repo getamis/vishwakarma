@@ -11,7 +11,7 @@ output "endpoint" {
 }
 
 output "version" {
-  value = "${var.version}"
+  value = "${var.kubernetes_version}"
 }
 
 output "vpc_id" {

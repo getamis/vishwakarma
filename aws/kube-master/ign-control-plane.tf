@@ -50,6 +50,6 @@ module "ignition_kube_control_plane" {
 
   hyperkube = {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
-    image_tag  = "${var.version}"
+    image_tag  = "${var.kubernetes_version}"
   }
 }

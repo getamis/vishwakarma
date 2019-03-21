@@ -2,7 +2,7 @@ data "template_file" "node_exporter_fetcher" {
   template = "${file("${path.module}/resources/services/node-exporter-fetcher.service")}"
 
   vars {
-    version = "${var.version}"
+    version = "${var.node_exporter_version}"
   }
 }
 

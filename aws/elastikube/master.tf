@@ -7,7 +7,7 @@ module "master" {
   ssh_key       = "${var.ssh_key}"
   master_config = "${var.master_config}"
   role_name     = "${var.role_name}"
-  version       = "${var.version}"
+  version       = "${var.kubernetes_version}"
 
   security_group_ids = [
     "${var.security_group_ids}"
