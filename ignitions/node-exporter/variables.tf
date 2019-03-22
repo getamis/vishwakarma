@@ -7,7 +7,7 @@ variable "listen_port" {
   default = 9100
 }
 
-variable "version" {
+variable "node_exporter_version" {
   type    = "string"
   default = "0.16.0"
 }

@@ -10,7 +10,7 @@ module "ignition_kube_addon_manager" {
 
   hyperkube = {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
-    image_tag  = "${var.version}"
+    image_tag  = "${var.kubernetes_version}"
   }
 }
 
@@ -36,7 +36,7 @@ module "ignition_kube_addon_proxy" {
 
   hyperkube = {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
-    image_tag  = "${var.version}"
+    image_tag  = "${var.kubernetes_version}"
   }
 }
 
