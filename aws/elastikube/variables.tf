@@ -94,6 +94,12 @@ variable "ssh_key" {
   description = "The key name that should be used for the instances."
 }
 
+variable "allowed_ssh_cidr" {
+  type        = "list"
+  default     = ["0.0.0.0/0"]
+  description = "(Optional) A list of CIDR networks to allow ssh access to. Defaults to \"0.0.0.0/0\""
+}
+
 variable "service_cidr" {
   type        = "string"
   default     = "172.16.0.0/13"
