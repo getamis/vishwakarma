@@ -47,7 +47,8 @@ func TestElastikubeCluster(t *testing.T) {
 
 		keyPair := test_structure.LoadEc2KeyPair(t, exampleFolder)
 		aws.DeleteEC2KeyPair(t, keyPair)
-		test_structure.CleanupTestData(t, exampleFolder)
+		testData := fmt.Sprintf("%s/.test-data", exampleFolder)
+		os.Remove(testData)
 	})
 
 	// Deploy the example
