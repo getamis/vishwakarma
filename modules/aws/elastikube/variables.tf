@@ -1,0 +1,222 @@
+// -----------------------------------------
+// EKS-like Arguments
+// -----------------------------------------
+
+variable "name" {
+  type        = "string"
+  description = " (Required) Name of the cluster."
+}
+
+variable "role_name" {
+  type        = "string"
+  default     = ""
+  description = "(Optional) The Amazon Resource Name (ARN) of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
+}
+
+variable "security_group_ids" {
+  type    = "list"
+  default = []
+
+  description = <<EOF
+    (Optional) List of security group IDs for the cross-account elastic network interfaces
+    to use to allow communication between your worker nodes and the Kubernetes control plane.
+EOF
+}
+
+variable "lb_security_group_ids" {
+  type    = "list"
+  default = []
+
+  description = <<EOF
+    (Optional) List of security group IDs for the cross-account elastic network interfaces
+    to use to allow communication to the kubernetes api server load balancer.
+EOF
+}
+
+variable "public_subnet_ids" {
+  type    = "list"
+  default = []
+
+  description = <<EOF
+    (Required) List of public subnet IDs. Must be in at least two different availability zones.
+    Cross-account elastic network interfaces will be created in these subnets to allow
+    communication between your worker nodes and the Kubernetes control plane.
+EOF
+}
+
+variable "private_subnet_ids" {
+  type    = "list"
+  default = []
+
+  description = <<EOF
+    (Required) List of private subnet IDs. Must be in at least two different availability zones.
+    Cross-account elastic network interfaces will be created in these subnets to allow
+    communication between your worker nodes and the Kubernetes control plane.
+EOF
+}
+
+variable "endpoint_public_access" {
+  default = false
+  description = "(Optional) kubernetes apiserver endpoint"
+}
+
+variable "kubernetes_version" {
+  type        = "string"
+  default     = "v1.13.4"
+  description = "(Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
+}
+
+// -----------------------------------------
+// Extra Arguments
+// -----------------------------------------
+
+variable "aws_region" {
+  type        = "string"
+  default     = "us-east-1"
+  description = "(Optional) The AWS region"
+}
+
+variable "master_config" {
+  type = "map"
+
+  default = {
+    instance_count   = "1"
+    ec2_type_1       = "t3.medium"
+    ec2_type_2       = "t2.medium"
+    root_volume_iops = "100"
+    root_volume_size = "256"
+    root_volume_type = "gp2"
+
+    on_demand_base_capacity                  = 0
+    on_demand_percentage_above_base_capacity = 100
+    spot_instance_pools                      = 1
+  }
+
+  description = "(Optional) Desired master nodes configuration."
+}
+variable "etcd_config" {
+  type = "map"
+
+  default = {
+    instance_count   = "1"
+    ec2_type         = "t2.medium"
+    root_volume_iops = "100"
+    root_volume_size = "256"
+    root_volume_type = "gp2"
+  }
+
+  description = "(Optional) Desired etcd nodes configuration."
+}
+
+variable "ssh_key" {
+  type        = "string"
+  default     = ""
+  description = "The key name that should be used for the instances."
+}
+
+variable "allowed_ssh_cidr" {
+  type        = "list"
+  default     = ["0.0.0.0/0"]
+  description = "(Optional) A list of CIDR networks to allow ssh access to. Defaults to \"0.0.0.0/0\""
+}
+
+variable "service_cidr" {
+  type        = "string"
+  default     = "172.16.0.0/13"
+  description = "(Optional) The Kubernetes service CIDR."
+}
+
+variable "cluster_cidr" {
+  type        = "string"
+  default     = "172.24.0.0/13"
+  description = "(Optional) The Kubernetes cluster CIDR."
+}
+
+variable "hostzone" {
+  type        = "string"
+  default     = ""
+  description = "(Optional) The cluster private hostname. If not specified, <cluster name>.com will be used."
+}
+
+variable "reboot_strategy" {
+  type    = "string"
+  default = "off"
+  description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
+}
+
+variable "extra_master_node_labels" {
+  type        = "list"
+  default     = []
+  description = "(Optional) Labels to add when registering the node in the cluster. Labels must be key=value pairs."
+}
+
+variable "extra_master_node_taints" {
+  type    = "list"
+  default = []
+
+  description = <<EOF
+(Optional) Register the node with the given list of taints ("<key>=<value>:<effect>").
+EOF
+}
+
+variable "extra_etcd_ignition_file_ids" {
+  type        = "list"
+  default     = []
+  description = "(Optional) Additional ignition file IDs for etcds. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details."
+}
+
+variable "extra_etcd_ignition_systemd_unit_ids" {
+  type        = "list"
+  default     = []
+  description = "(Optional) Additional ignition systemd unit IDs for etcds. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details."
+}
+
+variable "extra_ignition_file_ids" {
+  type        = "list"
+  default     = []
+  description = "(Optional) Additional ignition file IDs for masters. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details."
+}
+
+variable "extra_ignition_systemd_unit_ids" {
+  type        = "list"
+  default     = []
+  description = "(Optional) Additional ignition systemd unit IDs for masters. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details."
+}
+
+variable "kubelet_flag_extra_flags" {
+  type        = "list"
+  default     = []
+  description = "Extra user-provided flags to kubelet."
+}
+
+variable "extra_tags" {
+  description = "(Optional) Extra AWS tags to be applied to the resources."
+  type        = "map"
+  default     = {}
+}
+
+variable "auth_webhook_path" {
+  type        = "string"
+  default     = ""
+  description = "(Optional) A path for using customize machine to authenticate to a Kubernetes cluster."
+}
+
+variable "audit_policy_path" {
+  type        = "string"
+  default     = ""
+  description = "(Optional) A policy path for Kubernetes apiserver to enable auditing log."
+}
+
+variable "audit_log_backend" {
+  type        = "map"
+  default     = {
+    path      = ""
+    maxage    = ""
+    maxbackup = ""
+    maxsize   = ""
+  }
+  description = <<EOF
+    (Optional) Kubernetes apiserver auditing log backend configuration,
+    there are four parameters: path, maxage, maxbackup, maxsize.
+EOF
+}
