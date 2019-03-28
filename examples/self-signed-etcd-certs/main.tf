@@ -1,5 +1,5 @@
 module "etcd_ca" {
-  source = "../../tls/certificate-authority"
+  source = "../../modules/tls/certificate-authority"
 
   cert_config = {
     common_name           = "etcd"
@@ -12,7 +12,7 @@ module "etcd_ca" {
 }
 
 module "etcd_server_cert" {
-  source = "../../tls/certificate"
+  source = "../../modules/tls/certificate"
 
   ca_config = {
     algorithm = "${module.etcd_ca.algorithm}"
@@ -44,7 +44,7 @@ module "etcd_server_cert" {
 }
 
 module "etcd_client_cert" {
-  source = "../../tls/certificate"
+  source = "../../modules/tls/certificate"
 
   ca_config = {
     algorithm = "${module.etcd_ca.algorithm}"
@@ -64,7 +64,7 @@ module "etcd_client_cert" {
 }
 
 module "etcd_peer_cert" {
-  source = "../../tls/certificate"
+  source = "../../modules/tls/certificate"
 
   ca_config = {
     algorithm = "${module.etcd_ca.algorithm}"
