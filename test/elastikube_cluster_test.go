@@ -129,7 +129,7 @@ func createKubeconfig(t *testing.T, source string, kubeconfig string) (string, e
 	}
 	l, err := f.WriteString(kubeconfig)
 	if err != nil {
-		f.Close()
+		defer f.Close()
 		return "", err
 	}
 	fmt.Println(l, "bytes written successfully")
@@ -167,7 +167,7 @@ func testBastionHost(t *testing.T, terraformOptions *terraform.Options, keyPair 
 	command := fmt.Sprintf("echo -n '%s'", expectedText)
 
 	// Verify that we can SSH to the Instance and run commands
-	retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
+	retry.DoWithRetry(t, description, MaxRetries, TimeBetweenRetries, func() (string, error) {
 
 		actualText, err := ssh.CheckSshCommandE(t, *bastionHost, command)
 
@@ -186,10 +186,10 @@ func testBastionHost(t *testing.T, terraformOptions *terraform.Options, keyPair 
 func testKubernetes(t *testing.T, kubectlOptions *k8s.KubectlOptions, exampleFolder string) {
 
 	// It can take several minutes for the Kubernetes cluster to boot up, so retry a few times
-	description := fmt.Sprint("Access Kubernetes cluster")
+	description := "Access Kubernetes cluster"
 
 	// Verify that we can access Kubernetes cluster by kubectl
-	retry.DoWithRetry(t, description, maxRetries, timeBetweenRetries, func() (string, error) {
+	retry.DoWithRetry(t, description, MaxRetries, TimeBetweenRetries, func() (string, error) {
 
 		nodesReady, err := k8s.AreAllNodesReadyE(t, kubectlOptions)
 

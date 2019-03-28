@@ -29,7 +29,7 @@ variable "project" {
 
 variable "phase" {
   type = "string"
-  default = "phase"
+  default = "test"
   description = "(Optional) phase name, used to compose the resource name"
 }
 
