@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [[v0.0.14](https://github.com/getamis/vishwakarma/compare/v0.0.14...v0.0.13)] - 2019-03-28]
+
+### Added
+- Master work group now support AWS launch template
+- The Load Balancer of Master apiserver can choose public/private by variable `endpoint_public_access`
+- Add a testing script for example elastikube-cluster through terratest
+
+### Changed
+- Change the folder structure for Terratest, all the module migrate to folder modules
+
+## [[v0.0.13](https://github.com/getamis/vishwakarma/compare/v0.0.13...v0.0.12)] - 2019-03-22]
+
+### Added
+- Add variable `allowed_ssh_cidr` for control the CIDR to login worker's ssh
+
+### Changed
+- Rename variable `version` to `kubernetes_version` and `node_exporter_version`
+
+## [[v0.0.12](https://github.com/getamis/vishwakarma/compare/v0.0.12...v0.0.11)] - 2019-02-26]
+
+### Added
+- Block AWS S3 public access
+
+### Changed
+- Upgrade aws provider version to 1.60.0
+
 ## [[v0.0.11](https://github.com/getamis/vishwakarma/compare/v0.0.11...v0.0.10)] - 2018-12-18]
 
 ### Added
