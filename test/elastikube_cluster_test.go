@@ -18,6 +18,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+const (
+	MaxRetries         = 30
+	TimeBetweenRetries = 5 * time.Second
+)
+
 func TestElastikubeCluster(t *testing.T) {
 
 	t.Parallel()
@@ -155,8 +160,6 @@ func testBastionHost(t *testing.T, terraformOptions *terraform.Options, keyPair 
 	}
 
 	// It can take a minute or so for the Instance to boot up, so retry a few times
-	maxRetries := 30
-	timeBetweenRetries := 5 * time.Second
 	description := fmt.Sprintf("SSH with Agent to bastion host %s", bastionPublicIP)
 
 	// Run a simple echo command on the server
@@ -183,8 +186,6 @@ func testBastionHost(t *testing.T, terraformOptions *terraform.Options, keyPair 
 func testKubernetes(t *testing.T, kubectlOptions *k8s.KubectlOptions, exampleFolder string) {
 
 	// It can take several minutes for the Kubernetes cluster to boot up, so retry a few times
-	maxRetries := 30
-	timeBetweenRetries := 30 * time.Second
 	description := fmt.Sprint("Access Kubernetes cluster")
 
 	// Verify that we can access Kubernetes cluster by kubectl
@@ -248,8 +249,8 @@ func testKubernetes(t *testing.T, kubectlOptions *k8s.KubectlOptions, exampleFol
 	http_helper.HttpGetWithRetryWithCustomValidation(
 		t,
 		fmt.Sprintf("http://%s", kubeTunnel.Endpoint()),
-		30,
-		10*time.Second,
+		MaxRetries,
+		TimeBetweenRetries,
 		func(statusCode int, body string) bool {
 			return statusCode == 200
 		},
