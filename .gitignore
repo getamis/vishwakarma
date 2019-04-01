@@ -3,3 +3,4 @@
 .terraform/
 .terratest/
 vendor/
+.DS_Store

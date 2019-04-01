@@ -80,7 +80,7 @@ module "kubernetes" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "worker_on_demand" {
-  source = "../../modules/aws/kube-worker-hybird"
+  source = "../../modules/aws/kube-worker"
 
   name               = "${local.cluster_name}"
   aws_region         = "${var.aws_region}"
@@ -118,7 +118,7 @@ module "worker_on_demand" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "worker_spot" {
-  source = "../../modules/aws/kube-worker-mixed"
+  source = "../../modules/aws/kube-worker"
 
   name               = "${local.cluster_name}"
   aws_region         = "${var.aws_region}"

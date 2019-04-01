@@ -1,0 +1,20 @@
+[Unit]
+Description=Download Heptio Authenticator
+ConditionPathExists=!/opt/aws-iam-authenticator.done
+Before=kubelet.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+
+User=root
+Group=root
+
+ExecStartPre=/bin/mkdir -p /opt/bin
+ExecStart=/usr/bin/curl -o /opt/bin/aws-iam-authenticator ${aws_iam_authenticator_url}
+ExecStartPost=/bin/chmod +x /opt/bin/aws-iam-authenticator
+ExecStartPost=/bin/touch /opt/aws-iam-authenticator.done
+
+[Install]
+WantedBy=multi-user.target
+RequiredBy=kubelet.service
