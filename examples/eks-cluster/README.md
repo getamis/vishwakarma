@@ -5,7 +5,7 @@ how you can use Terratest to write automated tests for your AWS Terraform code. 
 Instances](https://aws.amazon.com/ec2/) in the AWS region specified in
 the `aws_region` variable.
 
-Check out [test/elastikube_cluster_test.go](/test/elastikube_cluster_test.go) to see how you can write
+Check out [test/eks_cluster_test.go](/test/eks_cluster_test.go) to see how you can write
 automated tests for this module.
 
 **WARNING**: This module and the automated tests for it deploy real resources into your AWS account which can cost you
@@ -35,7 +35,7 @@ money.
 
     # create the kubernetes master compoment
 
-    ~$ terraform apply -target=module.kubernetes
+    ~$ terraform apply -target=module.eks
 
     # create the general and spot k8s worker group
     ~$ terraform apply
@@ -46,7 +46,7 @@ money.
     ```
     $ terraform destroy -target=module.worker_on_demand
     $ terraform destroy -target=module.worker_spot
-    $ terraform destroy -target=module.kubernetes
+    $ terraform destroy -target=module.eks
     $ terraform destroy -target=module.network
     ```
 
@@ -64,12 +64,12 @@ money.
 5. Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) and make sure it's on your `PATH`.
 6. `cd test`
 7. `dep ensure`
-8. `go test -timeout 60m -v -run TestElastikubeCluster`
+8. `go test -timeout 60m -v -run TestEKSCluster`
 9. if execution without error, the output like below
     ```
     ...
         agent.go:114: Generating SSH Agent with given KeyPair(s)
-        agent.go:68: could not serve ssh agent read unix /tmp/ssh-agent-589722746/ssh_auth.sock->@: use of closed network connection
+        agent.go:68: could not serve ssh agent read unix /var/folders/mg/yc74r0qs0g58wnt0q1_4t88h0000gn/T/ssh-agent-881464729/ssh_auth.sock->: use of closed network connection
     PASS
-    ok  	github.com/vishwakarma/test	1223.186s
+    ok  	github.com/vishwakarma/test	2046.234s
     ```

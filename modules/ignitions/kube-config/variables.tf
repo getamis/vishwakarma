@@ -4,7 +4,12 @@ variable "content" {
   description = "The content of the kubeconfig file."
 }
 
-variable "name" {
+variable "kubeconfig_name" {
+  description = "Override the default name used for items kubeconfig."
+  default     = ""
+}
+
+variable "cluster_name" {
   type        = "string"
   default     = ""
   description = "(Required) Name of the cluster."

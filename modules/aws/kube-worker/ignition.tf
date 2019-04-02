@@ -15,16 +15,33 @@ module "ignition_update_ca_certificates" {
   source = "../../ignitions/update-ca-certificates"
 }
 
+data "aws_s3_bucket_object" "kubeconfig" {
+  bucket = "${var.s3_bucket}"
+  key    = "kubeconfig"
+}
+
 module "ignition_kube_config" {
-  source = "../../ignitions/kube-config"
+  source  = "../../ignitions/kube-config"
+  content = "${data.aws_s3_bucket_object.kubeconfig.body}"
+}
 
-  cluster_name        = "${var.name}"
-  api_server_endpoint = "https://${aws_elb.master_internal.dns_name}"
+module "ignition_kubelet" {
+  source = "../../ignitions/kubelet"
 
-  kube_certs = {
-    ca_cert_pem      = "${module.kube_root_ca.cert_pem}"
-    kubelet_key_pem  = "${module.kube_kubelet_cert.private_key_pem}"
-    kubelet_cert_pem = "${module.kube_kubelet_cert.cert_pem}"
+  kubelet_flag_cloud_provider = "aws"
+  kubelet_flag_cluster_dns    = "${local.cluster_dns_ip}"
+
+  kubelet_flag_node_labels = "${join(",", compact(concat(
+    list("node-role.kubernetes.io/${var.worker_config["name"]}"),
+    var.kube_node_labels,
+  )))}"
+
+  kubelet_flag_register_with_taints = "${join(",", var.kube_node_taints)}"
+  kubelet_flag_extra_flags          = "${var.kubelet_flag_extra_flags}"
+
+  hyperkube = {
+    image_path = "gcr.io/google-containers/hyperkube-amd64"
+    image_tag  = "${var.kubernetes_version}"
   }
 }
 
@@ -32,7 +49,6 @@ data "ignition_config" "main" {
   files = ["${compact(concat(
     module.ignition_docker.files,
     module.ignition_locksmithd.files,
-    module.ignition_kube_control_plane.files,
     module.ignition_update_ca_certificates.files,
     module.ignition_kubelet.files,
     module.ignition_kube_config.files,
@@ -42,7 +58,6 @@ data "ignition_config" "main" {
   systemd = ["${compact(concat(
     module.ignition_docker.systemd_units,
     module.ignition_locksmithd.systemd_units,
-    module.ignition_kube_control_plane.systemd_units,
     module.ignition_update_ca_certificates.systemd_units,
     module.ignition_kubelet.systemd_units,
     module.ignition_kube_config.systemd_units,
@@ -52,16 +67,16 @@ data "ignition_config" "main" {
 
 resource "aws_s3_bucket_object" "ignition" {
   bucket  = "${var.s3_bucket}"
-  key     = "ign-master-${var.name}.json"
+  key     = "ign-worker-${var.worker_config["name"]}.json"
   content = "${data.ignition_config.main.rendered}"
   acl     = "private"
 
   server_side_encryption = "AES256"
 
   tags = "${merge(map(
-      "Name", "ign-master-${var.name}.json",
-      "Role", "master",
-      "kubernetes.io/cluster/${var.name}", "owned",
+      "Name", "ign-worker-${var.worker_config["name"]}.json",
+      "Role", "worker",
+      "kubernetes.io/cluster/${var.cluster_name}", "owned",
     ), var.extra_tags)}"
 }
 

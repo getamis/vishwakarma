@@ -27,52 +27,40 @@ First, Acquire Vishwakarma from github!!
 ~$ git clone https://github.com/getamis/vishwakarma.git
 ```
 
+Second, before the operation, user need to create a AWS EC2 key pairs first, and input it when there is command line prompt during the operation
+
+```
+# need to input the key pair name
+var.key_pair_name
+  The key pair name for access bastion ec2
+Enter a value:
+```
+
 ### AWS EKS
+
+
+Start to create the EKS cluster!
 
 ```
 # switch to eks_worker example folder
 
-~$ cd examples/eks_worker
+~$ cd examples/eks-cluster
 
 # initial for sync terraform module and install provider plugins
 
 ~$ terraform init
 
-Initializing modules...
-- module.network
-- module.master
-...
-Terraform has been successfully initialized!
+# create the network infrastructure
 
-# check how many aws resource will be created
+~$ terraform apply -target=module.network
 
-~$ terraform plan
+# create the eks compoment
 
-# need to input the key pair name
-var.key_pair_name
-  The key pair name for access bastion ec2
-Enter a value:
+~$ terraform apply -target=module.eks
 
-Refreshing Terraform state in-memory prior to plan...
-The refreshed state will be used to calculate this plan, but will not be
-persisted to local or remote state storage.
-...
-Plan: 76 to add, 0 to change, 0 to destroy.
-
-# start to create Kubernetes cluster
-
+# create the on demand and spot k8s worker group
 ~$ terraform apply
 
-# need to input the key pair name
-var.key_pair_name
-  The key pair name for access bastion ec2
-Enter a value:
-
-data.ignition_systemd_unit.locksmithd: Refreshing state...
-data.template_file.aws_auth_cm: Refreshing state...
-data.template_file.max_user_watches: Refreshing state...
-...
-Apply complete! Resources: 76 added, 0 changed, 0 destroyed.
 ```
 
 Verify the Kubernetes cluster is up! (Still keep in the same folder)
@@ -80,7 +68,7 @@ Verify the Kubernetes cluster is up! (Still keep in the same folder)
 ```
 # setup kubeconfig for kubectl to access eks
 
-~$ export KUBECONFIG=.terraform/kubeconfig
+~$ export KUBECONFIG=./kubeconfig
 
 # check whether there is 4 worker register successfully, it will takes several
 minutes...
@@ -88,10 +76,10 @@ minutes...
 ~$ kubectl get node
 
 NAME                          STATUS    ROLES     AGE       VERSION
-ip-10-0-48-247.ec2.internal   Ready     node      2m        v1.10.3+coreos.0
-ip-10-0-66-127.ec2.internal   Ready     node      2m        v1.10.3+coreos.0
-ip-10-0-71-121.ec2.internal   Ready     node      22s       v1.10.3+coreos.0
-ip-10-0-86-182.ec2.internal   Ready     node      2m        v1.10.3+coreos.0
+ip-10-0-48-247.ec2.internal   Ready     spot      2m        v1.12.7
+ip-10-0-66-127.ec2.internal   Ready     spot      2m        v1.12.7
+ip-10-0-71-121.ec2.internal   Ready     on-demand 22s       v1.12.7
+ip-10-0-86-182.ec2.internal   Ready     on-demand 2m        v1.12.7
 ```
 
 ### ElastiKube (Self-Hosted)
@@ -132,12 +120,12 @@ minutes...
 ~$ kubectl get node
 
 NAME                          STATUS    ROLES     AGE       VERSION
-ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.10.5+coreos.0
-ip-10-0-48-117.ec2.internal   Ready     master    9m        v1.10.5+coreos.0
-ip-10-0-66-127.ec2.internal   Ready     general   5m        v1.10.5+coreos.0
-ip-10-0-66-127.ec2.internal   Ready     general   6m        v1.10.5+coreos.0
-ip-10-0-71-121.ec2.internal   Ready     spot      3m        v1.10.5+coreos.0
-ip-10-0-86-182.ec2.internal   Ready     spot      4m        v1.10.5+coreos.0
+ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.13.4
+ip-10-0-48-117.ec2.internal   Ready     master    9m        v1.13.4
+ip-10-0-66-127.ec2.internal   Ready     on-demand 5m        v1.13.4
+ip-10-0-66-127.ec2.internal   Ready     on-demand 6m        v1.13.4
+ip-10-0-71-121.ec2.internal   Ready     spot      3m        v1.13.4
+ip-10-0-86-182.ec2.internal   Ready     spot      4m        v1.13.4
 ```
 
 ## What’s Going On?
@@ -149,18 +137,17 @@ You have completed one Kubernetes cluster the same as below picture, and let me 
 Vishwakarma include 4 major module:
 
 ### aws/network
-Create one AWS VPC including private and public subnet, and one ec2 instance called bastion hosts in public subnet, hence, one can access the resource hosting in the private subnet, refer [**Here**](VARIABLES.md#aws/network) for the detail variable inputs
+Create one AWS VPC including private and public subnet, and one ec2 instance called bastion hosts in public subnet, hence, one can access the resource hosting in the private subnet, refer [**aws/network**](VARIABLES.md#aws/network) for the detail variable inputs
 
-### aws/eks/master or aws/elastikube
-This module creates the AWS EKS cluster / ElastiKube, Terraform is responsible for the complicated k8s compoments, and it takes about 8~10 minutes to complete, refer [**Here**](VARIABLES.md#eks/master) for the detail variable inputs
-
-
-### aws/eks/worker-asg or aws/kube-worker-general
-Create a AWS auto-scaling group with CoreOS container linux and leverage ignition to provision and register to EKS cluster / ElastiKube automatically, refer [**Here**](VARIABLES.md#eks/worker-asg) for the detail variable inputs
+### aws/eks or aws/elastikube
+This module creates the AWS EKS or ElastiKube, Terraform is responsible for the complicated k8s compoments, and it takes about 10~15 minutes to complete, refer [**Here**](VARIABLES.md#aws/) for the detail variable inputs
 
 
-### aws/eks/worker-spot or aws/kube-worker-spot
-Module worker-spot almost do the same thing like worker-asg, but it uses spot fleet to launch worker node group, that means comparing to worker-asg, the cost is only half, refer [**Here**](VARIABLES.md#eks/worker-spot) for the detail variable inputs
+### aws/eks-worker-asg or aws/kube-worker
+Create a AWS auto-scaling group with CoreOS container linux and leverage ignition to provision and register to EKS cluster / ElastiKube automatically.
+
+Due to using AWS launch template, it's up to user to choose spot or on demand instance type, refer [**Here**](VARIABLES.md#worker) for the detail variable inputs
+
 
 ## Contributing
 
