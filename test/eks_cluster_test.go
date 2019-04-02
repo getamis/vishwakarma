@@ -12,21 +12,21 @@ import (
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
 
-func TestElastikubeCluster(t *testing.T) {
+func TestEKSCluster(t *testing.T) {
 
 	t.Parallel()
 
-	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/elastikube-cluster")
+	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/eks-cluster")
 
 	// A unique ID we can use to namespace resources so we don't clash with anything already in the AWS account or
 	// tests running in parallel
-	//uniqueID := "rn2ws0"
+	//uniqueID := "lolwmf"
 	uniqueID := strings.ToLower(random.UniqueId())
 	awsRegion := "us-west-2"
 
 	// Preapre all terraform options
 	terraformOptionsNetwork := configureTerraformOptions(t, exampleFolder, "module.network", uniqueID, awsRegion)
-	terraformOptionsKubernetes := configureTerraformOptions(t, exampleFolder, "module.kubernetes", uniqueID, awsRegion)
+	terraformOptionsKubernetes := configureTerraformOptions(t, exampleFolder, "module.eks", uniqueID, awsRegion)
 	terraformOptionsWorkerSpot := configureTerraformOptions(t, exampleFolder, "module.worker_spot", uniqueID, awsRegion)
 	terraformOptionsWorkerOnDemand := configureTerraformOptions(t, exampleFolder, "module.worker_on_demand", uniqueID, awsRegion)
 	terraformOptionsAll := configureTerraformOptions(t, exampleFolder, "", uniqueID, awsRegion)

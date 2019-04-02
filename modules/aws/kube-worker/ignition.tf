@@ -67,16 +67,16 @@ data "ignition_config" "main" {
 
 resource "aws_s3_bucket_object" "ignition" {
   bucket  = "${var.s3_bucket}"
-  key     = "ign-worker-${var.worker_config["name"]}-${var.name}.json"
+  key     = "ign-worker-${var.worker_config["name"]}.json"
   content = "${data.ignition_config.main.rendered}"
   acl     = "private"
 
   server_side_encryption = "AES256"
 
   tags = "${merge(map(
-      "Name", "ign-worker-${var.worker_config["name"]}-${var.name}.json",
+      "Name", "ign-worker-${var.worker_config["name"]}.json",
       "Role", "worker",
-      "kubernetes.io/cluster/${var.name}", "owned",
+      "kubernetes.io/cluster/${var.cluster_name}", "owned",
     ), var.extra_tags)}"
 }
 

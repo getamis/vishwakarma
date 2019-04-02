@@ -1,7 +1,6 @@
 locals {
-  ami_owner = "595879546273"
-  arn       = "aws"
-
+  coreos_account_id       = "595879546273"
+  arn                     = "aws"
   container_linux_channel = "stable"
   container_linux_version = "latest"
 }
@@ -15,7 +14,7 @@ module "container_linux" {
 
 data "aws_ami" "coreos_ami" {
 
-  owners = ["${local.ami_owner}"]
+  owners = ["${local.coreos_account_id}"]
 
   filter {
     name   = "name"
@@ -34,6 +33,6 @@ data "aws_ami" "coreos_ami" {
 
   filter {
     name   = "owner-id"
-    values = ["${local.ami_owner}"]
+    values = ["${local.coreos_account_id}"]
   }
 }

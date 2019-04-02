@@ -137,10 +137,10 @@ You have completed one Kubernetes cluster the same as below picture, and let me 
 Vishwakarma include 4 major module:
 
 ### aws/network
-Create one AWS VPC including private and public subnet, and one ec2 instance called bastion hosts in public subnet, hence, one can access the resource hosting in the private subnet, refer [**Here**](VARIABLES.md#aws/network) for the detail variable inputs
+Create one AWS VPC including private and public subnet, and one ec2 instance called bastion hosts in public subnet, hence, one can access the resource hosting in the private subnet, refer [**aws/network**](VARIABLES.md#aws/network) for the detail variable inputs
 
 ### aws/eks or aws/elastikube
-This module creates the AWS EKS cluster / ElastiKube, Terraform is responsible for the complicated k8s compoments, and it takes about 8~10 minutes to complete, refer [**Here**](VARIABLES.md#master) for the detail variable inputs
+This module creates the AWS EKS or ElastiKube, Terraform is responsible for the complicated k8s compoments, and it takes about 10~15 minutes to complete, refer [**Here**](VARIABLES.md#aws/) for the detail variable inputs
 
 
 ### aws/eks-worker-asg or aws/kube-worker

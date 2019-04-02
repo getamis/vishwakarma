@@ -1,25 +1,16 @@
 locals {
-  ami_owner = "595879546273"
-  arn       = "aws"
-
-  container_linux_channel = "stable"
-  container_linux_version = "latest"
+  eks_account_id       = "602401143452"
+  arn                     = "aws"
 }
 
-module "container_linux" {
-  source = "../container_linux"
+data "aws_ami" "eks_worker_ami" {
 
-  release_channel = "${local.container_linux_channel}"
-  release_version = "${local.container_linux_version}"
-}
-
-data "aws_ami" "coreos_ami" {
-
-  owners = ["${local.ami_owner}"]
+  owners = ["${local.eks_account_id}"]
+  most_recent = true
 
   filter {
     name   = "name"
-    values = ["CoreOS-${local.container_linux_channel}-${module.container_linux.version}-*"]
+    values = ["amazon-eks-node-1.12-*"]
   }
 
   filter {
@@ -30,10 +21,5 @@ data "aws_ami" "coreos_ami" {
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
-  }
-
-  filter {
-    name   = "owner-id"
-    values = ["${local.ami_owner}"]
   }
 }

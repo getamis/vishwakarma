@@ -10,30 +10,14 @@ variable "aws_az_number" {
   default = "3"
 }
 
-variable "aws_iam_authenticator_url" {
-  type = "string"
-  default = "https://amazon-eks.s3-us-west-2.amazonaws.com/1.12.7/2019-03-27/bin/linux/amd64/aws-iam-authenticator"
-}
-
 variable "cluster_name" {
-  type    = "string"
-}
-
-variable "extra_ignition_file_ids" {
-  type        = "list"
-  default     = []
-  description = "(Optional) Additional ignition file IDs. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details."
-}
-
-variable "extra_ignition_systemd_unit_ids" {
-  type        = "list"
-  default     = []
-  description = "(Optional) Additional ignition systemd unit IDs. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details."
-}
-variable "kubernetes_version" {
   type        = "string"
-  default     = "1.12.7"
-  description = "(Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
+  description = "the eks cluster name"
+}
+
+variable "enable_autoscaler" {
+  default     = false
+  description = "enable autoscaler or not"
 }
 
 variable "kube_node_labels" {
@@ -51,33 +35,10 @@ Register the node with the given list of taints ("<key>=<value>:<effect>").
 EOF
 }
 
-variable "kubelet_flag_extra_flags" {
-  type        = "list"
-  default     = []
-  description = "Extra user-provided flags to kubelet."
-}
-
 variable "load_balancer_ids" {
   type        = "list"
   default     = []
   description = "(Optional) A list of elastic load balancer names to add to the autoscaling group names. Only valid for classic load balancers. For ALBs, use target_group_arns instead."
-}
-
-variable "ntp_servers" {
-  type        = "list"
-  default     = []
-  description = "A list of NTP servers to be used for time synchronization on the cluster nodes."
-}
-
-variable "reboot_strategy" {
-  type    = "string"
-  default = "etcd-lock"
-  description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
-}
-
-variable "s3_bucket" {
-  description = "The s3 bucket to store ignition file for EC2 userdata"
-  type        = "string"
 }
 
 variable "security_group_ids" {

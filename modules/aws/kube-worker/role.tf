@@ -14,18 +14,18 @@ data "aws_iam_policy_document" "default" {
 }
 
 resource "aws_iam_role" "worker" {
-  name_prefix        = "${var.name}-worker-"
+  name_prefix        = "${var.cluster_name}-worker-"
   assume_role_policy = "${data.aws_iam_policy_document.default.json}"
 }
 
 resource "aws_iam_instance_profile" "worker" {
-  name_prefix = "${var.name}-worker-${var.worker_config["name"]}-"
+  name_prefix = "${var.cluster_name}-worker-${var.worker_config["name"]}-"
   role        = "${var.role_name == "" ? join("|", aws_iam_role.worker.*.name) : var.role_name}"
 }
 
 resource "aws_iam_policy" "worker" {
   count       = "${var.role_name == "" ? 1 : 0}"
-  name_prefix = "${var.name}-worker-${var.worker_config["name"]}-"
+  name_prefix = "${var.cluster_name}-worker-${var.worker_config["name"]}-"
   path        = "/"
   description = "policy for kubernetes workers"
 

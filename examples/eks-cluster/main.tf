@@ -45,7 +45,6 @@ module "worker_on_demand" {
 
   cluster_name       = "${local.cluster_name}"
   aws_region         = "${var.aws_region}"
-  kubernetes_version = "${var.kubernetes_version}"
 
   security_group_ids = ["${module.eks.worker_sg_id}"]
   subnet_ids         = ["${module.network.private_subnet_ids}"]
@@ -64,7 +63,6 @@ module "worker_on_demand" {
     spot_instance_pools                      = 1
   }
 
-  s3_bucket = "${module.eks.s3_bucket}"
   ssh_key   = "${var.key_pair_name}"
 
   extra_tags = "${merge(map(
@@ -82,7 +80,6 @@ module "worker_spot" {
 
   cluster_name       = "${local.cluster_name}"
   aws_region         = "${var.aws_region}"
-  kubernetes_version = "${var.kubernetes_version}"
 
   security_group_ids = ["${module.eks.worker_sg_id}"]
   subnet_ids         = ["${module.network.private_subnet_ids}"]
@@ -101,7 +98,6 @@ module "worker_spot" {
     spot_instance_pools                      = 1
   }
 
-  s3_bucket = "${module.eks.s3_bucket}"
   ssh_key   = "${var.key_pair_name}"
 
   extra_tags = "${merge(map(

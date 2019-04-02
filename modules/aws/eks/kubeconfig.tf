@@ -53,7 +53,7 @@ resource "aws_s3_bucket_object" "kubeconfig" {
 }
 
 resource "local_file" "kubeconfig" {
-    count    = "${var.write_kubeconfig ? 1 : 0}"
+    count    = "${var.kubeconfig_output_flag ? 1 : 0}"
     content  = "${module.ignition_kubeconfig.rendered}"
     filename = "${var.config_output_path}/kubeconfig"
 }

@@ -20,7 +20,7 @@ data "null_data_source" "tags" {
 }
 
 resource "aws_autoscaling_group" "worker" {
-  name_prefix          = "${var.name}-worker-${var.worker_config["name"]}-"
+  name_prefix          = "${var.cluster_name}-worker-${var.worker_config["name"]}-"
   desired_capacity     = "${var.worker_config["instance_count"]}"
   max_size             = "${var.worker_config["instance_count"] * 3}"
   min_size             = "${var.worker_config["instance_count"]}"
@@ -54,12 +54,17 @@ resource "aws_autoscaling_group" "worker" {
   tags = [
     {
       key                 = "Name"
-      value               = "${var.name}-worker-${var.worker_config["name"]}"
+      value               = "${var.cluster_name}-worker-${var.worker_config["name"]}"
       propagate_at_launch = true
     },
     {
-      key                 = "kubernetes.io/cluster/${var.name}"
+      key                 = "kubernetes.io/cluster/${var.cluster_name}"
       value               = "owned"
+      propagate_at_launch = true
+    },
+    {
+      key                 = "k8s.io/cluster-autoscaler/enabled"
+      value               = "${var.enable_autoscaler}"
       propagate_at_launch = true
     },
   ]
@@ -70,7 +75,7 @@ resource "aws_autoscaling_group" "worker" {
 resource "aws_launch_template" "worker" {
   instance_type = "${var.worker_config["ec2_type_1"]}"
   image_id      = "${data.aws_ami.coreos_ami.image_id}"
-  name_prefix   = "${var.name}-worker-${var.worker_config["name"]}-"  
+  name_prefix   = "${var.cluster_name}-worker-${var.worker_config["name"]}-"  
 
   vpc_security_group_ids = [
     "${var.security_group_ids}",

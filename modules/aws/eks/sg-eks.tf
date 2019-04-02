@@ -32,7 +32,7 @@ resource "aws_security_group_rule" "eks_ingress_https_from_vpc" {
   security_group_id = "${aws_security_group.eks.id}"
 
   protocol    = "tcp"
-  cidr_blocks = "${var.cidr_access_eks_endpoint}"
+  cidr_blocks = "${var.cidr_access_eks_https}"
   from_port   = 443
   to_port     = 443
 }

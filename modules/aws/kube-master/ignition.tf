@@ -18,7 +18,7 @@ module "ignition_update_ca_certificates" {
 module "ignition_kube_config" {
   source = "../../ignitions/kube-config"
 
-  name                = "${var.name}"
+  cluster_name        = "${var.name}"
   api_server_endpoint = "https://${aws_elb.master_internal.dns_name}"
 
   kube_certs = {

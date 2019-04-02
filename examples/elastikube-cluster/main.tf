@@ -76,7 +76,7 @@ module "kubernetes" {
 module "worker_on_demand" {
   source = "../../modules/aws/kube-worker"
 
-  name               = "${local.cluster_name}"
+  cluster_name       = "${local.cluster_name}"
   aws_region         = "${var.aws_region}"
   kubernetes_version = "${local.kubernetes_version}"
   kube_service_cidr  = "${var.service_cidr}"
@@ -85,7 +85,7 @@ module "worker_on_demand" {
   subnet_ids         = ["${module.network.private_subnet_ids}"]
 
   worker_config = {
-    name             = "on_demand"
+    name             = "on-demand"
     instance_count   = "2"
     ec2_type_1       = "t3.medium"
     ec2_type_2       = "t2.medium"
@@ -114,7 +114,7 @@ module "worker_on_demand" {
 module "worker_spot" {
   source = "../../modules/aws/kube-worker"
 
-  name               = "${local.cluster_name}"
+  cluster_name       = "${local.cluster_name}"
   aws_region         = "${var.aws_region}"
   kubernetes_version = "${local.kubernetes_version}"
   kube_service_cidr  = "${var.service_cidr}"

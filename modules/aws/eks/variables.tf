@@ -4,7 +4,7 @@ variable "aws_region" {
   default     = ""
 }
 
-variable "cidr_access_eks_endpoint" {
+variable "cidr_access_eks_https" {
   description = "The CIDR block of AWS VPC for eks cluster"
   type        = "list"
   default     = ["0.0.0.0/0"]
@@ -45,7 +45,7 @@ variable "config_output_path" {
   default     = "./terraform"
 }
 
-variable "write_kubeconfig" {
+variable "kubeconfig_output_flag" {
   description = "Whether to write a Kubectl config file containing the cluster configuration. Saved to `config_output_path`."
   default     = true
 }
@@ -55,7 +55,7 @@ variable "manage_aws_auth" {
   default     = true
 }
 
-variable "write_aws_auth_config" {
+variable "aws_auth_config_output_flag" {
   description = "Whether to write the aws-auth configmap file."
   default     = true
 }

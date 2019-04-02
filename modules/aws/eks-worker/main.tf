@@ -11,10 +11,6 @@ provider "template" {
   version = "1.0.0"
 }
 
-provider "ignition" {
-  version = "1.0.0"
-}
-
 provider "null" {
   version = "1.0.0"
 }

@@ -54,7 +54,7 @@ data "template_file" "config_map_aws_auth" {
 resource "local_file" "config_map_aws_auth" {
   content  = "${data.template_file.config_map_aws_auth.rendered}"
   filename = "${var.config_output_path}/config-map-aws-auth_${local.cluster_name}.yaml"
-  count    = "${var.write_aws_auth_config ? 1 : 0}"
+  count    = "${var.aws_auth_config_output_flag ? 1 : 0}"
 }
 
 resource "null_resource" "update_config_map_aws_auth" {

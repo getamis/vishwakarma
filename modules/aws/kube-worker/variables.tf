@@ -4,9 +4,15 @@ variable "aws_region" {
   description = "(Optional) The AWS region"
 }
 
-variable "name" {
+variable "cluster_name" {
   type        = "string"
   description = " (Required) Name of the cluster."
+}
+
+variable "enable_autoscaler" {
+  type        = "string"
+  default     = "false"
+  description = "enable autoscaler or not"
 }
 
 variable "role_name" {
