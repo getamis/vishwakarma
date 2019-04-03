@@ -1,7 +1,7 @@
 variable "aws_region" {
   type        = "string"
   default     = "us-west-2"
-  description = "(Optional) The AWS region"
+  description = "The AWS region"
 }
 
 variable "aws_az_number" {
@@ -38,7 +38,7 @@ EOF
 variable "load_balancer_ids" {
   type        = "list"
   default     = []
-  description = "(Optional) A list of elastic load balancer names to add to the autoscaling group names. Only valid for classic load balancers. For ALBs, use target_group_arns instead."
+  description = "A list of elastic load balancer names to add to the autoscaling group names. Only valid for classic load balancers. For ALBs, use target_group_arns instead."
 }
 
 variable "security_group_ids" {
@@ -46,7 +46,7 @@ variable "security_group_ids" {
   default = []
 
   description = <<EOF
-    (Optional) List of security group IDs for the cross-account elastic network interfaces
+    List of security group IDs for the cross-account elastic network interfaces
     to use to allow communication between your worker nodes and the Kubernetes control plane.
 EOF
 }
@@ -56,7 +56,7 @@ variable "subnet_ids" {
   default = []
 
   description = <<EOF
-    (Required) List of subnet IDs. Must be in at least two different availability zones.
+    List of subnet IDs. Must be in at least two different availability zones.
     Cross-account elastic network interfaces will be created in these subnets to allow
     communication between your worker nodes and the Kubernetes control plane.
 EOF
@@ -71,7 +71,7 @@ variable "ssh_key" {
 variable "target_group_arns" {
   type        = "list"
   default     = []
-  description = "(Optional) A list of aws_alb_target_group ARNs, for use with Application Load Balancing."
+  description = "A list of aws_alb_target_group ARNs, for use with Application Load Balancing."
 }
 
 variable "extra_worker_policy_arns" {
@@ -97,7 +97,7 @@ variable "worker_config" {
     spot_instance_pools                      = 1
   }
 
-  description = "(Optional) Desired worker nodes configuration."
+  description = "Desired worker nodes configuration."
 }
 
 variable "extra_tags" {

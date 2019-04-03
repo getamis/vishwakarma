@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## [[v0.0.15](https://github.com/getamis/vishwakarma/compare/v0.0.15...v0.0.14)] - 2019-04-03]
+
+### Added
+- Add terratest script for eks example/eks-cluster
+- Add tag parameter for autoscaler within eks
+- Change the auth config management by refering to another [eks terraform module](https://github.com/terraform-aws-modules/terraform-aws-eks)
+
+### Changed
+- Upgrade eks to algin with the latest official worker group provision method
+- The eks worker group changed AMI from CoreOS to official EKS AMI
+
 ## [[v0.0.14](https://github.com/getamis/vishwakarma/compare/v0.0.14...v0.0.13)] - 2019-03-28]
 
 ### Added

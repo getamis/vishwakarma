@@ -1,24 +1,24 @@
 variable "aws_region" {
   type        = "string"
   default     = "us-east-1"
-  description = "(Optional) The AWS region"
+  description = "The AWS region"
 }
 
 variable "cluster_name" {
   type        = "string"
-  description = " (Required) Name of the cluster."
+  description = "Name of the cluster."
 }
 
 variable "enable_autoscaler" {
   type        = "string"
   default     = "false"
-  description = "enable autoscaler or not"
+  description = "Enable to add autoscaler tag or not"
 }
 
 variable "role_name" {
   type        = "string"
   default     = ""
-  description = "(Optional) The Amazon Resource Name of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
+  description = "The Amazon Resource Name of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
 }
 
 variable "security_group_ids" {
@@ -26,7 +26,7 @@ variable "security_group_ids" {
   default = []
 
   description = <<EOF
-    (Optional) List of security group IDs for the cross-account elastic network interfaces
+    List of security group IDs for the cross-account elastic network interfaces
     to use to allow communication between your worker nodes and the Kubernetes control plane.
 EOF
 }
@@ -36,7 +36,7 @@ variable "subnet_ids" {
   default = []
 
   description = <<EOF
-    (Required) List of subnet IDs. Must be in at least two different availability zones.
+    List of subnet IDs. Must be in at least two different availability zones.
     Cross-account elastic network interfaces will be created in these subnets to allow
     communication between your worker nodes and the Kubernetes control plane.
 EOF
@@ -45,7 +45,7 @@ EOF
 variable "kubernetes_version" {
   type        = "string"
   default     = "v1.13.4"
-  description = "(Optional) Desired Kubernetes kubelet version. If you do not specify a value, the latest available version is used."
+  description = "Desired Kubernetes kubelet version. If you do not specify a value, the latest available version is used."
 }
 
 variable "worker_config" {
@@ -65,7 +65,7 @@ variable "worker_config" {
     spot_instance_pools                      = 1
   }
 
-  description = "(Optional) Desired worker nodes configuration."
+  description = "Desired worker nodes configuration."
 }
 
 variable "ssh_key" {
@@ -99,7 +99,7 @@ variable "s3_bucket" {
   default = ""
 
   description = <<EOF
-    (Optional) Unique name under which the Amazon S3 bucket will be created. Bucket name must start with a lower case name and is limited to 63 characters.
+    Unique name under which the Amazon S3 bucket will be created. Bucket name must start with a lower case name and is limited to 63 characters.
     If name is not provided the installer will construct the name using "name" and current AWS region.
 EOF
 }
@@ -107,31 +107,31 @@ EOF
 variable "reboot_strategy" {
   type    = "string"
   default = "etcd-lock"
-  description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
+  description = "CoreOS reboot strategies on updates, two option here: etcd-lock or off"
 }
 
 variable "extra_ignition_file_ids" {
   type        = "list"
   default     = []
-  description = "(Optional) Additional ignition file IDs. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details."
+  description = "Additional ignition file IDs. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details."
 }
 
 variable "extra_ignition_systemd_unit_ids" {
   type        = "list"
   default     = []
-  description = "(Optional) Additional ignition systemd unit IDs. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details."
+  description = "Additional ignition systemd unit IDs. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details."
 }
 
 variable "load_balancer_ids" {
   type        = "list"
   default     = []
-  description = "(Optional) A list of elastic load balancer names to add to the autoscaling group names. Only valid for classic load balancers. For ALBs, use target_group_arns instead."
+  description = "A list of elastic load balancer names to add to the autoscaling group names. Only valid for classic load balancers. For ALBs, use target_group_arns instead."
 }
 
 variable "target_group_arns" {
   type        = "list"
   default     = []
-  description = "(Optional) A list of aws_alb_target_group ARNs, for use with Application Load Balancing."
+  description = "A list of aws_alb_target_group ARNs, for use with Application Load Balancing."
 }
 
 variable "kubelet_flag_extra_flags" {

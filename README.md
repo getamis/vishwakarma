@@ -134,19 +134,19 @@ You have completed one Kubernetes cluster the same as below picture, and let me 
 ![Alt text](https://cdn-images-1.medium.com/max/800/1*tvAY88CzHhxo4lBB6OUSyA.png)
 
 ## Modules
-Vishwakarma include 4 major module:
+Vishwakarma include serveral major modules:
 
 ### aws/network
 Create one AWS VPC including private and public subnet, and one ec2 instance called bastion hosts in public subnet, hence, one can access the resource hosting in the private subnet, refer [**aws/network**](VARIABLES.md#aws/network) for the detail variable inputs
 
-### aws/eks or aws/elastikube
-This module creates the AWS EKS or ElastiKube, Terraform is responsible for the complicated k8s compoments, and it takes about 10~15 minutes to complete, refer [**Here**](VARIABLES.md#aws/) for the detail variable inputs
+### aws/eks and aws/elastikube
+This two modules creates the K8S control plane (AWS EKS and ElastiKube), Terraform is responsible for the complicated k8s compoments, and it takes about 10~15 minutes to complete, refer [**aws/eks**](VARIABLES.md#aws/eks) and [**aws/eks**](VARIABLES.md#aws/elastikube) for the detail variable inputs
 
 
-### aws/eks-worker-asg or aws/kube-worker
-Create a AWS auto-scaling group with CoreOS container linux and leverage ignition to provision and register to EKS cluster / ElastiKube automatically.
+### aws/eks-worker-asg and aws/kube-worker
+Create a AWS auto-scaling group with CoreOS container linux and leverage ignition to provision and register to EKS cluster or ElastiKube automatically.
 
-Due to using AWS launch template, it's up to user to choose spot or on demand instance type, refer [**Here**](VARIABLES.md#worker) for the detail variable inputs
+Due to using AWS launch template, hence, it's up to user to choose spot or on demand instance type by changing the variable, refer [**aws/eks-worker**](VARIABLES.md#aws/eks-worker) and [**aws/kube-worker**](VARIABLES.md#aws/kube-worker) for the detail variable inputs
 
 
 ## Contributing

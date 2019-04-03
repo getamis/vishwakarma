@@ -36,7 +36,7 @@ variable "project" {
 variable "kubernetes_version" {
   type        = "string"
   default     = "1.12.7"
-  description = "(Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
+  description = "Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
 }
 
 variable "config_output_path" {
@@ -148,12 +148,12 @@ variable "lb_sg_ids" {
 
 variable "endpoint_private_access" {
   default = true
-  description = "(Optional) kubernetes apiserver endpoint"
+  description = "Kubernetes apiserver endpoint"
 }
 
 variable "endpoint_public_access" {
   default = false
-  description = "(Optional) kubernetes apiserver endpoint"
+  description = "Kubernetes apiserver endpoint"
 }
 
 variable "local_exec_interpreter" {

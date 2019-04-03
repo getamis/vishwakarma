@@ -18,7 +18,7 @@ variable "cidr_block" {
 variable "phase" {
   description = "Specific which phase service will be hosted"
   type        = "string"
-  default     = "dev"
+  default     = "test"
 }
 
 variable "project" {
@@ -36,7 +36,7 @@ variable "bastion_ami_id" {
 variable "bastion_instance_type" {
   description = "The AWS instance type for bastion"
   type        = "string"
-  default     = "t2.micro"
+  default     = "t3.micro"
 }
 
 variable "bastion_key_name" {
@@ -50,7 +50,7 @@ variable "private_zone" {
 }
 
 variable "extra_tags" {
-  description = "Extra AWS tags to be applied to created resources."
+  description = "Extra AWS tags to be applied to created resources"
   type        = "map"
   default     = {}
 }
