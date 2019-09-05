@@ -2,22 +2,16 @@ locals {
   cluster_name = "${var.phase}-${var.project}"
 }
 
-provider "aws" {
-  version = "2.3.0"
-  region  = "${var.aws_region}"
-}
-
 # ---------------------------------------------------------------------------------------------------------------------
 # Network
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "network" {
   source           = "../../modules/aws/network"
-  aws_region       = "${var.aws_region}"
-  bastion_key_name = "${var.key_pair_name}"
-  project          = "${var.project}"
-  phase            = "${var.phase}"
-  extra_tags       = "${var.extra_tags}"
+  bastion_key_name = var.key_pair_name
+  project          = var.project
+  phase            = var.phase
+  extra_tags       = var.extra_tags
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -25,14 +19,13 @@ module "network" {
 # ---------------------------------------------------------------------------------------------------------------------
 module "eks" {
   source                 = "../../modules/aws/eks"
-  aws_region             = "${var.aws_region}"
-  kubernetes_version     = "${var.kubernetes_version}"
-  project                = "${var.project}"
-  phase                  = "${var.phase}"
-  exist_subnet_ids       = "${module.network.private_subnet_ids}"
-  endpoint_public_access = "${var.endpoint_public_access}"
-  worker_groups          = "${var.worker_groups}"
-  extra_tags             = "${var.extra_tags}"
+  kubernetes_version     = var.kubernetes_version
+  project                = var.project
+  phase                  = var.phase
+  exist_subnet_ids       = module.network.private_subnet_ids
+  endpoint_public_access = var.endpoint_public_access
+  worker_groups          = var.worker_groups
+  extra_tags             = var.extra_tags
 }
 
 
@@ -43,11 +36,10 @@ module "eks" {
 module "worker_on_demand" {
   source = "../../modules/aws/eks-worker"
 
-  cluster_name       = "${local.cluster_name}"
-  aws_region         = "${var.aws_region}"
-
-  security_group_ids = ["${module.eks.worker_sg_id}"]
-  subnet_ids         = ["${module.network.private_subnet_ids}"]
+  cluster_name       = local.cluster_name
+  kubernetes_version = var.kubernetes_version
+  security_group_ids = [module.eks.worker_sg_id]
+  subnet_ids         = module.network.private_subnet_ids
 
   worker_config = {
     name             = "on-demand"
@@ -63,12 +55,12 @@ module "worker_on_demand" {
     spot_instance_pools                      = 1
   }
 
-  ssh_key   = "${var.key_pair_name}"
+  ssh_key   = var.key_pair_name
 
-  extra_tags = "${merge(map(
-      "Phase", "${var.phase}",
-      "Project", "${var.project}",
-    ), var.extra_tags)}"
+  extra_tags = merge(map(
+      "Phase", var.phase,
+      "Project", var.project,
+    ), var.extra_tags)
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -78,11 +70,10 @@ module "worker_on_demand" {
 module "worker_spot" {
   source = "../../modules/aws/eks-worker"
 
-  cluster_name       = "${local.cluster_name}"
-  aws_region         = "${var.aws_region}"
-
-  security_group_ids = ["${module.eks.worker_sg_id}"]
-  subnet_ids         = ["${module.network.private_subnet_ids}"]
+  cluster_name       = local.cluster_name
+  kubernetes_version = var.kubernetes_version
+  security_group_ids = [module.eks.worker_sg_id]
+  subnet_ids         = module.network.private_subnet_ids
 
   worker_config = {
     name             = "spot"
@@ -98,10 +89,10 @@ module "worker_spot" {
     spot_instance_pools                      = 1
   }
 
-  ssh_key   = "${var.key_pair_name}"
+  ssh_key   = var.key_pair_name
 
-  extra_tags = "${merge(map(
-      "Phase", "${var.phase}",
-      "Project", "${var.project}",
-    ), var.extra_tags)}"
+  extra_tags = merge(map(
+      "Phase", var.phase,
+      "Project", var.project,
+    ), var.extra_tags)
 }

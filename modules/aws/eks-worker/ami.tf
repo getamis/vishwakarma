@@ -1,16 +1,16 @@
 locals {
-  eks_account_id       = "602401143452"
-  arn                     = "aws"
+  eks_account_id = "602401143452"
+  arn            = "aws"
 }
 
 data "aws_ami" "eks_worker_ami" {
 
-  owners = ["${local.eks_account_id}"]
+  owners      = [local.eks_account_id]
   most_recent = true
 
   filter {
     name   = "name"
-    values = ["amazon-eks-node-1.12-*"]
+    values = ["amazon-eks-node-${var.kubernetes_version}-*"]
   }
 
   filter {

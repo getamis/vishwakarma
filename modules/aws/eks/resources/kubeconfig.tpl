@@ -4,7 +4,7 @@ kind: Config
 
 clusters:
 - cluster:
-    server: ${cluster_endpoint}
+    server: ${endpoint}
     certificate-authority-data: ${cluster_auth_base64}
   name: ${kubeconfig_name}
 
@@ -12,9 +12,9 @@ contexts:
 - context:
     cluster: ${kubeconfig_name}
     user: ${kubeconfig_name}
-  name: default
+  name: ${kubeconfig_name}
 
-current-context: default
+current-context: ${kubeconfig_name}
 
 users:
 - name: ${kubeconfig_name}
