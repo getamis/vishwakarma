@@ -1,6 +1,6 @@
 output "systemd_units" {
   value = [
-    "${data.ignition_systemd_unit.kube_addon_manager.id}",
+    data.ignition_systemd_unit.kube_addon_manager.rendered
   ]
 }
 

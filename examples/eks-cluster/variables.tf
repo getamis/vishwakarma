@@ -24,7 +24,7 @@ variable "phase" {
 variable "kubernetes_version" {
   description = "(Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
   type        = string
-  default     = "1.13"
+  default     = "1.14"
 }
 
 variable "endpoint_public_access" {

@@ -1,17 +1,17 @@
 output "systemd_units" {
   value = [
-    "${data.ignition_systemd_unit.etcd.id}",
+    data.ignition_systemd_unit.etcd.rendered
   ]
 }
 
 output "files" {
   value = [
-    "${data.ignition_file.etcd_ca.id}",
-    "${data.ignition_file.etcd_client_cert.id}",
-    "${data.ignition_file.etcd_client_key.id}",
-    "${data.ignition_file.etcd_server_cert.id}",
-    "${data.ignition_file.etcd_server_key.id}",
-    "${data.ignition_file.etcd_peer_cert.id}",
-    "${data.ignition_file.etcd_peer_key.id}",
+    data.ignition_file.etcd_ca.rendered,
+    data.ignition_file.etcd_client_cert.rendered,
+    data.ignition_file.etcd_client_key.rendered,
+    data.ignition_file.etcd_server_cert.rendered,
+    data.ignition_file.etcd_server_key.rendered,
+    data.ignition_file.etcd_peer_cert.rendered,
+    data.ignition_file.etcd_peer_key.rendered
   ]
 }

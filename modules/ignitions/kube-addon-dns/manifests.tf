@@ -1,4 +1,4 @@
 locals {
   filesystem = "root"
-  mode       = 0644
+  mode       = 420
 }

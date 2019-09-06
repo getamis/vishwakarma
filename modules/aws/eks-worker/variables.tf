@@ -31,7 +31,7 @@ EOF
 
 variable "kubernetes_version" {
   type        = string
-  default     = "1.13"
+  default     = "1.14"
   description = "Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
 }
 

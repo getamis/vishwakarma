@@ -4,6 +4,6 @@ output "systemd_units" {
 
 output "files" {
   value = [
-    "${data.ignition_file.pod_checkpointer_yaml.id}",
+    data.ignition_file.pod_checkpointer_yaml.rendered
   ]
 }

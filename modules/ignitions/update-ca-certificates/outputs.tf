@@ -1,6 +1,6 @@
 output "systemd_units" {
   value = [
-    "${data.ignition_systemd_unit.update_ca_certificates_dropin.id}",
+    data.ignition_systemd_unit.update_ca_certificates_dropin.rendered
   ]
 }
 

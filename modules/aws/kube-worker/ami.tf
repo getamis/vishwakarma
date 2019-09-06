@@ -8,13 +8,13 @@ locals {
 module "container_linux" {
   source = "../container_linux"
 
-  release_channel = "${local.container_linux_channel}"
-  release_version = "${local.container_linux_version}"
+  release_channel = local.container_linux_channel
+  release_version = local.container_linux_version
 }
 
 data "aws_ami" "coreos_ami" {
 
-  owners = ["${local.coreos_account_id}"]
+  owners = [local.coreos_account_id]
 
   filter {
     name   = "name"
@@ -29,10 +29,5 @@ data "aws_ami" "coreos_ami" {
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
-  }
-
-  filter {
-    name   = "owner-id"
-    values = ["${local.coreos_account_id}"]
   }
 }

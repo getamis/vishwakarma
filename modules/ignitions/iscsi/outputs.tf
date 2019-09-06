@@ -1,6 +1,6 @@
 output "systemd_units" {
   value = [
-    "${data.ignition_systemd_unit.iscsi.id}",
+    data.ignition_systemd_unit.iscsi.rendered
   ]
 }
 

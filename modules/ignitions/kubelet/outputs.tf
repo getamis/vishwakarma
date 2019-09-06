@@ -1,11 +1,11 @@
 output "systemd_units" {
   value = [
-    "${data.ignition_systemd_unit.kubelet.id}",
+    data.ignition_systemd_unit.kubelet.rendered
   ]
 }
 
 output "files" {
   value = [
-    "${data.ignition_file.kubelet_env.id}",
+    data.ignition_file.kubelet_env.rendered
   ]
 }

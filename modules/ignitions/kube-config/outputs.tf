@@ -4,10 +4,10 @@ output "systemd_units" {
 
 output "files" {
   value = [
-    "${data.ignition_file.kubeconfig.id}",
+    data.ignition_file.kubeconfig.rendered,
   ]
 }
 
 output "content" {
-  value = "${coalesce(var.content, join("", data.template_file.kubeconfig.*.rendered))}"
+  value = coalesce(var.content, join("", data.template_file.kubeconfig.*.rendered))
 }

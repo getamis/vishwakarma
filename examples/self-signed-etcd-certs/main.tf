@@ -4,7 +4,7 @@ module "etcd_ca" {
   cert_config = {
     common_name           = "etcd"
     organization          = "etcd"
-    validity_period_hours = "${var.validity_period_hours}"
+    validity_period_hours = var.validity_period_hours
   }
 
   rsa_bits    = 2048
@@ -15,15 +15,15 @@ module "etcd_server_cert" {
   source = "../../modules/tls/certificate"
 
   ca_config = {
-    algorithm = "${module.etcd_ca.algorithm}"
-    key_pem   = "${module.etcd_ca.private_key_pem}"
-    cert_pem  = "${module.etcd_ca.cert_pem}"
+    algorithm = module.etcd_ca.algorithm
+    key_pem   = module.etcd_ca.private_key_pem
+    cert_pem  = module.etcd_ca.cert_pem
   }
 
   cert_config = {
     common_name           = "etcd"
     organization          = "etcd"
-    validity_period_hours = "${var.validity_period_hours}"
+    validity_period_hours = var.validity_period_hours
   }
 
   cert_hostnames = [
@@ -34,8 +34,8 @@ module "etcd_server_cert" {
 
   cert_ip_addresses = [
     "127.0.0.1",
-    "${cidrhost(var.service_cidr, 15)}",
-    "${cidrhost(var.service_cidr, 20)}",
+    cidrhost(var.service_cidr, 15),
+    cidrhost(var.service_cidr, 20),
   ]
 
   cert_uses = ["server_auth"]
@@ -47,15 +47,15 @@ module "etcd_client_cert" {
   source = "../../modules/tls/certificate"
 
   ca_config = {
-    algorithm = "${module.etcd_ca.algorithm}"
-    key_pem   = "${module.etcd_ca.private_key_pem}"
-    cert_pem  = "${module.etcd_ca.cert_pem}"
+    algorithm = module.etcd_ca.algorithm
+    key_pem   = module.etcd_ca.private_key_pem
+    cert_pem  = module.etcd_ca.cert_pem
   }
 
   cert_config = {
     common_name           = "etcd"
     organization          = "etcd"
-    validity_period_hours = "${var.validity_period_hours}"
+    validity_period_hours = var.validity_period_hours
   }
 
   cert_uses = ["client_auth"]
@@ -67,15 +67,15 @@ module "etcd_peer_cert" {
   source = "../../modules/tls/certificate"
 
   ca_config = {
-    algorithm = "${module.etcd_ca.algorithm}"
-    key_pem   = "${module.etcd_ca.private_key_pem}"
-    cert_pem  = "${module.etcd_ca.cert_pem}"
+    algorithm = module.etcd_ca.algorithm
+    key_pem   = module.etcd_ca.private_key_pem
+    cert_pem  = module.etcd_ca.cert_pem
   }
 
   cert_config = {
     common_name           = "etcd"
     organization          = "etcd"
-    validity_period_hours = "${var.validity_period_hours}"
+    validity_period_hours = var.validity_period_hours
   }
 
   cert_hostnames = [
@@ -85,8 +85,8 @@ module "etcd_peer_cert" {
 
   cert_ip_addresses = [
     "127.0.0.1",
-    "${cidrhost(var.service_cidr, 15)}",
-    "${cidrhost(var.service_cidr, 20)}",
+    cidrhost(var.service_cidr, 15),
+    cidrhost(var.service_cidr, 20),
   ]
 
   cert_uses = ["server_auth", "client_auth"]
