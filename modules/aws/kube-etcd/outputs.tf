@@ -1,5 +1,8 @@
 output "endpoints" {
-  value = data.template_file.etcd_endpoints.*.rendered
+  value = [
+    for instance_ip in aws_instance.etcd.*.private_ip:
+      "https://ip-${replace(instance_ip, ".", "-")}.${local.discovery_service}:${local.client_port}"
+  ]
 }
 
 output "ca_cert_pem" {

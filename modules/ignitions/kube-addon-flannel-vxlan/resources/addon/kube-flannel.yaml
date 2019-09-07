@@ -210,7 +210,7 @@ spec:
             path: /run/flannel
         - name: cni
           hostPath:
-            path: /etc/cni/net.d
+            path: /etc/kubernetes/cni/net.d
         - name: flannel-cfg
           configMap:
             name: kube-flannel-cfg

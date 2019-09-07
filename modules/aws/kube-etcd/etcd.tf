@@ -1,9 +1,10 @@
-data "aws_subnet" "subnet" {
-  id = var.subnet_ids[0]
+data "aws_subnet" "etcd" {
+  count = var.etcd_config["instance_count"]
+  id    = var.subnet_ids[count.index % length(var.subnet_ids)]
 }
 
 locals {
-  vpc_id      = data.aws_subnet.subnet.vpc_id
+  vpc_id      = data.aws_subnet.etcd[0].vpc_id
   client_port = 2379
   peer_port   = 2380
 }

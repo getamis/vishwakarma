@@ -2,6 +2,11 @@ variable "name" {
   type = string
 }
 
+variable "etcd_user_id" {
+  type = number
+  default = 232
+}
+
 variable "discovery_service" {
   type = string
 }
@@ -33,11 +38,16 @@ variable "certs_config" {
   }
 }
 
+variable "data_path" {
+  type    = string
+  default = "/var/lib/etcd"
+}
+
 variable "container" {
   type = map(string)
 
   default = {
     image_path = "quay.io/coreos/etcd"
-    image_tag  = "v3.3.15"
+    image_tag  = "v3.4.0"
   }
 }
