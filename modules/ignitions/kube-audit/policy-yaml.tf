@@ -1,7 +1,7 @@
 data "template_file" "policy_yaml" {
   template = file("${path.module}/resources/kubernetes/policy.yaml")
 
-  vars {
+  vars = {
     audit_policy = var.audit_policy
   }
 }

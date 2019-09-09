@@ -1,5 +1,5 @@
 data "template_file" "kubeconfig" {
-  template = file("${path.module}/resources/kubernetes/webhook/kubeconfig")}"
+  template = file("${path.module}/resources/kubernetes/webhook/kubeconfig")
 
   vars = {
     webhook_ca = var.webhook_kubeconfig_ca
