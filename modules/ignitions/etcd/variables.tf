@@ -2,9 +2,16 @@ variable "name" {
   type = string
 }
 
-variable "etcd_user_id" {
-  type = number
-  default = 232
+variable "cert_file_owner" {
+  type = object({
+    uid = number
+    gid = number
+  })
+
+  default = {
+    uid = 232
+    git = 232
+  }
 }
 
 variable "discovery_service" {
