@@ -10,7 +10,7 @@ variable "cert_file_owner" {
 
   default = {
     uid = 232
-    git = 232
+    gid = 232
   }
 }
 
