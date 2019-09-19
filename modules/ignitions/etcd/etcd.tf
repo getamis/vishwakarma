@@ -4,7 +4,7 @@ data "template_file" "etcd_env" {
   vars = {
     image_url    = var.container["image_path"]
     image_tag    = var.container["image_tag"]
-    user_id      = var.etcd_user_id
+    user_id      = var.cert_file_owner["uid"]
     cluster_name      = var.name
     certs_path        = var.certs_path
     data_path         = var.data_path
