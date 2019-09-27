@@ -198,3 +198,15 @@ EOF
   default         = {}
 
 }
+
+variable "oidc_issuer_confg" {
+  description = "The service account config to enable pod identity feature"
+  type        = object({
+    issuer        = string
+    api_audiences = string
+  })
+  default     = {
+    issuer        = ""
+    api_audiences = ""
+  }
+}

@@ -37,3 +37,7 @@ output "worker_sg_ids" {
   value       = [aws_security_group.workers.id]
   description = "The security gruop for worker group"
 }
+
+output oidc_issuer_pubkey {
+  value = module.master.oidc_issuer_pubkey
+}
