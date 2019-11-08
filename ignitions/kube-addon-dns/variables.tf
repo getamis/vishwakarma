@@ -10,6 +10,11 @@ variable "image" {
   description = "The CoreDNS image name and tag"
 }
 
+variable "replicas" {
+  default     = 2
+  description = "Number of replicas for CoreDNS pod"
+}
+
 variable "reverse_cidrs" {
   type        = "string"
   description = "CoreDNS reverse cidrs"
@@ -42,4 +47,9 @@ variable "upstream_nameserver" {
   type        = "string"
   default     = "/etc/resolv.conf"
   description = "upstream nameserver"
+}
+
+variable "located_on_the_same_host" {
+  default     = false
+  description = "Allow instances of DNS can located on the same master host"
 }
