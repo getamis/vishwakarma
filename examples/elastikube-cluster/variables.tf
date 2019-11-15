@@ -22,19 +22,19 @@ variable "key_pair_name" {
 }
 
 variable "project" {
-  type = "string"
-  default = "elastikube"
-  description = "(Optional) project name, used to compose the resource name"  
+  type        = "string"
+  default     = "elastikube"
+  description = "(Optional) project name, used to compose the resource name"
 }
 
 variable "phase" {
-  type = "string"
-  default = "test"
+  type        = "string"
+  default     = "test"
   description = "(Optional) phase name, used to compose the resource name"
 }
 
 variable "endpoint_public_access" {
-  default = false
+  default     = false
   description = "(Optional) kubernetes apiserver endpoint"
 }
 

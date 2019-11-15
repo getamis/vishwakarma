@@ -640,14 +640,6 @@
   pruneopts = "UT"
   revision = "77e032213d34c856222b4d4647c1c175ba8d22b9"
 
-[[projects]]
-  digest = "1:51314886250b22f73377febaadd972084684122e2e1d3004f388dff60754ba05"
-  name = "k8s.io/kubernetes"
-  packages = ["pkg/kubectl/generate"]
-  pruneopts = "UT"
-  revision = "c27b913fddd1a6c480c229191a087698aa92f0b1"
-  version = "v1.13.4"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1

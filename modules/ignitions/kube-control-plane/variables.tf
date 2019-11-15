@@ -20,9 +20,7 @@ variable "kube_certs" {
   type = "map"
 
   default = {
-    # ca_cert_pem        = ""
-    # apiserver_key_pem  = ""
-    # apiserver_cert_pem = ""
+    # ca_cert_pem        = ""  # apiserver_key_pem  = ""  # apiserver_cert_pem = ""
   }
 }
 
@@ -30,9 +28,7 @@ variable "etcd_certs" {
   type = "map"
 
   default = {
-    # ca_cert_pem     = ""
-    # client_key_pem  = ""
-    # client_cert_pem = ""
+    # ca_cert_pem     = ""  # client_key_pem  = ""  # client_cert_pem = ""
   }
 }
 
@@ -60,10 +56,9 @@ variable "apiserver_config" {
 }
 
 variable "audit_log_backend" {
-  type = "map"
+  type    = "map"
   default = {}
 }
-
 
 variable "cloud_provider" {
   type = "map"
@@ -95,7 +90,7 @@ variable "hyperkube" {
 
   default = {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
-    image_tag  = "v1.13.4"
+    image_tag  = "v1.13.12"
   }
 
   description = "The hyperkube container image path and tag"
