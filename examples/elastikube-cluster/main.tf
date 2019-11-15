@@ -1,7 +1,7 @@
 locals {
   cluster_name = "${var.phase}-${var.project}"
 
-  kubernetes_version = "v1.13.4"
+  kubernetes_version = "v1.13.12"
 }
 
 provider "aws" {
@@ -61,7 +61,7 @@ module "kubernetes" {
   private_subnet_ids     = ["${module.network.private_subnet_ids}"]
   public_subnet_ids      = ["${module.network.public_subnet_ids}"]
   ssh_key                = "${var.key_pair_name}"
-  reboot_strategy    = "off"
+  reboot_strategy        = "off"
 
   extra_tags = "${merge(map(
       "Phase", "${var.phase}",

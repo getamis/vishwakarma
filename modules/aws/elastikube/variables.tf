@@ -56,13 +56,13 @@ EOF
 }
 
 variable "endpoint_public_access" {
-  default = false
+  default     = false
   description = "(Optional) kubernetes apiserver endpoint"
 }
 
 variable "kubernetes_version" {
   type        = "string"
-  default     = "v1.13.4"
+  default     = "v1.13.12"
   description = "(Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
 }
 
@@ -94,6 +94,7 @@ variable "master_config" {
 
   description = "(Optional) Desired master nodes configuration."
 }
+
 variable "etcd_config" {
   type = "map"
 
@@ -139,8 +140,8 @@ variable "hostzone" {
 }
 
 variable "reboot_strategy" {
-  type    = "string"
-  default = "off"
+  type        = "string"
+  default     = "off"
   description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
 }
 
@@ -208,13 +209,15 @@ variable "audit_policy_path" {
 }
 
 variable "audit_log_backend" {
-  type        = "map"
-  default     = {
+  type = "map"
+
+  default = {
     path      = ""
     maxage    = ""
     maxbackup = ""
     maxsize   = ""
   }
+
   description = <<EOF
     (Optional) Kubernetes apiserver auditing log backend configuration,
     there are four parameters: path, maxage, maxbackup, maxsize.
