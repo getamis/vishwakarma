@@ -1,9 +1,9 @@
 locals {
-  project      = "elastikube"
-  phase        = "auth"
-  cluster_name = "${local.phase}-${local.project}"
-  hostzone     = "${local.cluster_name}.cluster"
-  kubernetes_version = "v1.13.1"
+  project            = "elastikube"
+  phase              = "auth"
+  cluster_name       = "${local.phase}-${local.project}"
+  hostzone           = "${local.cluster_name}.cluster"
+  kubernetes_version = "v1.13.12"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------

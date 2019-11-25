@@ -38,7 +38,7 @@ EOF
 
 variable "kubernetes_version" {
   type        = "string"
-  default     = "v1.13.1"
+  default     = "v1.13.12"
   description = "(Optional) Desired Kubernetes kubelet version. If you do not specify a value, the latest available version is used."
 }
 
@@ -94,8 +94,8 @@ EOF
 }
 
 variable "reboot_strategy" {
-  type    = "string"
-  default = "etcd-lock"
+  type        = "string"
+  default     = "etcd-lock"
   description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
 }
 

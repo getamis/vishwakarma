@@ -8,7 +8,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 ## [[v0.0.11](https://github.com/getamis/vishwakarma/compare/v0.0.11...v0.0.10)] - 2018-12-18]
 
 ### Added
-- Upgrade Kubernetes from v1.10.5 to v1.13.1
+- Upgrade Kubernetes from v1.10.5 to v1.13.12
 - Replace Kube-Dns with CoreDNS
 - Adopt AWS new mixed instance policy for worker asg
 - Add new ign for support Kubernetes auditing
