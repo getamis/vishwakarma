@@ -117,7 +117,7 @@
 | extra\_tags | (Optional) Extra AWS tags to be applied to the resources. | map | `<map>` | no |
 | hostzone | (Optional) The cluster private hostname. If not specified, <cluster name>.com will be used. | string | `""` | no |
 | kubelet\_flag\_extra\_flags | Extra user-provided flags to kubelet. | list | `<list>` | no |
-| kubernetes\_version | (Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used. | string | `"v1.13.4"` | no |
+| kubernetes\_version | (Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used. | string | `"v1.13.12"` | no |
 | lb\_security\_group\_ids | (Optional) List of security group IDs for the cross-account elastic network interfaces     to use to allow communication to the kubernetes api server load balancer. | list | `<list>` | no |
 | master\_config | (Optional) Desired master nodes configuration. | map | `<map>` | no |
 | name | (Required) Name of the cluster. | string | n/a | yes |
@@ -156,7 +156,7 @@
 | kube\_node\_taints | Register the node with the given list of taints ("<key>=<value>:<effect>"). | list | `<list>` | no |
 | kube\_service\_cidr |  | string | n/a | yes |
 | kubelet\_flag\_extra\_flags | Extra user-provided flags to kubelet. | list | `<list>` | no |
-| kubernetes\_version | Desired Kubernetes kubelet version. If you do not specify a value, the latest available version is used. | string | `"v1.13.4"` | no |
+| kubernetes\_version | Desired Kubernetes kubelet version. If you do not specify a value, the latest available version is used. | string | `"v1.13.12"` | no |
 | load\_balancer\_ids | A list of elastic load balancer names to add to the autoscaling group names. Only valid for classic load balancers. For ALBs, use target_group_arns instead. | list | `<list>` | no |
 | reboot\_strategy | CoreOS reboot strategies on updates, two option here: etcd-lock or off | string | `"etcd-lock"` | no |
 | role\_name | The Amazon Resource Name of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf. | string | `""` | no |

@@ -29,8 +29,8 @@ variable "kubernetes_version" {
 
 variable "project" {
   description = "(Optional) project name, used to compose the resource name"  
-  type = string
-  default = "elastikube"
+  type        = string
+  default     = "elastikube"
 }
 
 variable "phase" {

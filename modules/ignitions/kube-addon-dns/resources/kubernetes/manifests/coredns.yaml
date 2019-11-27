@@ -88,7 +88,7 @@ metadata:
     addonmanager.kubernetes.io/mode: Reconcile
     kubernetes.io/name: "CoreDNS"
 spec:
-  replicas: 2
+  replicas: ${replicas}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -105,14 +105,26 @@ spec:
     spec:
       priorityClassName: system-cluster-critical
       serviceAccountName: coredns
+      priorityClassName: system-cluster-critical
       tolerations:
-        - key: "CriticalAddonsOnly"
-          operator: "Exists"
-        - key: "node-role.kubernetes.io/master"
-          operator: "Exists"
-          effect: "NoSchedule"
-      nodeSelector:
-        beta.kubernetes.io/os: linux
+      - key: "CriticalAddonsOnly"
+        operator: "Exists"
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
+        effect: "NoSchedule"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-role.kubernetes.io/master
+                operator: Exists
+              - key: beta.kubernetes.io/os
+                operator: In
+                values:
+                - linux
+        podAntiAffinity:
+${ located_on_the_same_host ? preferred_pod_anti_affinity : required_pod_anti_affinity}
       containers:
       - name: coredns
         image: ${image}
