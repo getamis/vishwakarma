@@ -76,10 +76,10 @@ minutes...
 ~$ kubectl get node
 
 NAME                          STATUS    ROLES     AGE       VERSION
-ip-10-0-48-247.ec2.internal   Ready     spot      2m        v1.12.7
-ip-10-0-66-127.ec2.internal   Ready     spot      2m        v1.12.7
-ip-10-0-71-121.ec2.internal   Ready     on-demand 22s       v1.12.7
-ip-10-0-86-182.ec2.internal   Ready     on-demand 2m        v1.12.7
+ip-10-0-48-247.ec2.internal   Ready     spot      2m        v1.14.6
+ip-10-0-66-127.ec2.internal   Ready     spot      2m        v1.14.6
+ip-10-0-71-121.ec2.internal   Ready     on-demand 22s       v1.14.6
+ip-10-0-86-182.ec2.internal   Ready     on-demand 2m        v1.14.6
 ```
 
 ### ElastiKube (Self-Hosted)
@@ -120,12 +120,12 @@ minutes...
 ~$ kubectl get node
 
 NAME                          STATUS    ROLES     AGE       VERSION
-ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.13.4
-ip-10-0-48-117.ec2.internal   Ready     master    9m        v1.13.4
-ip-10-0-66-127.ec2.internal   Ready     on-demand 5m        v1.13.4
-ip-10-0-66-127.ec2.internal   Ready     on-demand 6m        v1.13.4
-ip-10-0-71-121.ec2.internal   Ready     spot      3m        v1.13.4
-ip-10-0-86-182.ec2.internal   Ready     spot      4m        v1.13.4
+ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.14.6
+ip-10-0-48-117.ec2.internal   Ready     master    9m        v1.14.6
+ip-10-0-66-127.ec2.internal   Ready     on-demand 5m        v1.14.6
+ip-10-0-66-127.ec2.internal   Ready     on-demand 6m        v1.14.6
+ip-10-0-71-121.ec2.internal   Ready     spot      3m        v1.14.6
+ip-10-0-86-182.ec2.internal   Ready     spot      4m        v1.14.6
 ```
 
 ## What’s Going On?
@@ -148,6 +148,20 @@ Create a AWS auto-scaling group with CoreOS container linux and leverage ignitio
 
 Due to using AWS launch template, hence, it's up to user to choose spot or on demand instance type by changing the variable, refer [**aws/eks-worker**](VARIABLES.md#aws/eks-worker) and [**aws/kube-worker**](VARIABLES.md#aws/kube-worker) for the detail variable inputs
 
+## Known Issues
+
+### Ignition Provider Issue
+This module leverage provider ignition to provision instance (etcd, master and worker node)，after upgrading Terraform 0.12，there is issue about the ignition provider, althrough community already merge the [PR](https://github.com/terraform-providers/terraform-provider-ignition/pull/56) into master branch, but don't know why not bump a new version yes, hence, there is something to do for workaround this issue (The following steps are running in MacOS, it needs to make some change for running in other platform)
+
+Build the ignition provider from official GitHub master branch
+
+```
+~$ cd $GOPATH/src/github.com/terraform-providers/terraform-provider-ignition
+$ make build
+
+~$ mkdir -p ~/.terraform.d/plugins/darwin_amd64
+~$ cp $GOPATH/bin/terraform-provider-ignition ~/.terraform.d/plugins/darwin_amd64/terraform-provider-ignition_v1.1.0_x4
+```
 
 ## Contributing
 
