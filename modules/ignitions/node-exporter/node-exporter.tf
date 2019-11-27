@@ -1,7 +1,7 @@
 data "template_file" "node_exporter" {
-  template = "${file("${path.module}/resources/services/node-exporter.service")}"
+  template = file("${path.module}/resources/services/node-exporter.service")
 
-  vars {
+  vars = {
     listen_address = "${var.listen_address}:${var.listen_port}"
   }
 }
@@ -9,5 +9,5 @@ data "template_file" "node_exporter" {
 data "ignition_systemd_unit" "node_exporter" {
   name    = "node-exporter.service"
   enabled = true
-  content = "${data.template_file.node_exporter.rendered}"
+  content = data.template_file.node_exporter.rendered
 }

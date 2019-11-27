@@ -1,8 +1,8 @@
 data "template_file" "docker_dropin" {
-  template = "${file("${path.module}/resources/dropins/10-dockeropts.conf")}"
+  template = file("${path.module}/resources/dropins/10-dockeropts.conf")
 
-  vars {
-    docker_opts = "${join(" ", var.docker_opts)}"
+  vars = {
+    docker_opts = join(" ", var.docker_opts)
   }
 }
 
@@ -10,10 +10,8 @@ data "ignition_systemd_unit" "docker_dropin" {
   name    = "docker.service"
   enabled = true
 
-  dropin = [
-    {
+  dropin {
       name    = "10-dockeropts.conf"
-      content = "${data.template_file.docker_dropin.rendered}"
-    },
-  ]
+      content = data.template_file.docker_dropin.rendered
+  }
 }

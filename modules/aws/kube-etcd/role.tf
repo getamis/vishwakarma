@@ -15,12 +15,12 @@ data "aws_iam_policy_document" "default" {
 
 resource "aws_iam_role" "etcd" {
   name_prefix        = "${var.name}-etcd-"
-  assume_role_policy = "${data.aws_iam_policy_document.default.json}"
+  assume_role_policy = data.aws_iam_policy_document.default.json
 }
 
 resource "aws_iam_instance_profile" "etcd" {
   name = "${var.name}-etcd"
-  role = "${aws_iam_role.etcd.name}"
+  role = aws_iam_role.etcd.name
 }
 
 resource "aws_iam_policy" "etcd" {
@@ -45,6 +45,6 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "etcd" {
-  policy_arn = "${aws_iam_policy.etcd.arn}"
-  role       = "${aws_iam_role.etcd.name}"
+  policy_arn = aws_iam_policy.etcd.arn
+  role       = aws_iam_role.etcd.name
 }

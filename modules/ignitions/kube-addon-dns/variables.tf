@@ -1,55 +1,57 @@
 variable "addon_path" {
-  type        = "string"
-  default     = "/etc/kubernetes/addons"
   description = "Path to the directory containing Kubernetes addons"
+  type        = string
+  default     = "/etc/kubernetes/addons"
 }
 
 variable "image" {
-  type        = "string"
-  default     = "coredns/coredns:1.2.6"
   description = "The CoreDNS image name and tag"
+  type        = string
+  default     = "k8s.gcr.io/coredns:1.6.2"
 }
 
 variable "replicas" {
-  default     = 2
   description = "Number of replicas for CoreDNS pod"
+  type        = number
+  default     = 2
 }
 
 variable "reverse_cidrs" {
-  type        = "string"
   description = "CoreDNS reverse cidrs"
+  type        = string
 }
 
 variable "cluster_dns_ip" {
-  type        = "string"
   description = "K8S cluster dns ip"
+  type        = string
 }
 
 variable "cluster_domain" {
-  type        = "string"
-  default     = "cluster.local."
   description = "K8S cluster domain"
+  type        = string
+  default     = "cluster.local."
 }
 
 variable "federations" {
-  type        = "string"
-  default     = ""
   description = "federations"
+  type        = string
+  default     = ""
 }
 
 variable "subdomains" {
+  description = "subdomains"
   type        = "string"
   default     = ""
-  description = "subdomains"
 }
 
 variable "upstream_nameserver" {
+  description = "upstream nameserver"
   type        = "string"
   default     = "/etc/resolv.conf"
-  description = "upstream nameserver"
 }
 
 variable "located_on_the_same_host" {
-  default     = false
   description = "Allow instances of DNS can located on the same master host"
+  type        = bool
+  default     = false
 }

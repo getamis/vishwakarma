@@ -1,9 +1,21 @@
 variable "name" {
-  type = "string"
+  type = string
+}
+
+variable "cert_file_owner" {
+  type = object({
+    uid = number
+    gid = number
+  })
+
+  default = {
+    uid = 232
+    gid = 232
+  }
 }
 
 variable "discovery_service" {
-  type = "string"
+  type = string
 }
 
 variable "client_port" {
@@ -15,12 +27,12 @@ variable "peer_port" {
 }
 
 variable "certs_path" {
-  type    = "string"
+  type    = string
   default = "/etc/ssl/etcd"
 }
 
 variable "certs_config" {
-  type = "map"
+  type = map(string)
 
   default = {
     # ca_cert_pem     = ""
@@ -33,11 +45,16 @@ variable "certs_config" {
   }
 }
 
+variable "data_path" {
+  type    = string
+  default = "/var/lib/etcd"
+}
+
 variable "container" {
-  type = "map"
+  type = map(string)
 
   default = {
     image_path = "quay.io/coreos/etcd"
-    image_tag  = "v3.1.8"
+    image_tag  = "v3.4.0"
   }
 }

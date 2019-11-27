@@ -1,18 +1,18 @@
 data "template_file" "kube_proxy_yaml" {
-  template = "${file("${path.module}/resources/kubernetes/addon/kube-proxy.yaml")}"
+  template = file("${path.module}/resources/kubernetes/addon/kube-proxy.yaml")
 
-  vars {
+  vars = {
     hyperkube_image = "${var.hyperkube["image_path"]}:${var.hyperkube["image_tag"]}"
-    cluster_cidr    = "${var.cluster_cidr}"
+    cluster_cidr    = var.cluster_cidr
   }
 }
 
 data "ignition_file" "kube_proxy_yaml" {
   filesystem = "root"
-  mode       = "0644"
+  mode       = 420
   path       = "${pathexpand(var.addon_path)}/kube-proxy.yaml"
 
   content {
-    content = "${data.template_file.kube_proxy_yaml.rendered}"
+    content = data.template_file.kube_proxy_yaml.rendered
   }
 }

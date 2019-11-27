@@ -4,6 +4,6 @@ output "systemd_units" {
 
 output "files" {
   value = [
-    "${data.ignition_file.max_user_watches.id}",
+    data.ignition_file.max_user_watches.rendered
   ]
 }

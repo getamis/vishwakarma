@@ -1,16 +1,16 @@
 resource "aws_security_group" "bastion" {
-  vpc_id = "${aws_vpc.new_vpc.id}"
+  vpc_id = aws_vpc.new_vpc.id
 
-  tags = "${merge(map(
+  tags = merge(map(
       "Name", "${var.phase}-${var.project}-bastion",
-      "Phase", "${var.phase}",
-      "Project", "${var.project}"
-    ), var.extra_tags)}"
+      "Phase", var.phase,
+      "Project", var.project
+    ), var.extra_tags)
 }
 
 resource "aws_security_group_rule" "bastion_egress" {
   type              = "egress"
-  security_group_id = "${aws_security_group.bastion.id}"
+  security_group_id = aws_security_group.bastion.id
 
   from_port   = 0
   to_port     = 0
@@ -20,7 +20,7 @@ resource "aws_security_group_rule" "bastion_egress" {
 
 resource "aws_security_group_rule" "bastion_ingress_ssh" {
   type              = "ingress"
-  security_group_id = "${aws_security_group.bastion.id}"
+  security_group_id = aws_security_group.bastion.id
 
   protocol    = "tcp"
   cidr_blocks = ["0.0.0.0/0"]
@@ -48,25 +48,25 @@ data "aws_ami" "latest_ubuntu" {
 
 resource "random_integer" "subnet_id_index" {
   min     = 0
-  max     = "${var.aws_az_number - 1}"
+  max     = var.aws_az_number - 1
 
   keepers = {
-    vpc_id = "${aws_vpc.new_vpc.id}"
+    vpc_id = aws_vpc.new_vpc.id
   }
 }
 
 data "template_file" "user_data" {
-  template = "${file("${path.module}/resources/user_data")}"
+  template = file("${path.module}/resources/user_data")
 }
 
 resource "aws_instance" "bastion" {
-  ami                         = "${var.bastion_ami_id == "" ? data.aws_ami.latest_ubuntu.image_id : var.bastion_ami_id}"
+  ami                         = var.bastion_ami_id == "" ? data.aws_ami.latest_ubuntu.image_id : var.bastion_ami_id
   associate_public_ip_address = true
-  instance_type               = "${var.bastion_instance_type}"
-  key_name                    = "${var.bastion_key_name}"
+  instance_type               = var.bastion_instance_type
+  key_name                    = var.bastion_key_name
   source_dest_check           = true
-  subnet_id                   = "${aws_subnet.public_subnet.*.id[random_integer.subnet_id_index.result]}"
-  user_data                   = "${data.template_file.user_data.rendered}" 
+  subnet_id                   = aws_subnet.public_subnet.*.id[random_integer.subnet_id_index.result]
+  user_data                   = data.template_file.user_data.rendered
 
   root_block_device {
     volume_type = "standard"
@@ -74,12 +74,12 @@ resource "aws_instance" "bastion" {
   }
 
   vpc_security_group_ids = [
-    "${ aws_security_group.bastion.id }",
+    aws_security_group.bastion.id,
   ]
 
-  tags = "${merge(map(
+  tags = merge(map(
       "Name", "${var.phase}-${var.project}-bastion",
-      "Phase", "${var.phase}",
-      "Project", "${var.project}"
-    ), var.extra_tags)}"
+      "Phase", var.phase,
+      "Project", var.project
+    ), var.extra_tags)
 }

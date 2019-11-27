@@ -1,7 +1,7 @@
 resource "aws_s3_bucket_object" "kubeconfig" {
-  bucket  = "${var.s3_bucket}"
+  bucket  = var.s3_bucket
   key     = "kubeconfig"
-  content = "${module.ignition_kube_config.content}"
+  content = module.ignition_kube_config.content
   acl     = "private"
 
   server_side_encryption = "AES256"

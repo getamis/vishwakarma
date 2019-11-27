@@ -3,10 +3,9 @@ variable "rsa_bits" {
 }
 
 variable "cert_config" {
-  type        = "map"
   description = "Certificate configuration"
-
-  default = {
+  type        = map(string)
+  default     = {
     common_name           = ""
     organization          = ""
     validity_period_hours = "26280"
@@ -14,9 +13,18 @@ variable "cert_config" {
 }
 
 variable "ca_cert_path" {
-  type        = "string"
   description = "external CA certificate"
+  type        = string
   default     = "/dev/null"
+}
+
+variable "ca_uses" {
+  type    = list(string)
+  default = [
+    "key_encipherment",
+    "digital_signature",
+    "cert_signing"
+  ]
 }
 
 variable "self_signed" {
@@ -24,4 +32,5 @@ variable "self_signed" {
 If set to true, self-signed certificates are generated.
 If set to false, only the passed CA and client certs are being used.
 EOF
+  type        = bool
 }

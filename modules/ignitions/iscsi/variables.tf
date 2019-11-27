@@ -1,4 +1,5 @@
 variable "enabled" {
-  default     = true
   description = "Enable iSCSI"
+  type        = bool
+  default     = true
 }

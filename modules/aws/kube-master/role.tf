@@ -15,20 +15,17 @@ data "aws_iam_policy_document" "default" {
 
 resource "aws_iam_role" "master" {
   name_prefix        = "${var.name}-master-"
-  assume_role_policy = "${data.aws_iam_policy_document.default.json}"
+  assume_role_policy = data.aws_iam_policy_document.default.json
 }
 
 resource "aws_iam_instance_profile" "master" {
   name_prefix = "${var.name}-master-"
 
-  role = "${var.role_name == "" ?
-    join("|", aws_iam_role.master.*.name) :
-    var.role_name
-  }"
+  role = var.role_name == "" ? join("|", aws_iam_role.master.*.name) : var.role_name
 }
 
 resource "aws_iam_policy" "master" {
-  count       = "${var.role_name == "" ? 1 : 0}"
+  count       = var.role_name == "" ? 1 : 0
   name        = "${var.name}-master"
   path        = "/"
   description = "policy for kubernetes masters"
@@ -68,6 +65,6 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "master" {
-  policy_arn = "${aws_iam_policy.master.arn}"
-  role       = "${aws_iam_role.master.name}"
+  policy_arn = aws_iam_policy.master[0].arn
+  role       = aws_iam_role.master.name
 }

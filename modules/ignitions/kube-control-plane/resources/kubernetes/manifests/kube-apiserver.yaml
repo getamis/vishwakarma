@@ -39,6 +39,7 @@ spec:
     ${cloud_provider_config_flag}
     ${auth_webhook_flag}
     ${audit_policy_flag}
+    ${service_account_flag}
     volumeMounts:
     - mountPath: /etc/ssl/certs
       name: ssl-certs-host
