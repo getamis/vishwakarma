@@ -151,7 +151,7 @@ Due to using AWS launch template, hence, it's up to user to choose spot or on de
 ## Known Issues
 
 ### Ignition Provider Issue
-This module leverage provider ignition to provision instance (etcd, master and worker node)，after upgrading Terraform 0.12，there is issue about the ignition provider, althrough community already merge the [PR](https://github.com/terraform-providers/terraform-provider-ignition/pull/56) into master branch, but don't know why not bump a new version yes, hence, there is something to do for workaround this issue (The following steps are running in MacOS, it needs to make some change for running in other platform)
+This module leverage provider ignition to provision instance (etcd, master and worker node)，after upgrading Terraform 0.12，there is issue about the ignition provider, althrough community already merge the [**PR**](https://github.com/terraform-providers/terraform-provider-ignition/pull/56) into master branch, but don't know why not bump a new version yet, hence, there is something need to do for workaround this issue (The following steps are running in MacOS, it needs to make some change for running in other platform)
 
 Build the ignition provider from official GitHub master branch
 
