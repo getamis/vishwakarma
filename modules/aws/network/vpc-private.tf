@@ -15,7 +15,7 @@ resource "aws_route" "to_nat_gw" {
   route_table_id         = aws_route_table.private_routes.*.id[count.index]
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = element(aws_nat_gateway.nat_gw.*.id, count.index)
-  depends_on             = ["aws_route_table.private_routes"]
+  depends_on             = [aws_route_table.private_routes]
 }
 
 resource "aws_subnet" "private_subnet" {

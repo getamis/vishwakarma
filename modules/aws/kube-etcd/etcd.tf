@@ -29,7 +29,7 @@ resource "aws_instance" "etcd" {
     # Ignore changes in the AMI which force recreation of the resource. This
     # avoids accidental deletion of nodes whenever a new CoreOS Release comes
     # out.
-    ignore_changes = ["ami"]
+    ignore_changes = [ami]
   }
 
   tags = merge(map(

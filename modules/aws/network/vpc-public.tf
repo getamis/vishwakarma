@@ -57,7 +57,7 @@ resource "aws_eip" "nat_eip" {
   # Terraform does not declare an explicit dependency towards the internet gateway.
   # this can cause the internet gateway to be deleted/detached before the EIPs.
   # https://github.com/coreos/tectonic-installer/issues/1017#issuecomment-307780549
-  depends_on = ["aws_internet_gateway.igw"]
+  depends_on = [aws_internet_gateway.igw]
 }
 
 resource "aws_nat_gateway" "nat_gw" {
