@@ -40,13 +40,13 @@ variable "federations" {
 
 variable "subdomains" {
   description = "subdomains"
-  type        = "string"
+  type        = string
   default     = ""
 }
 
 variable "upstream_nameserver" {
   description = "upstream nameserver"
-  type        = "string"
+  type        = string
   default     = "/etc/resolv.conf"
 }
 
