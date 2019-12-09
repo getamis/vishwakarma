@@ -1,9 +1,9 @@
 data "aws_region" "current" {}
 
 resource "local_file" "kubeconfig" {
-    count    = var.kubeconfig_output_flag ? 1 : 0
-    content  = data.template_file.kubeconfig.rendered
-    filename = "${var.config_output_path}/kubeconfig"
+  count    = var.kubeconfig_output_flag ? 1 : 0
+  content  = data.template_file.kubeconfig.rendered
+  filename = "${var.config_output_path}/kubeconfig"
 }
 
 data "template_file" "kubeconfig" {
@@ -51,17 +51,17 @@ resource "aws_s3_bucket" "eks" {
   # Buckets must start with a lower case name and are limited to 63 characters,
   # so we prepend the letter 'a' and use the md5 hex digest for the case of a long domain
   # leaving 29 chars for the cluster name.
-  bucket = format("%s%s-%s", "a", aws_eks_cluster.vishwakarma.id, md5(format("%s-%s", data.aws_region.current.name , aws_eks_cluster.vishwakarma.endpoint)))
+  bucket = format("%s%s-%s", "a", aws_eks_cluster.vishwakarma.id, md5(format("%s-%s", data.aws_region.current.name, aws_eks_cluster.vishwakarma.endpoint)))
 
 
   acl = "private"
 
   tags = merge(map(
-      "Name", format("%s%s-%s", "a", aws_eks_cluster.vishwakarma.id, md5(format("%s-%s", var.aws_region , aws_eks_cluster.vishwakarma.endpoint))),
-      "KubernetesCluster", aws_eks_cluster.vishwakarma.id,
-      "Phase", var.phase,
-      "Project", var.project
-    ), var.extra_tags)
+    "Name", format("%s%s-%s", "a", aws_eks_cluster.vishwakarma.id, md5(format("%s-%s", var.aws_region, aws_eks_cluster.vishwakarma.endpoint))),
+    "KubernetesCluster", aws_eks_cluster.vishwakarma.id,
+    "Phase", var.phase,
+    "Project", var.project
+  ), var.extra_tags)
 }
 
 resource "aws_s3_bucket_public_access_block" "eks" {
@@ -84,12 +84,12 @@ resource "aws_s3_bucket_object" "kubeconfig" {
   # we should consider using KMS-based client-side encryption, or uploading it
   # to KMS.
   server_side_encryption = "AES256"
-  content_type = "text/plain"
+  content_type           = "text/plain"
 
   tags = merge(map(
-      "Name", "kubeconfig",
-      "KubernetesCluster", aws_eks_cluster.vishwakarma.id,
-      "Phase", var.phase,
-      "Project", var.project
-    ), var.extra_tags)
+    "Name", "kubeconfig",
+    "KubernetesCluster", aws_eks_cluster.vishwakarma.id,
+    "Phase", var.phase,
+    "Project", var.project
+  ), var.extra_tags)
 }

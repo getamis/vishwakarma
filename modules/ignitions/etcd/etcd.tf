@@ -2,9 +2,9 @@ data "template_file" "etcd_env" {
   template = file("${path.module}/resources/config/etcd.env")
 
   vars = {
-    image_url    = var.container["image_path"]
-    image_tag    = var.container["image_tag"]
-    user_id      = var.cert_file_owner["uid"]
+    image_url         = var.container["image_path"]
+    image_tag         = var.container["image_tag"]
+    user_id           = var.cert_file_owner["uid"]
     cluster_name      = var.name
     certs_path        = var.certs_path
     data_path         = var.data_path

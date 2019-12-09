@@ -28,9 +28,9 @@ resource "aws_elb" "master_internal" {
   }
 
   tags = merge(map(
-      "Name", "${var.name}-master",
-      "kubernetes.io/cluster/${var.name}", "owned",
-    ), var.extra_tags)
+    "Name", "${var.name}-master",
+    "kubernetes.io/cluster/${var.name}", "owned",
+  ), var.extra_tags)
 }
 
 resource "aws_security_group" "master_lb" {
@@ -38,9 +38,9 @@ resource "aws_security_group" "master_lb" {
   vpc_id      = data.aws_vpc.master.id
 
   tags = merge(map(
-      "Name", "${var.name}-master-lb",
-      "kubernetes.io/cluster/${var.name}", "owned",
-    ), var.extra_tags)
+    "Name", "${var.name}-master-lb",
+    "kubernetes.io/cluster/${var.name}", "owned",
+  ), var.extra_tags)
 }
 
 resource "aws_security_group_rule" "master_lb_egress" {

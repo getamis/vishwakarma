@@ -10,7 +10,7 @@ variable "key_pair_name" {
 }
 
 variable "project" {
-  description = "(Optional) project name, used to compose the resource name"  
+  description = "(Optional) project name, used to compose the resource name"
   type        = string
   default     = "vishwakarma"
 }

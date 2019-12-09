@@ -6,7 +6,7 @@ variable "rsa_bits" {
 variable "ca_config" {
   description = "Certificate Authority configuration"
   type        = map(string)
-  default     = {
+  default = {
     algorithm = "RSA"
     key_pem   = ""
     cert_pem  = ""
@@ -16,7 +16,7 @@ variable "ca_config" {
 variable "cert_config" {
   description = "Certificate configuration"
   type        = map(string)
-  default     = {
+  default = {
     common_name           = ""
     organization          = ""
     validity_period_hours = "26280"

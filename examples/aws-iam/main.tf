@@ -1,5 +1,5 @@
 locals {
-  cluster_name           = "${var.phase}-${var.project}"
+  cluster_name = "${var.phase}-${var.project}"
 }
 
 
@@ -67,9 +67,9 @@ module "kubernetes" {
 
 
   extra_tags = merge(map(
-      "Phase", var.phase,
-      "Project", var.project,
-    ), var.extra_tags)
+    "Phase", var.phase,
+    "Project", var.project,
+  ), var.extra_tags)
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -104,7 +104,7 @@ module "worker_spot" {
   ssh_key   = var.key_pair_name
 
   extra_tags = merge(map(
-      "Phase", var.phase,
-      "Project", var.project,
-    ), var.extra_tags)
+    "Phase", var.phase,
+    "Project", var.project,
+  ), var.extra_tags)
 }

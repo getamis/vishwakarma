@@ -20,18 +20,18 @@ data "null_data_source" "tags" {
 }
 
 resource "aws_autoscaling_group" "master" {
-  name_prefix          = "${var.name}-master-"
-  desired_capacity     = var.master_config["instance_count"]
-  max_size             = var.master_config["instance_count"] * 3
-  min_size             = var.master_config["instance_count"]
-  vpc_zone_identifier  = var.private_subnet_ids
-  load_balancers       = [aws_elb.master_internal.id]
+  name_prefix         = "${var.name}-master-"
+  desired_capacity    = var.master_config["instance_count"]
+  max_size            = var.master_config["instance_count"] * 3
+  min_size            = var.master_config["instance_count"]
+  vpc_zone_identifier = var.private_subnet_ids
+  load_balancers      = [aws_elb.master_internal.id]
 
   mixed_instances_policy {
     launch_template {
       launch_template_specification {
         launch_template_id = aws_launch_template.master.id
-        version = "$Latest"
+        version            = "$Latest"
       }
 
       override {

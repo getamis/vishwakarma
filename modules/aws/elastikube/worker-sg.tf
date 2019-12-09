@@ -4,9 +4,9 @@ resource "aws_security_group" "workers" {
   vpc_id      = local.vpc_id
 
   tags = merge(map(
-      "Name", "${var.name}-worker",
-      "kubernetes.io/cluster/${var.name}", "owned",
-    ), var.extra_tags)
+    "Name", "${var.name}-worker",
+    "kubernetes.io/cluster/${var.name}", "owned",
+  ), var.extra_tags)
 }
 
 resource "aws_security_group_rule" "workers_egress_internet" {

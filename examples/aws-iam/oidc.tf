@@ -3,10 +3,10 @@ resource "aws_s3_bucket" "oidc" {
   acl    = "public-read"
 
   tags = merge(map(
-      "Name", "${local.cluster_name}-oidc-${md5("${local.cluster_name}-oidc")}",
-      "Phase", var.phase,
-      "Project", var.project,
-    ), var.extra_tags)
+    "Name", "${local.cluster_name}-oidc-${md5("${local.cluster_name}-oidc")}",
+    "Phase", var.phase,
+    "Project", var.project,
+  ), var.extra_tags)
 }
 
 resource "null_resource" "oidc_thumbprint" {
@@ -23,7 +23,7 @@ data "local_file" "oidc_thumbprint" {
 resource "aws_iam_openid_connect_provider" "irsa" {
   url = "https://s3-${var.aws_region}.amazonaws.com/${aws_s3_bucket.oidc.id}"
 
-  client_id_list = [ var.oidc_api_audiences ]
+  client_id_list = [var.oidc_api_audiences]
 
-  thumbprint_list = [ chomp(data.local_file.oidc_thumbprint.content) ]
+  thumbprint_list = [chomp(data.local_file.oidc_thumbprint.content)]
 }

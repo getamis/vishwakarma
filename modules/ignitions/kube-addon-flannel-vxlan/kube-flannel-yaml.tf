@@ -2,8 +2,8 @@ data "template_file" "kube_flannel_yaml" {
   template = file("${path.module}/resources/addon/kube-flannel.yaml")
 
   vars = {
-    cluster_cidr      = var.cluster_cidr
-    flannel_image     = var.container_images["flannel"]
+    cluster_cidr  = var.cluster_cidr
+    flannel_image = var.container_images["flannel"]
   }
 }
 

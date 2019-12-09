@@ -11,10 +11,10 @@ resource "aws_security_group" "eks" {
   vpc_id      = data.aws_vpc.exist.id
 
   tags = merge(map(
-      "Name", "${var.phase}-${var.project}-eks",
-      "Phase", var.phase,
-      "Project", var.project
-    ), var.extra_tags)
+    "Name", "${var.phase}-${var.project}-eks",
+    "Phase", var.phase,
+    "Project", var.project
+  ), var.extra_tags)
 }
 
 resource "aws_security_group_rule" "eks_egress" {

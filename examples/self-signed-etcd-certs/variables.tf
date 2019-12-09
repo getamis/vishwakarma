@@ -8,7 +8,7 @@ EOF
   // Default is provided only in this case
   // bacause *some* of etcd internal certs are still self-generated and need
   // this variable set
-  default     = 26280
+  default = 26280
 }
 
 variable "service_cidr" {

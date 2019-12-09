@@ -3,11 +3,11 @@ resource "aws_route_table" "private_routes" {
   vpc_id = aws_vpc.new_vpc.id
 
   tags = merge(map(
-      "Name", "${var.phase}-${var.project}-private-${local.aws_azs[count.index]}",
-      "Phase", var.phase,
-      "Project", var.project,
-      "kubernetes.io/cluster/${var.phase}-${var.project}", "shared"
-    ), var.extra_tags)
+    "Name", "${var.phase}-${var.project}-private-${local.aws_azs[count.index]}",
+    "Phase", var.phase,
+    "Project", var.project,
+    "kubernetes.io/cluster/${var.phase}-${var.project}", "shared"
+  ), var.extra_tags)
 }
 
 resource "aws_route" "to_nat_gw" {
@@ -29,7 +29,7 @@ resource "aws_subnet" "private_subnet" {
     "Phase", var.phase,
     "Project", var.project,
     "kubernetes.io/cluster/${var.phase}-${var.project}", "shared"
-    ), var.extra_tags)
+  ), var.extra_tags)
 }
 
 resource "aws_route_table_association" "private_routing" {

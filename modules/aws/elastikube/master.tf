@@ -27,15 +27,15 @@ module "master" {
   kube_cluster_cidr = var.cluster_cidr
 
   kube_node_labels = compact(concat(
-        list("node-role.kubernetes.io/master"),
-        var.extra_master_node_labels
+    list("node-role.kubernetes.io/master"),
+    var.extra_master_node_labels
   ))
 
   kube_node_taints = compact(concat(
-        list("node-role.kubernetes.io/master=:NoSchedule"),
-        var.extra_master_node_taints
+    list("node-role.kubernetes.io/master=:NoSchedule"),
+    var.extra_master_node_taints
   ))
-  
+
 
   s3_bucket       = aws_s3_bucket.ignition.id
   reboot_strategy = var.reboot_strategy
@@ -60,8 +60,8 @@ module "master" {
 
   extra_tags = var.extra_tags
 
-  auth_webhook_path     = var.auth_webhook_path
-  audit_policy_path     = var.audit_policy_path
-  audit_log_backend     = var.audit_log_backend
-  oidc_issuer_confg     = var.oidc_issuer_confg
+  auth_webhook_path = var.auth_webhook_path
+  audit_policy_path = var.audit_policy_path
+  audit_log_backend = var.audit_log_backend
+  oidc_issuer_confg = var.oidc_issuer_confg
 }

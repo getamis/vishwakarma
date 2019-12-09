@@ -1,4 +1,4 @@
 
 locals {
-  cluster_name      = "${var.phase}-${var.project}"
+  cluster_name = "${var.phase}-${var.project}"
 }

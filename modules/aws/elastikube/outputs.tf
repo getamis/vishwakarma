@@ -14,7 +14,7 @@ output "endpoint" {
 }
 
 output "version" {
-  value = var.kubernetes_version
+  value       = var.kubernetes_version
   description = "K8S cluster version"
 }
 

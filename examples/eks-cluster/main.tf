@@ -55,12 +55,12 @@ module "worker_on_demand" {
     spot_instance_pools                      = 1
   }
 
-  ssh_key   = var.key_pair_name
+  ssh_key = var.key_pair_name
 
   extra_tags = merge(map(
-      "Phase", var.phase,
-      "Project", var.project,
-    ), var.extra_tags)
+    "Phase", var.phase,
+    "Project", var.project,
+  ), var.extra_tags)
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -89,10 +89,10 @@ module "worker_spot" {
     spot_instance_pools                      = 1
   }
 
-  ssh_key   = var.key_pair_name
+  ssh_key = var.key_pair_name
 
   extra_tags = merge(map(
-      "Phase", var.phase,
-      "Project", var.project,
-    ), var.extra_tags)
+    "Phase", var.phase,
+    "Project", var.project,
+  ), var.extra_tags)
 }

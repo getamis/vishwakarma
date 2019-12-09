@@ -4,7 +4,7 @@ data "template_file" "kubelet" {
   vars = {
     kubelet_flag_cloud_provider       = var.kubelet_flag_cloud_provider != "" ? "--cloud-provider=${var.kubelet_flag_cloud_provider}" : ""
     kubelet_flag_cloud_config         = var.kubelet_flag_cloud_config != "" ? "--cloud-config=/etc/kubernetes/cloud/config" : ""
-    kubelet_flag_cluster_dns          = var.kubelet_flag_cluster_dns != "" ? "--cluster-dns=${var.kubelet_flag_cluster_dns}": ""
+    kubelet_flag_cluster_dns          = var.kubelet_flag_cluster_dns != "" ? "--cluster-dns=${var.kubelet_flag_cluster_dns}" : ""
     kubelet_flag_cni_bin_dir          = var.kubelet_flag_cni_bin_dir != "" ? "--cni-bin-dir=${var.kubelet_flag_cni_bin_dir}" : ""
     kubelet_flag_pod_manifest_path    = var.kubelet_flag_pod_manifest_path != "" ? "--pod-manifest-path=${var.kubelet_flag_pod_manifest_path}" : ""
     kubelet_flag_node_labels          = var.kubelet_flag_node_labels != "" ? "--node-labels=${var.kubelet_flag_node_labels}" : ""

@@ -124,7 +124,7 @@ variable "map_roles" {
     username = string
     groups   = list(string)
   }))
-  default     = []
+  default = []
 }
 
 variable "map_users" {
@@ -134,7 +134,7 @@ variable "map_users" {
     username = string
     groups   = list(string)
   }))
-  default     = []
+  default = []
 }
 
 variable "lb_sg_ids" {

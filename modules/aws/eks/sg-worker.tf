@@ -4,11 +4,11 @@ resource "aws_security_group" "worker" {
   vpc_id      = data.aws_subnet.exist.vpc_id
 
   tags = merge(map(
-      "Name", "${var.phase}-${var.project}-worker",
-      "kubernetes.io/cluster/${var.phase}-${var.project}", "owned",
-      "Phase", var.phase,
-      "Project", var.project
-    ), var.extra_tags)
+    "Name", "${var.phase}-${var.project}-worker",
+    "kubernetes.io/cluster/${var.phase}-${var.project}", "owned",
+    "Phase", var.phase,
+    "Project", var.project
+  ), var.extra_tags)
 }
 
 resource "aws_security_group_rule" "worker_egress" {
@@ -22,13 +22,13 @@ resource "aws_security_group_rule" "worker_egress" {
 }
 
 resource "aws_security_group_rule" "worker_ingress_self" {
-  description              = "Allow node to communicate with each other."
-  protocol                 = "-1"
-  security_group_id        = "${aws_security_group.worker.id}"
-  self                     = true
-  from_port                = 0
-  to_port                  = 65535
-  type                     = "ingress"
+  description       = "Allow node to communicate with each other."
+  protocol          = "-1"
+  security_group_id = aws_security_group.worker.id
+  self              = true
+  from_port         = 0
+  to_port           = 65535
+  type              = "ingress"
 }
 
 resource "aws_security_group_rule" "worker_ingress_from_eks" {
@@ -42,13 +42,13 @@ resource "aws_security_group_rule" "worker_ingress_from_eks" {
 }
 
 resource "aws_security_group_rule" "worker_ingress_from_ssh" {
-  description              = "Allow access from ssh."
-  protocol                 = "tcp"
-  security_group_id        = aws_security_group.worker.id
-  cidr_blocks              = var.cidr_access_worker_ssh
-  from_port                = 22
-  to_port                  = 22
-  type                     = "ingress"
+  description       = "Allow access from ssh."
+  protocol          = "tcp"
+  security_group_id = aws_security_group.worker.id
+  cidr_blocks       = var.cidr_access_worker_ssh
+  from_port         = 22
+  to_port           = 22
+  type              = "ingress"
 }
 
 resource "aws_security_group_rule" "worker_ingress_lb" {

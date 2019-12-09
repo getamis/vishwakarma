@@ -8,10 +8,10 @@ resource "aws_iam_role" "workers" {
 }
 
 resource "aws_iam_instance_profile" "workers" {
-  count       = length(var.worker_groups)
-  name        = "${var.phase}-${var.project}-worker-${var.worker_groups[count.index]}"
-  role        = aws_iam_role.workers.*.name[count.index]
-  path        = var.iam_path
+  count = length(var.worker_groups)
+  name  = "${var.phase}-${var.project}-worker-${var.worker_groups[count.index]}"
+  role  = aws_iam_role.workers.*.name[count.index]
+  path  = var.iam_path
 }
 
 resource "aws_iam_role_policy_attachment" "workers_AmazonEKS_CNI_Policy" {
