@@ -69,10 +69,10 @@ module "kubernetes" {
 
   auth_webhook_path = "${var.auth_webhook_path}"
 
-  extra_tags = "${merge(map(
-      "Phase", "${local.phase}",
-      "Project", "${local.project}",
-    ), var.extra_tags)}"
+  extra_tags = merge(map(
+    "Phase", "${local.phase}",
+    "Project", "${local.project}",
+  ), var.extra_tags)
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -107,10 +107,10 @@ module "worker_on_demand" {
   s3_bucket = "${module.kubernetes.s3_bucket}"
   ssh_key   = "${var.key_pair_name}"
 
-  extra_tags = "${merge(map(
-      "Phase", "${var.phase}",
-      "Project", "${var.project}",
-    ), var.extra_tags)}"
+  extra_tags = merge(map(
+    "Phase", "${var.phase}",
+    "Project", "${var.project}",
+  ), var.extra_tags)
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -145,8 +145,8 @@ module "worker_spot" {
   s3_bucket = "${module.kubernetes.s3_bucket}"
   ssh_key   = "${var.key_pair_name}"
 
-  extra_tags = "${merge(map(
-      "Phase", "${local.phase}",
-      "Project", "${local.project}",
-    ), var.extra_tags)}"
+  extra_tags = merge(map(
+    "Phase", "${local.phase}",
+    "Project", "${local.project}",
+  ), var.extra_tags)
 }
