@@ -14,9 +14,6 @@ install:
 jobs:
   include:
     - stage: test
-      env:
-        - tf_version=0.12.17
-        - JOB="Terraform Format Verification"
       before_script:
         - terraform -v
       script:

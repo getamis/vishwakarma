@@ -37,8 +37,6 @@ Enter a value:
 ```
 
 ### AWS EKS
-
-
 Start to create the EKS cluster!
 
 ```
