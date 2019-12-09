@@ -18,8 +18,8 @@ variable "security_group_ids" {
     (Optional) List of security group IDs for the cross-account elastic network interfaces
     to use to allow communication between your worker nodes and the Kubernetes control plane.
 EOF
-  type       = list(string)
-  default    = []
+  type        = list(string)
+  default     = []
 }
 
 variable "lb_security_group_ids" {
@@ -60,7 +60,7 @@ variable "endpoint_public_access" {
 variable "kubernetes_version" {
   description = "(Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
   type        = string
-  default     = "v1.14.6"
+  default     = "v1.14.9"
 }
 
 // -----------------------------------------
@@ -69,7 +69,7 @@ variable "kubernetes_version" {
 variable "master_config" {
   description = "(Optional) Desired master nodes configuration."
   type        = map(string)
-  default     = {
+  default = {
     instance_count   = "1"
     ec2_type_1       = "t3.medium"
     ec2_type_2       = "t2.medium"
@@ -92,13 +92,13 @@ EOF
   // Default is provided only in this case
   // bacause *some* of etcd internal certs are still self-generated and need
   // this variable set
-  default     = 26280
+  default = 26280
 }
 
 variable "etcd_config" {
   description = "(Optional) Desired etcd nodes configuration."
   type        = map(string)
-  default     = {
+  default = {
     instance_count   = "1"
     ec2_type         = "t3.medium"
     root_volume_iops = "100"
@@ -139,8 +139,8 @@ variable "hostzone" {
 
 variable "reboot_strategy" {
   description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
-  type    = string
-  default = "off"
+  type        = string
+  default     = "off"
 }
 
 variable "extra_master_node_labels" {
@@ -211,7 +211,7 @@ variable "audit_log_backend" {
     there are four parameters: path, maxage, maxbackup, maxsize.
 EOF
   type        = map(string)
-  default     = {
+  default = {
     path      = ""
     maxage    = ""
     maxbackup = ""
@@ -221,11 +221,11 @@ EOF
 
 variable "oidc_issuer_confg" {
   description = "The service account config to enable pod identity feature"
-  type        = object({
+  type = object({
     issuer        = string
     api_audiences = string
   })
-  default     = {
+  default = {
     issuer        = ""
     api_audiences = ""
   }

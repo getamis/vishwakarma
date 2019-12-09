@@ -37,13 +37,13 @@ EOF
 variable "kubernetes_version" {
   description = "Desired Kubernetes kubelet version. If you do not specify a value, the latest available version is used."
   type        = string
-  default     = "v1.14.6"
+  default     = "v1.14.9"
 }
 
 variable "worker_config" {
   description = "Desired worker nodes configuration."
   type        = map(string)
-  default     = {
+  default = {
     instance_count   = "1"
     ec2_type_1       = "t3.medium"
     ec2_type_2       = "t2.medium"
@@ -79,8 +79,8 @@ variable "kube_node_taints" {
   description = <<EOF
 Register the node with the given list of taints ("<key>=<value>:<effect>").
 EOF
-  type    = list(string)
-  default = []
+  type        = list(string)
+  default     = []
 }
 
 variable "s3_bucket" {
@@ -94,8 +94,8 @@ EOF
 
 variable "reboot_strategy" {
   description = "CoreOS reboot strategies on updates, two option here: etcd-lock or off"
-  type    = string
-  default = "etcd-lock"
+  type        = string
+  default     = "etcd-lock"
 }
 
 variable "extra_ignition_file_ids" {

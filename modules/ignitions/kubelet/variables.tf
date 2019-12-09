@@ -38,8 +38,8 @@ variable "kubelet_flag_register_with_taints" {
   description = <<EOF
 Register the node with the given list of taints (comma separated "<key>=<value>:<effect>").
 EOF
-  type    = string
-  default = ""
+  type        = string
+  default     = ""
 }
 
 variable "kubelet_flag_pod_manifest_path" {
@@ -58,8 +58,8 @@ variable "hyperkube" {
 
   description = "(Optional) The hyperkube container image path and tag."
   type        = map(string)
-  default     = {
+  default = {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
-    image_tag  = "v1.14.6"
+    image_tag  = "v1.14.9"
   }
 }

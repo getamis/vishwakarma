@@ -19,7 +19,7 @@ variable "secret_path" {
 variable "kube_certs" {
   description = "The kubernetes certificate"
   type        = map(string)
-  default     = {
+  default = {
     # ca_cert_pem        = ""
     # apiserver_key_pem  = ""
     # apiserver_cert_pem = ""
@@ -29,7 +29,7 @@ variable "kube_certs" {
 variable "etcd_certs" {
   description = "The ectd certificate"
   type        = map(string)
-  default     = {
+  default = {
     # ca_cert_pem     = ""
     # client_key_pem  = ""
     # client_cert_pem = ""
@@ -41,13 +41,13 @@ variable "etcd_config" {
   endpoints: The comma separated list of etcd endpoints (e.g., "http://etcd1:2379,http://etcd2:2379").
   EOF
   type        = map(string)
-  default     = {
+  default = {
     endpoints = ""
   }
 }
 
 variable "apiserver_config" {
-  type    = map(string)
+  type = map(string)
   default = {
     anonymous_auth    = false
     advertise_address = "0.0.0.0"
@@ -63,18 +63,18 @@ variable "audit_log_backend" {
 
 variable "oidc_issuer_confg" {
   description = "The service account config to enable pod identity feature"
-  type        = object({
+  type = object({
     issuer        = string
     api_audiences = string
   })
-  default     = {
+  default = {
     issuer        = ""
     api_audiences = ""
   }
 }
 
 variable "cloud_provider" {
-  type    = map(string)
+  type = map(string)
   default = {
     name   = "aws"
     config = ""
@@ -87,7 +87,7 @@ variable "cluster_config" {
   pod_eviction_timeout: The grace period for deleting pods on failed nodes. The eviction process will start after node_monitor_grace_period + pod_eviction_timeout.
   EOF
   type        = map(string)
-  default     = {
+  default = {
     node_monitor_grace_period = "40s"
     pod_eviction_timeout      = "5m"
     service_cidr              = "10.3.0.0/16"
@@ -98,8 +98,8 @@ variable "cluster_config" {
 variable "hyperkube" {
   description = "The hyperkube container image path and tag"
   type        = map(string)
-  default     = {
+  default = {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
-    image_tag  = "v1.14.6"
+    image_tag  = "v1.14.9"
   }
 }
