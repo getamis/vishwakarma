@@ -19,7 +19,7 @@ EOF
   // Default is provided only in this case
   // bacause *some* of etcd internal certs are still self-generated and need
   // this variable set
-  default     = 26280
+  default = 26280
 }
 
 variable "cluster_cidr" {
@@ -36,13 +36,13 @@ variable "key_pair_name" {
 variable "kubernetes_version" {
   description = "(Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
   type        = string
-  default     = "v1.14.6"
+  default     = "v1.14.9"
 }
 
 variable "project" {
-  description = "(Optional) project name, used to compose the resource name"  
-  type = string
-  default = "elastikube"
+  description = "(Optional) project name, used to compose the resource name"
+  type        = string
+  default     = "elastikube"
 }
 
 variable "phase" {

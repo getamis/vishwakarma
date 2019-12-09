@@ -1,5 +1,4 @@
 # Elastikube Cluster Example
-
 This folder contains a simple Terraform module that deploys resources in [AWS](https://aws.amazon.com/) to demonstrate
 how you can use Terratest to write automated tests for your AWS Terraform code. This module deploys AWS VPC with bastion hot, self-hosted Kubernetes with two worker group (spot and on demand instance) [EC2
 Instances](https://aws.amazon.com/ec2/) in the AWS region specified in
@@ -10,10 +9,6 @@ automated tests for this module.
 
 **WARNING**: This module and the automated tests for it deploy real resources into your AWS account which can cost you
 money.
-
-
-
-
 
 ## Running this module manually
 
@@ -49,9 +44,6 @@ money.
     $ terraform destroy -target=module.kubernetes
     $ terraform destroy -target=module.network
     ```
-
-
-
 
 ## Running automated tests against this module
 
