@@ -1,8 +1,7 @@
 # vishwakarma
+Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging HashiCorp Terraform and CoreOS. And **There are two kind of K8S Master within vishwakarma, one leverages AWS EKS, the other one is ElastiKube (Self-Hosted)**. Of course, we didn't develop it from scratch, we refer to [CoreOS Tectonic](https://github.com/coreos/tectonic-installer) and [terraform-aws-eks](https://github.com/terraform-aws-modules/terraform-aws-eks), before starting to dive into the detail, let's experience it first
 
 ![Alt text](https://cdn-images-1.medium.com/max/800/1*ocPrvGrCORzJiF3rK3GG_g.png)
-
-Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging HashiCorp Terraform and CoreOS. And **There are two kind of K8S Master within vishwakarma, one leverages AWS EKS, the other one is ElastiKube (Self-Hosted)**. Of course, we didn't develop it from scratch, we refer to [CoreOS Tectonic](https://github.com/coreos/tectonic-installer) and [terraform-aws-eks](https://github.com/terraform-aws-modules/terraform-aws-eks), before starting to dive into the detail, let's experience it first
 
 ## Dependencies
 
@@ -148,23 +147,7 @@ Create a AWS auto-scaling group with CoreOS container linux and leverage ignitio
 
 Due to using AWS launch template, hence, it's up to user to choose spot or on demand instance type by changing the variable, refer [**aws/eks-worker**](VARIABLES.md#aws/eks-worker) and [**aws/kube-worker**](VARIABLES.md#aws/kube-worker) for the detail variable inputs
 
-## Known Issues
-
-### Ignition Provider Issue
-This module leverage provider ignition to provision instance (etcd, master and worker node)，after upgrading Terraform 0.12，there is issue about the ignition provider, althrough community already merge the [**PR**](https://github.com/terraform-providers/terraform-provider-ignition/pull/56) into master branch, but don't know why not bump a new version yet, hence, there is something need to do for workaround this issue (The following steps are running in MacOS, it needs to make some change for running in other platform)
-
-Build the ignition provider from official GitHub master branch
-
-```
-~$ cd $GOPATH/src/github.com/terraform-providers/terraform-provider-ignition
-$ make build
-
-~$ mkdir -p ~/.terraform.d/plugins/darwin_amd64
-~$ cp $GOPATH/bin/terraform-provider-ignition ~/.terraform.d/plugins/darwin_amd64/terraform-provider-ignition_v1.1.0_x4
-```
-
 ## Contributing
-
 There are several ways to contribute to this project:
 
 1. **Find bug**: create an issue in our Github issue tracker.
@@ -173,10 +156,8 @@ There are several ways to contribute to this project:
 
 
 ## Change log
-
 The [changelog](CHANGELOG.md) captures all important release notes.
 
 
 ## License
-
 This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENSE) file for details
