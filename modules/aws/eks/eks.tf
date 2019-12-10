@@ -16,7 +16,7 @@ resource "aws_eks_cluster" "vishwakarma" {
   }
 
   depends_on = [
-    "aws_iam_role_policy_attachment.eks_cluster",
-    "aws_iam_role_policy_attachment.eks_service",
+    aws_iam_role_policy_attachment.eks_cluster,
+    aws_iam_role_policy_attachment.eks_service,
   ]
 }

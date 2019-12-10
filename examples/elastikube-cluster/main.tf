@@ -55,9 +55,9 @@ module "kubernetes" {
   reboot_strategy        = "off"
 
   extra_tags = merge(map(
-      "Phase", var.phase,
-      "Project", var.project,
-    ), var.extra_tags)
+    "Phase", var.phase,
+    "Project", var.project,
+  ), var.extra_tags)
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -92,10 +92,10 @@ module "worker_on_demand" {
   ssh_key   = var.key_pair_name
 
   extra_tags = merge(map(
-      "Phase", var.phase,
-      "Project", var.project,
-    ), var.extra_tags)
-} 
+    "Phase", var.phase,
+    "Project", var.project,
+  ), var.extra_tags)
+}
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Worker Node (On Spot Instance)
@@ -129,7 +129,7 @@ module "worker_spot" {
   ssh_key   = var.key_pair_name
 
   extra_tags = merge(map(
-      "Phase", var.phase,
-      "Project", var.project,
-    ), var.extra_tags)
+    "Phase", var.phase,
+    "Project", var.project,
+  ), var.extra_tags)
 }

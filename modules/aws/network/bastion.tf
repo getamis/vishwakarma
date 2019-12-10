@@ -2,10 +2,10 @@ resource "aws_security_group" "bastion" {
   vpc_id = aws_vpc.new_vpc.id
 
   tags = merge(map(
-      "Name", "${var.phase}-${var.project}-bastion",
-      "Phase", var.phase,
-      "Project", var.project
-    ), var.extra_tags)
+    "Name", "${var.phase}-${var.project}-bastion",
+    "Phase", var.phase,
+    "Project", var.project
+  ), var.extra_tags)
 }
 
 resource "aws_security_group_rule" "bastion_egress" {
@@ -47,8 +47,8 @@ data "aws_ami" "latest_ubuntu" {
 }
 
 resource "random_integer" "subnet_id_index" {
-  min     = 0
-  max     = var.aws_az_number - 1
+  min = 0
+  max = var.aws_az_number - 1
 
   keepers = {
     vpc_id = aws_vpc.new_vpc.id
@@ -78,8 +78,8 @@ resource "aws_instance" "bastion" {
   ]
 
   tags = merge(map(
-      "Name", "${var.phase}-${var.project}-bastion",
-      "Phase", var.phase,
-      "Project", var.project
-    ), var.extra_tags)
+    "Name", "${var.phase}-${var.project}-bastion",
+    "Phase", var.phase,
+    "Project", var.project
+  ), var.extra_tags)
 }

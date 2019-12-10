@@ -15,7 +15,7 @@ resource "aws_route53_zone" "private" {
   }
 
   tags = merge(map(
-      "Name", local.private_zone_name,
-      "kubernetes.io/cluster/${var.name}", "shared"
-    ), var.extra_tags)
+    "Name", local.private_zone_name,
+    "kubernetes.io/cluster/${var.name}", "shared"
+  ), var.extra_tags)
 }

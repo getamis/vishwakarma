@@ -1,17 +1,18 @@
-# vishwakarma
-Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging HashiCorp Terraform and CoreOS. And **There are two kind of K8S Master within vishwakarma, one leverages AWS EKS, the other one is ElastiKube (Self-Hosted)**. Of course, we didn't develop it from scratch, we refer to [CoreOS Tectonic](https://github.com/coreos/tectonic-installer) and [terraform-aws-eks](https://github.com/terraform-aws-modules/terraform-aws-eks), before starting to dive into the detail, let's experience it first
+[![Build Status](https://travis-ci.org/getamis/vishwakarma.svg?branch=master)](https://travis-ci.org/getamis/vishwakarma)
+# Vishwakarma
+Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging HashiCorp Terraform and CoreOS. And **There are two kind of K8S Master within vishwakarma, one leverages AWS EKS, the other one is ElastiKube (Self-Hosted)**. Of course, we didn't develop it from scratch, we refer to [CoreOS Tectonic](https://github.com/coreos/tectonic-installer) and [terraform-aws-eks](https://github.com/terraform-aws-modules/terraform-aws-eks), before starting to dive into the detail, let's experience it first.
 
 ![Alt text](https://cdn-images-1.medium.com/max/800/1*ocPrvGrCORzJiF3rK3GG_g.png)
 
 ## Dependencies
 
-- **Terraform**: All of the AWS resource will be create by Terraform, hence, you need to [**install it**](https://www.terraform.io/intro/getting-started/install.html) and confirm the [**permission setup**](https://www.terraform.io/docs/providers/aws/index.html) correctly, then Terraform have the permission to create AWS resource automatically
+- **Terraform**: All of the AWS resource will be create by Terraform, hence, you need to [**install it**](https://www.terraform.io/intro/getting-started/install.html) and confirm the [**permission setup**](https://www.terraform.io/docs/providers/aws/index.html) correctly, then Terraform have the permission to create AWS resource automatically. **Version > 0.12.0**.
 
-- **kubectl**: After AWS EKS cluster created completely, there is a Kubernetes ConfigMap aws-auth need to be created through kubectl, so need to [**install it**](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl)
+- **kubectl**: After AWS EKS cluster created completely, there is a Kubernetes ConfigMap aws-auth need to be created through kubectl, so need to [**install it**](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl) **Version > 1.10.0**.
 
-- **heptio-authenticator-aws**: AWS EKS access permission integrate with AWS IAM, in order to let AWS EKS know whether you have the right to access, heptio-authenticator-aws need to be [**installed**](https://docs.aws.amazon.com/eks/latest/userguide/configure-kubectl.html) in the client side
+- **heptio-authenticator-aws**: AWS EKS access permission integrate with AWS IAM, in order to let AWS EKS know whether you have the right to access, heptio-authenticator-aws need to be [**installed**](https://docs.aws.amazon.com/eks/latest/userguide/configure-kubectl.html) in the client side.
 
-- **Key Pair**: In order to access worker node through ssh protocol, please create a key pair in example region **US West (Oregon) us-west-2**
+- **Key Pair**: In order to access worker node through ssh protocol, please create a key pair in example region **US West (Oregon) us-west-2**.
 
 ## Getting Started
 Before to start to create the K8S cluster, Below are two kind of K8S cluster building block, depend on you requirement to choose one
@@ -23,7 +24,7 @@ Before to start to create the K8S cluster, Below are two kind of K8S cluster bui
 First, Acquire Vishwakarma from github!!
 
 ```
-~$ git clone https://github.com/getamis/vishwakarma.git
+$ git clone https://github.com/getamis/vishwakarma.git
 ```
 
 Second, before the operation, user need to create a AWS EC2 key pairs first, and input it when there is command line prompt during the operation
@@ -36,29 +37,27 @@ Enter a value:
 ```
 
 ### AWS EKS
-
-
 Start to create the EKS cluster!
 
 ```
 # switch to eks_worker example folder
 
-~$ cd examples/eks-cluster
+$ cd examples/eks-cluster
 
 # initial for sync terraform module and install provider plugins
 
-~$ terraform init
+$ terraform init
 
 # create the network infrastructure
 
-~$ terraform apply -target=module.network
+$ terraform apply -target=module.network
 
 # create the eks compoment
 
-~$ terraform apply -target=module.eks
+$ terraform apply -target=module.eks
 
 # create the on demand and spot k8s worker group
-~$ terraform apply
+$ terraform apply
 
 ```
 
@@ -67,12 +66,12 @@ Verify the Kubernetes cluster is up! (Still keep in the same folder)
 ```
 # setup kubeconfig for kubectl to access eks
 
-~$ export KUBECONFIG=./kubeconfig
+$ export KUBECONFIG=./kubeconfig
 
 # check whether there is 4 worker register successfully, it will takes several
 minutes...
 
-~$ kubectl get node
+$ kubectl get node
 
 NAME                          STATUS    ROLES     AGE       VERSION
 ip-10-0-48-247.ec2.internal   Ready     spot      2m        v1.14.9
@@ -86,22 +85,22 @@ Please create a ssh key pair in ~/.ssh/ with the name id_rsa.pub and id_rsa, thi
 
 ```
 # switch to elastikube_cluster example folder
-~$ cd examples/elastikube_cluster
+$ cd examples/elastikube_cluster
 
 # initial for sync terraform module and install provider plugins
 
-~$ terraform init
+$ terraform init
 
 # create the network infrastructure
 
-~$ terraform apply -target=module.network
+$ terraform apply -target=module.network
 
 # create the kubernetes master compoment
 
-~$ terraform apply -target=module.kubernetes
+$ terraform apply -target=module.kubernetes
 
 # create the general and spot k8s worker group
-~$ terraform apply
+$ terraform apply
 ```
 
 Verify the Kubernetes cluster is up! (Still keep in the same folder)
@@ -111,12 +110,12 @@ Verify the Kubernetes cluster is up! (Still keep in the same folder)
 
 # setup kubeconfig for kubectl to access eks
 
-~$ export KUBECONFIG=#{The Path You Put kubeconfig}/kubeconfig
+$ export KUBECONFIG=#{The Path You Put kubeconfig}/kubeconfig
 
 # check whether there is 4 worker register successfully, it will takes several
 minutes...
 
-~$ kubectl get node
+$ kubectl get node
 
 NAME                          STATUS    ROLES     AGE       VERSION
 ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.14.9

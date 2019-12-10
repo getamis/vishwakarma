@@ -1,7 +1,7 @@
 variable "docker_opts" {
   description = "See official docker documentation and https://coreos.com/os/docs/latest/customizing-docker.html for details."
   type        = list(string)
-  default     = [
+  default = [
     "--log-opt",
     "max-size=50m",
     "--log-opt",

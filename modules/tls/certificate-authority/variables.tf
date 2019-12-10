@@ -5,7 +5,7 @@ variable "rsa_bits" {
 variable "cert_config" {
   description = "Certificate configuration"
   type        = map(string)
-  default     = {
+  default = {
     common_name           = ""
     organization          = ""
     validity_period_hours = "26280"
@@ -19,7 +19,7 @@ variable "ca_cert_path" {
 }
 
 variable "ca_uses" {
-  type    = list(string)
+  type = list(string)
   default = [
     "key_encipherment",
     "digital_signature",

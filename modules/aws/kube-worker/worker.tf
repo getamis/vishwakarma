@@ -20,19 +20,19 @@ data "null_data_source" "tags" {
 }
 
 resource "aws_autoscaling_group" "worker" {
-  name_prefix          = "${var.cluster_name}-worker-${var.worker_config["name"]}-"
-  desired_capacity     = var.worker_config["instance_count"]
-  max_size             = var.worker_config["instance_count"] * 3
-  min_size             = var.worker_config["instance_count"]
-  vpc_zone_identifier  = var.subnet_ids
-  load_balancers       = var.load_balancer_ids
-  target_group_arns    = var.target_group_arns
+  name_prefix         = "${var.cluster_name}-worker-${var.worker_config["name"]}-"
+  desired_capacity    = var.worker_config["instance_count"]
+  max_size            = var.worker_config["instance_count"] * 3
+  min_size            = var.worker_config["instance_count"]
+  vpc_zone_identifier = var.subnet_ids
+  load_balancers      = var.load_balancer_ids
+  target_group_arns   = var.target_group_arns
 
   mixed_instances_policy {
     launch_template {
       launch_template_specification {
         launch_template_id = aws_launch_template.worker.id
-        version = "$Latest"
+        version            = "$Latest"
       }
 
       override {
@@ -73,7 +73,7 @@ resource "aws_autoscaling_group" "worker" {
 resource "aws_launch_template" "worker" {
   instance_type = var.worker_config["ec2_type_1"]
   image_id      = data.aws_ami.coreos_ami.image_id
-  name_prefix   = "${var.cluster_name}-worker-${var.worker_config["name"]}-"  
+  name_prefix   = "${var.cluster_name}-worker-${var.worker_config["name"]}-"
 
   vpc_security_group_ids = var.security_group_ids
 

@@ -22,18 +22,18 @@ money.
     ```
     # initial for sync terraform module and install provider plugins
 
-    ~$ terraform init
+    $ terraform init
 
     # create the network infrastructure
 
-    ~$ terraform apply -target=module.network
+    $ terraform apply -target=module.network
 
     # create the kubernetes master compoment
 
-    ~$ terraform apply -target=module.kubernetes
+    $ terraform apply -target=module.kubernetes
 
     # create the general and spot k8s worker group
-    ~$ terraform apply
+    $ terraform apply
     ```
 
 5. When you're done, execute below command to destroy

@@ -61,13 +61,13 @@ EOF
   // Default is provided only in this case
   // bacause *some* of etcd internal certs are still self-generated and need
   // this variable set
-  default     = 26280
+  default = 26280
 }
 
 variable "etcd_config" {
   description = "(Optional) Desired etcd nodes configuration."
   type        = map(string)
-  default     = {
+  default = {
     instance_count   = "1"
     ec2_type         = "t3.medium"
     root_volume_iops = "100"

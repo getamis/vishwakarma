@@ -31,7 +31,7 @@ resource "aws_s3_bucket_object" "kubeconfig_iam" {
   content_type           = "text/plain"
 
   tags = merge(map(
-      "Name", "kubeconfig.iam",
-      "kubernetes.io/cluster/${local.cluster_name}", "owned",
-    ), var.extra_tags)
+    "Name", "kubeconfig.iam",
+    "kubernetes.io/cluster/${local.cluster_name}", "owned",
+  ), var.extra_tags)
 }

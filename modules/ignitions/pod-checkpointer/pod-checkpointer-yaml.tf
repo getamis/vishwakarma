@@ -1,8 +1,8 @@
 data "template_file" "pod_checkpointer_yaml" {
   template = file("${path.module}/resources/kubernetes/addon/pod-checkpointer.yaml")
 
-  vars  ={
-    pod_checkpointer_image = var.pod_checkpointer["image_path"]}:${var.pod_checkpointer["image_tag"]
+  vars = {
+    pod_checkpointer_image = format("%s:%s", var.pod_checkpointer["image_path"], var.pod_checkpointer["image_tag"])
   }
 }
 

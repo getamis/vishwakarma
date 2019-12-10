@@ -11,7 +11,7 @@ data "ignition_systemd_unit" "docker_dropin" {
   enabled = true
 
   dropin {
-      name    = "10-dockeropts.conf"
-      content = data.template_file.docker_dropin.rendered
+    name    = "10-dockeropts.conf"
+    content = data.template_file.docker_dropin.rendered
   }
 }

@@ -33,8 +33,8 @@ variable "lb_security_group_ids" {
     (Optional) List of security group IDs for the cross-account elastic network interfaces
     to use to allow communication between you and the kubernetes api server load balancer.
 EOF
-  type    = list(string)
-  default = []
+  type        = list(string)
+  default     = []
 }
 
 variable "public_subnet_ids" {
@@ -53,8 +53,8 @@ variable "private_subnet_ids" {
     Cross-account elastic network interfaces will be created in these subnets to allow
     communication between your worker nodes and the Kubernetes control plane.
 EOF
-  type    = list(string)
-  default = []
+  type        = list(string)
+  default     = []
 }
 
 variable "endpoint_public_access" {
@@ -72,7 +72,7 @@ variable "kubernetes_version" {
 variable "master_config" {
   description = "(Optional) Desired master nodes configuration."
   type        = map(string)
-  default     = {
+  default = {
     instance_count   = "1"
     ec2_type_1       = "t3.medium"
     ec2_type_2       = "t2.medium"
@@ -112,7 +112,7 @@ EOF
   // Default is provided only in this case
   // bacause *some* of etcd internal certs are still self-generated and need
   // this variable set
-  default     = 26280
+  default = 26280
 }
 
 variable "kube_service_cidr" {
@@ -194,18 +194,18 @@ variable "audit_log_backend" {
     (Optional) Kubernetes apiserver auditing log backend configuration,
     there are four parameters: path, maxage, maxbackup, maxsize.
 EOF
-  type            = map(string)
-  default         = {}
+  type        = map(string)
+  default     = {}
 
 }
 
 variable "oidc_issuer_confg" {
   description = "The service account config to enable pod identity feature"
-  type        = object({
+  type = object({
     issuer        = string
     api_audiences = string
   })
-  default     = {
+  default = {
     issuer        = ""
     api_audiences = ""
   }

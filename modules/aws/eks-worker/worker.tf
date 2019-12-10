@@ -20,19 +20,19 @@ data "null_data_source" "tags" {
 }
 
 resource "aws_autoscaling_group" "worker" {
-  name_prefix          = "${var.cluster_name}-worker-${var.worker_config["name"]}-"
-  desired_capacity     = var.worker_config["instance_count"]
-  max_size             = var.worker_config["instance_count"] * 3
-  min_size             = var.worker_config["instance_count"]
-  vpc_zone_identifier  = var.subnet_ids
-  load_balancers       = var.load_balancer_ids
-  target_group_arns    = var.target_group_arns
+  name_prefix         = "${var.cluster_name}-worker-${var.worker_config["name"]}-"
+  desired_capacity    = var.worker_config["instance_count"]
+  max_size            = var.worker_config["instance_count"] * 3
+  min_size            = var.worker_config["instance_count"]
+  vpc_zone_identifier = var.subnet_ids
+  load_balancers      = var.load_balancer_ids
+  target_group_arns   = var.target_group_arns
 
   mixed_instances_policy {
     launch_template {
       launch_template_specification {
         launch_template_id = aws_launch_template.worker.id
-        version = "$Latest"
+        version            = "$Latest"
       }
 
       override {
@@ -74,13 +74,13 @@ data "template_file" "userdata" {
   template = file("${path.module}/resources/userdata.sh")
 
   vars = {
-    cluster_name         = data.aws_eks_cluster.vishwakarma.id
-    endpoint             = data.aws_eks_cluster.vishwakarma.endpoint
-    cluster_auth_base64  = data.aws_eks_cluster.vishwakarma.certificate_authority.0.data
+    cluster_name        = data.aws_eks_cluster.vishwakarma.id
+    endpoint            = data.aws_eks_cluster.vishwakarma.endpoint
+    cluster_auth_base64 = data.aws_eks_cluster.vishwakarma.certificate_authority.0.data
     kubelet_extra_args = join(",", compact(concat(
-    list("--node-labels=node-role.kubernetes.io/${var.worker_config["name"]}="),
-    var.kube_node_labels,
-  )))
+      list("--node-labels=node-role.kubernetes.io/${var.worker_config["name"]}="),
+      var.kube_node_labels,
+    )))
   }
 }
 
@@ -95,7 +95,7 @@ resource "aws_launch_template" "worker" {
     arn = data.aws_iam_instance_profile.worker.arn
   }
 
-  key_name  = "${var.ssh_key}"
+  key_name  = var.ssh_key
   user_data = base64encode(data.template_file.userdata.rendered)
 
   block_device_mappings {

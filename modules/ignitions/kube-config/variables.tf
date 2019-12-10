@@ -25,7 +25,7 @@ variable "api_server_endpoint" {
 variable "kube_certs" {
   description = "The kubernetes certificate"
   type        = map(string)
-  default     = {
+  default = {
     ca_cert_pem      = ""
     kubelet_key_pem  = ""
     kubelet_cert_pem = ""

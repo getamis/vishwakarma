@@ -57,8 +57,8 @@ variable "subnet_ids" {
     communication between your worker nodes and the Kubernetes control plane.
 EOF
 
-  type        = list(string)
-  default     = []
+  type    = list(string)
+  default = []
 }
 
 variable "ssh_key" {
@@ -83,7 +83,7 @@ variable "worker_config" {
   description = "Desired worker nodes configuration."
   type        = map(string)
 
-  default     = {
+  default = {
     instance_count   = "1"
     ec2_type_1       = "t3.medium"
     ec2_type_2       = "t2.medium"

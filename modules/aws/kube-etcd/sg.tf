@@ -7,8 +7,8 @@ resource "aws_security_group" "etcd" {
   vpc_id      = local.vpc_id
 
   tags = merge(map(
-      "Name", "${var.name}-etcd",
-    ), var.extra_tags)
+    "Name", "${var.name}-etcd",
+  ), var.extra_tags)
 }
 
 resource "aws_security_group_rule" "etcd_egress" {

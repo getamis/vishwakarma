@@ -35,7 +35,7 @@ resource "aws_instance" "etcd" {
   tags = merge(map(
     "Name", "${var.name}-etcd-${count.index}",
     "kubernetes.io/cluster/${var.name}", "owned",
-    ), var.extra_tags)
+  ), var.extra_tags)
 
   root_block_device {
     volume_type = var.etcd_config["root_volume_type"]
@@ -46,5 +46,5 @@ resource "aws_instance" "etcd" {
   volume_tags = merge(map(
     "Name", "${var.name}-etcd-${count.index}-vol",
     "kubernetes.io/cluster/${var.name}", "owned",
-    ), var.extra_tags)
+  ), var.extra_tags)
 }
