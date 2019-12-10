@@ -1,21 +1,25 @@
 language: bash
 sudo: required
 
-env:
-  - tf_version=0.12.17
-
-before_install:
-  - wget https://releases.hashicorp.com/terraform/${tf_version}/terraform_${tf_version}_linux_amd64.zip -O /tmp/terraform.zip
-  - sudo unzip -d /usr/local/bin/ /tmp/terraform.zip
-
 install:
   - echo 'install'
 
+_run_template: &_run_template
+  before_script:
+    - wget https://releases.hashicorp.com/terraform/${tf_version}/terraform_${tf_version}_linux_amd64.zip -O /tmp/terraform.zip
+    - sudo unzip -d /usr/local/bin/ /tmp/terraform.zip
+    - terraform -v
+  script:
+    - make validate
+    - make check-fmt
+
 jobs:
   include:
-    - stage: test
-      before_script:
-        - terraform -v
-      script:
-        - make test
-        - make fmt
+    - stage: test-0.12.0
+      env:
+        - tf_version=0.12.0
+      <<: *_run_template
+    - stage: test-0.12.17
+      env:
+        - tf_version=0.12.17
+      <<: *_run_template
