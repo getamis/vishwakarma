@@ -13,14 +13,14 @@ import (
 )
 
 func TestElastikubeCluster(t *testing.T) {
-
 	t.Parallel()
 
+	// Copy example to temp folder
 	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/elastikube-cluster")
 
 	// A unique ID we can use to namespace resources so we don't clash with anything already in the AWS account or
 	// tests running in parallel
-	//uniqueID := "rn2ws0"
+	// uniqueID := "rn2ws0"
 	uniqueID := strings.ToLower(random.UniqueId())
 	awsRegion := "us-west-2"
 

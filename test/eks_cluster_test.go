@@ -13,9 +13,9 @@ import (
 )
 
 func TestEKSCluster(t *testing.T) {
-
 	t.Parallel()
 
+	// Copy example to temp folder
 	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/eks-cluster")
 
 	// A unique ID we can use to namespace resources so we don't clash with anything already in the AWS account or
