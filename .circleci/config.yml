@@ -28,10 +28,9 @@ default: &default
   working_directory: /go/src/github.com/getamis/vishwakarma
   environment:
     GOPATH: /go
-    GOCACHE: /.cache/go-build
     GO111MODULE: "on"
     TF_VERSION: "0.12.17"
-    KUBE_VERSION: "v1.14.9"
+    KUBE_VERSION: "v1.14.10"
     AWS_SDK_LOAD_CONFIG: "True"
     INSTALL_AWS_CLI: "true"
     INSTALL_TERRAFORM: "true"
@@ -52,7 +51,7 @@ jobs:
       - run:
           name: Terraform check format
           command: make check-fmt
-  run-elastikube-test:
+  run-elastikube:
     <<: *default   
     steps:
       - checkout 
@@ -60,7 +59,7 @@ jobs:
       - run: 
           name: Run tests for Elastikube cluster
           command: make test-elastikube
-  run-eks-test:
+  run-eks:
     <<: *default  
     steps: 
       - checkout  
@@ -74,11 +73,17 @@ workflows:
   test:
     jobs:
       - validate-and-format
-      - run-elastikube-test:
+      - approval-run-elastikube:
           type: approval
           requires:
             - validate-and-format
-      - run-eks-test:
+      - approval-run-eks:
           type: approval
           requires:
             - validate-and-format
+      - run-elastikube:
+          requires:
+            - approval-run-elastikube
+      - run-eks:
+          requires:
+            - approval-run-eks
