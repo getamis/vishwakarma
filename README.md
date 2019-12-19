@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/getamis/vishwakarma.svg?style=svg)](https://circleci.com/gh/getamis/vishwakarma)
+[![CircleCI](https://circleci.com/gh/getamis/vishwakarma/tree/master.svg?style=svg)](https://circleci.com/gh/getamis/vishwakarma/tree/master)
 # Vishwakarma
 Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging HashiCorp Terraform and CoreOS. And **There are two kind of K8S Master within vishwakarma, one leverages AWS EKS, the other one is ElastiKube (Self-Hosted)**. Of course, we didn't develop it from scratch, we refer to [CoreOS Tectonic](https://github.com/coreos/tectonic-installer) and [terraform-aws-eks](https://github.com/terraform-aws-modules/terraform-aws-eks), before starting to dive into the detail, let's experience it first.
 
@@ -66,10 +66,10 @@ $ export KUBECONFIG=./kubeconfig
 $ kubectl get node
 
 NAME                          STATUS    ROLES     AGE       VERSION
-ip-10-0-48-247.ec2.internal   Ready     spot      2m        v1.14.9
-ip-10-0-66-127.ec2.internal   Ready     spot      2m        v1.14.9
-ip-10-0-71-121.ec2.internal   Ready     on-demand 22s       v1.14.9
-ip-10-0-86-182.ec2.internal   Ready     on-demand 2m        v1.14.9
+ip-10-0-48-247.ec2.internal   Ready     spot      2m        v1.14.10
+ip-10-0-66-127.ec2.internal   Ready     spot      2m        v1.14.10
+ip-10-0-71-121.ec2.internal   Ready     on-demand 22s       v1.14.10
+ip-10-0-86-182.ec2.internal   Ready     on-demand 2m        v1.14.10
 ```
 
 ### ElastiKube (Self-Hosted)
@@ -104,12 +104,12 @@ $ export KUBECONFIG=#{The Path You Put kubeconfig}/kubeconfig
 $ kubectl get node
 
 NAME                          STATUS    ROLES     AGE       VERSION
-ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.14.9
-ip-10-0-48-117.ec2.internal   Ready     master    9m        v1.14.9
-ip-10-0-66-127.ec2.internal   Ready     on-demand 5m        v1.14.9
-ip-10-0-66-127.ec2.internal   Ready     on-demand 6m        v1.14.9
-ip-10-0-71-121.ec2.internal   Ready     spot      3m        v1.14.9
-ip-10-0-86-182.ec2.internal   Ready     spot      4m        v1.14.9
+ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.14.10
+ip-10-0-48-117.ec2.internal   Ready     master    9m        v1.14.10
+ip-10-0-66-127.ec2.internal   Ready     on-demand 5m        v1.14.10
+ip-10-0-66-127.ec2.internal   Ready     on-demand 6m        v1.14.10
+ip-10-0-71-121.ec2.internal   Ready     spot      3m        v1.14.10
+ip-10-0-86-182.ec2.internal   Ready     spot      4m        v1.14.10
 ```
 
 ## What’s Going On?

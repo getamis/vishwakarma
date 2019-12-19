@@ -20,7 +20,7 @@ func TestEKSCluster(t *testing.T) {
 
 	// A unique ID we can use to namespace resources so we don't clash with anything already in the AWS account or
 	// tests running in parallel
-	//uniqueID := "lolwmf"
+	// uniqueID := "lolwmf"
 	uniqueID := strings.ToLower(random.UniqueId())
 	awsRegion := "us-west-2"
 
