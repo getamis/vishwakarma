@@ -5,3 +5,4 @@
 vendor/
 .test-data
 .DS_Store
+.vscode

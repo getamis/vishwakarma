@@ -1,6 +1,7 @@
 package test
 
 import (
+	"crypto/tls"
 	"fmt"
 	"os"
 	"strings"
@@ -21,16 +22,50 @@ const (
 	// MaxRetries is the max retry time for testing
 	MaxRetries = 30
 	// TimeBetweenRetries is the time interval between retry
-	TimeBetweenRetries = 5 * time.Second
+	TimeBetweenRetries = 10 * time.Second
 )
 
-func configureTerraformOptions(t *testing.T, exampleFolder string, target string, uniqueID string, awsRegion string) (ret *terraform.Options) {
+const nginxYAML = `
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.15.7
+        ports:
+        - containerPort: 80
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: nginx-service
+spec:
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    targetPort: 80
+    port: 80
+  type: ClusterIP
+`
 
+func configureTerraformOptions(t *testing.T, exampleFolder string, target string, uniqueID string, awsRegion string) *terraform.Options {
 	phase := "test"
 	project := fmt.Sprintf("k8s-%s", uniqueID)
 	keyPairName := fmt.Sprintf("test-k8s-%s", uniqueID)
 
-	ret = &terraform.Options{
+	ret := &terraform.Options{
 		// The path to where our Terraform code is located
 		TerraformDir: exampleFolder,
 
@@ -47,17 +82,13 @@ func configureTerraformOptions(t *testing.T, exampleFolder string, target string
 	if target != "" {
 		ret.Targets = []string{target}
 	}
-
-	return
+	return ret
 }
 
-func configureKubectlOptions(t *testing.T, exampleFolder string, ignitionS3Bucket string, awsRegion string, kubeconfigContext string) (ret *k8s.KubectlOptions) {
-
+func configureKubectlOptions(t *testing.T, exampleFolder string, ignitionS3Bucket string, awsRegion string, kubeconfigContext string) *k8s.KubectlOptions {
 	kubeconfig := aws.GetS3ObjectContents(t, awsRegion, ignitionS3Bucket, "kubeconfig")
 	kubeconfigPath, _ := createKubeconfig(t, exampleFolder, kubeconfig)
-	ret = k8s.NewKubectlOptions(kubeconfigContext, kubeconfigPath)
-
-	return
+	return k8s.NewKubectlOptions(kubeconfigContext, kubeconfigPath, "")
 }
 
 func createKubeconfig(t *testing.T, source string, kubeconfig string) (string, error) {
@@ -77,12 +108,10 @@ func createKubeconfig(t *testing.T, source string, kubeconfig string) (string, e
 	if err != nil {
 		return "", err
 	}
-
 	return kubeconfigPath, nil
 }
 
 func testBastionHost(t *testing.T, terraformOptions *terraform.Options, keyPair *aws.Ec2Keypair) {
-
 	bastionPublicIP := terraform.Output(t, terraformOptions, "bastion_public_ip")
 
 	// start the ssh agent
@@ -108,9 +137,7 @@ func testBastionHost(t *testing.T, terraformOptions *terraform.Options, keyPair 
 
 	// Verify that we can SSH to the Instance and run commands
 	retry.DoWithRetry(t, description, MaxRetries, TimeBetweenRetries, func() (string, error) {
-
 		actualText, err := ssh.CheckSshCommandE(t, *bastionHost, command)
-
 		if err != nil {
 			return "", err
 		}
@@ -118,21 +145,17 @@ func testBastionHost(t *testing.T, terraformOptions *terraform.Options, keyPair 
 		if strings.TrimSpace(actualText) != expectedText {
 			return "", fmt.Errorf("Expected SSH command to return '%s' but got '%s'", expectedText, actualText)
 		}
-
 		return "", nil
 	})
 }
 
 func testKubernetes(t *testing.T, kubectlOptions *k8s.KubectlOptions, exampleFolder string) {
-
 	// It can take several minutes for the Kubernetes cluster to boot up, so retry a few times
 	description := "Access Kubernetes cluster"
 
 	// Waiting for all the nodes' status is ready
 	retry.DoWithRetry(t, description, MaxRetries, TimeBetweenRetries, func() (string, error) {
-
 		nodesReady, err := k8s.AreAllNodesReadyE(t, kubectlOptions)
-
 		if err != nil {
 			return "", err
 		}
@@ -160,9 +183,6 @@ func testKubernetes(t *testing.T, kubectlOptions *k8s.KubectlOptions, exampleFol
 		k8s.WaitUntilPodAvailable(t, kubectlOptions, pod.Name, MaxRetries, TimeBetweenRetries)
 	}
 
-	// Path to the Kubernetes resource config we will test
-	kubeResourcePath := fmt.Sprintf("%s/k8s/nginx.yml", exampleFolder)
-
 	// To ensure we can reuse the resource config on the same cluster to test different scenarios, we setup a unique
 	// namespace for the resources for this test.
 	// Note that namespaces must be lowercase.
@@ -179,7 +199,7 @@ func testKubernetes(t *testing.T, kubectlOptions *k8s.KubectlOptions, exampleFol
 	defer k8s.DeleteNamespace(t, kubectlOptions, namespaceName)
 
 	// This will run `kubectl apply -f RESOURCE_CONFIG` and fail the test if there are any errors
-	k8s.KubectlApply(t, kubectlOptions, kubeResourcePath)
+	k8s.KubectlApplyFromString(t, kubectlOptions, nginxYAML)
 
 	// This will wait up to 10 seconds for the service to become available, to ensure that we can access it.
 	k8s.WaitUntilServiceAvailable(t, kubectlOptions, testServiceName, MaxRetries, TimeBetweenRetries)
@@ -200,11 +220,15 @@ func testKubernetes(t *testing.T, kubectlOptions *k8s.KubectlOptions, exampleFol
 	kubeTunnel.ForwardPort(t)
 	defer kubeTunnel.Close()
 
+	// Setup a TLS configuration to submit with the helper, a blank struct is acceptable
+	tlsConfig := &tls.Config{}
+
 	// Test the endpoint for up to 5 minutes. This will only fail if we timeout waiting for the service to return a 200
 	// response.
 	http_helper.HttpGetWithRetryWithCustomValidation(
 		t,
 		fmt.Sprintf("http://%s", kubeTunnel.Endpoint()),
+		tlsConfig,
 		MaxRetries,
 		TimeBetweenRetries,
 		func(statusCode int, body string) bool {

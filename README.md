@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/getamis/vishwakarma.svg?branch=master)](https://travis-ci.org/getamis/vishwakarma)
+[![CircleCI](https://circleci.com/gh/getamis/vishwakarma.svg?style=svg)](https://circleci.com/gh/getamis/vishwakarma)
 # Vishwakarma
 Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging HashiCorp Terraform and CoreOS. And **There are two kind of K8S Master within vishwakarma, one leverages AWS EKS, the other one is ElastiKube (Self-Hosted)**. Of course, we didn't develop it from scratch, we refer to [CoreOS Tectonic](https://github.com/coreos/tectonic-installer) and [terraform-aws-eks](https://github.com/terraform-aws-modules/terraform-aws-eks), before starting to dive into the detail, let's experience it first.
 
@@ -6,9 +6,9 @@ Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging Hash
 
 ## Requirements
 
-- **Terraform**: All of the AWS resource will be create by Terraform, hence, you need to [**install it**](https://www.terraform.io/intro/getting-started/install.html) and confirm the [**permission setup**](https://www.terraform.io/docs/providers/aws/index.html) correctly, then Terraform have the permission to create AWS resource automatically. Minimum required version of Terraform is **v0.12.0**.
+- **Terraform**: All of the AWS resource will be create by Terraform, hence, you need to [**install it**](https://www.terraform.io/intro/getting-started/install.html) and confirm the [**permission setup**](https://www.terraform.io/docs/providers/aws/index.html) correctly, then Terraform have the permission to create AWS resource automatically. **Minimum required version of Terraform is v0.12.0**.
 
-- **kubectl**: After AWS EKS cluster created completely, there is a Kubernetes ConfigMap aws-auth need to be created through kubectl, so need to [**install it**](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl). Minimum required version of Kubernetes is **v1.10**.
+- **kubectl**: After AWS EKS cluster created completely, there is a Kubernetes ConfigMap aws-auth need to be created through kubectl, so need to [**install it**](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl). **Minimum required version of Kubernetes is v1.10**.
 
 - **heptio-authenticator-aws**: AWS EKS access permission integrate with AWS IAM, in order to let AWS EKS know whether you have the right to access, heptio-authenticator-aws need to be [**installed**](https://docs.aws.amazon.com/eks/latest/userguide/configure-kubectl.html) in the client side.
 
