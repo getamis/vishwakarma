@@ -4,10 +4,12 @@ install_tools: &install_tools
   run: 
     name: Install tools
     command: |
-      # Install AWS CLI
+      # Install AWS CLI and AWS IAM Authenticator
       if [ "${INSTALL_AWS_CLI}" == "true" ]; then
         sudo apt-get update && sudo apt-get install -y python3 python3-pip
         pip3 install awscli --upgrade --user
+        wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/aws-iam-authenticator -O /tmp/aws-iam-authenticator
+        chmod +x /tmp/aws-iam-authenticator && sudo mv /tmp/aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
       fi
 
       # Install Terraform
@@ -18,7 +20,7 @@ install_tools: &install_tools
 
       # Install kubectl
       if [ "${INSTALL_KUBECTL}" == "true" ]; then
-        wget https://storage.googleapis.com/kubernetes-release/release/${KUBE_VERSION}/bin/linux/amd64/kubectl -O /tmp/kubectl
+        wget https://storage.googleapis.com/kubernetes-release/release/v${KUBE_VERSION}/bin/linux/amd64/kubectl -O /tmp/kubectl
         chmod +x /tmp/kubectl && sudo mv /tmp/kubectl /usr/local/bin/kubectl
       fi
 
@@ -30,7 +32,7 @@ default: &default
     GOPATH: /go
     GO111MODULE: "on"
     TF_VERSION: "0.12.17"
-    KUBE_VERSION: "v1.14.10"
+    KUBE_VERSION: "1.14.10"
     AWS_SDK_LOAD_CONFIG: "True"
     INSTALL_AWS_CLI: "true"
     INSTALL_TERRAFORM: "true"
@@ -65,8 +67,8 @@ jobs:
       - checkout  
       - *install_tools   
       - run: 
-        name: Run tests for EKS cluster
-        command: make test-eks
+          name: Run tests for EKS cluster
+          command: make test-eks
           
 workflows:
   version: 2

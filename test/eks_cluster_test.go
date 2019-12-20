@@ -65,7 +65,7 @@ func TestEKSCluster(t *testing.T) {
 
 		// Prepare kubectl options
 		ignitionS3Bucket := terraform.Output(t, terraformOptionsAll, "ignition_s3_bucket")
-		kubeconfigContext := "default"
+		kubeconfigContext := fmt.Sprintf("test-k8s-%s", uniqueID)
 		kubectlOptions := configureKubectlOptions(t, exampleFolder, ignitionS3Bucket, awsRegion, kubeconfigContext)
 		test_structure.SaveKubectlOptions(t, exampleFolder, kubectlOptions)
 	})
