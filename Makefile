@@ -19,4 +19,4 @@ test-elastikube:
 	
 .PHONY: test-eks
 test-eks: 
-	(cd test && go test -timeout 60m -v -run TestEKSCluste)
+	(cd test && go test -timeout 60m -v -run TestEKSCluster)
