@@ -22,7 +22,7 @@ func TestElastikubeCluster(t *testing.T) {
 	// tests running in parallel
 	// uniqueID := "rn2ws0"
 	uniqueID := strings.ToLower(random.UniqueId())
-	awsRegion := "us-west-2"
+	awsRegion := "us-west-1"
 
 	// Preapre all terraform options
 	terraformOptionsNetwork := configureTerraformOptions(t, exampleFolder, "module.network", uniqueID, awsRegion)

@@ -76,6 +76,7 @@ func configureTerraformOptions(t *testing.T, exampleFolder string, target string
 			"project":                project,
 			"key_pair_name":          keyPairName,
 			"endpoint_public_access": "true",
+			"aws_az_number":          2,
 		},
 	}
 
