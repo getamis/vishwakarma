@@ -41,18 +41,18 @@ module "master" {
   reboot_strategy = var.reboot_strategy
 
   extra_ignition_file_ids = compact(concat(
-    module.ignition_kube_addon_manager.files,
-    module.ignition_kube_addon_dns.files,
-    module.ignition_kube_addon_proxy.files,
-    module.ignition_kube_addon_flannel_vxlan.files,
+    module.ignition_addon_manager.files,
+    module.ignition_addon_coredns.files,
+    module.ignition_addon_proxy.files,
+    module.ignition_network_flannel.files,
     var.extra_ignition_file_ids
   ))
 
   extra_ignition_systemd_unit_ids = compact(concat(
-    module.ignition_kube_addon_manager.systemd_units,
-    module.ignition_kube_addon_dns.systemd_units,
-    module.ignition_kube_addon_proxy.systemd_units,
-    module.ignition_kube_addon_flannel_vxlan.systemd_units,
+    module.ignition_addon_manager.systemd_units,
+    module.ignition_addon_coredns.systemd_units,
+    module.ignition_addon_proxy.systemd_units,
+    module.ignition_network_flannel.systemd_units,
     var.extra_ignition_systemd_unit_ids
   ))
 
