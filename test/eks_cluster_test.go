@@ -23,13 +23,14 @@ func TestEKSCluster(t *testing.T) {
 	// uniqueID := "lolwmf"
 	uniqueID := strings.ToLower(random.UniqueId())
 	awsRegion := "us-west-2"
+	azNumber := 3
 
 	// Preapre all terraform options
-	terraformOptionsNetwork := configureTerraformOptions(t, exampleFolder, "module.network", uniqueID, awsRegion)
-	terraformOptionsKubernetes := configureTerraformOptions(t, exampleFolder, "module.eks", uniqueID, awsRegion)
-	terraformOptionsWorkerSpot := configureTerraformOptions(t, exampleFolder, "module.worker_spot", uniqueID, awsRegion)
-	terraformOptionsWorkerOnDemand := configureTerraformOptions(t, exampleFolder, "module.worker_on_demand", uniqueID, awsRegion)
-	terraformOptionsAll := configureTerraformOptions(t, exampleFolder, "", uniqueID, awsRegion)
+	terraformOptionsNetwork := configureTerraformOptions(t, exampleFolder, "module.network", uniqueID, awsRegion, azNumber)
+	terraformOptionsKubernetes := configureTerraformOptions(t, exampleFolder, "module.eks", uniqueID, awsRegion, azNumber)
+	terraformOptionsWorkerSpot := configureTerraformOptions(t, exampleFolder, "module.worker_spot", uniqueID, awsRegion, azNumber)
+	terraformOptionsWorkerOnDemand := configureTerraformOptions(t, exampleFolder, "module.worker_on_demand", uniqueID, awsRegion, azNumber)
+	terraformOptionsAll := configureTerraformOptions(t, exampleFolder, "", uniqueID, awsRegion, azNumber)
 	test_structure.SaveTerraformOptions(t, exampleFolder, terraformOptionsAll)
 
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created

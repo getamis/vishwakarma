@@ -60,7 +60,7 @@ spec:
   type: ClusterIP
 `
 
-func configureTerraformOptions(t *testing.T, exampleFolder string, target string, uniqueID string, awsRegion string) *terraform.Options {
+func configureTerraformOptions(t *testing.T, exampleFolder string, target string, uniqueID string, awsRegion string, azNumber int) *terraform.Options {
 	phase := "test"
 	project := fmt.Sprintf("k8s-%s", uniqueID)
 	keyPairName := fmt.Sprintf("test-k8s-%s", uniqueID)
@@ -76,6 +76,7 @@ func configureTerraformOptions(t *testing.T, exampleFolder string, target string
 			"project":                project,
 			"key_pair_name":          keyPairName,
 			"endpoint_public_access": "true",
+			"aws_az_number":          azNumber,
 		},
 	}
 

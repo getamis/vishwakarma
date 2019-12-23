@@ -12,6 +12,7 @@ module "network" {
   project          = var.project
   phase            = var.phase
   extra_tags       = var.extra_tags
+  aws_az_number    = var.aws_az_number
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
