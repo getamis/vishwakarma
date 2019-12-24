@@ -9,8 +9,8 @@ locals {
 # Addon Manager
 # ---------------------------------------------------------------------------------------------------------------------
 
-module "ignition_kube_addon_manager" {
-  source = "../../ignitions/kube-addon-manager"
+module "ignition_addon_manager" {
+  source = "../../ignitions/addon/addon-manager"
 
   hyperkube = {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
@@ -19,11 +19,11 @@ module "ignition_kube_addon_manager" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# KubeDNS addon
+# CoreDNS(aka KubeDNS) addon
 # ---------------------------------------------------------------------------------------------------------------------
 
-module "ignition_kube_addon_dns" {
-  source = "../../ignitions/kube-addon-dns"
+module "ignition_addon_coredns" {
+  source = "../../ignitions/addon/coredns"
 
   reverse_cidrs  = "${var.service_cidr}"
   cluster_dns_ip = local.cluster_dns_ip
@@ -33,43 +33,13 @@ module "ignition_kube_addon_dns" {
 # Kube proxy addon
 # ---------------------------------------------------------------------------------------------------------------------
 
-module "ignition_kube_addon_proxy" {
-  source = "../../ignitions/kube-addon-proxy"
+module "ignition_addon_proxy" {
+  source = "../../ignitions/addon/kube-proxy"
 
   cluster_cidr = var.cluster_cidr
-
   hyperkube = {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
     image_tag  = var.kubernetes_version
   }
 }
 
-# ---------------------------------------------------------------------------------------------------------------------
-# Flannel addon
-# ---------------------------------------------------------------------------------------------------------------------
-
-resource "aws_security_group_rule" "master_ingress_flannel" {
-  type              = "ingress"
-  security_group_id = module.master.master_sg_id
-
-  protocol  = "udp"
-  from_port = 4789
-  to_port   = 4789
-  self      = true
-}
-
-resource "aws_security_group_rule" "master_ingress_flannel_from_worker" {
-  type                     = "ingress"
-  security_group_id        = module.master.master_sg_id
-  source_security_group_id = aws_security_group.workers.id
-
-  protocol  = "udp"
-  from_port = 4789
-  to_port   = 4789
-}
-
-module "ignition_kube_addon_flannel_vxlan" {
-  source = "../../ignitions/kube-addon-flannel-vxlan"
-
-  cluster_cidr = var.cluster_cidr
-}
