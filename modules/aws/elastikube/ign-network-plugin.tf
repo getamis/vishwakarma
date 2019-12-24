@@ -1,7 +1,3 @@
-locals {
-  cluster_dns_ip = cidrhost(var.service_cidr, 10)
-}
-
 resource "aws_security_group_rule" "master_ingress_flannel" {
   type              = "ingress"
   security_group_id = module.master.master_sg_id
