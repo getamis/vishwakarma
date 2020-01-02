@@ -90,7 +90,7 @@ variable "hyperkube" {
 
   default = {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
-    image_tag  = "v1.13.12"
+    image_tag  = "v1.15.7"
   }
 
   description = "The hyperkube container image path and tag"

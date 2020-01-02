@@ -27,7 +27,6 @@ ExecStart=/usr/lib/coreos/kubelet-wrapper \
   --network-plugin=cni \
   --lock-file=/var/run/lock/kubelet.lock \
   --exit-on-lock-contention \
-  --allow-privileged \
   --anonymous-auth=false \
   --client-ca-file=/etc/kubernetes/ca.crt \
   --cluster-domain=cluster.local \

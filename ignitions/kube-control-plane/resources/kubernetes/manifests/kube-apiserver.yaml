@@ -14,7 +14,7 @@ spec:
     - /usr/bin/flock
     - /var/lock/api-server.lock
     - /hyperkube
-    - apiserver
+    - kube-apiserver
     - --bind-address=0.0.0.0
     - --secure-port=443
     - --advertise-address=${advertise_address}
