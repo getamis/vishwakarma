@@ -30,7 +30,7 @@ variable "key_pair_name" {
 variable "kubernetes_version" {
   description = "(Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
   type        = string
-  default     = "v1.14.10"
+  default     = "v1.15.7"
 }
 
 variable "project" {

@@ -13,7 +13,7 @@ spec:
     image: ${hyperkube_image}
     command:
     - ./hyperkube
-    - scheduler
+    - kube-scheduler
     - --leader-elect=true
     - --kubeconfig=/etc/kubernetes/kubeconfig
     livenessProbe:
