@@ -12,7 +12,7 @@ spec:
     image: ${hyperkube_image}
     command:
     - ./hyperkube
-    - controller-manager
+    - kube-controller-manager
     - --allocate-node-cidrs=true
     - --configure-cloud-routes=false
     - --cluster-cidr=${cluster_cidr}
