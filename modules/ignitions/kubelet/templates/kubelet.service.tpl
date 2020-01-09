@@ -27,7 +27,6 @@ ExecStart=/usr/lib/coreos/kubelet-wrapper \
   --network-plugin=cni \
   --lock-file=/var/run/lock/kubelet.lock \
   --exit-on-lock-contention \
-  --allow-privileged \
   --anonymous-auth=false \
   --client-ca-file=/etc/kubernetes/ca.crt \
   --cluster-domain=cluster.local \
@@ -38,6 +37,7 @@ ExecStart=/usr/lib/coreos/kubelet-wrapper \
   ${kubelet_flag_cluster_dns} \
   ${kubelet_flag_cloud_provider} \
   ${kubelet_flag_extra_flags} \
+  ${kubelet_flag_allow_privileged} \
   ${kubelet_flag_pod_manifest_path}
 
 ExecStop=-/usr/bin/rkt stop --uuid-file=/var/cache/kubelet-pod.uuid

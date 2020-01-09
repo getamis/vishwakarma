@@ -26,7 +26,7 @@ spec:
         image: ${hyperkube_image}
         command:
         - ./hyperkube
-        - proxy
+        - kube-proxy
         - --kubeconfig=/etc/kubernetes/kubeconfig
         - --proxy-mode=iptables
         - --hostname-override=$(NODE_NAME)
