@@ -25,13 +25,20 @@ $ terraform apply -target=module.network
 # create the kubernetes master compoment
 $ terraform apply -target=module.eks
 
-# create the general and spot k8s worker group
-$ terraform apply
+# create the on-demand k8s worker group
+$ terraform apply -target=module.worker_on_demand
+
+# create the spot k8s worker group
+$ terraform apply -target=module.worker_spot
+
+# create a fargate profile for EKS
+$ terraform apply -target=module.eks_fargate
 ```
 
 5. When you're done, execute below command to destroy
 
 ```sh
+$ terraform destroy -target=module.eks_fargate
 $ terraform destroy -target=module.worker_on_demand
 $ terraform destroy -target=module.worker_spot
 $ terraform destroy -target=module.eks

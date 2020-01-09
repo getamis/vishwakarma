@@ -96,3 +96,15 @@ module "worker_spot" {
     "Project", var.project,
   ), var.extra_tags)
 }
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Fargate for EKS
+# ---------------------------------------------------------------------------------------------------------------------
+
+module "eks_fargate" {
+  source               = "../../modules/aws/eks-fargate"
+  cluster_name         = local.cluster_name
+  fargate_profile_name = "${var.phase}-${var.project}-fargate-profile"
+  subnet_ids           = module.network.private_subnet_ids
+  kubernetes_namespace = "eks-fargate"
+}
