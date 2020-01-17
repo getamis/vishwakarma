@@ -36,7 +36,6 @@ module "master" {
     var.extra_master_node_taints
   ))
 
-
   s3_bucket       = aws_s3_bucket.ignition.id
   reboot_strategy = var.reboot_strategy
 

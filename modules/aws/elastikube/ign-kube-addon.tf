@@ -27,6 +27,7 @@ module "ignition_addon_coredns" {
 
   reverse_cidrs  = "${var.service_cidr}"
   cluster_dns_ip = local.cluster_dns_ip
+  replicas       = parseint(var.master_config["instance_count"], 10)
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
