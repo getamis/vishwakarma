@@ -9,3 +9,7 @@ output "endpoint" {
 output "master_sg_id" {
   value = "${local.master_sg_id}"
 }
+
+output "default_role_name" {
+  value = "${aws_iam_role.master.name}"
+}
