@@ -24,6 +24,7 @@ module "kubernetes" {
 
   name               = local.cluster_name
   kubernetes_version = var.kubernetes_version
+  network_plugin     = var.network_plugin
   service_cidr       = var.service_cidr
   cluster_cidr       = var.cluster_cidr
 
@@ -37,8 +38,8 @@ module "kubernetes" {
 
   master_config = {
     instance_count   = "2"
-    ec2_type_1       = "t3.medium"
-    ec2_type_2       = "t2.medium"
+    ec2_type_1       = "t3.large"
+    ec2_type_2       = "t2.large"
     root_volume_iops = "100"
     root_volume_size = "256"
     root_volume_type = "gp2"

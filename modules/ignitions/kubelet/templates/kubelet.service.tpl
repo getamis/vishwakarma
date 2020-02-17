@@ -7,23 +7,25 @@ EnvironmentFile=/etc/kubernetes/kubelet.env
 Environment="RKT_RUN_ARGS=--uuid-file-save=/var/cache/kubelet-pod.uuid \
   --volume=resolv,kind=host,source=/etc/resolv.conf \
   --mount volume=resolv,target=/etc/resolv.conf \
-  --volume var-lib-cni,kind=host,source=/var/lib/cni \
-  --mount volume=var-lib-cni,target=/var/lib/cni \
+  --volume cni-bin,kind=host,source=/opt/cni/bin \
+  --mount volume=cni-bin,target=/opt/cni/bin \
+  --volume cni-config,kind=host,source=/etc/cni/net.d \
+  --mount volume=cni-config,target=/etc/cni/net.d \
   --volume var-log,kind=host,source=/var/log \
   --mount volume=var-log,target=/var/log"
 
 ExecStartPre=/bin/mkdir -p /etc/kubernetes/manifests
 ExecStartPre=/bin/mkdir -p /srv/kubernetes/manifests
 ExecStartPre=/bin/mkdir -p /etc/kubernetes/checkpoint-secrets
-ExecStartPre=/bin/mkdir -p /etc/kubernetes/cni/net.d
-ExecStartPre=/bin/mkdir -p /var/lib/cni
+ExecStartPre=/bin/mkdir -p /etc/cni/net.d
+ExecStartPre=/bin/mkdir -p /opt/cni/bin
 
 ExecStartPre=/usr/bin/bash -c "grep 'certificate-authority-data' /etc/kubernetes/kubeconfig | awk '{print $2}' | base64 -d > /etc/kubernetes/ca.crt"
 ExecStartPre=-/usr/bin/rkt rm --uuid-file=/var/cache/kubelet-pod.uuid
 
 ExecStart=/usr/lib/coreos/kubelet-wrapper \
   --kubeconfig=/etc/kubernetes/kubeconfig \
-  --cni-conf-dir=/etc/kubernetes/cni/net.d \
+  --cni-conf-dir=/etc/cni/net.d \
   --network-plugin=cni \
   --lock-file=/var/run/lock/kubelet.lock \
   --exit-on-lock-contention \

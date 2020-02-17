@@ -1,4 +1,5 @@
 resource "aws_security_group_rule" "master_ingress_flannel" {
+  count             = var.network_plugin == "flannel" ? 1 : 0
   type              = "ingress"
   security_group_id = module.master.master_sg_id
 
@@ -9,6 +10,7 @@ resource "aws_security_group_rule" "master_ingress_flannel" {
 }
 
 resource "aws_security_group_rule" "master_ingress_flannel_from_worker" {
+  count                    = var.network_plugin == "flannel" ? 1 : 0
   type                     = "ingress"
   security_group_id        = module.master.master_sg_id
   source_security_group_id = aws_security_group.workers.id
@@ -18,8 +20,11 @@ resource "aws_security_group_rule" "master_ingress_flannel_from_worker" {
   to_port   = 4789
 }
 
-module "ignition_network_flannel" {
-  source = "../../ignitions/network-plugin/flannel"
-
+module "ignition_flannel_network" {
+  source       = "../../ignitions/network-plugin/flannel"
   cluster_cidr = var.cluster_cidr
+}
+
+module "ignition_amazon_vpc_network" {
+  source = "../../ignitions/network-plugin/amazon-vpc"
 }

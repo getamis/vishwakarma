@@ -1,3 +1,10 @@
+locals {
+  network_plugin_files = {
+    flannel    = module.ignition_flannel_network.files
+    amazon-vpc = module.ignition_amazon_vpc_network.files
+  }
+}
+
 module "master" {
   source = "../../aws/kube-master"
 
@@ -43,7 +50,7 @@ module "master" {
     module.ignition_addon_manager.files,
     module.ignition_addon_coredns.files,
     module.ignition_addon_proxy.files,
-    module.ignition_network_flannel.files,
+    local.network_plugin_files[var.network_plugin],
     var.extra_ignition_file_ids
   ))
 
@@ -51,7 +58,6 @@ module "master" {
     module.ignition_addon_manager.systemd_units,
     module.ignition_addon_coredns.systemd_units,
     module.ignition_addon_proxy.systemd_units,
-    module.ignition_network_flannel.systemd_units,
     var.extra_ignition_systemd_unit_ids
   ))
 
