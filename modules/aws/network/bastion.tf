@@ -41,18 +41,7 @@ data "aws_ami" "latest_ubuntu" {
     name   = "virtualization-type"
     values = ["hvm"]
   }
-
   owners = ["099720109477"] # Canonical
-
-}
-
-resource "random_integer" "subnet_id_index" {
-  min = 0
-  max = var.aws_az_number - 1
-
-  keepers = {
-    vpc_id = aws_vpc.new_vpc.id
-  }
 }
 
 data "template_file" "user_data" {
@@ -65,7 +54,7 @@ resource "aws_instance" "bastion" {
   instance_type               = var.bastion_instance_type
   key_name                    = var.bastion_key_name
   source_dest_check           = true
-  subnet_id                   = aws_subnet.public_subnet.*.id[random_integer.subnet_id_index.result]
+  subnet_id                   = aws_subnet.public_subnet.*.id[0]
   user_data                   = data.template_file.user_data.rendered
 
   root_block_device {

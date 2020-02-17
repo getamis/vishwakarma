@@ -131,7 +131,6 @@ data:
       }
     }
 ---
----
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -158,6 +157,17 @@ spec:
         effect: NoSchedule
       serviceAccountName: flannel
       initContainers:
+      - name: install-cni-bin
+        image: ${hyperkube_image}
+        command:
+        - cp
+        args:
+        - -rp
+        - /opt/cni/bin/
+        - /tmp/cni/
+        volumeMounts:
+        - name: cni-bin
+          mountPath: /tmp/cni/bin
       - name: install-cni
         image: ${flannel_image}
         command:
@@ -210,7 +220,10 @@ spec:
             path: /run/flannel
         - name: cni
           hostPath:
-            path: /etc/kubernetes/cni/net.d
+            path: /etc/cni/net.d
+        - name: cni-bin
+          hostPath:
+            path: /opt/cni/bin
         - name: flannel-cfg
           configMap:
             name: kube-flannel-cfg

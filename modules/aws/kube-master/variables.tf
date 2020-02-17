@@ -66,7 +66,13 @@ variable "endpoint_public_access" {
 variable "kubernetes_version" {
   description = "(Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
   type        = string
-  default     = "1.14.6"
+  default     = "v1.15.7"
+}
+
+variable "network_plugin" {
+  description = "(Optional) Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc'"
+  type        = string
+  default     = "flannel"
 }
 
 variable "master_config" {
