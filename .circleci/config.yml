@@ -61,14 +61,6 @@ jobs:
       - run: 
           name: Run tests for Elastikube cluster
           command: make test-elastikube
-  run-eks:
-    <<: *default  
-    steps: 
-      - checkout  
-      - *install_tools   
-      - run: 
-          name: Run tests for EKS cluster
-          command: make test-eks
           
 workflows:
   version: 2
@@ -79,13 +71,6 @@ workflows:
           type: approval
           requires:
             - validate-and-format
-      - approval-run-eks:
-          type: approval
-          requires:
-            - validate-and-format
       - run-elastikube:
           requires:
             - approval-run-elastikube
-      - run-eks:
-          requires:
-            - approval-run-eks
