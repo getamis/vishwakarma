@@ -38,8 +38,8 @@ module "kubernetes" {
 
   master_config = {
     instance_count   = "2"
-    ec2_type_1       = "t3.large"
-    ec2_type_2       = "t2.large"
+    ec2_type_1       = "t3.medium"
+    ec2_type_2       = "t2.medium"
     root_volume_iops = "100"
     root_volume_size = "256"
     root_volume_type = "gp2"
