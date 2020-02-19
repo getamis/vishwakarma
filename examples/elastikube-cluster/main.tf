@@ -24,6 +24,7 @@ module "kubernetes" {
 
   name               = local.cluster_name
   kubernetes_version = var.kubernetes_version
+  network_plugin     = var.network_plugin
   service_cidr       = var.service_cidr
   cluster_cidr       = var.cluster_cidr
 
@@ -70,6 +71,7 @@ module "worker_on_demand" {
 
   cluster_name       = local.cluster_name
   kubernetes_version = var.kubernetes_version
+  network_plugin     = var.network_plugin
   kube_service_cidr  = var.service_cidr
 
   security_group_ids = module.kubernetes.worker_sg_ids
@@ -107,6 +109,7 @@ module "worker_spot" {
 
   cluster_name       = local.cluster_name
   kubernetes_version = var.kubernetes_version
+  network_plugin     = var.network_plugin
   kube_service_cidr  = var.service_cidr
 
   security_group_ids = module.kubernetes.worker_sg_ids

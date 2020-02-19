@@ -40,6 +40,12 @@ variable "kubernetes_version" {
   default     = "v1.15.7"
 }
 
+variable "network_plugin" {
+  description = "(Optional) Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc'"
+  type        = string
+  default     = "flannel"
+}
+
 variable "worker_config" {
   description = "Desired worker nodes configuration."
   type        = map(string)
