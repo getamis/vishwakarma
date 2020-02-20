@@ -43,6 +43,8 @@ module "ignition_kubelet" {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
     image_tag  = var.kubernetes_version
   }
+
+  network_plugin = var.network_plugin
 }
 
 data "ignition_config" "main" {

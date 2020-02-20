@@ -24,6 +24,7 @@ ExecStartPre=/usr/bin/sh -c "/usr/bin/systemctl set-environment HOSTNAME=$(curl 
 ExecStartPre=/usr/bin/sh -c "/usr/bin/systemctl set-environment HOST_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)"
 ExecStartPre=/usr/bin/bash -c "grep 'certificate-authority-data' /etc/kubernetes/kubeconfig | awk '{print $2}' | base64 -d > /etc/kubernetes/ca.crt"
 ExecStartPre=-/usr/bin/rkt rm --uuid-file=/var/cache/kubelet-pod.uuid
+${ network_plugin == "amazon-vpc" ? "ExecStartPre=/usr/bin/sh -c /etc/kubernetes/get-max-pods.sh" : ""}
 
 ExecStart=/usr/lib/coreos/kubelet-wrapper \
   --kubeconfig=/etc/kubernetes/kubeconfig \
@@ -36,6 +37,7 @@ ExecStart=/usr/lib/coreos/kubelet-wrapper \
   --cluster-domain=cluster.local \
   --node-ip=$${HOST_IP} \
   --hostname-override=$${HOSTNAME} \
+  ${ network_plugin == "amazon-vpc" ? "--max-pods=$${MAX_PODS}" : ""} \
   ${kubelet_flag_cloud_provider} \
   ${kubelet_flag_node_labels} \
   ${kubelet_flag_register_with_taints} \
