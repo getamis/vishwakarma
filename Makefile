@@ -16,7 +16,3 @@ check-fmt:
 .PHONY: test-elastikube
 test-elastikube:
 	(cd test && go test -timeout 60m -v -run TestElastikubeCluster)
-	
-.PHONY: test-eks
-test-eks: 
-	(cd test && go test -timeout 60m -v -run TestEKSCluster)
