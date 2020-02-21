@@ -1,3 +1,9 @@
+variable "network_plugin" {
+  description = "(Optional) Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc'"
+  type        = string
+  default     = "flannel"
+}
+
 variable "kubelet_flag_cloud_provider" {
   description = "The provider for cloud services. Specify empty string for running with no cloud provider."
   type        = string
