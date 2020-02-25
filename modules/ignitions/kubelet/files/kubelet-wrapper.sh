@@ -1,5 +1,5 @@
 #!/bin/bash
-# Wrapper for launching kubelet via docker.
+# Wrapper script for launching kubelet.
 #
 # Make sure to set KUBELET_IMAGE_TAG to an image tag published here:
 # https://quay.io/repository/coreos/hyperkube?tab=tags Alternatively,
