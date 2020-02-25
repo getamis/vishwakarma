@@ -85,18 +85,6 @@ spec:
       hostNetwork: true
       tolerations:
         - operator: Exists
-      initContainers:
-      - name: install-cni-bin
-        image: ${hyperkube_image}
-        command:
-        - cp
-        args:
-        - -rp
-        - /opt/cni/bin/
-        - /tmp/cni/
-        volumeMounts:
-        - name: cni-bin-dir
-          mountPath: /tmp/cni/bin
       containers:
         - image: ${vpc_cni_image}
           imagePullPolicy: Always
