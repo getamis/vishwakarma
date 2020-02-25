@@ -55,6 +55,6 @@ variable "container" {
 
   default = {
     image_path = "quay.io/coreos/etcd"
-    image_tag  = "v3.4.0"
+    image_tag  = "v3.4.4"
   }
 }
