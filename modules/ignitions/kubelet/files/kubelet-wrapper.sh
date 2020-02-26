@@ -59,7 +59,7 @@ if [[ ${UPDATE_HYPERKUBE} == "true" ]]; then
   ${DOCKER} run --rm \
     -v /opt/cni:/tmp/cni \
     -v /opt/kubelet:/tmp/kubelet \
-    ${KUBELET_IMAGE_URL}:${KUBELET_IMAGE_TAG} \
+    ${KUBELET_IMAGE} \
       /bin/bash -c "cp -rp /opt/cni/bin/ /tmp/cni; cp -rp /hyperkube /tmp/kubelet/hyperkube"
 fi
 
