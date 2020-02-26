@@ -1,3 +1,6 @@
+#!/bin/bash
+# A script for getting max pods.
+
 # Mapping is calculated from AWS ENI documentation, with the following modifications:
 # * First IP on each ENI is not used for pods
 # * 2 additional host-networking pods (AWS ENI and kube-proxy) are accounted for
@@ -11,6 +14,10 @@
 # access the instance metadata, VPC DNS, and Time Sync services from the 32nd IP
 # address onwards. If access to these services is needed from all IP addresses
 # on the interface, we recommend using a maximum of 31 IP addresses per interface.
+
+set -e
+
+ENI_PODS="
 a1.medium 8
 a1.large 29
 a1.xlarge 58
@@ -276,3 +283,14 @@ z1d.3xlarge 234
 z1d.6xlarge 234
 z1d.12xlarge 737
 z1d.metal 737
+"
+
+INSTANCE_TYPE=$(curl -s http://169.254.169.254/latest/meta-data/instance-type)
+set +o pipefail
+if [ $KUBELET_NETWORK_PLUGIN == "amazon-vpc" ]; then 
+  MAX_PODS=$(echo "$ENI_PODS" | grep ^$INSTANCE_TYPE | awk '{print $2}')
+fi
+set -o pipefail
+
+[[ ! -n "$MAX_PODS" ]] && export MAX_PODS="110"
+export MAX_PODS=$MAX_PODS

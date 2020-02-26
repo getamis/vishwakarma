@@ -2,21 +2,35 @@ locals {
   kubernetes_minior_version = parseint(split(".", var.hyperkube["image_tag"])[1], 10)
 }
 
-data "template_file" "kubelet_env" {
-  template = file("${path.module}/resources/kubelet.env.tpl")
+data "ignition_file" "get_max_pods_sh" {
+  filesystem = "root"
+  path       = "/opt/kubelet/get-max-pods.sh"
+  mode       = 500
 
-  vars = {
-    kubelet_image_url = var.hyperkube["image_path"]
-    kubelet_image_tag = var.hyperkube["image_tag"]
+  content {
+    content = "${file("${path.module}/files/get-max-pods.sh")}"
   }
 }
 
-data "template_file" "eni_max_pods_txt" {
-  template = file("${path.module}/resources/eni-max-pods.txt")
+data "ignition_file" "kubelet_wrapper_sh" {
+  filesystem = "root"
+  path       = "/opt/kubelet/kubelet-wrapper.sh"
+  mode       = 500
+
+  content {
+    content = "${file("${path.module}/files/kubelet-wrapper.sh")}"
+  }
 }
 
-data "template_file" "get_max_pods_sh" {
-  template = file("${path.module}/resources/get-max-pods.sh")
+data "template_file" "kubelet_env" {
+  template = file("${path.module}/templates/kubelet.env.tpl")
+
+  vars = {
+    kubelet_image_url           = var.hyperkube["image_path"]
+    kubelet_image_tag           = var.hyperkube["image_tag"]
+    kubelet_flag_cloud_provider = var.kubelet_flag_cloud_provider
+    network_plugin              = var.network_plugin
+  }
 }
 
 data "ignition_file" "kubelet_env" {
@@ -30,7 +44,7 @@ data "ignition_file" "kubelet_env" {
 }
 
 data "template_file" "kubelet" {
-  template = file("${path.module}/resources/kubelet.service.tpl")
+  template = file("${path.module}/templates/kubelet.service.tpl")
 
   vars = {
     kubelet_flag_cloud_provider       = var.kubelet_flag_cloud_provider != "" ? "--cloud-provider=${var.kubelet_flag_cloud_provider}" : ""
@@ -50,24 +64,4 @@ data "ignition_systemd_unit" "kubelet" {
   name    = "kubelet.service"
   enabled = true
   content = data.template_file.kubelet.rendered
-}
-
-data "ignition_file" "eni_max_pods_txt" {
-  filesystem = "root"
-  path       = "/etc/kubernetes/eni-max-pods.txt"
-  mode       = 420
-
-  content {
-    content = data.template_file.eni_max_pods_txt.rendered
-  }
-}
-
-data "ignition_file" "get_max_pods_sh" {
-  filesystem = "root"
-  path       = "/etc/kubernetes/get-max-pods.sh"
-  mode       = 700
-
-  content {
-    content = data.template_file.get_max_pods_sh.rendered
-  }
 }

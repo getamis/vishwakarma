@@ -6,8 +6,7 @@ locals {
 data "template_file" "aws_vpc_cni_yaml" {
   template = file("${path.module}/resources/aws-k8s-cni.yaml")
   vars = {
-    vpc_cni_image   = var.container_images["vpc_cni"]
-    hyperkube_image = var.container_images["hyperkube"]
+    vpc_cni_image = var.container_images["vpc_cni"]
   }
 }
 

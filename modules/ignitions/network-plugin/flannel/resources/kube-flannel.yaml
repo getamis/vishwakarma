@@ -157,17 +157,6 @@ spec:
         effect: NoSchedule
       serviceAccountName: flannel
       initContainers:
-      - name: install-cni-bin
-        image: ${hyperkube_image}
-        command:
-        - cp
-        args:
-        - -rp
-        - /opt/cni/bin/
-        - /tmp/cni/
-        volumeMounts:
-        - name: cni-bin
-          mountPath: /tmp/cni/bin
       - name: install-cni
         image: ${flannel_image}
         command:
@@ -221,9 +210,6 @@ spec:
         - name: cni
           hostPath:
             path: /etc/cni/net.d
-        - name: cni-bin
-          hostPath:
-            path: /opt/cni/bin
         - name: flannel-cfg
           configMap:
             name: kube-flannel-cfg
