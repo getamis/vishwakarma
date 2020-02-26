@@ -1,5 +1,15 @@
+data "ignition_file" "etcd_wrapper_sh" {
+  filesystem = "root"
+  path       = "/opt/etcd/etcd-wrapper.sh"
+  mode       = 500
+
+  content {
+    content = "${file("${path.module}/files/etcd-wrapper.sh")}"
+  }
+}
+
 data "template_file" "etcd_env" {
-  template = file("${path.module}/resources/config/etcd.env")
+  template = file("${path.module}/templates/etcd.env.tpl")
 
   vars = {
     image_url         = var.container["image_path"]
@@ -26,7 +36,7 @@ data "ignition_file" "etcd_env" {
 }
 
 data "template_file" "etcd_service" {
-  template = file("${path.module}/resources/services/etcd.service")
+  template = file("${path.module}/templates/etcd.service.tpl")
 }
 
 data "ignition_systemd_unit" "etcd_service" {
