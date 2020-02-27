@@ -19,7 +19,7 @@ module "etcd" {
   ssh_key = var.key_pair_name
 
   etcd_config = {
-    instance_count   = "3"
+    instance_count   = "1"
     ec2_type         = "t3.medium"
     root_volume_iops = "0"
     root_volume_size = "100"

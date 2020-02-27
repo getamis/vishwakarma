@@ -1,6 +1,5 @@
 locals {
-  filesystem = "root"
-  mode       = 420
+  mode = 420
 }
 
 data "template_file" "kube_flannel_yaml" {
@@ -12,9 +11,9 @@ data "template_file" "kube_flannel_yaml" {
 }
 
 data "ignition_file" "kube_flannel_yaml" {
-  filesystem = local.filesystem
-  mode       = local.mode
-  path       = "${pathexpand(var.addon_path)}/kube-flannel.yaml"
+  mode = local.mode
+  path = "${pathexpand(var.addon_path)}/kube-flannel.yaml"
+
   content {
     content = data.template_file.kube_flannel_yaml.rendered
   }

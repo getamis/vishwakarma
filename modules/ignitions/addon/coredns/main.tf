@@ -1,3 +1,7 @@
+locals {
+  mode = 420
+}
+
 data "template_file" "coredns_yaml" {
   template = file("${path.module}/resources/kubernetes/manifests/coredns.yaml")
 
@@ -39,9 +43,7 @@ EOF
 }
 
 data "ignition_file" "coredns_yaml" {
-  filesystem = local.filesystem
-  mode       = local.mode
-
+  mode = local.mode
   path = "${pathexpand(var.addon_path)}/coredns.yaml"
 
   content {

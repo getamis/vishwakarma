@@ -18,9 +18,8 @@ data "template_file" "kubeconfig" {
 }
 
 data "ignition_file" "kubeconfig" {
-  filesystem = "root"
-  path       = "/etc/kubernetes/kubeconfig"
-  mode       = 420
+  path = "/etc/kubernetes/kubeconfig"
+  mode = 420
 
   content {
     content = coalesce(var.content, join("", data.template_file.kubeconfig.*.rendered))

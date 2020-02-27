@@ -8,9 +8,8 @@ data "template_file" "kube_proxy_yaml" {
 }
 
 data "ignition_file" "kube_proxy_yaml" {
-  filesystem = "root"
-  mode       = 420
-  path       = "${pathexpand(var.addon_path)}/kube-proxy.yaml"
+  mode = 420
+  path = "${pathexpand(var.addon_path)}/kube-proxy.yaml"
 
   content {
     content = data.template_file.kube_proxy_yaml.rendered

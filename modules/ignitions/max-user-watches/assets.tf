@@ -7,9 +7,8 @@ data "template_file" "max_user_watches" {
 }
 
 data "ignition_file" "max_user_watches" {
-  filesystem = "root"
-  path       = "/etc/sysctl.d/10-max-user-watches.conf"
-  mode       = 420
+  path = "/etc/sysctl.d/10-max-user-watches.conf"
+  mode = 420
 
   content {
     content = data.template_file.max_user_watches.rendered

@@ -1,3 +1,8 @@
+locals {
+  mode = 420
+}
+
+
 data "template_file" "policy_yaml" {
   template = file("${path.module}/resources/kubernetes/policy.yaml")
 
@@ -7,9 +12,7 @@ data "template_file" "policy_yaml" {
 }
 
 data "ignition_file" "policy_yaml" {
-  filesystem = local.filesystem
-  mode       = local.mode
-
+  mode = local.mode
   path = "${pathexpand(var.audit_policy_path)}/policy.yaml"
 
   content {

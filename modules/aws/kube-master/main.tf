@@ -64,9 +64,13 @@ resource "aws_autoscaling_group" "master" {
   ], data.null_data_source.tags.*.outputs)
 }
 
+module "latest_os_ami" {
+  source = "../../aws/latest-os-ami"
+}
+
 resource "aws_launch_template" "master" {
   instance_type = var.master_config["ec2_type_1"]
-  image_id      = data.aws_ami.coreos_ami.image_id
+  image_id      = module.latest_os_ami.fedora_coreos_image_id
   name_prefix   = "${var.name}-master-"
 
   vpc_security_group_ids = compact(concat(

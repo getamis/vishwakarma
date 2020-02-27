@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "aws_az_number" {
   description = "How many AZs want to be used"
   type        = string
-  default     = "3"
+  default     = "1"
 }
 
 variable "key_pair_name" {
@@ -18,7 +18,7 @@ variable "key_pair_name" {
 variable "project" {
   description = "(Optional) project name, used to compose the resource name"
   type        = string
-  default     = "elastikube"
+  default     = "vishwakarma"
 }
 
 variable "phase" {

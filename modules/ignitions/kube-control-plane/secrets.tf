@@ -9,8 +9,8 @@ resource "tls_private_key" "oidc_issuer" {
 }
 
 data "ignition_file" "kube_ca_cert_pem" {
-  filesystem = local.filesystem
-  mode       = local.mode
+
+  mode = local.mode
 
   path = "/etc/kubernetes/secrets/ca.crt"
 
@@ -20,8 +20,8 @@ data "ignition_file" "kube_ca_cert_pem" {
 }
 
 data "ignition_file" "apiserver_key_pem" {
-  filesystem = local.filesystem
-  mode       = local.mode
+
+  mode = local.mode
 
   path = "/etc/kubernetes/secrets/apiserver.key"
 
@@ -31,8 +31,8 @@ data "ignition_file" "apiserver_key_pem" {
 }
 
 data "ignition_file" "apiserver_cert_pem" {
-  filesystem = local.filesystem
-  mode       = local.mode
+
+  mode = local.mode
 
   path = "/etc/kubernetes/secrets/apiserver.crt"
 
@@ -42,8 +42,8 @@ data "ignition_file" "apiserver_cert_pem" {
 }
 
 data "ignition_file" "service_account_pub" {
-  filesystem = local.filesystem
-  mode       = local.mode
+
+  mode = local.mode
 
   path = "/etc/kubernetes/secrets/service-account.pub"
 
@@ -53,8 +53,8 @@ data "ignition_file" "service_account_pub" {
 }
 
 data "ignition_file" "service_account_key" {
-  filesystem = local.filesystem
-  mode       = local.mode
+
+  mode = local.mode
 
   path = "/etc/kubernetes/secrets/service-account.key"
 
@@ -64,8 +64,8 @@ data "ignition_file" "service_account_key" {
 }
 
 data "ignition_file" "oidc_issuer_pub" {
-  filesystem = local.filesystem
-  mode       = local.mode
+
+  mode = local.mode
 
   path = "/etc/kubernetes/secrets/oidc-issuer.pub"
 
@@ -75,8 +75,8 @@ data "ignition_file" "oidc_issuer_pub" {
 }
 
 data "ignition_file" "oidc_issuer_key" {
-  filesystem = local.filesystem
-  mode       = local.mode
+
+  mode = local.mode
 
   path = "/etc/kubernetes/secrets/oidc-issuer.key"
 
@@ -86,8 +86,8 @@ data "ignition_file" "oidc_issuer_key" {
 }
 
 data "ignition_file" "etcd_ca_cert_pem" {
-  filesystem = local.filesystem
-  mode       = local.mode
+
+  mode = local.mode
 
   path = "/etc/kubernetes/secrets/etcd-client-ca.crt"
 
@@ -97,8 +97,8 @@ data "ignition_file" "etcd_ca_cert_pem" {
 }
 
 data "ignition_file" "etcd_client_cert_pem" {
-  filesystem = local.filesystem
-  mode       = local.mode
+
+  mode = local.mode
 
   path = "/etc/kubernetes/secrets/etcd-client.crt"
 
@@ -108,8 +108,8 @@ data "ignition_file" "etcd_client_cert_pem" {
 }
 
 data "ignition_file" "etcd_client_key_pem" {
-  filesystem = local.filesystem
-  mode       = local.mode
+
+  mode = local.mode
 
   path = "/etc/kubernetes/secrets/etcd-client.key"
 

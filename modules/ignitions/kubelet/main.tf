@@ -3,9 +3,8 @@ locals {
 }
 
 data "ignition_file" "get_max_pods_sh" {
-  filesystem = "root"
-  path       = "/opt/kubelet/get-max-pods.sh"
-  mode       = 500
+  path = "/opt/kubelet/get-max-pods.sh"
+  mode = 500
 
   content {
     content = "${file("${path.module}/files/get-max-pods.sh")}"
@@ -13,9 +12,8 @@ data "ignition_file" "get_max_pods_sh" {
 }
 
 data "ignition_file" "kubelet_wrapper_sh" {
-  filesystem = "root"
-  path       = "/opt/kubelet/kubelet-wrapper.sh"
-  mode       = 500
+  path = "/opt/kubelet/kubelet-wrapper.sh"
+  mode = 500
 
   content {
     content = "${file("${path.module}/files/kubelet-wrapper.sh")}"
@@ -34,9 +32,8 @@ data "template_file" "kubelet_env" {
 }
 
 data "ignition_file" "kubelet_env" {
-  filesystem = "root"
-  path       = "/etc/kubernetes/kubelet.env"
-  mode       = 420
+  path = "/etc/kubernetes/kubelet.env"
+  mode = 420
 
   content {
     content = data.template_file.kubelet_env.rendered

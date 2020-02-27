@@ -16,9 +16,7 @@ data "template_file" "kube_controller_manager_yaml" {
 }
 
 data "ignition_file" "kube_controller_manager_yaml" {
-  filesystem = local.filesystem
-  mode       = local.mode
-
+  mode = local.mode
   path = "${pathexpand(var.manifest_path)}/kube-controller-manager.yaml"
 
   content {

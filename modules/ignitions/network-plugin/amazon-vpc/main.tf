@@ -1,6 +1,5 @@
 locals {
-  filesystem = "root"
-  mode       = 420
+  mode = 420
 }
 
 data "template_file" "aws_vpc_cni_yaml" {
@@ -11,9 +10,9 @@ data "template_file" "aws_vpc_cni_yaml" {
 }
 
 data "ignition_file" "aws_vpc_cni_yaml" {
-  filesystem = local.filesystem
-  mode       = local.mode
-  path       = "${pathexpand(var.addon_path)}/aws-k8s-cni.yaml"
+  mode = local.mode
+  path = "${pathexpand(var.addon_path)}/aws-k8s-cni.yaml"
+
   content {
     content = data.template_file.aws_vpc_cni_yaml.rendered
   }
@@ -29,9 +28,9 @@ data "template_file" "calico_yaml" {
 }
 
 data "ignition_file" "calico_yaml" {
-  filesystem = local.filesystem
-  mode       = local.mode
-  path       = "${pathexpand(var.addon_path)}/calico.yaml"
+  mode = local.mode
+  path = "${pathexpand(var.addon_path)}/calico.yaml"
+
   content {
     content = data.template_file.calico_yaml.rendered
   }

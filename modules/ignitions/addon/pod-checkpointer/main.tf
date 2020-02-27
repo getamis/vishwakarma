@@ -1,3 +1,8 @@
+locals {
+  mode = 420
+}
+
+
 data "template_file" "pod_checkpointer_yaml" {
   template = file("${path.module}/resources/kubernetes/addon/pod-checkpointer.yaml")
 
@@ -7,9 +12,7 @@ data "template_file" "pod_checkpointer_yaml" {
 }
 
 data "ignition_file" "pod_checkpointer_yaml" {
-  filesystem = local.filesystem
-  mode       = local.mode
-
+  mode = local.mode
   path = "${pathexpand(var.addon_path)}/pod-checkpointer.yaml"
 
   content {

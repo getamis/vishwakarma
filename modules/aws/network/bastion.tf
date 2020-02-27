@@ -28,28 +28,16 @@ resource "aws_security_group_rule" "bastion_ingress_ssh" {
   to_port     = 22
 }
 
-data "aws_ami" "latest_ubuntu" {
-
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-  owners = ["099720109477"] # Canonical
-}
-
 data "template_file" "user_data" {
   template = file("${path.module}/resources/user_data")
 }
 
+module "latest_os_ami" {
+  source = "../../aws/latest-os-ami"
+}
+
 resource "aws_instance" "bastion" {
-  ami                         = var.bastion_ami_id == "" ? data.aws_ami.latest_ubuntu.image_id : var.bastion_ami_id
+  ami                         = var.bastion_ami_id == "" ? module.latest_os_ami.ubuntu_image_id : var.bastion_ami_id
   associate_public_ip_address = true
   instance_type               = var.bastion_instance_type
   key_name                    = var.bastion_key_name

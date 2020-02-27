@@ -1,7 +1,6 @@
 data "ignition_file" "etcd_wrapper_sh" {
-  filesystem = "root"
-  path       = "/opt/etcd/etcd-wrapper.sh"
-  mode       = 500
+  path = "/opt/etcd/etcd-wrapper.sh"
+  mode = 500
 
   content {
     content = "${file("${path.module}/files/etcd-wrapper.sh")}"
@@ -26,9 +25,8 @@ data "template_file" "etcd_env" {
 }
 
 data "ignition_file" "etcd_env" {
-  filesystem = "root"
-  path       = "/etc/etcd/etcd.env"
-  mode       = 420
+  path = "/etc/etcd/etcd.env"
+  mode = 420
 
   content {
     content = data.template_file.etcd_env.rendered

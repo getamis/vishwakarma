@@ -1,3 +1,8 @@
+locals {
+  mode = 420
+}
+
+
 data "template_file" "kubeconfig" {
   template = file("${path.module}/resources/kubernetes/webhook/kubeconfig")
 
@@ -8,9 +13,7 @@ data "template_file" "kubeconfig" {
 }
 
 data "ignition_file" "kubeconfig" {
-  filesystem = local.filesystem
-  mode       = local.mode
-
+  mode = local.mode
   path = "${pathexpand(var.webhook_kubeconfig_path)}/kubeconfig"
 
   content {

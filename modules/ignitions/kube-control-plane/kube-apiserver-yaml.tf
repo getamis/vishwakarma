@@ -30,9 +30,7 @@ data "template_file" "kube_apiserver_yaml" {
 }
 
 data "ignition_file" "kube_apiserver_yaml" {
-  filesystem = local.filesystem
-  mode       = local.mode
-
+  mode = local.mode
   path = "${pathexpand(var.manifest_path)}/kube-apiserver.yaml"
 
   content {
