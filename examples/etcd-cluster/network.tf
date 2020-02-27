@@ -24,8 +24,6 @@ resource "aws_route53_zone" "private" {
   ), var.extra_tags)
 }
 
-
-
 resource "aws_security_group" "etcd" {
   name_prefix = "${local.cluster_name}-etcd-"
   vpc_id      = data.aws_vpc.etcd.id
@@ -33,10 +31,6 @@ resource "aws_security_group" "etcd" {
   tags = merge(map(
     "Name", "${local.cluster_name}-etcd",
   ), var.extra_tags)
-}
-
-locals {
-
 }
 
 resource "aws_security_group_rule" "etcd_egress" {
