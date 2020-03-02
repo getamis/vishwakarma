@@ -1,3 +1,9 @@
+data "ignition_user" "etcd" {
+  name           = "etcd"
+  no_create_home = true
+  uid            = var.cert_file_owner["uid"]
+}
+
 data "ignition_file" "etcd_wrapper_sh" {
   path = "/opt/etcd/etcd-wrapper.sh"
   mode = 500

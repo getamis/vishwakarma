@@ -14,6 +14,7 @@ output "files" {
     data.ignition_file.etcd_server_cert.rendered,
     data.ignition_file.etcd_server_key.rendered,
     data.ignition_file.etcd_peer_cert.rendered,
-    data.ignition_file.etcd_peer_key.rendered
+    data.ignition_file.etcd_peer_key.rendered,
+    data.ignition_user.rendered
   ]
 }
