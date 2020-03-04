@@ -37,7 +37,7 @@ EOF
 variable "kubernetes_version" {
   description = "Desired Kubernetes kubelet version. If you do not specify a value, the latest available version is used."
   type        = string
-  default     = "v1.15.7"
+  default     = "v1.15.10"
 }
 
 variable "network_plugin" {
