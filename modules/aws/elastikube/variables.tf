@@ -60,7 +60,7 @@ variable "endpoint_public_access" {
 variable "kubernetes_version" {
   description = "(Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
   type        = string
-  default     = "v1.15.7"
+  default     = "v1.15.10"
 }
 
 variable "network_plugin" {

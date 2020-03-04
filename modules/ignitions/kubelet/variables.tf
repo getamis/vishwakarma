@@ -65,6 +65,6 @@ variable "hyperkube" {
   type        = map(string)
   default = {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
-    image_tag  = "v1.15.7"
+    image_tag  = "v1.15.10"
   }
 }
