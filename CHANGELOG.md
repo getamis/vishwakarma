@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
+## [[v0.0.16](https://github.com/getamis/vishwakarma/compare/v0.0.16...v0.0.15)] - 2020-01-20]
+
+### Added
+
+- Add pod affinity for CoreDNS.
+
+### Changed
+
+- Bump Kubernetes version to v1.13.12.
 
 ## [[v0.0.15](https://github.com/getamis/vishwakarma/compare/v0.0.15...v0.0.14)] - 2019-04-03]
 
