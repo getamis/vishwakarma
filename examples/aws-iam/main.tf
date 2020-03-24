@@ -24,7 +24,6 @@ module "kubernetes" {
   source = "../../modules/aws/elastikube"
 
   name               = local.cluster_name
-  kubernetes_version = var.kubernetes_version
   service_cidr       = var.service_cidr
   cluster_cidr       = var.cluster_cidr
 
@@ -80,7 +79,6 @@ module "worker_spot" {
   source = "../../modules/aws/kube-worker"
 
   cluster_name       = local.cluster_name
-  kubernetes_version = var.kubernetes_version
   kube_service_cidr  = var.service_cidr
 
   security_group_ids = module.kubernetes.worker_sg_ids

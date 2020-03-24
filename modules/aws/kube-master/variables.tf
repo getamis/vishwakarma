@@ -63,10 +63,9 @@ variable "endpoint_public_access" {
   default     = false
 }
 
-variable "kubernetes_version" {
-  description = "(Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
-  type        = string
-  default     = "v1.15.10"
+variable "hyperkube_container" {
+  description = "(Optional) Desired Hyperkube container to boot K8S cluster. If you do not specify a value, the latest available version is used."
+  type        = map(string)
 }
 
 variable "network_plugin" {

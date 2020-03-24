@@ -7,9 +7,6 @@ variable "addon_path" {
 variable "container_images" {
   description = "Container images to use"
   type        = map(string)
-  default = {
-    flannel = "quay.io/coreos/flannel:v0.11.0-amd64"
-  }
 }
 
 variable "cluster_cidr" {

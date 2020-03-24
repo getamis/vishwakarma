@@ -34,10 +34,13 @@ EOF
   default     = []
 }
 
-variable "kubernetes_version" {
-  description = "Desired Kubernetes kubelet version. If you do not specify a value, the latest available version is used."
-  type        = string
-  default     = "v1.15.10"
+variable "hyperkube_container" {
+  description = "(Optional) Desired Hyperkube container to boot K8S cluster. If you do not specify a value, the latest available version is used."
+  type        = map(string)
+  default     = {
+    image_path = "gcr.io/google-containers/hyperkube-amd64"
+    image_tag  = "v1.15.10"
+  }
 }
 
 variable "network_plugin" {

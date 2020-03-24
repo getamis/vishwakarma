@@ -1,10 +1,11 @@
 module "etcd" {
   source = "../../aws/kube-etcd"
 
-  name        = var.name
-  ssh_key     = var.ssh_key
-  etcd_config = var.etcd_config
-
+  name           = var.name
+  ssh_key        = var.ssh_key
+  etcd_config    = var.etcd_config
+  etcd_container = var.etcd_container
+  
   subnet_ids                  = var.private_subnet_ids
   master_security_group_id    = module.master.master_sg_id
   zone_id                     = aws_route53_zone.private.zone_id

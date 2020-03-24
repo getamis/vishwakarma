@@ -14,7 +14,7 @@ output "endpoint" {
 }
 
 output "version" {
-  value       = var.kubernetes_version
+  value       = var.hyperkube_container["image_tag"]
   description = "K8S cluster version"
 }
 
