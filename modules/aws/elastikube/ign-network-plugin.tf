@@ -21,10 +21,12 @@ resource "aws_security_group_rule" "master_ingress_flannel_from_worker" {
 }
 
 module "ignition_flannel_network" {
-  source       = "../../ignitions/network-plugin/flannel"
-  cluster_cidr = var.cluster_cidr
+  source           = "../../ignitions/network-plugin/flannel"
+  cluster_cidr     = var.cluster_cidr
+  container_images = var.flannel_containers
 }
 
 module "ignition_amazon_vpc_network" {
-  source = "../../ignitions/network-plugin/amazon-vpc"
+  source           = "../../ignitions/network-plugin/amazon-vpc"
+  container_images = var.amazon_vpc_containers
 }

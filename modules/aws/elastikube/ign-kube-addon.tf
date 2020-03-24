@@ -12,10 +12,7 @@ locals {
 module "ignition_addon_manager" {
   source = "../../ignitions/addon/addon-manager"
 
-  hyperkube = {
-    image_path = "gcr.io/google-containers/hyperkube-amd64"
-    image_tag  = var.kubernetes_version
-  }
+  hyperkube = var.hyperkube_container
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -28,6 +25,7 @@ module "ignition_addon_coredns" {
   reverse_cidrs  = "${var.service_cidr}"
   cluster_dns_ip = local.cluster_dns_ip
   replicas       = parseint(var.master_config["instance_count"], 10)
+  image          = "${var.coredns_container["image_path"]}:${var.coredns_container["image_tag"]}"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -38,9 +36,7 @@ module "ignition_addon_proxy" {
   source = "../../ignitions/addon/kube-proxy"
 
   cluster_cidr = var.cluster_cidr
-  hyperkube = {
-    image_path = "gcr.io/google-containers/hyperkube-amd64"
-    image_tag  = var.kubernetes_version
-  }
+  hyperkube = var.hyperkube_container
+
 }
 

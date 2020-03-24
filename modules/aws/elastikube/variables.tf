@@ -57,16 +57,47 @@ variable "endpoint_public_access" {
   default     = false
 }
 
-variable "kubernetes_version" {
-  description = "(Optional) Desired Kubernetes master version. If you do not specify a value, the latest available version is used."
-  type        = string
-  default     = "v1.15.10"
+variable "hyperkube_container" {
+  description = "(Optional) Desired Hyperkube container to boot K8S cluster. If you do not specify a value, the latest available version is used."
+  type        = map(string)
+  default     = {
+    image_path = "gcr.io/google-containers/hyperkube-amd64"
+    image_tag  = "v1.15.11"
+  }
+}
+
+variable "coredns_container" {
+  description = "(Optional) Desired coredns container for K8S cluster. If you do not specify a value, the latest available version is used."
+  type        = map(string)
+  default     = {
+    image_path = "k8s.gcr.io/coredns"
+    image_tag  = "1.6.7"
+  }
 }
 
 variable "network_plugin" {
   description = "(Optional) Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc'"
   type        = string
   default     = "flannel"
+}
+
+variable "flannel_containers" {
+  description = "(Optional) Desired network plugin flannel container for K8S cluster. If you do not specify a value, the latest available version is used."
+  type        = map(string)
+  default     = {
+    flannel = "quay.io/coreos/flannel:v0.12.0-amd64"
+  }
+}
+
+variable "amazon_vpc_containers" {
+  description = "(Optional) Desired network plugin amazon vpn container for K8S cluster. If you do not specify a value, the latest available version is used."
+  type        = map(string)
+  default     = {
+    vpc_cni        = "602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon-k8s-cni:v1.6.0"
+    calico_node    = "quay.io/calico/node:v3.8.1"
+    calico_typha   = "quay.io/calico/typha:v3.8.1"
+    k8s_autoscaler = "k8s.gcr.io/cluster-proportional-autoscaler-amd64:1.1.2"
+  }
 }
 
 // -----------------------------------------
@@ -110,6 +141,16 @@ variable "etcd_config" {
     root_volume_iops = "100"
     root_volume_size = "100"
     root_volume_type = "gp2"
+  }
+}
+
+variable "etcd_container" {
+  description = "Desired etcd container path and tag"
+  type    = map(string)
+
+  default = {
+    image_path = "quay.io/coreos/etcd"
+    image_tag  = "v3.4.5"
   }
 }
 

@@ -22,11 +22,11 @@ module "network" {
 module "kubernetes" {
   source = "../../modules/aws/elastikube"
 
-  name               = local.cluster_name
-  kubernetes_version = var.kubernetes_version
-  network_plugin     = var.network_plugin
-  service_cidr       = var.service_cidr
-  cluster_cidr       = var.cluster_cidr
+  name                = local.cluster_name
+  hyperkube_container = var.hyperkube_container
+  network_plugin      = var.network_plugin
+  service_cidr        = var.service_cidr
+  cluster_cidr        = var.cluster_cidr
 
   etcd_config = {
     instance_count   = "3"
@@ -69,10 +69,10 @@ module "kubernetes" {
 module "worker_on_demand" {
   source = "../../modules/aws/kube-worker"
 
-  cluster_name       = local.cluster_name
-  kubernetes_version = var.kubernetes_version
-  network_plugin     = var.network_plugin
-  kube_service_cidr  = var.service_cidr
+  cluster_name        = local.cluster_name
+  hyperkube_container = var.hyperkube_container
+  network_plugin      = var.network_plugin
+  kube_service_cidr   = var.service_cidr
 
   security_group_ids = module.kubernetes.worker_sg_ids
   subnet_ids         = module.network.private_subnet_ids
@@ -107,10 +107,10 @@ module "worker_on_demand" {
 module "worker_spot" {
   source = "../../modules/aws/kube-worker"
 
-  cluster_name       = local.cluster_name
-  kubernetes_version = var.kubernetes_version
-  network_plugin     = var.network_plugin
-  kube_service_cidr  = var.service_cidr
+  cluster_name        = local.cluster_name
+  hyperkube_container = var.hyperkube_container
+  network_plugin      = var.network_plugin
+  kube_service_cidr   = var.service_cidr
 
   security_group_ids = module.kubernetes.worker_sg_ids
   subnet_ids         = module.network.private_subnet_ids

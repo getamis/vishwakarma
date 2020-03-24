@@ -8,12 +8,12 @@ locals {
 module "master" {
   source = "../../aws/kube-master"
 
-  name               = var.name
-  ssh_key            = var.ssh_key
-  master_config      = var.master_config
-  role_name          = var.role_name
-  kubernetes_version = var.kubernetes_version
-  network_plugin     = var.network_plugin
+  name                = var.name
+  ssh_key             = var.ssh_key
+  master_config       = var.master_config
+  role_name           = var.role_name
+  hyperkube_container = var.hyperkube_container
+  network_plugin      = var.network_plugin
 
   security_group_ids = var.security_group_ids
 

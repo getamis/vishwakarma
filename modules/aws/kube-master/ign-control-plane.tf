@@ -49,8 +49,5 @@ module "ignition_kube_control_plane" {
     pod_cidr                  = var.kube_cluster_cidr
   }
 
-  hyperkube = {
-    image_path = "gcr.io/google-containers/hyperkube-amd64"
-    image_tag  = var.kubernetes_version
-  }
+  hyperkube = var.hyperkube_container
 }

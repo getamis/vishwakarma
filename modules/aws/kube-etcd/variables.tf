@@ -76,6 +76,11 @@ variable "etcd_config" {
   }
 }
 
+variable "etcd_container" {
+  description = "Desired etcd container path and tag"
+  type        = map(string)
+}
+
 variable "ssh_key" {
   description = "The key name that should be used for the instances."
   type        = string
