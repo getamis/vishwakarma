@@ -69,16 +69,24 @@ variable "etcd_config" {
   type        = map(string)
   default = {
     instance_count   = "1"
-    ec2_type         = "t3.medium"
+    ec2_type_1       = "t3.medium"
+    ec2_type_2       = "t2.medium"
     root_volume_iops = "100"
     root_volume_size = "100"
     root_volume_type = "gp2"
+
+    on_demand_base_capacity                  = 0
+    on_demand_percentage_above_base_capacity = 100
+    spot_instance_pools                      = 1
   }
 }
 
 variable "etcd_container" {
   description = "Desired etcd container path and tag"
   type        = map(string)
+  default = {
+
+  }
 }
 
 variable "ssh_key" {

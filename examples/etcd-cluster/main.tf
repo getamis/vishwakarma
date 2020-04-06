@@ -33,6 +33,11 @@ module "etcd" {
   reboot_strategy             = var.reboot_strategy
   certs_validity_period_hours = var.certs_validity_period_hours
 
+  etcd_container = {
+    image_path = "quay.io/coreos/etcd"
+    image_tag  = "v3.4.4"
+  }
+
   extra_tags = merge(map(
     "Phase", var.phase,
     "Project", var.project,

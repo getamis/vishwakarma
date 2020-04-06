@@ -37,7 +37,7 @@ EOF
 variable "hyperkube_container" {
   description = "(Optional) Desired Hyperkube container to boot K8S cluster. If you do not specify a value, the latest available version is used."
   type        = map(string)
-  default     = {
+  default = {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
     image_tag  = "v1.15.10"
   }
@@ -56,7 +56,6 @@ variable "worker_config" {
     instance_count   = "1"
     ec2_type_1       = "t3.medium"
     ec2_type_2       = "t2.medium"
-    name             = "general"
     root_volume_iops = "100"
     root_volume_size = "256"
     root_volume_type = "gp2"
