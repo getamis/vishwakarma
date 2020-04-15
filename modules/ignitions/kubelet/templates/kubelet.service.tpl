@@ -4,6 +4,7 @@ Requires=network-online.target
 
 [Service]
 EnvironmentFile=/etc/kubernetes/kubelet.env
+Environment="PATH=/opt/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
 
 ExecStartPre=/usr/bin/bash -c "grep 'certificate-authority-data' /etc/kubernetes/kubeconfig | awk '{print $2}' | base64 -d > /etc/kubernetes/ca.crt"
 
