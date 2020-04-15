@@ -19,3 +19,7 @@ output "client_key_pem" {
   value     = module.etcd_client_cert.private_key_pem
   sensitive = true
 }
+
+output "default_role_name" {
+  value = aws_iam_role.etcd.name
+}

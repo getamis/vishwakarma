@@ -45,3 +45,7 @@ output oidc_issuer_pubkey {
 output "master_role_name" {
   value = module.master.default_role_name
 }
+
+output "etcd_role_name" {
+  value = module.etcd.default_role_name
+}
