@@ -53,7 +53,7 @@ jobs:
       - run:
           name: Terraform check format
           command: make fmt
-  test-kubernetes-cluster:
+  run-kubernetes-cluster:
     <<: *default   
     steps:
       - checkout 
@@ -67,10 +67,10 @@ workflows:
   test:
     jobs:
       - validate-and-format
-      - approval-test-kubernetes-cluster:
+      - approval-run-kubernetes-cluster:
           type: approval
           requires:
             - validate-and-format
-      - test-kubernetes-cluster:
+      - run-kubernetes-cluster:
           requires:
-            - approval-test-kubernetes-cluster
+            - approval-run-kubernetes-cluster
