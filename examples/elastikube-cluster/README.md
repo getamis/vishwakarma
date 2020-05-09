@@ -23,7 +23,7 @@ $ terraform init
 $ terraform apply -target=module.network
 
 # create the kubernetes master compoment
-$ terraform apply -target=module.kubernetes
+$ terraform apply -target=module.master
 
 # create the general and spot k8s worker group
 $ terraform apply
@@ -34,7 +34,7 @@ $ terraform apply
 ```sh
 $ terraform destroy -target=module.worker_on_demand
 $ terraform destroy -target=module.worker_spot
-$ terraform destroy -target=module.kubernetes
+$ terraform destroy -target=module.master
 $ terraform destroy -target=module.network
 ```
 

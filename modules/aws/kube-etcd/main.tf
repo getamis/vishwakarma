@@ -9,10 +9,15 @@ locals {
   peer_port   = 2380
 }
 
+module "latest_os_ami" {
+  source  = "../../aws/latest-os-ami"
+  os_name = "coreos"
+}
+
 resource "aws_instance" "etcd" {
   count = var.etcd_config["instance_count"]
 
-  ami                  = data.aws_ami.coreos_ami.image_id
+  ami                  = module.latest_os_ami.image_id
   instance_type        = var.etcd_config["ec2_type"]
   key_name             = var.ssh_key
   iam_instance_profile = aws_iam_instance_profile.etcd.id
