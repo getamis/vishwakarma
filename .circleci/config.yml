@@ -32,7 +32,7 @@ default: &default
     GOPATH: /go
     GO111MODULE: "on"
     TF_VERSION: "0.12.17"
-    KUBE_VERSION: "1.14.10"
+    KUBE_VERSION: "1.15.11"
     AWS_SDK_LOAD_CONFIG: "True"
     INSTALL_AWS_CLI: "true"
     INSTALL_TERRAFORM: "true"
@@ -52,25 +52,25 @@ jobs:
           command: make validate
       - run:
           name: Terraform check format
-          command: make check-fmt
-  run-elastikube:
+          command: make fmt
+  test-kubernetes-cluster:
     <<: *default   
     steps:
       - checkout 
       - *install_tools
       - run: 
-          name: Run tests for Elastikube cluster
-          command: make test-elastikube
+          name: Run tests for Kubernetes cluster
+          command: make test-kubernetes-cluster
           
 workflows:
   version: 2
   test:
     jobs:
       - validate-and-format
-      - approval-run-elastikube:
+      - approval-test-kubernetes-cluster:
           type: approval
           requires:
             - validate-and-format
-      - run-elastikube:
+      - test-kubernetes-cluster:
           requires:
-            - approval-run-elastikube
+            - approval-test-kubernetes-cluster

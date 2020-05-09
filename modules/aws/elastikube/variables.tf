@@ -60,7 +60,7 @@ variable "endpoint_public_access" {
 variable "hyperkube_container" {
   description = "(Optional) Desired Hyperkube container to boot K8S cluster. If you do not specify a value, the latest available version is used."
   type        = map(string)
-  default     = {
+  default = {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
     image_tag  = "v1.15.11"
   }
@@ -69,7 +69,7 @@ variable "hyperkube_container" {
 variable "coredns_container" {
   description = "(Optional) Desired coredns container for K8S cluster. If you do not specify a value, the latest available version is used."
   type        = map(string)
-  default     = {
+  default = {
     image_path = "k8s.gcr.io/coredns"
     image_tag  = "1.6.7"
   }
@@ -84,7 +84,7 @@ variable "network_plugin" {
 variable "flannel_containers" {
   description = "(Optional) Desired network plugin flannel container for K8S cluster. If you do not specify a value, the latest available version is used."
   type        = map(string)
-  default     = {
+  default = {
     flannel = "quay.io/coreos/flannel:v0.12.0-amd64"
   }
 }
@@ -92,7 +92,7 @@ variable "flannel_containers" {
 variable "amazon_vpc_containers" {
   description = "(Optional) Desired network plugin amazon vpn container for K8S cluster. If you do not specify a value, the latest available version is used."
   type        = map(string)
-  default     = {
+  default = {
     vpc_cni        = "602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon-k8s-cni:v1.6.0"
     calico_node    = "quay.io/calico/node:v3.8.1"
     calico_typha   = "quay.io/calico/typha:v3.8.1"
@@ -146,7 +146,7 @@ variable "etcd_config" {
 
 variable "etcd_container" {
   description = "Desired etcd container path and tag"
-  type    = map(string)
+  type        = map(string)
 
   default = {
     image_path = "quay.io/coreos/etcd"

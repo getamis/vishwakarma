@@ -30,7 +30,7 @@ variable "key_pair_name" {
 variable "hyperkube_container" {
   description = "(Optional) Desired Hyperkube container to boot K8S cluster. If you do not specify a value, the latest available version is used."
   type        = map(string)
-  default     = {
+  default = {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
     image_tag  = "v1.15.11"
   }

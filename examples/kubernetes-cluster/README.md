@@ -1,7 +1,7 @@
-# Elastikube Cluster Example
+# Kubernetes Cluster Example
 This folder contains a simple Terraform module that deploys resources in [AWS](https://aws.amazon.com/) to demonstrate how you can use Terratest to write automated tests for your AWS Terraform code. This module deploys AWS VPC with bastion hot, self-hosted Kubernetes with two worker group (spot and on demand instance) [EC2 Instances](https://aws.amazon.com/ec2/) in the AWS region specified in the `aws_region` variable.
 
-Check out [test/elastikube_cluster_test.go](/test/elastikube_cluster_test.go) to see how you can write automated tests for this module.
+Check out [test/cluster_test.go](/test/cluster_test.go) to see how you can write automated tests for this module.
 
 **WARNING**: This module and the automated tests for it deploy real resources into your AWS account which can cost you money.
 
@@ -49,7 +49,7 @@ $ terraform destroy -target=module.network
 5. Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) and make sure it's on your `PATH`.
 6. `cd test`
 7. `dep ensure`
-8. `go test -timeout 60m -v -run TestElastikubeCluster`
+8. `go test -timeout 60m -v -run TestKubernetesCluster`
 9. If execution without error, the output like below:
 
 ```

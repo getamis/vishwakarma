@@ -34,8 +34,8 @@ Enter a value:
 Please create a ssh key pair in ~/.ssh/ with the name id_rsa.pub and id_rsa, this example use the key pair for the etcd, Kubernetes master, Kubernetes node EC2 instance (refer to [**Here**](https://medium.com/getamis/elastikube-self-hosted-and-highly-configurable-kubernetes-building-blocks-97cd7afccef) for the more detail information).
 
 ```sh
-# switch to elastikube_cluster example folder
-$ cd examples/elastikube_cluster
+# switch to kubernetes-cluster example folder
+$ cd examples/kubernetes-cluster
 
 # initial for sync terraform module and install provider plugins
 $ terraform init
@@ -44,7 +44,7 @@ $ terraform init
 $ terraform apply -target=module.network
 
 # create the kubernetes master compoment
-$ terraform apply -target=module.kubernetes
+$ terraform apply -target=module.master
 
 # create the general and spot Kubernetes worker group
 $ terraform apply

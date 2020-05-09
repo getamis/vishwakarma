@@ -12,11 +12,11 @@ import (
 	test_structure "github.com/gruntwork-io/terratest/modules/test-structure"
 )
 
-func TestElastikubeCluster(t *testing.T) {
+func TestKubernetesCluster(t *testing.T) {
 	t.Parallel()
 
 	// Copy example to temp folder
-	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/elastikube-cluster")
+	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/kubernetes-cluster")
 
 	// A unique ID we can use to namespace resources so we don't clash with anything already in the AWS account or
 	// tests running in parallel

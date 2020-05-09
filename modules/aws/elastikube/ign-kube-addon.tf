@@ -36,7 +36,7 @@ module "ignition_addon_proxy" {
   source = "../../ignitions/addon/kube-proxy"
 
   cluster_cidr = var.cluster_cidr
-  hyperkube = var.hyperkube_container
+  hyperkube    = var.hyperkube_container
 
 }
 
