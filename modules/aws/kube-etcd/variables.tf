@@ -79,6 +79,11 @@ variable "etcd_config" {
 variable "etcd_container" {
   description = "Desired etcd container path and tag"
   type        = map(string)
+
+  default = {
+    image_path = "quay.io/coreos/etcd"
+    image_tag  = "v3.4.5"
+  }
 }
 
 variable "ssh_key" {

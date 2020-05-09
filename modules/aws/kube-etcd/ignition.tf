@@ -19,7 +19,7 @@ module "ignition_etcd" {
   discovery_service = local.discovery_service
   client_port       = local.client_port
   peer_port         = local.peer_port
-  
+
   certs_config = {
     ca_cert_pem     = module.etcd_root_ca.cert_pem
     client_key_pem  = module.etcd_client_cert.private_key_pem
