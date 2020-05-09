@@ -19,7 +19,7 @@ module "network" {
 # ElastiKube
 # ---------------------------------------------------------------------------------------------------------------------
 
-module "kubernetes" {
+module "master" {
   source = "../../modules/aws/elastikube"
 
   name                = local.cluster_name
@@ -74,7 +74,7 @@ module "worker_on_demand" {
   network_plugin      = var.network_plugin
   kube_service_cidr   = var.service_cidr
 
-  security_group_ids = module.kubernetes.worker_sg_ids
+  security_group_ids = module.master.worker_sg_ids
   subnet_ids         = module.network.private_subnet_ids
 
   worker_config = {
@@ -91,7 +91,7 @@ module "worker_on_demand" {
     spot_instance_pools                      = 1
   }
 
-  s3_bucket = module.kubernetes.s3_bucket
+  s3_bucket = module.master.s3_bucket
   ssh_key   = var.key_pair_name
 
   extra_tags = merge(map(
@@ -112,7 +112,7 @@ module "worker_spot" {
   network_plugin      = var.network_plugin
   kube_service_cidr   = var.service_cidr
 
-  security_group_ids = module.kubernetes.worker_sg_ids
+  security_group_ids = module.master.worker_sg_ids
   subnet_ids         = module.network.private_subnet_ids
 
   worker_config = {
@@ -129,7 +129,7 @@ module "worker_spot" {
     spot_instance_pools                      = 1
   }
 
-  s3_bucket = module.kubernetes.s3_bucket
+  s3_bucket = module.master.s3_bucket
   ssh_key   = var.key_pair_name
 
   extra_tags = merge(map(

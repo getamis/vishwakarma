@@ -27,7 +27,7 @@ func TestElastikubeCluster(t *testing.T) {
 
 	// Preapre all terraform options
 	terraformOptionsNetwork := configureTerraformOptions(t, exampleFolder, "module.network", uniqueID, awsRegion, azNumber)
-	terraformOptionsKubernetes := configureTerraformOptions(t, exampleFolder, "module.kubernetes", uniqueID, awsRegion, azNumber)
+	terraformOptionsKubernetes := configureTerraformOptions(t, exampleFolder, "module.master", uniqueID, awsRegion, azNumber)
 	terraformOptionsWorkerSpot := configureTerraformOptions(t, exampleFolder, "module.worker_spot", uniqueID, awsRegion, azNumber)
 	terraformOptionsWorkerOnDemand := configureTerraformOptions(t, exampleFolder, "module.worker_on_demand", uniqueID, awsRegion, azNumber)
 	terraformOptionsAll := configureTerraformOptions(t, exampleFolder, "", uniqueID, awsRegion, azNumber)
