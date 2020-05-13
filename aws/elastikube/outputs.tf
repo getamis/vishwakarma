@@ -29,3 +29,7 @@ output "master_sg_ids" {
 output "worker_sg_ids" {
   value = ["${aws_security_group.workers.id}"]
 }
+
+output "master_role_name" {
+  value = "${module.master.default_role_name}"
+}
