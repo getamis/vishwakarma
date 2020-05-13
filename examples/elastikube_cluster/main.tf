@@ -3,7 +3,7 @@ locals {
   phase        = "demo"
   cluster_name = "${local.phase}-${local.project}"
 
-  kubernetes_version = "v1.15.7"
+  kubernetes_version = "v1.15.12"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
