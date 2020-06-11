@@ -29,7 +29,10 @@ ETCD_IMAGE="${ETCD_IMAGE:-${ETCD_IMAGE_URL}:${ETCD_IMAGE_TAG}}"
 
 if [[ ! -e "${ETCD_DATA_DIR}" ]]; then
 	mkdir -p ${ETCD_DATA_DIR}
-	chown "${ETCD_USER}" "${ETCD_DATA_DIR}"
+	chown "${USER_ID}:${USER_ID}" "${ETCD_DATA_DIR}"
+  INITIAL_CLUSTER_STATE=new
+else
+  INITIAL_CLUSTER_STATE=existing
 fi
 
 DOCKER_RUN_ARGS="${DOCKER_RUN_ARGS} ${DOCKER_OPTS}"
@@ -57,4 +60,5 @@ exec ${DOCKER} run \
       --name=${HOSTNAME} \
       --advertise-client-urls=${SCHEME}://${HOST_IP}:${CLIENT_PORT} \
       --initial-advertise-peer-urls=${SCHEME}://${HOST_IP}:${PEER_PORT} \
+      --initial-cluster-state=${INITIAL_CLUSTER_STATE} \
       "$@"

@@ -29,11 +29,13 @@ module "master" {
   cluster_cidr        = var.cluster_cidr
 
   etcd_config = {
-    instance_count   = "3"
-    ec2_type         = "t3.medium"
-    root_volume_iops = "0"
-    root_volume_size = "100"
-    root_volume_type = "gp2"
+    instance_count     = "3"
+    ec2_type           = "t3.medium"
+    root_volume_size   = "40"
+    data_volume_size   = "100"
+    data_device_name   = "/dev/sdf"
+    data_device_rename = "/dev/nvme1n1"
+    data_path          = "/etcd/data"
   }
 
   master_config = {

@@ -19,7 +19,9 @@ module "ignition_etcd" {
   discovery_service = local.discovery_service
   client_port       = local.client_port
   peer_port         = local.peer_port
-
+  device_name       = var.etcd_config["data_device_rename"]
+  data_path         = var.etcd_config["data_path"]
+  
   certs_config = {
     ca_cert_pem     = module.etcd_root_ca.cert_pem
     client_key_pem  = module.etcd_client_cert.private_key_pem
@@ -49,6 +51,9 @@ data "ignition_config" "main" {
     module.ignition_node_exporter.systemd_units,
     var.extra_ignition_systemd_unit_ids
   ))
+
+  filesystems = module.ignition_etcd.filesystems
+  disks       = module.ignition_etcd.disks
 }
 
 resource "aws_s3_bucket_object" "ignition" {
