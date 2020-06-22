@@ -11,6 +11,10 @@ resource "aws_security_group_rule" "master_ingress" {
 module "ignition_kube_control_plane" {
   source = "../../ignitions/kube-control-plane"
 
+  enable_auth  = var.enable_auth
+  enable_irsa  = var.enable_irsa
+  enable_audit = var.enable_audit
+
   kube_certs = {
     ca_cert_pem        = module.kube_root_ca.cert_pem
     apiserver_key_pem  = module.kube_api_server_cert.private_key_pem
@@ -28,14 +32,21 @@ module "ignition_kube_control_plane" {
   }
 
   apiserver_config = {
-    anonymous_auth    = false
-    advertise_address = "0.0.0.0"
-    auth_webhook_path = var.auth_webhook_path
-    audit_policy_path = var.audit_policy_path
+    anonymous_auth          = false
+    advertise_address       = "0.0.0.0"
+    webhook_kubeconfig_path = var.webhook_kubeconfig_path
+    audit_policy_path       = var.audit_policy_path
   }
 
   audit_log_backend = var.audit_log_backend
-  oidc_issuer_confg = var.oidc_issuer_confg
+  oidc_issuer_confg = {
+    issuer        = var.oidc_issuer
+    api_audiences = var.oidc_api_audiences
+  }
+  service_account_pubkey = var.service_account_pubkey
+  service_account_prikey = var.service_account_prikey
+  oidc_issuer_pubkey     = var.oidc_issuer_pubkey
+  oidc_issuer_prikey     = var.oidc_issuer_prikey
 
   cloud_provider = {
     name   = "aws"

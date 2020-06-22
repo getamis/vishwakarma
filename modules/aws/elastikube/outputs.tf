@@ -38,10 +38,6 @@ output "worker_sg_ids" {
   description = "The security gruop for worker group"
 }
 
-output oidc_issuer_pubkey {
-  value = module.master.oidc_issuer_pubkey
-}
-
 output "master_role_name" {
   value = module.master.default_role_name
 }

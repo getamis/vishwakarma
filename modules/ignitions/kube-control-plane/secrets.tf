@@ -1,13 +1,3 @@
-resource "tls_private_key" "service_account" {
-  algorithm = "RSA"
-  rsa_bits  = "2048"
-}
-
-resource "tls_private_key" "oidc_issuer" {
-  algorithm = "RSA"
-  rsa_bits  = "2048"
-}
-
 data "ignition_file" "kube_ca_cert_pem" {
   filesystem = local.filesystem
   mode       = local.mode
@@ -41,47 +31,47 @@ data "ignition_file" "apiserver_cert_pem" {
   }
 }
 
-data "ignition_file" "service_account_pub" {
+data "ignition_file" "service_account_pubkey" {
   filesystem = local.filesystem
   mode       = local.mode
 
   path = "/etc/kubernetes/secrets/service-account.pub"
 
   content {
-    content = tls_private_key.service_account.public_key_pem
+    content = var.service_account_pubkey
   }
 }
 
-data "ignition_file" "service_account_key" {
+data "ignition_file" "service_account_prikey" {
   filesystem = local.filesystem
   mode       = local.mode
 
   path = "/etc/kubernetes/secrets/service-account.key"
 
   content {
-    content = tls_private_key.service_account.private_key_pem
+    content = var.service_account_prikey
   }
 }
 
-data "ignition_file" "oidc_issuer_pub" {
+data "ignition_file" "oidc_issuer_pubkey" {
   filesystem = local.filesystem
   mode       = local.mode
 
   path = "/etc/kubernetes/secrets/oidc-issuer.pub"
 
   content {
-    content = tls_private_key.oidc_issuer.public_key_pem
+    content = var.oidc_issuer_pubkey
   }
 }
 
-data "ignition_file" "oidc_issuer_key" {
+data "ignition_file" "oidc_issuer_prikey" {
   filesystem = local.filesystem
   mode       = local.mode
 
   path = "/etc/kubernetes/secrets/oidc-issuer.key"
 
   content {
-    content = tls_private_key.oidc_issuer.private_key_pem
+    content = var.oidc_issuer_prikey
   }
 }
 

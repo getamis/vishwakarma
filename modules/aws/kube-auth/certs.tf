@@ -1,9 +1,9 @@
 module "pod_identity_webhook_root_ca" {
-  source = "../../modules/tls/certificate-authority"
+  source = "../../tls/certificate-authority"
 
   cert_config = {
-    common_name           = local.cluster_name
-    organization          = local.cluster_name
+    common_name           = var.name
+    organization          = var.name
     validity_period_hours = var.certs_validity_period_hours
   }
 
@@ -12,7 +12,7 @@ module "pod_identity_webhook_root_ca" {
 }
 
 module "pod_identity_webhook_cert" {
-  source = "../../modules/tls/certificate"
+  source = "../../tls/certificate"
 
   ca_config = {
     algorithm = module.pod_identity_webhook_root_ca.algorithm
@@ -22,7 +22,7 @@ module "pod_identity_webhook_cert" {
 
   cert_config = {
     common_name           = "pod-identity-webhook"
-    organization          = local.cluster_name
+    organization          = var.name
     validity_period_hours = var.certs_validity_period_hours
   }
 

@@ -57,24 +57,6 @@ variable "extra_tags" {
   default     = {}
 }
 
-variable "pod_identity_webhook_service_name" {
-  description = "The Pod identity service name"
-  type        = string
-  default     = "pod-identity-webhook"
-}
-
-variable "pod_identity_webhook_service_namespace" {
-  description = "The Pod identity service namespace"
-  type        = string
-  default     = "kube-system"
-}
-
-variable "oidc_api_audiences" {
-  description = "the OIDC authenticator pre-introduction of API audiences"
-  type        = string
-  default     = "sts.amazonaws.com"
-}
-
 variable "service_cidr" {
   description = "(Optional) The Kubernetes service CIDR."
   type        = string

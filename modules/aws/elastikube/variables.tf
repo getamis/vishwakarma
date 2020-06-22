@@ -7,6 +7,24 @@ variable "name" {
   type        = string
 }
 
+variable "enable_auth" {
+  description = "(Optional) Enable AWS authenticator or not"
+  type        = bool
+  default     = false
+}
+
+variable "enable_irsa" {
+  description = "(Optional) Enable AWS IAM role service account or not"
+  type        = bool
+  default     = false
+}
+
+variable "enable_audit" {
+  description = "(Optional) Enable Kubernetes master audit function or not"
+  type        = bool
+  default     = false
+} 
+
 variable "role_name" {
   description = "(Optional) The Amazon Resource Name (ARN) of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
   type        = string
@@ -242,16 +260,10 @@ variable "extra_tags" {
   default     = {}
 }
 
-variable "auth_webhook_path" {
-  description = "(Optional) A path for using customize machine to authenticate to a Kubernetes cluster."
-  type        = string
-  default     = ""
-}
-
 variable "audit_policy_path" {
   description = "(Optional) A policy path for Kubernetes apiserver to enable auditing log."
   type        = string
-  default     = ""
+  default     = "/etc/kubernetes/audit"
 }
 
 variable "audit_log_backend" {
@@ -261,21 +273,27 @@ variable "audit_log_backend" {
 EOF
   type        = map(string)
   default = {
-    path      = ""
-    maxage    = ""
-    maxbackup = ""
-    maxsize   = ""
+    path      = "/var/log/kubernetes/kube-apiserver.log"
+    maxage    = "30"
+    maxbackup = "30"
+    maxsize   = "10"
   }
 }
 
-variable "oidc_issuer_confg" {
-  description = "The service account config to enable pod identity feature"
-  type = object({
-    issuer        = string
-    api_audiences = string
-  })
-  default = {
-    issuer        = ""
-    api_audiences = ""
-  }
+variable "audit_policy" {
+  description = "The policy for auditing log."
+  type        = string
+  default     = <<EOF
+# Log all requests at the Metadata level.
+apiVersion: audit.k8s.io/v1
+kind: Policy
+rules:
+- level: Metadata
+EOF
+}
+
+variable "oidc_api_audiences" {
+  description = "the OIDC authenticator pre-introduction of API audiences"
+  type        = string
+  default     = "sts.amazonaws.com"
 }

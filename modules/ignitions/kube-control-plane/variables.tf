@@ -1,3 +1,18 @@
+variable "enable_auth" {
+  description = "(Optional) Enable AWS authenticator or not"
+  type        = bool
+}
+
+variable "enable_irsa" {
+  description = "(Optional) Enable AWS IAM role service account or not"
+  type        = bool
+}
+
+variable "enable_audit" {
+  description = "(Optional) Enable Kubernetes master audit function or not"
+  type        = bool
+} 
+
 variable "manifest_path" {
   description = "(Optional) Path to the directory containing static manifests"
   type        = string
@@ -49,10 +64,10 @@ variable "etcd_config" {
 variable "apiserver_config" {
   type = map(string)
   default = {
-    anonymous_auth    = false
-    advertise_address = "0.0.0.0"
-    auth_webhook_path = ""
-    audit_policy_path = ""
+    anonymous_auth          = false
+    advertise_address       = "0.0.0.0"
+    webhook_kubeconfig_path = ""
+    audit_policy_path       = ""
   }
 }
 
@@ -67,10 +82,6 @@ variable "oidc_issuer_confg" {
     issuer        = string
     api_audiences = string
   })
-  default = {
-    issuer        = ""
-    api_audiences = ""
-  }
 }
 
 variable "cloud_provider" {
@@ -98,4 +109,28 @@ variable "cluster_config" {
 variable "hyperkube" {
   description = "The hyperkube container image path and tag"
   type        = map(string)
+}
+
+variable "service_account_pubkey" {
+  description = "The service account public key for irsa"
+  type        = string
+  default     = ""
+}
+
+variable "service_account_prikey" {
+  description = "The service account private key for irsa"
+  type        = string
+  default     = ""
+}
+
+variable "oidc_issuer_pubkey" {
+  description = "The issuer public key for irsa"
+  type        = string
+  default     = ""
+}
+
+variable "oidc_issuer_prikey" {
+  description = "The issuer private for irsa"
+  type        = string
+  default     = ""
 }

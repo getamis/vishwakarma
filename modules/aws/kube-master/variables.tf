@@ -3,6 +3,21 @@ variable "name" {
   type        = string
 }
 
+variable "enable_auth" {
+  description = "(Optional) Enable AWS authenticator or not"
+  type        = bool
+}
+
+variable "enable_irsa" {
+  description = "(Optional) Enable AWS IAM role service account or not"
+  type        = bool
+}
+
+variable "enable_audit" {
+  description = "(Optional) Enable Kubernetes master audit function or not"
+  type        = bool
+}
+
 variable "role_name" {
   description = "(Optional) The Amazon Resource Name of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
   type        = string
@@ -182,16 +197,15 @@ variable "extra_tags" {
   default     = {}
 }
 
-variable "auth_webhook_path" {
+variable "webhook_kubeconfig_path" {
   description = "(Optional) A path for using customized machine to authenticate to a Kubernetes cluster."
   type        = string
-  default     = ""
+  default     = "/etc/kubernetes/aws-iam-authenticator"
 }
 
 variable "audit_policy_path" {
-  description = "(Optional) A policy path for Kubernetes apiserver to enable auditing log."
+  description = "A policy path for Kubernetes apiserver to enable auditing log."
   type        = string
-  default     = ""
 }
 
 variable "audit_log_backend" {
@@ -204,14 +218,37 @@ EOF
 
 }
 
-variable "oidc_issuer_confg" {
-  description = "The service account config to enable pod identity feature"
-  type = object({
-    issuer        = string
-    api_audiences = string
-  })
-  default = {
-    issuer        = ""
-    api_audiences = ""
-  }
+variable "oidc_api_audiences" {
+  description = "The OIDC authenticator pre-introduction of API audiences"
+  type        = string
+}
+
+variable "oidc_issuer" {
+  description = "The OIDC issuer endpoint"
+  type        = string
+  default     = ""
+}
+
+variable "service_account_pubkey" {
+  description = "The service account public key for irsa"
+  type        = string
+  default     = ""
+}
+
+variable "service_account_prikey" {
+  description = "The service account private key for irsa"
+  type        = string
+  default     = ""
+}
+
+variable "oidc_issuer_pubkey" {
+  description = "The oidc issuer public key for irsa"
+  type        = string
+  default     = ""
+}
+
+variable "oidc_issuer_prikey" {
+  description = "The issuer private for irsa"
+  type        = string
+  default     = ""
 }
