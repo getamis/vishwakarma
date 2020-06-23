@@ -38,11 +38,23 @@ variable "webhook_kubeconfig_path" {
   default     = "/etc/kubernetes/aws-iam-authenticator"
 }
 
-variable "s3_bucket" {
+variable "ignition_s3_bucket" {
   description = <<EOF
     (Optional) Unique name under which the Amazon S3 bucket will be created. Bucket name must start with a lower case name and is limited to 63 characters.
     If name is not provided the installer will construct the name using "name" and current AWS region.
 EOF
+  type        = string
+}
+
+variable "oidc_s3_bucket" {
+  description = <<EOF
+    Unique name under which the Amazon S3 bucket will be created. Bucket name must start with a lower case name and is limited to 63 characters.
+EOF
+  type        = string
+}
+
+variable "oidc_issuer_pubkey" {
+  description = "The Kubernetes service account public key"
   type        = string
 }
 

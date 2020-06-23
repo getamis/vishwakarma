@@ -161,11 +161,9 @@ EOF
 
 variable "s3_bucket" {
   description = <<EOF
-    (Optional) Unique name under which the Amazon S3 bucket will be created. Bucket name must start with a lower case name and is limited to 63 characters.
-    If name is not provided the installer will construct the name using "name" and current AWS region.
+    Unique name under which the Amazon S3 bucket will be created. Bucket name must start with a lower case name and is limited to 63 characters.
 EOF
   type        = string
-  default     = ""
 }
 
 variable "reboot_strategy" {
@@ -225,30 +223,6 @@ variable "oidc_api_audiences" {
 
 variable "oidc_issuer" {
   description = "The OIDC issuer endpoint"
-  type        = string
-  default     = ""
-}
-
-variable "service_account_pubkey" {
-  description = "The service account public key for irsa"
-  type        = string
-  default     = ""
-}
-
-variable "service_account_prikey" {
-  description = "The service account private key for irsa"
-  type        = string
-  default     = ""
-}
-
-variable "oidc_issuer_pubkey" {
-  description = "The oidc issuer public key for irsa"
-  type        = string
-  default     = ""
-}
-
-variable "oidc_issuer_prikey" {
-  description = "The issuer private for irsa"
   type        = string
   default     = ""
 }

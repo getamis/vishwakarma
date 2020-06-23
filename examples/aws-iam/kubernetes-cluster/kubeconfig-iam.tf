@@ -10,7 +10,7 @@ data "template_file" "kubeconfig_iam" {
 }
 
 resource "aws_s3_bucket_object" "kubeconfig_iam" {
-  bucket = module.master.s3_bucket
+  bucket = module.master.ignition_s3_bucket
 
   key     = "kubeconfig.iam"
   content = data.template_file.kubeconfig_iam.rendered

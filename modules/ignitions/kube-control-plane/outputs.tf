@@ -11,12 +11,16 @@ output "files" {
     data.ignition_file.kube_ca_cert_pem.rendered,
     data.ignition_file.apiserver_key_pem.rendered,
     data.ignition_file.apiserver_cert_pem.rendered,
+    data.ignition_file.controller_manager_key_pem.rendered,
+    data.ignition_file.controller_manager_cert_pem.rendered,
     data.ignition_file.service_account_pubkey.rendered,
     data.ignition_file.service_account_prikey.rendered,
-    data.ignition_file.oidc_issuer_pubkey.rendered,
-    data.ignition_file.oidc_issuer_prikey.rendered,
     data.ignition_file.etcd_ca_cert_pem.rendered,
     data.ignition_file.etcd_client_cert_pem.rendered,
     data.ignition_file.etcd_client_key_pem.rendered,
   ]
+}
+
+output "service_account_pubkey" {
+  value = tls_private_key.service_account.public_key_pem
 }

@@ -38,6 +38,8 @@ variable "kube_certs" {
     # ca_cert_pem        = ""
     # apiserver_key_pem  = ""
     # apiserver_cert_pem = ""
+    # controller_manager_key_pem = ""
+    # controller_manager_cert_pem = ""
   }
 }
 
@@ -109,28 +111,4 @@ variable "cluster_config" {
 variable "hyperkube" {
   description = "The hyperkube container image path and tag"
   type        = map(string)
-}
-
-variable "service_account_pubkey" {
-  description = "The service account public key for irsa"
-  type        = string
-  default     = ""
-}
-
-variable "service_account_prikey" {
-  description = "The service account private key for irsa"
-  type        = string
-  default     = ""
-}
-
-variable "oidc_issuer_pubkey" {
-  description = "The issuer public key for irsa"
-  type        = string
-  default     = ""
-}
-
-variable "oidc_issuer_prikey" {
-  description = "The issuer private for irsa"
-  type        = string
-  default     = ""
 }

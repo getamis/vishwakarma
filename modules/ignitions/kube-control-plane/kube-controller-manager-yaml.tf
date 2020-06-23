@@ -12,6 +12,7 @@ data "template_file" "kube_controller_manager_yaml" {
 
     cloud_provider             = var.cloud_provider["name"]
     cloud_provider_config_flag = var.cloud_provider["config"] != "" ? "- --cloud-config=/etc/kubernetes/cloud/config" : "# no cloud provider config given"
+    service_account_flag       = var.enable_irsa ? join("\n    ", list("- --service-account-private-key-file=/etc/kubernetes/secrets/oidc-issuer.key")) : join("\n    ", list("- --service-account-private-key-file=/etc/kubernetes/secrets/service-account.key"))
   }
 }
 

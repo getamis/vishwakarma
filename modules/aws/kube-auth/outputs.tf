@@ -14,14 +14,6 @@ output "pod_identity_webhook_prikey" {
   value = module.pod_identity_webhook_cert.private_key_pem
 }
 
-output "service_account_pubkey" {
-  value = tls_private_key.service_account.public_key_pem
-}
-
-output "service_account_prikey" {
-  value = tls_private_key.service_account.private_key_pem
-}
-
 output "oidc_issuer_pubkey" {
   value = tls_private_key.oidc_issuer.public_key_pem
 }

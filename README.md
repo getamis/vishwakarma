@@ -62,12 +62,12 @@ $ export KUBECONFIG=#{The Path You Put kubeconfig}/kubeconfig
 $ kubectl get node
 
 NAME                          STATUS    ROLES     AGE       VERSION
-ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.15.11
-ip-10-0-48-117.ec2.internal   Ready     master    9m        v1.15.11
-ip-10-0-66-127.ec2.internal   Ready     on-demand 5m        v1.15.11
-ip-10-0-66-127.ec2.internal   Ready     on-demand 6m        v1.15.11
-ip-10-0-71-121.ec2.internal   Ready     spot      3m        v1.15.11
-ip-10-0-86-182.ec2.internal   Ready     spot      4m        v1.15.11
+ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.15.12
+ip-10-0-48-117.ec2.internal   Ready     master    9m        v1.15.12
+ip-10-0-66-127.ec2.internal   Ready     on-demand 5m        v1.15.12
+ip-10-0-66-127.ec2.internal   Ready     on-demand 6m        v1.15.12
+ip-10-0-71-121.ec2.internal   Ready     spot      3m        v1.15.12
+ip-10-0-86-182.ec2.internal   Ready     spot      4m        v1.15.12
 ```
 
 ## What’s Going On?

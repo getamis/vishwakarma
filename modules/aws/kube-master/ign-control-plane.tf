@@ -16,9 +16,11 @@ module "ignition_kube_control_plane" {
   enable_audit = var.enable_audit
 
   kube_certs = {
-    ca_cert_pem        = module.kube_root_ca.cert_pem
-    apiserver_key_pem  = module.kube_api_server_cert.private_key_pem
-    apiserver_cert_pem = module.kube_api_server_cert.cert_pem
+    ca_cert_pem                 = module.kube_root_ca.cert_pem
+    apiserver_key_pem           = module.kube_api_server_cert.private_key_pem
+    apiserver_cert_pem          = module.kube_api_server_cert.cert_pem
+    controller_manager_key_pem  = module.kube_controller_manager_cert.private_key_pem
+    controller_manager_cert_pem = module.kube_controller_manager_cert.cert_pem
   }
 
   etcd_certs = {
@@ -43,10 +45,6 @@ module "ignition_kube_control_plane" {
     issuer        = var.oidc_issuer
     api_audiences = var.oidc_api_audiences
   }
-  service_account_pubkey = var.service_account_pubkey
-  service_account_prikey = var.service_account_prikey
-  oidc_issuer_pubkey     = var.oidc_issuer_pubkey
-  oidc_issuer_prikey     = var.oidc_issuer_prikey
 
   cloud_provider = {
     name   = "aws"

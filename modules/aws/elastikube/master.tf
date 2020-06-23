@@ -73,10 +73,6 @@ module "master" {
 
   oidc_api_audiences     = var.oidc_api_audiences
   oidc_issuer            = module.kube_auth.oidc_issuer
-  service_account_pubkey = module.kube_auth.service_account_pubkey
-  service_account_prikey = module.kube_auth.service_account_prikey
-  oidc_issuer_pubkey     = module.kube_auth.oidc_issuer_pubkey
-  oidc_issuer_prikey     = module.kube_auth.oidc_issuer_prikey
 
   audit_log_backend        = var.audit_log_backend
   audit_policy_path        = var.audit_policy_path

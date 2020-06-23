@@ -13,3 +13,7 @@ output "master_sg_id" {
 output "default_role_name" {
   value = aws_iam_role.master.name
 }
+
+output "service_account_pubkey" {
+  value = module.ignition_kube_control_plane.service_account_pubkey
+}
