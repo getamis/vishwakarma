@@ -50,7 +50,7 @@ module "kube_auth" {
   ignition_s3_bucket     = aws_s3_bucket.ignition.id
   oidc_s3_bucket         = "${var.name}-${md5("${aws_route53_zone.private.zone_id}-oidc")}"
   oidc_issuer_pubkey     = module.master.service_account_pubkey
-  webhook_kubeconfig_ca  = base64encode(module.master.certificate_authority)
+  webhook_kubeconfig_ca  = module.master.certificate_authority
   extra_tags = var.extra_tags
 }
 
