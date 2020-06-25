@@ -93,7 +93,7 @@ module "worker_on_demand" {
     spot_instance_pools                      = 1
   }
 
-  s3_bucket = module.master.s3_bucket
+  s3_bucket = module.master.ignition_s3_bucket
   ssh_key   = var.key_pair_name
 
   extra_tags = merge(map(

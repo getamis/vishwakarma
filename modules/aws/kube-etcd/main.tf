@@ -4,7 +4,7 @@ data "aws_availability_zones" "available" {
 
 data "aws_subnet" "etcd" {
   count = var.etcd_config["instance_count"]
-  id    = var.subnet_ids[count.index]
+  id    = var.subnet_ids[count.index % length(var.subnet_ids)]
 }
 
 locals {
@@ -21,7 +21,7 @@ module "latest_os_ami" {
 
 resource "aws_network_interface" "etcd" {
   count             = var.etcd_config["instance_count"]
-  subnet_id         = var.subnet_ids[count.index]
+  subnet_id         = var.subnet_ids[count.index % length(var.subnet_ids)]
   security_groups   = compact(concat(
     var.security_group_ids,
     list(aws_security_group.etcd.id)
