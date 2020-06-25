@@ -64,17 +64,6 @@ spec:
                 type: string
 
 ---
-apiVersion: iamauthenticator.k8s.aws/v1alpha1
-kind: IAMIdentityMapping
-metadata:
-  name: ${cluster_name}-admin
-spec:
-  arn: ${k8s_admin_iam_role}
-  username: ${cluster_name}-admin
-  groups:
-  - system:masters                
-                
----
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -140,6 +129,7 @@ spec:
         image: ${image}
         args:
         - server
+        - --cluster-id=${cluster_name} 
         - --state-dir=/var/aws-iam-authenticator
         - --kubeconfig-pregenerated=true
         - --generate-kubeconfig=/etc/kubernetes/aws-iam-authenticator/kubeconfig

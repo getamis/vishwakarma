@@ -4,6 +4,14 @@ data "template_file" "iam_auth_yaml" {
   vars = {
     image              = var.aws_iam_authenticator_image
     cluster_name       = local.kubernetes_name
+  }
+}
+
+data "template_file" "iam_admin_yaml" {
+  template = file("${path.module}/resources/iam-admin.yaml")
+
+  vars = {
+    cluster_name       = local.kubernetes_name
     k8s_admin_iam_role = aws_iam_role.k8s_admin.arn
   }
 }
@@ -11,6 +19,11 @@ data "template_file" "iam_auth_yaml" {
 resource "local_file" "iam_auth_yaml" {
   content = data.template_file.iam_auth_yaml.rendered
   filename = "./deploy/kubernetes/iam-auth.yaml"
+}
+
+resource "local_file" "iam_admin_yaml" {
+  content = data.template_file.iam_admin_yaml.rendered
+  filename = "./deploy/kubernetes/iam-admin.yaml"
 }
 
 data "template_file" "irsa_yaml" {

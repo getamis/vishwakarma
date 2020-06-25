@@ -21,6 +21,8 @@ init:
 .PHONY: deploy
 deploy:
 	@kubectl apply -f deploy/kubernetes/iam-auth.yaml
+	@sleep 5
+	@kubectl apply -f deploy/kubernetes/iam-admin.yaml
 	@kubectl create secret generic ${POD_IDENTITY_SECRET_NAME} \
     --from-file=./deploy/secrets/tls.crt --from-file=./deploy/secrets/tls.key \
 	--dry-run=client -o yaml | kubectl apply -f -
@@ -32,12 +34,13 @@ deploy:
 	done;
 	@kubectl certificate approve $$(kubectl get csr -o jsonpath='{.items[?(@.spec.username=="system:serviceaccount:kube-system:pod-identity-webhook")].metadata.name}')
 
-.PHONY: clean-kubernetes
+.PHONY: clean-k8s
 clean-k8s:
-	@kubectl delete -f deploy/kubernetes/iam-auth.yaml
+	@kubectl get csr -o jsonpath='{.items[?(@.spec.username=="system:serviceaccount:kube-system:pod-identity-webhook")].metadata.name}' | xargs kubectl delete csr
 	@kubectl delete -f deploy/kubernetes/irsa.yaml
 	@kubectl delete secrets ${POD_IDENTITY_SECRET_NAME} --namespace ${POD_IDENTITY_SERVICE_NAMESPACE}
-	@kubectl get csr -o jsonpath='{.items[?(@.spec.username=="system:serviceaccount:kube-system:pod-identity-webhook")].metadata.name}' | xargs kubectl delete csr
+	@kubectl delete -f deploy/kubernetes/iam-admin.yaml
+	@kubectl delete -f deploy/kubernetes/iam-auth.yaml
 
 .PHONY: clean-terraform
 clean-terraform:
@@ -45,5 +48,5 @@ clean-terraform:
 	@rm -rf deploy
 
 .PHONY: clean
-clean: clean-kubernetes clean-terraform
+clean: clean-k8s clean-terraform
 	@echo "Clean all auth related k8s resource"
