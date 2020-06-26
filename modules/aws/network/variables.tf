@@ -1,9 +1,3 @@
-variable "aws_az_number" {
-  description = "How many AZs want to be used"
-  type        = string
-  default     = "3"
-}
-
 variable "cidr_block" {
   description = "The CIDR block for AWS VPC"
   type        = string

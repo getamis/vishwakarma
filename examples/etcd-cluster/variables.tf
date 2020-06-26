@@ -4,12 +4,6 @@ variable "aws_region" {
   default     = "us-west-2"
 }
 
-variable "aws_az_number" {
-  description = "How many AZs want to be used"
-  type        = string
-  default     = "3"
-}
-
 variable "key_pair_name" {
   description = "The ssh key name for all instance, e.g. bastion, master, etcd, worker"
   type        = string

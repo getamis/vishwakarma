@@ -4,12 +4,6 @@ variable "aws_region" {
   default     = "us-west-2"
 }
 
-variable "aws_az_number" {
-  description = "How many AZs want to be used"
-  type        = string
-  default     = "3"
-}
-
 variable "service_cidr" {
   description = "(Optional) The Kubernetes service CIDR."
   type        = string

@@ -9,8 +9,10 @@ resource "aws_vpc" "new_vpc" {
   ))
 }
 
-data "aws_availability_zones" "azs" {}
+data "aws_availability_zones" "available" {
+    state = "available"
+}
 
 locals {
-  aws_azs = slice(data.aws_availability_zones.azs.names, 0, var.aws_az_number)
+  aws_azs = data.aws_availability_zones.available.names
 }
