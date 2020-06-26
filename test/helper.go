@@ -63,7 +63,7 @@ spec:
 func configureTerraformOptions(t *testing.T, exampleFolder string, target string, uniqueID string, awsRegion string) *terraform.Options {
 	environment := "test"
 	project := uniqueID
-	keyPairName := fmt.Sprintf("test-%s", uniqueID)
+	keyPairName := fmt.Sprintf("test-%s-k8s", uniqueID)
 
 	ret := &terraform.Options{
 		// The path to where our Terraform code is located

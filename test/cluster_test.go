@@ -50,7 +50,7 @@ func TestKubernetesCluster(t *testing.T) {
 
 		// Create an EC2 KeyPair that we can use for SSH access
 		//keyPair := test_structure.LoadEc2KeyPair(t, exampleFolder)
-		keyPairName := fmt.Sprintf("test-k8s-%s", uniqueID)
+		keyPairName := fmt.Sprintf("test-%s-k8s", uniqueID)
 		keyPair := aws.CreateAndImportEC2KeyPair(t, awsRegion, keyPairName)
 		test_structure.SaveEc2KeyPair(t, exampleFolder, keyPair)
 
