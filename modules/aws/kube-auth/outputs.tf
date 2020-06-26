@@ -1,9 +1,9 @@
 output "systemd_units" {
-  value = module.ignition_aws_iam_authenticator.systemd_units
+  value = module.ignition_aws_iam_auth.systemd_units
 }
 
 output "files" {
-  value = module.ignition_aws_iam_authenticator.files
+  value = module.ignition_aws_iam_auth.files
 }
 
 output "pod_identity_webhook_crt" {

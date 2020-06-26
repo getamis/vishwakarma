@@ -1,8 +1,8 @@
 data "template_file" "kubeconfig" {
-  template = file("${path.module}/resources/kubernetes/webhook/kubeconfig")
+  template = file("${path.module}/resources/kubeconfig")
 
   vars = {
-    webhook_ca          = var.webhook_kubeconfig_ca
+    webhook_ca          = base64encode(var.aws_iam_auth_ca)
     webhook_server_port = var.server_port
   }
 }
