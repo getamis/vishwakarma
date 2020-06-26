@@ -54,14 +54,14 @@ EOF
 
 variable "certs_validity_period_hours" {
   description = <<EOF
-    Validity period of the self-signed certificates (in hours). Default is 3 years.
+    Validity period of the self-signed certificates (in hours). Default is 10 years.
 EOF
   type        = string
 
   // Default is provided only in this case
   // bacause *some* of etcd internal certs are still self-generated and need
   // this variable set
-  default = 26280
+  default = 87600
 }
 
 variable "etcd_config" {
