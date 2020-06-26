@@ -51,7 +51,7 @@ variable "project" {
 variable "name" {
   description = "(Optional) name, used to compose the resource name"
   type        = string
-  default     = "elastikube"
+  default     = "k8s"
 }
 
 variable "service" {
