@@ -3,10 +3,11 @@ resource "aws_security_group" "workers" {
   description = "Security group for all nodes in the cluster."
   vpc_id      = local.vpc_id
 
-  tags = merge(map(
+  tags = merge(var.extra_tags, map(
     "Name", "${var.name}-worker",
     "kubernetes.io/cluster/${var.name}", "owned",
-  ), var.extra_tags)
+    "Role", "k8s-worker"
+  ))
 }
 
 resource "aws_security_group_rule" "workers_egress_internet" {

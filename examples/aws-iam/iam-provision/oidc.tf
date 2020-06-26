@@ -35,9 +35,10 @@ resource "aws_s3_bucket_object" "discovery_json" {
   acl          = "public-read"
   content_type = "application/json"
 
-  tags = merge(map(
-    "Name", "discovery.json"
-  ), var.extra_tags)
+  tags = merge(module.label.tags, map(
+    "Name", "discovery.json",
+    "Role", "k8s-master"
+  ))
 }
 
 data "local_file" "keys_json" {
@@ -53,7 +54,8 @@ resource "aws_s3_bucket_object" "keys_json" {
   content_type = "application/json"
 
 
-  tags = merge(map(
-    "Name", "keys.json"
-  ), var.extra_tags)
+  tags = merge(module.label.tags, map(
+    "Name", "keys.json",
+    "Role", "k8s-master"
+  ))
 }

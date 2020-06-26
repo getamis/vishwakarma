@@ -12,7 +12,7 @@
 | bastion\_key\_name | The AWS EC2 key name for bastion | string | n/a | yes |
 | cidr\_block | The CIDR block for AWS VPC | string | `"10.0.0.0/16"` | no |
 | extra\_tags | Extra AWS tags to be applied to created resources | map | `<map>` | no |
-| phase | Specific which phase service will be hosted | string | `"test"` | no |
+| environment | Specific which environment service will be hosted | string | `"test"` | no |
 | private\_zone | Create a private Route53 host zone | string | `"false"` | no |
 | project | Specific which project service will host | string | `"vishwakarma"` | no |
 

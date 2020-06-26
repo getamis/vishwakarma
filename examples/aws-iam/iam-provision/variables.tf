@@ -38,8 +38,26 @@ variable "pod_identity_webhook_image" {
   default     = "quay.io/amis/pod-identity-webhook:694444b"
 }
 
-variable "extra_tags" {
-  description = "Extra AWS tags to be applied to created resources."
-  type        = map(string)
-  default     = {}
+variable "environment" {
+  description = "(Optional) environment name, used to compose the resource name"
+  type        = string
+  default     = "test"
+}
+
+variable "project" {
+  description = "(Optional) project name, used to compose the resource name"
+  type        = string
+  default     = "getamis"
+}
+
+variable "name" {
+  description = "(Optional) name, used to compose the resource name"
+  type        = string
+  default     = "elastikube"
+}
+
+variable "service" {
+  description = "(Optional) which service provide by this service"
+  type        = string
+  default     = "kubernetes"
 }

@@ -27,20 +27,22 @@ resource "aws_elb" "master_internal" {
     interval            = 5
   }
 
-  tags = merge(map(
+  tags = merge(var.extra_tags, map(
     "Name", "${var.name}-master",
     "kubernetes.io/cluster/${var.name}", "owned",
-  ), var.extra_tags)
+    "Role", "k8s-master"
+  ))
 }
 
 resource "aws_security_group" "master_lb" {
   name_prefix = "${var.name}-master-lb-"
   vpc_id      = data.aws_vpc.master.id
 
-  tags = merge(map(
+  tags = merge(var.extra_tags, map(
     "Name", "${var.name}-master-lb",
     "kubernetes.io/cluster/${var.name}", "owned",
-  ), var.extra_tags)
+    "Role", "k8s-master"
+  ))
 }
 
 resource "aws_security_group_rule" "master_lb_egress" {

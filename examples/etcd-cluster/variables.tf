@@ -15,22 +15,28 @@ variable "key_pair_name" {
   type        = string
 }
 
-variable "project" {
-  description = "(Optional) project name, used to compose the resource name"
-  type        = string
-  default     = "elastikube"
-}
-
-variable "phase" {
-  description = "(Optional) phase name, used to compose the resource name"
+variable "environment" {
+  description = "(Optional) environment name, used to compose the resource name"
   type        = string
   default     = "test"
 }
 
-variable "extra_tags" {
-  description = "Extra AWS tags to be applied to created resources."
-  type        = map(string)
-  default     = {}
+variable "project" {
+  description = "(Optional) project name, used to compose the resource name"
+  type        = string
+  default     = "getamis"
+}
+
+variable "name" {
+  description = "(Optional) name, used to compose the resource name"
+  type        = string
+  default     = "etcd"
+}
+
+variable "service" {
+  description = "(Optional) which service provide by this service"
+  type        = string
+  default     = "etcd"
 }
 
 variable "hostzone" {

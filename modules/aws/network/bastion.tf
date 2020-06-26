@@ -1,11 +1,10 @@
 resource "aws_security_group" "bastion" {
   vpc_id = aws_vpc.new_vpc.id
 
-  tags = merge(map(
-    "Name", "${var.phase}-${var.project}-bastion",
-    "Phase", var.phase,
-    "Project", var.project
-  ), var.extra_tags)
+  tags = merge(var.extra_tags, map(
+    "Name", "${var.name}-bastion",
+    "Role", "bastion"
+  ))
 }
 
 resource "aws_security_group_rule" "bastion_egress" {
@@ -55,9 +54,8 @@ resource "aws_instance" "bastion" {
     aws_security_group.bastion.id,
   ]
 
-  tags = merge(map(
-    "Name", "${var.phase}-${var.project}-bastion",
-    "Phase", var.phase,
-    "Project", var.project
-  ), var.extra_tags)
+  tags = merge(var.extra_tags, map(
+    "Name", "${var.name}-bastion",
+    "Role", "bastion"
+  ), )
 }

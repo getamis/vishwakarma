@@ -28,10 +28,11 @@ resource "aws_network_interface" "etcd" {
   ))
   source_dest_check = false
 
-  tags = merge(map(
+  tags = merge(var.extra_tags, map(
     "Name", "${var.name}-etcd-${count.index}",
     "kubernetes.io/cluster/${var.name}", "owned",
-  ), var.extra_tags)
+    "Role", "etcd"
+  ))
 }
 
 resource "aws_ebs_volume" "etcd" {
@@ -39,10 +40,11 @@ resource "aws_ebs_volume" "etcd" {
   availability_zone = data.aws_subnet.etcd[count.index].availability_zone
   size              = var.etcd_config["data_volume_size"]
 
-  tags = merge(map(
+  tags = merge(var.extra_tags, map(
     "Name", "${var.name}-etcd-${count.index}",
     "kubernetes.io/cluster/${var.name}", "owned",
-  ), var.extra_tags)
+    "Role", "ectd"
+  ))
 }
 
 resource "aws_volume_attachment" "etcd" {
@@ -71,15 +73,17 @@ resource "aws_instance" "etcd" {
     volume_size = var.etcd_config["root_volume_size"]
   }
 
-  volume_tags = merge(map(
+  volume_tags = merge(var.extra_tags, map(
     "Name", "${var.name}-etcd-root-${count.index}",
     "kubernetes.io/cluster/${var.name}", "owned",
-  ), var.extra_tags)
+    "Role", "etcd"
+  ))
 
-  tags = merge(map(
+  tags = merge(var.extra_tags, map(
     "Name", "${var.name}-etcd-${count.index}",
     "kubernetes.io/cluster/${var.name}", "owned",
-  ), var.extra_tags)
+    "Role", "etcd"
+  ))
 
   lifecycle {
     # Ignore changes in the AMI which force recreation of the resource. This

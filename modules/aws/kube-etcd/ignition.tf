@@ -64,11 +64,11 @@ resource "aws_s3_bucket_object" "ignition" {
 
   server_side_encryption = "AES256"
 
-  tags = merge(map(
+  tags = merge(var.extra_tags, map(
     "Name", "ign-etcd-${var.name}.json",
-    "Role", "etcd",
     "kubernetes.io/cluster/${var.name}", "owned",
-  ), var.extra_tags)
+    "Role", "etcd"
+  ))
 }
 
 data "ignition_config" "s3" {

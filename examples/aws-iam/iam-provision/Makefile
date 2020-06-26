@@ -39,7 +39,6 @@ clean-k8s:
 	@kubectl get csr -o jsonpath='{.items[?(@.spec.username=="system:serviceaccount:kube-system:pod-identity-webhook")].metadata.name}' | xargs kubectl delete csr
 	@kubectl delete -f deploy/kubernetes/irsa.yaml
 	@kubectl delete secrets ${POD_IDENTITY_SECRET_NAME} --namespace ${POD_IDENTITY_SERVICE_NAMESPACE}
-	@kubectl delete -f deploy/kubernetes/iam-admin.yaml
 	@kubectl delete -f deploy/kubernetes/iam-auth.yaml
 
 .PHONY: clean-terraform

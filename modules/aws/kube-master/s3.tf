@@ -7,8 +7,9 @@ resource "aws_s3_bucket_object" "kubeconfig" {
   server_side_encryption = "AES256"
   content_type           = "text/plain"
 
-  tags = merge(map(
+  tags = merge(var.extra_tags, map(
     "Name", "kubeconfig",
     "kubernetes.io/cluster/${var.name}", "owned",
-  ), var.extra_tags)
+    "Role", "k8s-master"
+  ))
 }

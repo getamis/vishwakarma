@@ -2,12 +2,10 @@ resource "aws_route_table" "private_routes" {
   count  = length(local.aws_azs)
   vpc_id = aws_vpc.new_vpc.id
 
-  tags = merge(map(
-    "Name", "${var.phase}-${var.project}-private-${local.aws_azs[count.index]}",
-    "Phase", var.phase,
-    "Project", var.project,
-    "kubernetes.io/cluster/${var.phase}-${var.project}", "shared"
-  ), var.extra_tags)
+  tags = merge(var.extra_tags, map(
+    "Name", "${var.name}-private-${local.aws_azs[count.index]}",
+    "Role", "network"
+  ))
 }
 
 resource "aws_route" "to_nat_gw" {
@@ -24,12 +22,10 @@ resource "aws_subnet" "private_subnet" {
   cidr_block        = cidrsubnet(aws_vpc.new_vpc.cidr_block, 4, count.index + length(local.aws_azs))
   availability_zone = local.aws_azs[count.index]
 
-  tags = merge(map(
-    "Name", "${var.phase}-${var.project}-private-${local.aws_azs[count.index]}",
-    "Phase", var.phase,
-    "Project", var.project,
-    "kubernetes.io/cluster/${var.phase}-${var.project}", "shared"
-  ), var.extra_tags)
+  tags = merge(var.extra_tags, map(
+    "Name", "${var.name}-private-${local.aws_azs[count.index]}",
+    "Role", "network"
+  ), )
 }
 
 resource "aws_route_table_association" "private_routing" {

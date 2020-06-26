@@ -42,25 +42,31 @@ variable "network_plugin" {
   default     = "amazon-vpc"
 }
 
+variable "environment" {
+  description = "(Optional) environment name, used to compose the resource name"
+  type        = string
+  default     = "test"
+}
+
 variable "project" {
   description = "(Optional) project name, used to compose the resource name"
+  type        = string
+  default     = "getamis"
+}
+
+variable "name" {
+  description = "(Optional) name, used to compose the resource name"
   type        = string
   default     = "elastikube"
 }
 
-variable "phase" {
-  description = "(Optional) phase name, used to compose the resource name"
+variable "service" {
+  description = "(Optional) which service provide by this service"
   type        = string
-  default     = "test"
+  default     = "kubernetes"
 }
 
 variable "endpoint_public_access" {
   description = "(Optional) kubernetes apiserver endpoint"
   default     = false
-}
-
-variable "extra_tags" {
-  description = "Extra AWS tags to be applied to created resources."
-  type        = map(string)
-  default     = {}
 }

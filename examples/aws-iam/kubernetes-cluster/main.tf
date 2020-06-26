@@ -1,5 +1,13 @@
-locals {
-  cluster_name = "${var.phase}-${var.project}"
+# ---------------------------------------------------------------------------------------------------------------------
+# Naming and Tags
+# ---------------------------------------------------------------------------------------------------------------------
+
+module "label" {
+  source      = "../../../modules/aws/null-label"
+  environment = var.environment
+  project     = var.project
+  name        = var.name
+  service     = var.service
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -9,9 +17,8 @@ locals {
 module "network" {
   source           = "../../../modules/aws/network"
   bastion_key_name = var.key_pair_name
-  project          = var.project
-  phase            = var.phase
-  extra_tags       = var.extra_tags
+  name             = module.label.id
+  extra_tags       = module.label.tags
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -21,7 +28,7 @@ module "network" {
 module "master" {
   source = "../../../modules/aws/elastikube"
 
-  name         = local.cluster_name
+  name         = module.label.id
   service_cidr = var.service_cidr
   cluster_cidr = var.cluster_cidr
 
@@ -59,10 +66,7 @@ module "master" {
   ssh_key                = var.key_pair_name
   reboot_strategy        = "off"
   
-  extra_tags = merge(map(
-    "Phase", var.phase,
-    "Project", var.project,
-  ), var.extra_tags)
+  extra_tags = module.label.tags
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -72,7 +76,7 @@ module "master" {
 module "worker_spot" {
   source = "../../../modules/aws/kube-worker"
 
-  cluster_name      = local.cluster_name
+  cluster_name      = module.label.id
   kube_service_cidr = var.service_cidr
 
   security_group_ids = module.master.worker_sg_ids
@@ -95,8 +99,5 @@ module "worker_spot" {
   s3_bucket = module.master.ignition_s3_bucket
   ssh_key   = var.key_pair_name
 
-  extra_tags = merge(map(
-    "Phase", var.phase,
-    "Project", var.project,
-  ), var.extra_tags)
+  extra_tags = module.label.tags
 }

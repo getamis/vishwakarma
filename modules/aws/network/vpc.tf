@@ -3,12 +3,10 @@ resource "aws_vpc" "new_vpc" {
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  tags = merge(map(
-    "Name", "${var.phase}-${var.project}",
-    "Phase", var.phase,
-    "Project", var.project,
-    "kubernetes.io/cluster/${var.phase}-${var.project}", "shared"
-  ), var.extra_tags)
+  tags = merge(var.extra_tags, map(
+    "Name", "${var.name}",
+    "Role", "network"
+  ))
 }
 
 data "aws_availability_zones" "azs" {}
