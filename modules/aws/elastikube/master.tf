@@ -9,6 +9,9 @@ module "master" {
   source = "../../aws/kube-master"
 
   name                = var.name
+  enable_auth         = var.enable_auth
+  enable_irsa         = var.enable_irsa
+  enable_audit        = var.enable_audit
   ssh_key             = var.ssh_key
   master_config       = var.master_config
   role_name           = var.role_name
@@ -52,6 +55,8 @@ module "master" {
     module.ignition_addon_coredns.files,
     module.ignition_addon_proxy.files,
     local.network_plugin_files[var.network_plugin],
+    module.kube_auth.files,
+    module.ignition_kube_audit.files,
     var.extra_ignition_file_ids
   ))
 
@@ -59,15 +64,18 @@ module "master" {
     module.ignition_addon_manager.systemd_units,
     module.ignition_addon_coredns.systemd_units,
     module.ignition_addon_proxy.systemd_units,
+    module.kube_auth.systemd_units,
+    module.ignition_kube_audit.systemd_units,
     var.extra_ignition_systemd_unit_ids
   ))
 
   kubelet_flag_extra_flags = var.kubelet_flag_extra_flags
 
-  extra_tags = var.extra_tags
+  oidc_api_audiences     = var.oidc_api_audiences
+  oidc_issuer            = module.kube_auth.oidc_issuer
 
-  auth_webhook_path = var.auth_webhook_path
-  audit_policy_path = var.audit_policy_path
-  audit_log_backend = var.audit_log_backend
-  oidc_issuer_confg = var.oidc_issuer_confg
+  audit_log_backend        = var.audit_log_backend
+  audit_policy_path        = var.audit_policy_path
+
+  extra_tags = var.extra_tags
 }

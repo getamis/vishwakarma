@@ -4,33 +4,33 @@ variable "aws_region" {
   default     = "us-west-2"
 }
 
-variable "aws_az_number" {
-  description = "How many AZs want to be used"
-  type        = string
-  default     = "3"
-}
-
 variable "key_pair_name" {
   description = "The ssh key name for all instance, e.g. bastion, master, etcd, worker"
   type        = string
 }
 
-variable "project" {
-  description = "(Optional) project name, used to compose the resource name"
-  type        = string
-  default     = "elastikube"
-}
-
-variable "phase" {
-  description = "(Optional) phase name, used to compose the resource name"
+variable "environment" {
+  description = "(Optional) environment name, used to compose the resource name"
   type        = string
   default     = "test"
 }
 
-variable "extra_tags" {
-  description = "Extra AWS tags to be applied to created resources."
-  type        = map(string)
-  default     = {}
+variable "project" {
+  description = "(Optional) project name, used to compose the resource name"
+  type        = string
+  default     = "getamis"
+}
+
+variable "name" {
+  description = "(Optional) name, used to compose the resource name"
+  type        = string
+  default     = "etcd"
+}
+
+variable "service" {
+  description = "(Optional) which service provide by this service"
+  type        = string
+  default     = "etcd"
 }
 
 variable "hostzone" {
@@ -47,14 +47,14 @@ variable "reboot_strategy" {
 
 variable "certs_validity_period_hours" {
   description = <<EOF
-    Validity period of the self-signed certificates (in hours). Default is 3 years.
+    Validity period of the self-signed certificates (in hours). Default is 10 years.
 EOF
   type        = string
 
   // Default is provided only in this case
   // bacause *some* of etcd internal certs are still self-generated and need
   // this variable set
-  default = 26280
+  default = 87600
 }
 
 

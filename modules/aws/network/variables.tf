@@ -1,25 +1,12 @@
-variable "aws_az_number" {
-  description = "How many AZs want to be used"
-  type        = string
-  default     = "3"
-}
-
 variable "cidr_block" {
   description = "The CIDR block for AWS VPC"
   type        = string
   default     = "10.0.0.0/16"
 }
 
-variable "phase" {
-  description = "Specific which phase service will be hosted"
+variable "name" {
+  description = "(Optional) name, used to compose the resource name"
   type        = string
-  default     = "test"
-}
-
-variable "project" {
-  description = "Specific which project service will host"
-  type        = string
-  default     = "vishwakarma"
 }
 
 variable "bastion_ami_id" {

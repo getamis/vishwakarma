@@ -18,21 +18,22 @@ resource "aws_route53_zone" "private" {
     vpc_id = local.vpc_id
   }
 
-  tags = merge(map(
+  tags = merge(module.label.tags, map(
     "Name", local.private_zone_name,
-    "kubernetes.io/cluster/${local.cluster_name}", "shared"
-  ), var.extra_tags)
+    "Role", "etcd"
+  ))
 }
 
 
 
 resource "aws_security_group" "etcd" {
-  name_prefix = "${local.cluster_name}-etcd-"
+  name_prefix = "${module.label.id}-etcd-"
   vpc_id      = data.aws_vpc.etcd.id
 
-  tags = merge(map(
-    "Name", "${local.cluster_name}-etcd",
-  ), var.extra_tags)
+  tags = merge(module.label.tags, map(
+    "Name", "${module.label.id}-etcd",
+    "Role", "etcd"
+  ))
 }
 
 locals {

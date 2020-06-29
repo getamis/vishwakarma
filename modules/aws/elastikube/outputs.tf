@@ -23,9 +23,14 @@ output "vpc_id" {
   description = "The VPC id used by K8S"
 }
 
-output "s3_bucket" {
+output "ignition_s3_bucket" {
   value       = aws_s3_bucket.ignition.id
   description = "The S3 bucket for storing provision ignition file"
+}
+
+output "oidc_s3_bucket" {
+  value       = module.kube_auth.oidc_s3_bucket
+  description = "The S3 bucket for storing oidc data"
 }
 
 output "master_sg_ids" {
@@ -36,10 +41,6 @@ output "master_sg_ids" {
 output "worker_sg_ids" {
   value       = [aws_security_group.workers.id]
   description = "The security gruop for worker group"
-}
-
-output oidc_issuer_pubkey {
-  value = module.master.oidc_issuer_pubkey
 }
 
 output "master_role_name" {

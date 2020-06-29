@@ -50,6 +50,10 @@ variable "data_path" {
   default = "/var/lib/etcd"
 }
 
+variable "device_name" {
+  type = string
+}
+
 variable "container" {
   type = map(string)
 

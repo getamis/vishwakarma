@@ -1,3 +1,18 @@
+variable "enable_auth" {
+  description = "(Optional) Enable AWS authenticator or not"
+  type        = bool
+}
+
+variable "enable_irsa" {
+  description = "(Optional) Enable AWS IAM role service account or not"
+  type        = bool
+}
+
+variable "enable_audit" {
+  description = "(Optional) Enable Kubernetes master audit function or not"
+  type        = bool
+} 
+
 variable "manifest_path" {
   description = "(Optional) Path to the directory containing static manifests"
   type        = string
@@ -23,6 +38,8 @@ variable "kube_certs" {
     # ca_cert_pem        = ""
     # apiserver_key_pem  = ""
     # apiserver_cert_pem = ""
+    # controller_manager_key_pem = ""
+    # controller_manager_cert_pem = ""
   }
 }
 
@@ -49,10 +66,10 @@ variable "etcd_config" {
 variable "apiserver_config" {
   type = map(string)
   default = {
-    anonymous_auth    = false
-    advertise_address = "0.0.0.0"
-    auth_webhook_path = ""
-    audit_policy_path = ""
+    anonymous_auth          = false
+    advertise_address       = "0.0.0.0"
+    webhook_kubeconfig_path = ""
+    audit_policy_path       = ""
   }
 }
 
@@ -67,10 +84,6 @@ variable "oidc_issuer_confg" {
     issuer        = string
     api_audiences = string
   })
-  default = {
-    issuer        = ""
-    api_audiences = ""
-  }
 }
 
 variable "cloud_provider" {

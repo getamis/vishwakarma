@@ -19,6 +19,8 @@ spec:
     - --kubeconfig=/etc/kubernetes/kubeconfig
     - --root-ca-file=${secret_path}/ca.crt
     - --service-account-private-key-file=${secret_path}/service-account.key
+    - --cluster-signing-cert-file=${secret_path}/controller-manager.crt
+    - --cluster-signing-key-file=${secret_path}/controller-manager.key
     - --leader-elect=true
     - --node-monitor-grace-period=${node_monitor_grace_period}
     - --pod-eviction-timeout=${pod_eviction_timeout}

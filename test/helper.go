@@ -60,10 +60,10 @@ spec:
   type: ClusterIP
 `
 
-func configureTerraformOptions(t *testing.T, exampleFolder string, target string, uniqueID string, awsRegion string, azNumber int) *terraform.Options {
-	phase := "test"
-	project := fmt.Sprintf("k8s-%s", uniqueID)
-	keyPairName := fmt.Sprintf("test-k8s-%s", uniqueID)
+func configureTerraformOptions(t *testing.T, exampleFolder string, target string, uniqueID string, awsRegion string) *terraform.Options {
+	environment := "test"
+	project := uniqueID
+	keyPairName := fmt.Sprintf("test-%s-k8s", uniqueID)
 
 	ret := &terraform.Options{
 		// The path to where our Terraform code is located
@@ -72,11 +72,10 @@ func configureTerraformOptions(t *testing.T, exampleFolder string, target string
 		// Variables to pass to our Terraform code using -var options
 		Vars: map[string]interface{}{
 			"aws_region":             awsRegion,
-			"phase":                  phase,
+			"environment":            environment,
 			"project":                project,
 			"key_pair_name":          keyPairName,
 			"endpoint_public_access": "true",
-			"aws_az_number":          azNumber,
 		},
 	}
 

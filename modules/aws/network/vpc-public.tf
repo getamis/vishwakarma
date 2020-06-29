@@ -1,22 +1,19 @@
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.new_vpc.id
 
-  tags = merge(map(
-    "Name", "${var.phase}-${var.project}-igw",
-    "Phase", var.phase,
-    "Project", var.project,
-    "kubernetes.io/cluster/${var.phase}-${var.project}", "shared"
-  ), var.extra_tags)
+  tags = merge(var.extra_tags, map(
+    "Name", "${var.name}-igw",
+    "Role", "network"
+  ))
 }
 
 resource "aws_route_table" "default" {
   vpc_id = aws_vpc.new_vpc.id
 
-  tags = merge(map(
-    "Name", "${var.phase}-${var.project}-public",
-    "Phase", var.phase,
-    "Project", var.project
-  ), var.extra_tags)
+  tags = merge(var.extra_tags, map(
+    "Name", "${var.name}-public",
+    "Role", "network"
+  ))
 }
 
 resource "aws_main_route_table_association" "main_vpc_routes" {
@@ -36,12 +33,10 @@ resource "aws_subnet" "public_subnet" {
   cidr_block        = cidrsubnet(aws_vpc.new_vpc.cidr_block, 4, count.index)
   availability_zone = local.aws_azs[count.index]
 
-  tags = merge(map(
-    "Name", "${var.phase}-${var.project}-public-${local.aws_azs[count.index]}",
-    "Phase", var.phase,
-    "Project", var.project,
-    "kubernetes.io/cluster/${var.phase}-${var.project}", "shared"
-  ), var.extra_tags)
+  tags = merge(var.extra_tags, map(
+    "Name", "${var.name}-public-${local.aws_azs[count.index]}",
+    "Role", "network"
+  ))
 }
 
 resource "aws_route_table_association" "route_net" {

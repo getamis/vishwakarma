@@ -12,14 +12,14 @@ variable "auth_webhook_path" {
 
 variable "certs_validity_period_hours" {
   description = <<EOF
-    Validity period of the self-signed certificates (in hours). Default is 3 years.
+    Validity period of the self-signed certificates (in hours). Default is 10 years.
 EOF
   type        = string
 
   // Default is provided only in this case
   // bacause *some* of etcd internal certs are still self-generated and need
   // this variable set
-  default = 26280
+  default = 87600
 }
 
 variable "cluster_cidr" {
@@ -33,16 +33,28 @@ variable "key_pair_name" {
   type        = string
 }
 
+variable "environment" {
+  description = "(Optional) environment name, used to compose the resource name"
+  type        = string
+  default     = "test"
+}
+
 variable "project" {
   description = "(Optional) project name, used to compose the resource name"
+  type        = string
+  default     = "getamis"
+}
+
+variable "name" {
+  description = "(Optional) name, used to compose the resource name"
   type        = string
   default     = "elastikube"
 }
 
-variable "phase" {
-  description = "(Optional) phase name, used to compose the resource name"
+variable "service" {
+  description = "(Optional) which service provide by this service"
   type        = string
-  default     = "test"
+  default     = "kubernetes"
 }
 
 variable "endpoint_public_access" {
@@ -55,24 +67,6 @@ variable "extra_tags" {
   description = "Extra AWS tags to be applied to created resources."
   type        = map(string)
   default     = {}
-}
-
-variable "pod_identity_webhook_service_name" {
-  description = "The Pod identity service name"
-  type        = string
-  default     = "pod-identity-webhook"
-}
-
-variable "pod_identity_webhook_service_namespace" {
-  description = "The Pod identity service namespace"
-  type        = string
-  default     = "kube-system"
-}
-
-variable "oidc_api_audiences" {
-  description = "the OIDC authenticator pre-introduction of API audiences"
-  type        = string
-  default     = "sts.amazonaws.com"
 }
 
 variable "service_cidr" {

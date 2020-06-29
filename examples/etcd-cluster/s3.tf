@@ -1,11 +1,11 @@
 resource "aws_s3_bucket" "ignition" {
-  bucket = "${local.cluster_name}-${md5(aws_route53_zone.private.zone_id)}"
+  bucket = "${module.label.id}-${md5(aws_route53_zone.private.zone_id)}"
   acl    = "private"
 
-  tags = merge(map(
-    "Name", "${local.cluster_name}-${md5(aws_route53_zone.private.zone_id)}",
-    "kubernetes.io/cluster/${local.cluster_name}", "owned",
-  ), var.extra_tags)
+  tags = merge(module.label.tags, map(
+    "Name", "${module.label.id}-${md5(aws_route53_zone.private.zone_id)}",
+    "Role", "etcd"
+  ))
 }
 
 resource "aws_s3_bucket_public_access_block" "ignition" {

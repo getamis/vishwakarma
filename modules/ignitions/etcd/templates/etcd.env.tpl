@@ -20,6 +20,5 @@ ETCD_LISTEN_CLIENT_URLS=${scheme}://0.0.0.0:${client_port}
 ETCD_LISTEN_PEER_URLS=${scheme}://0.0.0.0:${peer_port}
 ETCD_DATA_DIR=${data_path}
 ETCD_DISCOVERY_SRV=${discovery_service}
-ETCD_INITIAL_CLUSTER_STATE=new
 ETCD_INITIAL_CLUSTER_TOKEN=${cluster_name}
 ETCD_LOGGER=zap

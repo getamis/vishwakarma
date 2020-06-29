@@ -54,25 +54,27 @@ EOF
 
 variable "certs_validity_period_hours" {
   description = <<EOF
-    Validity period of the self-signed certificates (in hours). Default is 3 years.
+    Validity period of the self-signed certificates (in hours). Default is 10 years.
 EOF
   type        = string
 
   // Default is provided only in this case
   // bacause *some* of etcd internal certs are still self-generated and need
   // this variable set
-  default = 26280
+  default = 87600
 }
 
 variable "etcd_config" {
   description = "(Optional) Desired etcd nodes configuration."
   type        = map(string)
   default = {
-    instance_count   = "1"
-    ec2_type         = "t3.medium"
-    root_volume_iops = "100"
-    root_volume_size = "100"
-    root_volume_type = "gp2"
+    instance_count     = "1"
+    ec2_type           = "t3.medium"
+    root_volume_size   = "40"
+    data_volume_size   = "100"
+    data_device_name   = "/dev/sdf"
+    data_device_rename = "/dev/nvme1n1"
+    data_path          = "/etcd/data"
   }
 }
 

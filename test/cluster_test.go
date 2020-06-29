@@ -23,14 +23,13 @@ func TestKubernetesCluster(t *testing.T) {
 	// uniqueID := "rn2ws0"
 	uniqueID := strings.ToLower(random.UniqueId())
 	awsRegion := "us-west-1"
-	azNumber := 2
 
 	// Preapre all terraform options
-	terraformOptionsNetwork := configureTerraformOptions(t, exampleFolder, "module.network", uniqueID, awsRegion, azNumber)
-	terraformOptionsKubernetes := configureTerraformOptions(t, exampleFolder, "module.master", uniqueID, awsRegion, azNumber)
-	terraformOptionsWorkerSpot := configureTerraformOptions(t, exampleFolder, "module.worker_spot", uniqueID, awsRegion, azNumber)
-	terraformOptionsWorkerOnDemand := configureTerraformOptions(t, exampleFolder, "module.worker_on_demand", uniqueID, awsRegion, azNumber)
-	terraformOptionsAll := configureTerraformOptions(t, exampleFolder, "", uniqueID, awsRegion, azNumber)
+	terraformOptionsNetwork := configureTerraformOptions(t, exampleFolder, "module.network", uniqueID, awsRegion)
+	terraformOptionsKubernetes := configureTerraformOptions(t, exampleFolder, "module.master", uniqueID, awsRegion)
+	terraformOptionsWorkerSpot := configureTerraformOptions(t, exampleFolder, "module.worker_spot", uniqueID, awsRegion)
+	terraformOptionsWorkerOnDemand := configureTerraformOptions(t, exampleFolder, "module.worker_on_demand", uniqueID, awsRegion)
+	terraformOptionsAll := configureTerraformOptions(t, exampleFolder, "", uniqueID, awsRegion)
 	test_structure.SaveTerraformOptions(t, exampleFolder, terraformOptionsAll)
 
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created
@@ -51,7 +50,7 @@ func TestKubernetesCluster(t *testing.T) {
 
 		// Create an EC2 KeyPair that we can use for SSH access
 		//keyPair := test_structure.LoadEc2KeyPair(t, exampleFolder)
-		keyPairName := fmt.Sprintf("test-k8s-%s", uniqueID)
+		keyPairName := fmt.Sprintf("test-%s-k8s", uniqueID)
 		keyPair := aws.CreateAndImportEC2KeyPair(t, awsRegion, keyPairName)
 		test_structure.SaveEc2KeyPair(t, exampleFolder, keyPair)
 

@@ -31,15 +31,15 @@ spec:
     - --kubelet-client-certificate=${secret_path}/apiserver.crt
     - --kubelet-client-key=${secret_path}/apiserver.key
     - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
-    - --service-account-key-file=${secret_path}/service-account.pub
     - --client-ca-file=${secret_path}/ca.crt
     - --authorization-mode=RBAC
     - --anonymous-auth=${anonymous_auth}
     - --cloud-provider=${cloud_provider}
     ${cloud_provider_config_flag}
     ${auth_webhook_flag}
-    ${audit_policy_flag}
+    - --service-account-key-file=${secret_path}/service-account.pub
     ${service_account_flag}
+    ${audit_policy_flag}
     volumeMounts:
     - mountPath: /etc/ssl/certs
       name: ssl-certs-host

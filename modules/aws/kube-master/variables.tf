@@ -3,6 +3,21 @@ variable "name" {
   type        = string
 }
 
+variable "enable_auth" {
+  description = "(Optional) Enable AWS authenticator or not"
+  type        = bool
+}
+
+variable "enable_irsa" {
+  description = "(Optional) Enable AWS IAM role service account or not"
+  type        = bool
+}
+
+variable "enable_audit" {
+  description = "(Optional) Enable Kubernetes master audit function or not"
+  type        = bool
+}
+
 variable "role_name" {
   description = "(Optional) The Amazon Resource Name of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
   type        = string
@@ -110,14 +125,14 @@ variable "etcd_certs_config" {
 
 variable "certs_validity_period_hours" {
   description = <<EOF
-    Validity period of the self-signed certificates (in hours). Default is 3 years.
+    Validity period of the self-signed certificates (in hours). Default is 10 years.
 EOF
   type        = string
 
   // Default is provided only in this case
   // bacause *some* of etcd internal certs are still self-generated and need
   // this variable set
-  default = 26280
+  default = 87600
 }
 
 variable "kube_service_cidr" {
@@ -146,11 +161,9 @@ EOF
 
 variable "s3_bucket" {
   description = <<EOF
-    (Optional) Unique name under which the Amazon S3 bucket will be created. Bucket name must start with a lower case name and is limited to 63 characters.
-    If name is not provided the installer will construct the name using "name" and current AWS region.
+    Unique name under which the Amazon S3 bucket will be created. Bucket name must start with a lower case name and is limited to 63 characters.
 EOF
   type        = string
-  default     = ""
 }
 
 variable "reboot_strategy" {
@@ -182,16 +195,15 @@ variable "extra_tags" {
   default     = {}
 }
 
-variable "auth_webhook_path" {
+variable "webhook_kubeconfig_path" {
   description = "(Optional) A path for using customized machine to authenticate to a Kubernetes cluster."
   type        = string
-  default     = ""
+  default     = "/etc/kubernetes/aws-iam-authenticator"
 }
 
 variable "audit_policy_path" {
-  description = "(Optional) A policy path for Kubernetes apiserver to enable auditing log."
+  description = "A policy path for Kubernetes apiserver to enable auditing log."
   type        = string
-  default     = ""
 }
 
 variable "audit_log_backend" {
@@ -204,14 +216,13 @@ EOF
 
 }
 
-variable "oidc_issuer_confg" {
-  description = "The service account config to enable pod identity feature"
-  type = object({
-    issuer        = string
-    api_audiences = string
-  })
-  default = {
-    issuer        = ""
-    api_audiences = ""
-  }
+variable "oidc_api_audiences" {
+  description = "The OIDC authenticator pre-introduction of API audiences"
+  type        = string
+}
+
+variable "oidc_issuer" {
+  description = "The OIDC issuer endpoint"
+  type        = string
+  default     = ""
 }

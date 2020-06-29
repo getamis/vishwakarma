@@ -4,12 +4,6 @@ variable "aws_region" {
   default     = "us-west-2"
 }
 
-variable "aws_az_number" {
-  description = "How many AZs want to be used"
-  type        = string
-  default     = "3"
-}
-
 variable "service_cidr" {
   description = "(Optional) The Kubernetes service CIDR."
   type        = string
@@ -32,7 +26,7 @@ variable "hyperkube_container" {
   type        = map(string)
   default = {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
-    image_tag  = "v1.15.11"
+    image_tag  = "v1.15.12"
   }
 }
 
@@ -42,25 +36,31 @@ variable "network_plugin" {
   default     = "amazon-vpc"
 }
 
+variable "environment" {
+  description = "(Optional) environment name, used to compose the resource name"
+  type        = string
+  default     = "test"
+}
+
 variable "project" {
   description = "(Optional) project name, used to compose the resource name"
   type        = string
-  default     = "elastikube"
+  default     = "getamis"
 }
 
-variable "phase" {
-  description = "(Optional) phase name, used to compose the resource name"
+variable "name" {
+  description = "(Optional) name, used to compose the resource name"
   type        = string
-  default     = "test"
+  default     = "k8s"
+}
+
+variable "service" {
+  description = "(Optional) which service provide by this service"
+  type        = string
+  default     = "kubernetes"
 }
 
 variable "endpoint_public_access" {
   description = "(Optional) kubernetes apiserver endpoint"
   default     = false
-}
-
-variable "extra_tags" {
-  description = "Extra AWS tags to be applied to created resources."
-  type        = map(string)
-  default     = {}
 }

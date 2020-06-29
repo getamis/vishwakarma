@@ -37,6 +37,30 @@ module "ignition_addon_proxy" {
 
   cluster_cidr = var.cluster_cidr
   hyperkube    = var.hyperkube_container
-
 }
 
+# ---------------------------------------------------------------------------------------------------------------------
+# Kube auth addon
+# ---------------------------------------------------------------------------------------------------------------------
+
+module "kube_auth" {
+  source = "../kube-auth"
+
+  name                   = var.name
+  ignition_s3_bucket     = aws_s3_bucket.ignition.id
+  oidc_s3_bucket         = "${var.name}-${md5("${aws_route53_zone.private.zone_id}-oidc")}"
+  oidc_issuer_pubkey     = module.master.service_account_pubkey
+  webhook_kubeconfig_ca  = module.master.certificate_authority
+  extra_tags = var.extra_tags
+}
+
+# ---------------------------------------------------------------------------------------------------------------------
+# Kube audit addon
+# ---------------------------------------------------------------------------------------------------------------------
+
+module "ignition_kube_audit" {
+  source = "../../ignitions/kube-audit"
+
+  audit_policy_path = var.audit_policy_path
+  audit_policy      = var.audit_policy
+}

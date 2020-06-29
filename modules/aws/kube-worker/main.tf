@@ -51,7 +51,7 @@ resource "aws_autoscaling_group" "worker" {
     }
   }
 
-  tags = concat([
+  tags = concat(data.null_data_source.tags.*.outputs, [
     {
       key                 = "Name"
       value               = "${var.cluster_name}-worker-${var.worker_config["name"]}"
@@ -63,11 +63,16 @@ resource "aws_autoscaling_group" "worker" {
       propagate_at_launch = true
     },
     {
+      key                 = "Role"
+      value               = "k8s-worker"
+      propagate_at_launch = true
+    },
+    {
       key                 = "k8s.io/cluster-autoscaler/enabled"
       value               = "${var.enable_autoscaler}"
       propagate_at_launch = true
     }
-  ], data.null_data_source.tags.*.outputs)
+  ])
 }
 
 module "latest_os_ami" {

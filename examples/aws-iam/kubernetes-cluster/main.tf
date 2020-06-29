@@ -1,38 +1,49 @@
-locals {
-  cluster_name = "${var.phase}-${var.project}"
+# ---------------------------------------------------------------------------------------------------------------------
+# Naming and Tags
+# ---------------------------------------------------------------------------------------------------------------------
+
+module "label" {
+  source      = "../../../modules/aws/null-label"
+  environment = var.environment
+  project     = var.project
+  name        = var.name
+  service     = var.service
 }
-
-
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Network
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "network" {
-  source           = "../../modules/aws/network"
+  source           = "../../../modules/aws/network"
   bastion_key_name = var.key_pair_name
-  project          = var.project
-  phase            = var.phase
-  extra_tags       = var.extra_tags
+  name             = module.label.id
+  extra_tags       = module.label.tags
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
 # ElastiKube
 # ---------------------------------------------------------------------------------------------------------------------
 
-module "kubernetes" {
-  source = "../../modules/aws/elastikube"
+module "master" {
+  source = "../../../modules/aws/elastikube"
 
-  name         = local.cluster_name
+  name         = module.label.id
   service_cidr = var.service_cidr
   cluster_cidr = var.cluster_cidr
 
+  enable_auth  = true
+  enable_irsa  = true
+  enable_audit = true
+
   etcd_config = {
-    instance_count   = "1"
-    ec2_type         = "t3.medium"
-    root_volume_iops = "0"
-    root_volume_size = "100"
-    root_volume_type = "gp2"
+    instance_count     = "1"
+    ec2_type           = "t3.medium"
+    root_volume_size   = "40"
+    data_volume_size   = "100"
+    data_device_name   = "/dev/sdf"
+    data_device_rename = "/dev/nvme1n1"
+    data_path          = "/etcd/data"
   }
 
   master_config = {
@@ -48,27 +59,14 @@ module "kubernetes" {
     spot_instance_pools                      = 1
   }
 
-  oidc_issuer_confg = {
-    issuer        = "https://s3-${var.aws_region}.amazonaws.com/${aws_s3_bucket.oidc.id}"
-    api_audiences = var.oidc_api_audiences
-  }
-
-  extra_ignition_file_ids         = "${module.ignition_aws_iam_authenticator.files}"
-  extra_ignition_systemd_unit_ids = "${module.ignition_aws_iam_authenticator.systemd_units}"
-
   hostzone               = "${var.project}.cluster"
   endpoint_public_access = var.endpoint_public_access
   private_subnet_ids     = module.network.private_subnet_ids
   public_subnet_ids      = module.network.public_subnet_ids
   ssh_key                = var.key_pair_name
   reboot_strategy        = "off"
-  auth_webhook_path      = var.auth_webhook_path
-
-
-  extra_tags = merge(map(
-    "Phase", var.phase,
-    "Project", var.project,
-  ), var.extra_tags)
+  
+  extra_tags = module.label.tags
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -76,12 +74,12 @@ module "kubernetes" {
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "worker_spot" {
-  source = "../../modules/aws/kube-worker"
+  source = "../../../modules/aws/kube-worker"
 
-  cluster_name      = local.cluster_name
+  cluster_name      = module.label.id
   kube_service_cidr = var.service_cidr
 
-  security_group_ids = module.kubernetes.worker_sg_ids
+  security_group_ids = module.master.worker_sg_ids
   subnet_ids         = module.network.private_subnet_ids
 
   worker_config = {
@@ -98,11 +96,8 @@ module "worker_spot" {
     spot_instance_pools                      = 1
   }
 
-  s3_bucket = module.kubernetes.s3_bucket
+  s3_bucket = module.master.ignition_s3_bucket
   ssh_key   = var.key_pair_name
 
-  extra_tags = merge(map(
-    "Phase", var.phase,
-    "Project", var.project,
-  ), var.extra_tags)
+  extra_tags = module.label.tags
 }

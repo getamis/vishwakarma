@@ -7,6 +7,24 @@ variable "name" {
   type        = string
 }
 
+variable "enable_auth" {
+  description = "(Optional) Enable AWS authenticator or not"
+  type        = bool
+  default     = false
+}
+
+variable "enable_irsa" {
+  description = "(Optional) Enable AWS IAM role service account or not"
+  type        = bool
+  default     = false
+}
+
+variable "enable_audit" {
+  description = "(Optional) Enable Kubernetes master audit function or not"
+  type        = bool
+  default     = false
+} 
+
 variable "role_name" {
   description = "(Optional) The Amazon Resource Name (ARN) of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
   type        = string
@@ -62,7 +80,7 @@ variable "hyperkube_container" {
   type        = map(string)
   default = {
     image_path = "gcr.io/google-containers/hyperkube-amd64"
-    image_tag  = "v1.15.11"
+    image_tag  = "v1.15.12"
   }
 }
 
@@ -122,25 +140,27 @@ variable "master_config" {
 
 variable "certs_validity_period_hours" {
   description = <<EOF
-    Validity period of the self-signed certificates (in hours). Default is 3 years.
+    Validity period of the self-signed certificates (in hours). Default is 10 years.
 EOF
   type        = string
 
   // Default is provided only in this case
   // bacause *some* of etcd internal certs are still self-generated and need
   // this variable set
-  default = 26280
+  default = 87600
 }
 
 variable "etcd_config" {
   description = "(Optional) Desired etcd nodes configuration."
   type        = map(string)
   default = {
-    instance_count   = "1"
-    ec2_type         = "t3.medium"
-    root_volume_iops = "100"
-    root_volume_size = "100"
-    root_volume_type = "gp2"
+    instance_count     = "1"
+    ec2_type           = "t3.medium"
+    root_volume_size   = "40"
+    data_volume_size   = "100"
+    data_device_name   = "/dev/sdf"
+    data_device_rename = "/dev/nvme1n1"
+    data_path          = "/etcd/data"
   }
 }
 
@@ -240,16 +260,10 @@ variable "extra_tags" {
   default     = {}
 }
 
-variable "auth_webhook_path" {
-  description = "(Optional) A path for using customize machine to authenticate to a Kubernetes cluster."
-  type        = string
-  default     = ""
-}
-
 variable "audit_policy_path" {
   description = "(Optional) A policy path for Kubernetes apiserver to enable auditing log."
   type        = string
-  default     = ""
+  default     = "/etc/kubernetes/audit"
 }
 
 variable "audit_log_backend" {
@@ -259,21 +273,27 @@ variable "audit_log_backend" {
 EOF
   type        = map(string)
   default = {
-    path      = ""
-    maxage    = ""
-    maxbackup = ""
-    maxsize   = ""
+    path      = "/var/log/kubernetes/kube-apiserver.log"
+    maxage    = "30"
+    maxbackup = "30"
+    maxsize   = "10"
   }
 }
 
-variable "oidc_issuer_confg" {
-  description = "The service account config to enable pod identity feature"
-  type = object({
-    issuer        = string
-    api_audiences = string
-  })
-  default = {
-    issuer        = ""
-    api_audiences = ""
-  }
+variable "audit_policy" {
+  description = "The policy for auditing log."
+  type        = string
+  default     = <<EOF
+# Log all requests at the Metadata level.
+apiVersion: audit.k8s.io/v1
+kind: Policy
+rules:
+- level: Metadata
+EOF
+}
+
+variable "oidc_api_audiences" {
+  description = "the OIDC authenticator pre-introduction of API audiences"
+  type        = string
+  default     = "sts.amazonaws.com"
 }

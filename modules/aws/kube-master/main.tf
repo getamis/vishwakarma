@@ -50,7 +50,7 @@ resource "aws_autoscaling_group" "master" {
     }
   }
 
-  tags = concat([
+  tags = concat(data.null_data_source.tags.*.outputs, [
     {
       key                 = "Name"
       value               = "${var.name}-master"
@@ -61,7 +61,12 @@ resource "aws_autoscaling_group" "master" {
       value               = "owned"
       propagate_at_launch = true
     },
-  ], data.null_data_source.tags.*.outputs)
+    {
+      key                 = "Role"
+      value               = "k8s-master"
+      propagate_at_launch = true
+    },
+  ])
 }
 
 module "latest_os_ami" {

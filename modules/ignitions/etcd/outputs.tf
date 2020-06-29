@@ -1,6 +1,7 @@
 output "systemd_units" {
   value = [
     data.ignition_systemd_unit.etcd_service.rendered,
+    data.ignition_systemd_unit.etcd_data_mount.rendered
   ]
 }
 
@@ -15,5 +16,17 @@ output "files" {
     data.ignition_file.etcd_server_key.rendered,
     data.ignition_file.etcd_peer_cert.rendered,
     data.ignition_file.etcd_peer_key.rendered
+  ]
+}
+
+output "filesystems" {
+  value = [
+    data.ignition_filesystem.ectd_data.rendered
+  ]
+}
+
+output "disks" {
+  value = [
+    data.ignition_disk.ectd_data.rendered
   ]
 }

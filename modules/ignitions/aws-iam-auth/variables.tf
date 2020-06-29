@@ -16,8 +16,17 @@ variable "webhook_kubeconfig_path" {
   default     = "/etc/kubernetes/aws-iam-authenticator"
 }
 
-variable "webhook_kubeconfig_ca" {
-  description = "A certificate for verifying the remote service."
+variable "aws_iam_auth_ca" {
+  description = "Certificate for verifying the AWS iam authenticator webhook"
   type        = string
-  default     = ""
+}
+
+variable "aws_iam_auth_crt_pem" {
+  description = "AWS iam authenticator webhook tls crt"
+  type        = string
+}
+
+variable "aws_iam_auth_key_pem" {
+  description = "AWS iam authenticator webhook tls key"
+  type        = string
 }
