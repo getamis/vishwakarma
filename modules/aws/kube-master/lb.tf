@@ -13,9 +13,9 @@ resource "aws_elb" "master_internal" {
   connection_draining_timeout = 300
 
   listener {
-    instance_port     = 443
+    instance_port     = var.apiserver_secure_port
     instance_protocol = "tcp"
-    lb_port           = 443
+    lb_port           = var.apiserver_secure_port
     lb_protocol       = "tcp"
   }
 
@@ -23,7 +23,7 @@ resource "aws_elb" "master_internal" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 3
-    target              = "SSL:443"
+    target              = "SSL:${var.apiserver_secure_port}"
     interval            = 5
   }
 
@@ -61,6 +61,6 @@ resource "aws_security_group_rule" "master_lb_ingress_from_internal" {
 
   protocol    = "tcp"
   cidr_blocks = [var.endpoint_public_access == true ? "0.0.0.0/0" : data.aws_vpc.master.cidr_block]
-  from_port   = 443
-  to_port     = 443
+  from_port   = var.apiserver_secure_port
+  to_port     = var.apiserver_secure_port
 }

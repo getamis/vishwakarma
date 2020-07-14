@@ -24,8 +24,6 @@ resource "aws_route53_zone" "private" {
   ))
 }
 
-
-
 resource "aws_security_group" "etcd" {
   name_prefix = "${module.label.id}-etcd-"
   vpc_id      = data.aws_vpc.etcd.id
@@ -34,10 +32,6 @@ resource "aws_security_group" "etcd" {
     "Name", "${module.label.id}-etcd",
     "Role", "etcd"
   ))
-}
-
-locals {
-
 }
 
 resource "aws_security_group_rule" "etcd_egress" {
@@ -79,7 +73,6 @@ resource "aws_security_group_rule" "etcd_all_self" {
   to_port   = 0
   self      = true
 }
-
 
 resource "aws_security_group_rule" "etcd_ssh" {
   type              = "ingress"

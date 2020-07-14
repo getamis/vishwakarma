@@ -15,16 +15,6 @@ module "ignition_update_ca_certificates" {
   source = "../../ignitions/update-ca-certificates"
 }
 
-data "aws_s3_bucket_object" "kubeconfig" {
-  bucket = var.s3_bucket
-  key    = "kubeconfig"
-}
-
-module "ignition_kube_config" {
-  source  = "../../ignitions/kube-config"
-  content = data.aws_s3_bucket_object.kubeconfig.body
-}
-
 module "ignition_kubelet" {
   source = "../../ignitions/kubelet"
 
@@ -50,7 +40,6 @@ data "ignition_config" "main" {
     module.ignition_locksmithd.files,
     module.ignition_update_ca_certificates.files,
     module.ignition_kubelet.files,
-    module.ignition_kube_config.files,
     var.extra_ignition_file_ids,
   ))
 
@@ -59,7 +48,6 @@ data "ignition_config" "main" {
     module.ignition_locksmithd.systemd_units,
     module.ignition_update_ca_certificates.systemd_units,
     module.ignition_kubelet.systemd_units,
-    module.ignition_kube_config.systemd_units,
     var.extra_ignition_systemd_unit_ids,
   ))
 }
@@ -73,7 +61,7 @@ resource "aws_s3_bucket_object" "ignition" {
   server_side_encryption = "AES256"
 
   tags = merge(var.extra_tags, map(
-    "Name", "ign-worker-${var.worker_config["name"]}.json",    
+    "Name", "ign-worker-${var.worker_config["name"]}.json",
     "kubernetes.io/cluster/${var.cluster_name}", "owned",
     "Role", "k8s-worker"
   ))

@@ -1,0 +1,63 @@
+module "master" {
+  source = "../../aws/kube-master"
+
+  name                   = var.name
+  ssh_key                = var.ssh_key
+  instance_config        = var.master_instance_config
+  role_name              = var.role_name
+  security_group_ids     = var.security_group_ids
+  lb_security_group_ids  = var.lb_security_group_ids
+  public_subnet_ids      = var.public_subnet_ids
+  private_subnet_ids     = var.private_subnet_ids
+  endpoint_public_access = var.endpoint_public_access
+  s3_bucket              = aws_s3_bucket.ignition.id
+
+  // kubernetes
+  container      = local.container
+  network_plugin = var.network_plugin
+
+  etcd_endpoints = module.etcd.endpoints
+  etcd_certs = {
+    ca_cert = module.etcd.ca_cert
+    ca_key  = module.etcd.ca_key
+  }
+
+  service_network_cidr = var.kube_service_network_cidr
+  cluster_network_cidr = var.kube_cluster_network_cidr
+
+  extra_flags = var.kube_extra_flags
+
+  kubelet_node_labels = compact(concat(
+    list("node-role.kubernetes.io/master"),
+    var.kubelet_node_labels
+  ))
+
+  kubelet_node_taints = compact(concat(
+    list("node-role.kubernetes.io/master=:NoSchedule"),
+    var.kubelet_node_taints
+  ))
+
+  extra_ignition_file_ids = compact(concat(
+    module.kube_iam_auth.files,
+    var.extra_ignition_file_ids
+  ))
+
+  extra_ignition_systemd_unit_ids = compact(concat(
+    var.extra_ignition_systemd_unit_ids
+  ))
+
+  enable_iam_auth          = var.enable_iam_auth
+  auth_webhook_config_path = module.kube_iam_auth.webhook_kubeconfig_path
+
+  enable_irsa = var.enable_irsa
+  oidc_confg = {
+    issuer        = module.kube_iam_auth.oidc_issuer
+    api_audiences = var.oidc_api_audiences
+  }
+
+  audit_log_policy_content = var.kube_audit_log_policy_content
+
+  certs_validity_period_hours = var.certs_validity_period_hours
+  reboot_strategy             = var.reboot_strategy
+  extra_tags                  = var.extra_tags
+}

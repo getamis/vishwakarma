@@ -1,13 +1,16 @@
-variable "pod_checkpointer" {
-  description = "The hyperkube container image path and tag"
-  type        = map(string)
+variable "container" {
+  description = "The container image repo and tag."
+  type = object({
+    repo = string
+    tag  = string
+  })
   default = {
-    image_path = "quay.io/coreos/pod-checkpointer"
-    image_tag  = "e22cc0e3714378de92f45326474874eb602ca0ac"
+    repo = "quay.io/coreos/pod-checkpointer"
+    tag  = "e22cc0e3714378de92f45326474874eb602ca0ac"
   }
 }
 
-variable "addon_path" {
+variable "addons_path" {
   description = "(Optional) The absolute path of the addons to be installed."
   type        = string
   default     = "/etc/kubernetes/addons"

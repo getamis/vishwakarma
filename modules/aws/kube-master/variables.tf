@@ -3,20 +3,143 @@ variable "name" {
   type        = string
 }
 
-variable "enable_auth" {
-  description = "(Optional) Enable AWS authenticator or not"
+variable "container" {
+  description = "Desired containers(hyperkube, cfssl, coredns, and so on) repo and tag."
+  type = map(object({
+    repo = string
+    tag  = string
+  }))
+  default = {}
+}
+
+variable "network_plugin" {
+  description = "Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc'"
+  type        = string
+  default     = "amazon-vpc"
+}
+
+variable "etcd_endpoints" {
+  description = "The etcd endpoints to be accessed by the Kubernetes API server."
+  type        = list(string)
+}
+
+variable "etcd_certs" {
+  description = "The ectd of certs."
+  type        = map(string)
+}
+
+variable "service_network_cidr" {
+  description = "The kubernetes service ip range"
+  type        = string
+}
+
+variable "cluster_network_cidr" {
+  description = "The kubernetes cluster ip range"
+  type        = string
+}
+
+variable "apiserver_secure_port" {
+  description = "The port on which to serve HTTPS with authentication and authorization for kube-apiserver."
+  type        = number
+  default     = 6443
+}
+
+variable "kubelet_extra_config" {
+  description = "The user-provided configs to kubelet. See https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/ for more information."
+  default     = {}
+}
+
+variable "kubelet_node_labels" {
+  description = "Labels to add when registering the node in the cluster. Labels must be key=value pairs."
+  type        = list(string)
+  default     = []
+}
+
+variable "kubelet_node_taints" {
+  description = "Register the node with the given list of taints (\"<key>=<value>:<effect>\")."
+  type        = list(string)
+  default     = []
+}
+
+variable "extra_flags" {
+  description = <<EOF
+The user-provided flags to kubelet, kube-apiserver, kube-controller-manager, kube-scheduler and audit log. 
+For flags, we need to follow component flag string format. Do not use underline.
+EOF 
+  default = {
+    kubelet            = {}
+    apiserver          = {}
+    controller_manager = {}
+    scheduler          = {}
+    audit_log          = {}
+  }
+}
+
+variable "audit_log_policy_content" {
+  description = "The policy content for auditing log."
+  type        = string
+  default     = <<EOF
+# Log all requests at the Metadata level.
+apiVersion: audit.k8s.io/v1
+kind: Policy
+rules:
+- level: Metadata
+EOF
+}
+
+variable "enable_iam_auth" {
+  description = "Enable AWS IAM authenticator or not."
   type        = bool
+  default     = false
+}
+
+variable "auth_webhook_config_path" {
+  description = "The path of webhook config for kube-apiserver."
+  type        = string
+  default     = "/etc/kubernetes/config/aws-iam-authenticator/kubeconfig"
 }
 
 variable "enable_irsa" {
-  description = "(Optional) Enable AWS IAM role service account or not"
+  description = "Enable AWS IAM role service account or not."
   type        = bool
+  default     = false
 }
 
-variable "enable_audit" {
-  description = "(Optional) Enable Kubernetes master audit function or not"
-  type        = bool
+variable "oidc_confg" {
+  description = "The service account config to enable pod identity feature"
+  type = object({
+    issuer        = string
+    api_audiences = string
+  })
+
+  default = {
+    issuer        = ""
+    api_audiences = ""
+  }
 }
+
+variable "kube_proxy_config" {
+  description = "The configuration of kube-proxy. The variables need to follow https://github.com/kubernetes/kube-proxy/blob/master/config/v1alpha1/types.go. Do not use underline."
+  default     = {}
+}
+
+variable "coredns_config" {
+  description = "The configuration of CoreDNS."
+  default     = {}
+}
+
+variable "certs_validity_period_hours" {
+  description = "Validity period of the self-signed certificates (in hours). Default is 10 years."
+  type        = string
+  // Default is provided only in this case
+  // bacause *some* of etcd internal certs are still self-generated and need
+  // this variable set
+  default = 87600
+}
+
+// -----------------------------------------
+// AWS-related Variables
+// -----------------------------------------
 
 variable "role_name" {
   description = "(Optional) The Amazon Resource Name of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
@@ -39,8 +162,6 @@ variable "security_group_ids" {
 EOF
   type        = list(string)
   default     = []
-
-
 }
 
 variable "lb_security_group_ids" {
@@ -78,22 +199,11 @@ variable "endpoint_public_access" {
   default     = false
 }
 
-variable "hyperkube_container" {
-  description = "(Optional) Desired Hyperkube container to boot K8S cluster. If you do not specify a value, the latest available version is used."
-  type        = map(string)
-}
-
-variable "network_plugin" {
-  description = "(Optional) Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc'"
-  type        = string
-  default     = "flannel"
-}
-
-variable "master_config" {
+variable "instance_config" {
   description = "(Optional) Desired master nodes configuration."
   type        = map(string)
   default = {
-    instance_count   = "1"
+    count            = "1"
     ec2_type_1       = "t3.medium"
     ec2_type_2       = "t2.medium"
     root_volume_iops = "100"
@@ -110,53 +220,6 @@ variable "ssh_key" {
   description = "The key name that should be used for the instance."
   type        = string
   default     = ""
-}
-
-variable "etcd_endpoints" {
-  description = <<EOF
-  (Required) The etcd endpoints to be accessed by the Kubernetes API server.
-  EOF
-  type        = list(string)
-}
-
-variable "etcd_certs_config" {
-  type = map(string)
-}
-
-variable "certs_validity_period_hours" {
-  description = <<EOF
-    Validity period of the self-signed certificates (in hours). Default is 10 years.
-EOF
-  type        = string
-
-  // Default is provided only in this case
-  // bacause *some* of etcd internal certs are still self-generated and need
-  // this variable set
-  default = 87600
-}
-
-variable "kube_service_cidr" {
-  description = "The kubernetes service ip range"
-  type        = string
-}
-
-variable "kube_cluster_cidr" {
-  description = "The kubernetes cluster ip range"
-  type        = string
-}
-
-variable "kube_node_labels" {
-  description = "Labels to add when registering the node in the cluster. Labels must be key=value pairs."
-  type        = list(string)
-  default     = []
-}
-
-variable "kube_node_taints" {
-  description = <<EOF
-Register the node with the given list of taints ("<key>=<value>:<effect>").
-EOF
-  type        = list(string)
-  default     = []
 }
 
 variable "s3_bucket" {
@@ -183,46 +246,8 @@ variable "extra_ignition_systemd_unit_ids" {
   default     = []
 }
 
-variable "kubelet_flag_extra_flags" {
-  description = "Extra user-provided flags to kubelet."
-  type        = list(string)
-  default     = []
-}
-
 variable "extra_tags" {
   description = "Extra AWS tags to be applied to created resources."
   type        = map(string)
   default     = {}
-}
-
-variable "webhook_kubeconfig_path" {
-  description = "(Optional) A path for using customized machine to authenticate to a Kubernetes cluster."
-  type        = string
-  default     = "/etc/kubernetes/aws-iam-authenticator"
-}
-
-variable "audit_policy_path" {
-  description = "A policy path for Kubernetes apiserver to enable auditing log."
-  type        = string
-}
-
-variable "audit_log_backend" {
-  description = <<EOF
-    (Optional) Kubernetes apiserver auditing log backend configuration,
-    there are four parameters: path, maxage, maxbackup, maxsize.
-EOF
-  type        = map(string)
-  default     = {}
-
-}
-
-variable "oidc_api_audiences" {
-  description = "The OIDC authenticator pre-introduction of API audiences"
-  type        = string
-}
-
-variable "oidc_issuer" {
-  description = "The OIDC issuer endpoint"
-  type        = string
-  default     = ""
 }

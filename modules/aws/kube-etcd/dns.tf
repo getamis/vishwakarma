@@ -46,7 +46,7 @@ resource "aws_route53_record" "etcd_discovery_client_ssl" {
 }
 
 resource "aws_route53_record" "etcd" {
-  count   = var.etcd_config["instance_count"]
+  count   = local.instance_config["count"]
   zone_id = data.aws_route53_zone.etcd.zone_id
   name    = "ip-${replace(local.etcd_private_ips[count.index], ".", "-")}.${local.discovery_service}"
   type    = "A"

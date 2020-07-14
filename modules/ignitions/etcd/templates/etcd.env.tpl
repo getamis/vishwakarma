@@ -1,10 +1,11 @@
 # ETCD SELF DEFINE CONFIGURATION
-ETCD_IMAGE_URL=${image_url}
+ETCD_IMAGE_REPO=${image_repo}
 ETCD_IMAGE_TAG=${image_tag}
 CLIENT_PORT=${client_port}
 PEER_PORT=${peer_port}
 SCHEME=${scheme}
 USER_ID=${user_id}
+CLOUD_PROVIDER=${cloud_provider}
 
 # ETCD OFFICIAL CONFIGURATION
 ETCD_CERT_PATH=${certs_path}

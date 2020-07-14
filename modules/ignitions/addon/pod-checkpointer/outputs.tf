@@ -1,9 +1,5 @@
-output "systemd_units" {
-  value = []
-}
-
 output "files" {
   value = [
-    data.ignition_file.pod_checkpointer_yaml.rendered
+    data.ignition_file.pod_checkpointer.rendered
   ]
 }

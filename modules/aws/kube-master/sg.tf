@@ -69,14 +69,24 @@ resource "aws_security_group_rule" "master_all_self" {
   self      = true
 }
 
+resource "aws_security_group_rule" "master_ingress" {
+  type              = "ingress"
+  security_group_id = local.master_sg_id
+
+  protocol    = "tcp"
+  cidr_blocks = [data.aws_vpc.master.cidr_block]
+  from_port   = var.apiserver_secure_port
+  to_port     = var.apiserver_secure_port
+}
+
 resource "aws_security_group_rule" "master_ingress_from_lb" {
   type                     = "ingress"
   security_group_id        = local.master_sg_id
   source_security_group_id = aws_security_group.master_lb.id
 
   protocol  = "tcp"
-  from_port = 443
-  to_port   = 443
+  from_port = var.apiserver_secure_port
+  to_port   = var.apiserver_secure_port
 }
 
 resource "aws_security_group_rule" "master_ssh" {
@@ -87,4 +97,24 @@ resource "aws_security_group_rule" "master_ssh" {
   cidr_blocks = [data.aws_vpc.master.cidr_block]
   from_port   = 22
   to_port     = 22
+}
+
+resource "aws_security_group_rule" "master_ingress_kubelet_secure" {
+  type              = "ingress"
+  security_group_id = local.master_sg_id
+
+  protocol  = "tcp"
+  from_port = 10255
+  to_port   = 10255
+  self      = true
+}
+
+resource "aws_security_group_rule" "master_ingress_kubelet_secure_from_worker" {
+  type              = "ingress"
+  security_group_id = local.master_sg_id
+
+  protocol    = "tcp"
+  cidr_blocks = [data.aws_vpc.master.cidr_block]
+  from_port   = 10255
+  to_port     = 10255
 }
