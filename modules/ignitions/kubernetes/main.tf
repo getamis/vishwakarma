@@ -1,6 +1,4 @@
 locals {
-  kubernetes_minior_version = parseint(split(".", var.version)[1], 10)
-
   root_path        = "/etc/kubernetes"
   mainifest_path   = "/etc/kubernetes/manifests"
   pki_path         = "/etc/kubernetes/pki"
