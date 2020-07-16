@@ -97,7 +97,7 @@ EOF
 variable "instance_config" {
   description = "(Optional) Desired etcd nodes configuration."
   type        = map(string)
-  default = {}
+  default     = {}
 }
 
 variable "ssh_key" {

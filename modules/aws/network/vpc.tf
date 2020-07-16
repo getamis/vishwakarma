@@ -10,7 +10,7 @@ resource "aws_vpc" "new_vpc" {
 }
 
 data "aws_availability_zones" "available" {
-    state = "available"
+  state = "available"
 }
 
 locals {

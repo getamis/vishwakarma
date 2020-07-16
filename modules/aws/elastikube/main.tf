@@ -31,7 +31,7 @@ module "master" {
 
   // Nodes are not permitted to assert their own role labels. See https://github.com/kubernetes/kubernetes/issues/84912.
   kubelet_node_labels = var.kubelet_node_labels
-  
+
   kubelet_node_taints = compact(concat(
     list("node-role.kubernetes.io/master=:NoSchedule"),
     var.kubelet_node_taints

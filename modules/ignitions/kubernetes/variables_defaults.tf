@@ -124,8 +124,8 @@ locals {
   }, var.kubelet_flags)
 
   apiserver_flags = merge({
-    insecure-port                   = 0
-    allow-privileged                = true
+    insecure-port    = 0
+    allow-privileged = true
     // TODO: fix livenessProbe while disabled anonymous auth. 
     // See https://kubernetes.io/docs/reference/access-authn-authz/authentication/#anonymous-requests for more information.
     anonymous-auth                  = true

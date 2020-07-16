@@ -12,8 +12,8 @@ data "ignition_disk" "ectd_data" {
 
   partition {
     number = 1
-    start = 0
-    size = 0
+    start  = 0
+    size   = 0
   }
 }
 

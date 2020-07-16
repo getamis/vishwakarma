@@ -38,7 +38,7 @@ data "ignition_file" "flannel_yaml" {
 
   content {
     content = templatefile("${path.module}/templates/network-plugins/flannel/flannel.yaml.tpl", {
-      image = "${local.containers["flannel_cni"].repo}:${local.containers["flannel_cni"].tag}"
+      image        = "${local.containers["flannel_cni"].repo}:${local.containers["flannel_cni"].tag}"
       cluster_cidr = var.pod_network_cidr
     })
   }

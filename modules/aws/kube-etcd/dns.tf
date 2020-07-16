@@ -6,7 +6,7 @@ data "aws_route53_zone" "etcd" {
 locals {
   discovery_service = substr(data.aws_route53_zone.etcd.name, 0, length(data.aws_route53_zone.etcd.name) - 1)
   etcd_private_ips = [
-    for private_ips in aws_network_interface.etcd.*.private_ips:
+    for private_ips in aws_network_interface.etcd.*.private_ips :
     join(", ", private_ips)
   ]
 }
@@ -17,7 +17,7 @@ resource "aws_route53_record" "etcd_discovery" {
   type    = "SRV"
   ttl     = "300"
   records = [
-    for instance_ip in local.etcd_private_ips:
+    for instance_ip in local.etcd_private_ips :
     "0 0 ${local.peer_port} ip-${replace(instance_ip, ".", "-")}.${local.discovery_service}"
   ]
 }
@@ -28,7 +28,7 @@ resource "aws_route53_record" "etcd_discovery_server_ssl" {
   type    = "SRV"
   ttl     = "300"
   records = [
-    for instance_ip in local.etcd_private_ips:
+    for instance_ip in local.etcd_private_ips :
     "0 0 ${local.peer_port} ip-${replace(instance_ip, ".", "-")}.${local.discovery_service}"
   ]
 }
@@ -40,7 +40,7 @@ resource "aws_route53_record" "etcd_discovery_client_ssl" {
   ttl     = "300"
 
   records = [
-    for instance_ip in local.etcd_private_ips:
+    for instance_ip in local.etcd_private_ips :
     "0 0 ${local.client_port} ip-${replace(instance_ip, ".", "-")}.${local.discovery_service}"
   ]
 }

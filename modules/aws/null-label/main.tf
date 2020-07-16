@@ -15,21 +15,21 @@ locals {
     replacement = ""
     # The `sentinel` should match the `regex_replace_chars`, so it will be replaced with the `replacement` value
     sentinel   = "~"
-    attributes = [""]    
+    attributes = [""]
   }
 
   # The values provided by variables superceed the values inherited from the context
 
   enabled             = var.enabled
-  regex_replace_chars = coalesce(var.regex_replace_chars, var.context.regex_replace_chars)  
+  regex_replace_chars = coalesce(var.regex_replace_chars, var.context.regex_replace_chars)
 
-  environment = lower(replace(coalesce(var.environment, var.context.Environment,  local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
-  project     = lower(replace(coalesce(var.project, var.context.Project,  local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
-  service     = lower(replace(coalesce(var.service, var.context.Service,  local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
-  role        = lower(replace(coalesce(var.role, var.context.Role,  local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
-  language    = lower(replace(coalesce(var.language, var.context.Language,  local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
-  built_with   = lower(replace(coalesce(var.built_with, var.context.BuiltWith,  local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
-  created_by   = lower(replace(coalesce(var.created_by, var.context.CreatedBy,  local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+  environment = lower(replace(coalesce(var.environment, var.context.Environment, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+  project     = lower(replace(coalesce(var.project, var.context.Project, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+  service     = lower(replace(coalesce(var.service, var.context.Service, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+  role        = lower(replace(coalesce(var.role, var.context.Role, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+  language    = lower(replace(coalesce(var.language, var.context.Language, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+  built_with  = lower(replace(coalesce(var.built_with, var.context.BuiltWith, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
+  created_by  = lower(replace(coalesce(var.created_by, var.context.CreatedBy, local.defaults.sentinel), local.regex_replace_chars, local.defaults.replacement))
 
   delimiter          = coalesce(var.delimiter, var.context.delimiter, local.defaults.delimiter)
   label_order        = length(var.label_order) > 0 ? var.label_order : (length(var.context.label_order) > 0 ? var.context.label_order : local.defaults.label_order)
