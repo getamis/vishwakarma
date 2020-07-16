@@ -12,7 +12,7 @@ ${replace(replace(yamlencode(content),"\"", ""), "config.conf:", "config.conf: |
     clusters:
     - cluster:
         certificate-authority: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-        server: https://$${HOST_IP}:${secure_port}
+        server: https://127.0.0.1:${secure_port}
       name: default
     contexts:
     - context:
