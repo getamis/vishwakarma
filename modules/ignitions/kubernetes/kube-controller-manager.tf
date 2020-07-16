@@ -7,7 +7,7 @@ data "ignition_file" "kube_controller_manager" {
 
   content {
     content = templatefile("${path.module}/templates/manifests/kube-controller-manager.yaml.tpl", {
-      image             = "${local.container["hyperkube"].repo}:${local.container["hyperkube"].tag}"
+      image             = "${local.containers["kube_controller_manager"].repo}:${local.containers["kube_controller_manager"].tag}"
       kubeconfig        = local.kubeconfig_paths["controller_manager"]
       pki_path          = local.pki_path
       cluster_cidr      = var.pod_network_cidr

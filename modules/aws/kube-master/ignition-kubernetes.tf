@@ -11,7 +11,7 @@ resource "random_id" "bootstrap_token_secret" {
 }
 
 resource "random_password" "encryption_secret" {
-  length  = 30
+  length  = 32
   special = true
 }
 
@@ -19,7 +19,9 @@ module "ignition_kubernetes" {
   source = "../../ignitions/kubernetes"
 
   control_plane         = true
-  container             = var.container
+  kubernetes_version    = var.kubernetes_version
+  binaries              = var.binaries
+  containers            = var.containers
   apiserver_secure_port = var.apiserver_secure_port
   service_network_cidr  = var.service_network_cidr
   pod_network_cidr      = var.cluster_network_cidr
@@ -59,7 +61,7 @@ module "ignition_kubernetes" {
   enable_iam_auth          = var.enable_iam_auth
   auth_webhook_config_path = var.auth_webhook_config_path
   enable_irsa              = var.enable_irsa
-  oidc_confg               = var.oidc_confg
+  oidc_config              = var.oidc_config
 
   certs = {
     // etcd certs

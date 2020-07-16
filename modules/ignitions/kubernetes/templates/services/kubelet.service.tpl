@@ -6,7 +6,7 @@ After=network-online.target
 
 [Service]
 Environment="PATH=/opt/bin:/opt/kubernetes/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
-ExecStart=/opt/kubernetes/bin/hyperkube kubelet
+ExecStart=/opt/kubernetes/bin/kubelet
 
 Restart=always
 StartLimitInterval=0

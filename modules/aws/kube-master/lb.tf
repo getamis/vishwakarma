@@ -15,7 +15,7 @@ resource "aws_elb" "master_internal" {
   listener {
     instance_port     = var.apiserver_secure_port
     instance_protocol = "tcp"
-    lb_port           = var.apiserver_secure_port
+    lb_port           = 443
     lb_protocol       = "tcp"
   }
 
@@ -61,6 +61,6 @@ resource "aws_security_group_rule" "master_lb_ingress_from_internal" {
 
   protocol    = "tcp"
   cidr_blocks = [var.endpoint_public_access == true ? "0.0.0.0/0" : data.aws_vpc.master.cidr_block]
-  from_port   = var.apiserver_secure_port
-  to_port     = var.apiserver_secure_port
+  from_port   = 443
+  to_port     = 443
 }

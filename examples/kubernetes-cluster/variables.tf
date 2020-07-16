@@ -13,7 +13,7 @@ variable "kubernetes_version" {
 variable "service_cidr" {
   description = "(Optional) The Kubernetes service CIDR."
   type        = string
-  default     = "172.16.0.0/13"
+  default     = "10.96.0.0/12"
 }
 
 variable "cluster_cidr" {

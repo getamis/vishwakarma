@@ -1,8 +1,8 @@
 {
-    "CN": "system:node:$${HOSTNAME}",
+    "CN": "system:node:$${HOSTNAME_FQDN}",
     "key": {
-        "algo": "RSA",
-        "size": 2048
+        "algo": "${algo}",
+        "size": ${size}
     },
     "names": [
         {

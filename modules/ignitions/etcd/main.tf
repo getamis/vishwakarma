@@ -19,8 +19,8 @@ data "ignition_file" "etcd_env" {
 
   content {
     content = templatefile("${path.module}/templates/etcd.env.tpl", {
-      image_repo        = local.container["etcd"].repo
-      image_tag         = local.container["etcd"].tag
+      image_repo        = local.containers["etcd"].repo
+      image_tag         = local.containers["etcd"].tag
       cloud_provider    = var.cloud_provider
       user_id           = var.cert_file_owner["uid"]
       cluster_name      = var.name

@@ -271,13 +271,12 @@ z1d.12xlarge 737
 z1d.metal 737
 "
 
-source /var/lib/kubelet/kubelet.env
-
 set +o pipefail
-if [[ $KUBELET_CLOUD_PROVIDER == "aws" ]]; then 
+if [[ $CLOUD_PROVIDER == "aws" ]]; then 
   HOSTNAME=$(curl -s http://169.254.169.254/latest/meta-data/local-hostname | cut -d '.' -f 1)
+  HOSTNAME_FQDN=$(curl -s http://169.254.169.254/latest/meta-data/local-hostname)
   HOST_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
-  if [[ $KUBELET_NETWORK_PLUGIN == "amazon-vpc" ]]; then 
+  if [[ $NETWORK_PLUGIN == "amazon-vpc" ]]; then 
     INSTANCE_TYPE=$(curl -s http://169.254.169.254/latest/meta-data/instance-type)
     MAX_PODS=$(echo "$ENI_PODS" | grep ^$INSTANCE_TYPE | awk '{print $2}')
   fi
@@ -285,15 +284,18 @@ fi
 set -o pipefail
 
 [[ ! -n "$HOSTNAME" ]] && export HOSTNAME=$(hostname)
+[[ ! -n "$HOSTNAME_FQDN" ]] && export HOSTNAME_FQDN=$(hostname)
 [[ ! -n "$HOST_IP" ]] && export HOST_IP=$(ip -o route get 8.8.8.8 | sed -e 's/^.* src \([^ ]*\) .*$/\1/')
 [[ ! -n "$MAX_PODS" ]] && export MAX_PODS="110"
 
 export HOSTNAME=$HOSTNAME
+export HOSTNAME_FQDN=$HOSTNAME_FQDN
 export HOST_IP=$HOST_IP
 export MAX_PODS=$MAX_PODS
 
 if hash systemctl 2>/dev/null; then
   systemctl set-environment HOSTNAME=$HOSTNAME
+  systemctl set-environment HOSTNAME_FQDN=$HOSTNAME_FQDN
   systemctl set-environment HOST_IP=$HOST_IP
   systemctl set-environment MAX_PODS=$MAX_PODS
 fi

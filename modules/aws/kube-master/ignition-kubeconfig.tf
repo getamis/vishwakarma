@@ -6,7 +6,7 @@ module "ignition_admin_kubeconfig" {
   cluster  = var.name
   context  = "kubernetes-admin@kubernetes"
   user     = "kubernetes-admin"
-  endpoint = "https://${aws_elb.master_internal.dns_name}:${var.apiserver_secure_port}"
+  endpoint = "https://${aws_elb.master_internal.dns_name}"
 
   certificates = {
     ca_cert     = module.kubernetes_ca.cert_pem
@@ -18,12 +18,12 @@ module "ignition_admin_kubeconfig" {
 module "ignition_controller_manager_kubeconfig" {
   source = "../../ignitions/kubeconfig"
 
-  config_path = "/opt/kubernetes/controller-manager.conf.tpl"
+  config_path = "/etc/kubernetes/controller-manager.conf"
 
   cluster  = var.name
   context  = "system:kube-controller-manager@kubernetes"
   user     = "system:kube-controller-manager"
-  endpoint = "https://$${HOST_IP}:${var.apiserver_secure_port}"
+  endpoint = "https://127.0.0.1:6443"
 
   certificates = {
     ca_cert     = module.kubernetes_ca.cert_pem
@@ -35,12 +35,12 @@ module "ignition_controller_manager_kubeconfig" {
 module "ignition_scheduler_kubeconfig" {
   source = "../../ignitions/kubeconfig"
 
-  config_path = "/opt/kubernetes/scheduler.conf.tpl"
+  config_path = "/etc/kubernetes/scheduler.conf"
 
   cluster  = var.name
   context  = "system:kube-scheduler@kubernetes"
   user     = "system:kube-scheduler"
-  endpoint = "https://$${HOST_IP}:${var.apiserver_secure_port}"
+  endpoint = "https://127.0.0.1:6443"
 
   certificates = {
     ca_cert     = module.kubernetes_ca.cert_pem
@@ -49,15 +49,16 @@ module "ignition_scheduler_kubeconfig" {
   }
 }
 
+// TODO: pass "config_path" from variable
 module "ignition_kubelet_kubeconfig_tpl" {
   source = "../../ignitions/kubeconfig"
 
-  config_path = "/opt/kubernetes/kubelet.conf.tpl"
+  config_path = "/opt/kubernetes/templates/kubelet.conf.tpl"
 
   cluster  = var.name
   context  = "system:node:$${HOSTNAME}@kubernetes"
   user     = "system:node:$${HOSTNAME}"
-  endpoint = "https://$${HOST_IP}:${var.apiserver_secure_port}"
+  endpoint = "https://127.0.0.1:6443"
 
   certificates = {
     ca_cert          = module.kubernetes_ca.cert_pem

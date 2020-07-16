@@ -13,8 +13,10 @@ module "master" {
   s3_bucket              = aws_s3_bucket.ignition.id
 
   // kubernetes
-  container      = local.container
-  network_plugin = var.network_plugin
+  kubernetes_version = var.kubernetes_version
+  containers         = var.override_containers
+  binaries           = var.override_binaries
+  network_plugin     = var.network_plugin
 
   etcd_endpoints = module.etcd.endpoints
   etcd_certs = {
@@ -27,11 +29,9 @@ module "master" {
 
   extra_flags = var.kube_extra_flags
 
-  kubelet_node_labels = compact(concat(
-    list("node-role.kubernetes.io/master"),
-    var.kubelet_node_labels
-  ))
-
+  // Nodes are not permitted to assert their own role labels. See https://github.com/kubernetes/kubernetes/issues/84912.
+  kubelet_node_labels = var.kubelet_node_labels
+  
   kubelet_node_taints = compact(concat(
     list("node-role.kubernetes.io/master=:NoSchedule"),
     var.kubelet_node_taints
@@ -50,7 +50,7 @@ module "master" {
   auth_webhook_config_path = module.kube_iam_auth.webhook_kubeconfig_path
 
   enable_irsa = var.enable_irsa
-  oidc_confg = {
+  oidc_config = {
     issuer        = module.kube_iam_auth.oidc_issuer
     api_audiences = var.oidc_api_audiences
   }

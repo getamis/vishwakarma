@@ -15,7 +15,7 @@ module "ignition_etcd" {
   source = "../../ignitions/etcd"
 
   name              = var.name
-  container         = var.container
+  containers        = var.containers
   discovery_service = local.discovery_service
   client_port       = local.client_port
   peer_port         = local.peer_port

@@ -10,8 +10,8 @@ locals {
     } : {},
     var.enable_irsa ? {
       service-account-signing-key-file = "${local.pki_path}/sa.key",
-      api-audiences                    = "${local.oidc_confg.api_audiences}"
-      service-account-issuer           = "${local.oidc_confg.issuer}"
+      api-audiences                    = "${local.oidc_config.api_audiences}"
+      service-account-issuer           = "${local.oidc_config.issuer}"
     } : {},
   )
 }
@@ -76,11 +76,11 @@ data "ignition_file" "kube_apiserver_tpl" {
 
   filesystem = "root"
   mode       = 420
-  path       = "/opt/kubernetes/kube-apiserver.yaml.tpl"
+  path       = "${local.opt_path}/templates/kube-apiserver.yaml.tpl"
 
   content {
     content = templatefile("${path.module}/templates/manifests/kube-apiserver.yaml.tpl", {
-      image          = "${local.container["hyperkube"].repo}:${local.container["hyperkube"].tag}"
+      image          = "${local.containers["kube_apiserver"].repo}:${local.containers["kube_apiserver"].tag}"
       pki_path       = local.pki_path
       etcd_pki_path  = local.etcd_pki_path
       log_path       = local.log_path

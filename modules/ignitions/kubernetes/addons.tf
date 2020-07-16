@@ -15,8 +15,7 @@ data "ignition_systemd_unit" "kube_addon_manager" {
   name    = "kube-addon-manager.service"
   enabled = true
   content = templatefile("${path.module}/templates/services/kube-addon-manager.service.tpl", {
-    image       = "${local.container["hyperkube"].repo}:${local.container["hyperkube"].tag}"
-    addons_path = local.addons_path
+    path = local.addons_path
   })
 }
 
@@ -29,7 +28,7 @@ data "ignition_file" "kube_proxy" {
 
   content {
     content = templatefile("${path.module}/templates/addons/kube-proxy.yaml.tpl", {
-      image = "${local.container["hyperkube"].repo}:${local.container["hyperkube"].tag}"
+      image = "${local.containers["kube_proxy"].repo}:${local.containers["kube_proxy"].tag}"
     })
   }
 }
@@ -39,7 +38,7 @@ data "ignition_file" "kube_proxy_cm_tpl" {
 
   filesystem = "root"
   mode       = 420
-  path       = "/opt/kubernetes/kube-proxy-cm.yaml.tpl"
+  path       = "${local.opt_path}/templates/kube-proxy-cm.yaml.tpl"
 
   content {
     content = templatefile("${path.module}/templates/addons/kube-proxy-cm.yaml.tpl", {
@@ -59,7 +58,7 @@ data "ignition_file" "coredns" {
 
   content {
     content = templatefile("${path.module}/templates/addons/coredns.yaml.tpl", {
-      image                    = "${local.container["coredns"].repo}:${local.container["coredns"].tag}"
+      image                    = "${local.containers["coredns"].repo}:${local.containers["coredns"].tag}"
       replicas                 = local.coredns_config["replicas"]
       reverse_cirds            = local.coredns_config["reverse_cirds"]
       cluster_dns_ip           = local.coredns_config["cluster_dns_ip"]

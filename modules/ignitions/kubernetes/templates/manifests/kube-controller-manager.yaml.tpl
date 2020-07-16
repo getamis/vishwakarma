@@ -24,7 +24,7 @@ spec:
     - --requestheader-client-ca-file=${pki_path}/front-proxy-ca.crt
     - --service-account-private-key-file=${pki_path}/sa.key
 %{ if cluster_cidr != "" ~}
-    - - --cluster-cidr=${cluster_cidr}
+    - --cluster-cidr=${cluster_cidr}
 %{ endif ~}
 %{ if service_cidr != "" ~}
     - --service-cluster-ip-range=${service_cidr}
@@ -66,9 +66,6 @@ spec:
     - mountPath: ${kubeconfig}
       name: kubeconfig
       readOnly: true
-    - mountPath: /usr/local/share/ca-certificates
-      name: usr-local-share-ca-certificates
-      readOnly: true
     - mountPath: /usr/share/ca-certificates
       name: usr-share-ca-certificates
       readOnly: true
@@ -84,7 +81,7 @@ spec:
       type: DirectoryOrCreate
     name: etc-ca-certificates
   - hostPath:
-      path: /usr/libexec/kubernetes/kubelet-plugins/volume/exec
+      path: /opt/libexec/kubernetes/kubelet-plugins/volume/exec
       type: DirectoryOrCreate
     name: flexvolume-dir
   - hostPath:
@@ -95,10 +92,6 @@ spec:
       path: ${kubeconfig}
       type: FileOrCreate
     name: kubeconfig
-  - hostPath:
-      path: /usr/local/share/ca-certificates
-      type: DirectoryOrCreate
-    name: usr-local-share-ca-certificates
   - hostPath:
       path: /usr/share/ca-certificates
       type: DirectoryOrCreate

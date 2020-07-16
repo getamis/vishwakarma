@@ -14,13 +14,8 @@ spec:
     command:
     - kube-apiserver
     - --advertise-address=$${HOST_IP}
-    - --bind-address=$${HOST_IP}
     - --secure-port=${secure_port}
-    - --insecure-port=0
     - --client-ca-file=${pki_path}/ca.crt
-    - --etcd-cafile=${etcd_pki_path}/ca.crt
-    - --etcd-certfile=${pki_path}/apiserver-etcd-client.crt
-    - --etcd-keyfile=${pki_path}/apiserver-etcd-client.key
     - --kubelet-client-certificate=${pki_path}/apiserver-kubelet-client.crt
     - --kubelet-client-key=${pki_path}/apiserver-kubelet-client.key
     - --tls-cert-file=${pki_path}/apiserver.crt
@@ -33,9 +28,10 @@ spec:
     - --requestheader-group-headers=X-Remote-Group
     - --requestheader-username-headers=X-Remote-User
     - --service-account-key-file=${pki_path}/sa.pub
-%{ if etcd_endpoints != "" ~}
     - --etcd-servers=${etcd_endpoints}
-%{ endif ~}
+    - --etcd-cafile=${etcd_pki_path}/ca.crt
+    - --etcd-certfile=${pki_path}/apiserver-etcd-client.crt
+    - --etcd-keyfile=${pki_path}/apiserver-etcd-client.key
 %{ if service_cidr != "" ~}
     - --service-cluster-ip-range=${service_cidr}
 %{ endif ~}
@@ -52,7 +48,7 @@ spec:
     livenessProbe:
       failureThreshold: 8
       httpGet:
-        host: $${HOST_IP}
+        host: 127.0.0.1
         path: /healthz
         port: ${secure_port}
         scheme: HTTPS
@@ -73,9 +69,6 @@ spec:
       readOnly: true
     - mountPath: ${config_path}
       name: k8s-configs
-      readOnly: true
-    - mountPath: /usr/local/share/ca-certificates
-      name: usr-local-share-ca-certificates
       readOnly: true
     - mountPath: /usr/share/ca-certificates
       name: usr-share-ca-certificates
@@ -105,10 +98,6 @@ spec:
       path: ${log_path}
       type: DirectoryOrCreate
     name: k8s-logs
-  - hostPath:
-      path: /usr/local/share/ca-certificates
-      type: DirectoryOrCreate
-    name: usr-local-share-ca-certificates
   - hostPath:
       path: /usr/share/ca-certificates
       type: DirectoryOrCreate

@@ -3,8 +3,23 @@ variable "name" {
   type        = string
 }
 
-variable "container" {
-  description = "Desired containers(hyperkube, cfssl, coredns, and so on) repo and tag."
+variable "kubernetes_version" {
+  description = "Kubernetes cluster version."
+  type        = string
+  default     = "v1.18.5"
+}
+
+variable "binaries" {
+  description = "Desired binaries(kubelet, kubectl, and cni) url and chechsum."
+  type = map(object({
+    url      = string
+    chechsum = string
+  }))
+  default = {}
+}
+
+variable "containers" {
+  description = "Desired containers(kube-apiserver, kube-controller-manager, cfssl, coredns, and so on) repo and tag."
   type = map(object({
     repo = string
     tag  = string
@@ -105,7 +120,7 @@ variable "enable_irsa" {
   default     = false
 }
 
-variable "oidc_confg" {
+variable "oidc_config" {
   description = "The service account config to enable pod identity feature"
   type = object({
     issuer        = string

@@ -6,15 +6,11 @@ After=kubelet.service
 Type=simple
 RemainAfterExit=true
 
-ExecStartPre=/usr/bin/mkdir -p ${addons_path}
-ExecStart=/usr/bin/docker run --rm \
-    -v /etc/kubernetes/admin.conf:/etc/kubernetes/admin.conf \
-    -v ${addons_path}:${addons_path} \
-    -e KUBECONFIG=/etc/kubernetes/admin.conf \
-    --network=host \
-    ${image} \
-      kubectl apply -f ${addons_path}
-
+ExecStartPre=/usr/bin/mkdir -p ${path}
+Environment="PATH=/opt/bin:/opt/kubernetes/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
+Environment="KUBECONFIG=/etc/kubernetes/admin.conf"
+ExecStart=/opt/kubernetes/bin/kubectl apply -f ${path}
+      
 Restart=on-failure
 RestartSec=10
 

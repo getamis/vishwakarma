@@ -3,7 +3,7 @@ variable "name" {
   type        = string
 }
 
-variable "container" {
+variable "containers" {
   description = "Desired containers(etcd) repo and tag."
   type = map(object({
     repo = string

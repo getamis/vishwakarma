@@ -35,7 +35,7 @@ module "master" {
   kube_cluster_network_cidr = var.cluster_cidr
 
   etcd_instance_config = {
-    instance_count     = "3"
+    count              = "1"
     ec2_type           = "t3.medium"
     root_volume_size   = "40"
     data_volume_size   = "100"
@@ -45,7 +45,7 @@ module "master" {
   }
 
   master_instance_config = {
-    instance_count   = "2"
+    count            = "1"
     ec2_type_1       = "t3.medium"
     ec2_type_2       = "t2.medium"
     root_volume_iops = "100"

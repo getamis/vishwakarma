@@ -4,7 +4,7 @@ module "etcd" {
   name            = var.name
   ssh_key         = var.ssh_key
   instance_config = var.etcd_instance_config
-  container       = local.container
+  containers      = var.override_containers
 
   subnet_ids                  = var.private_subnet_ids
   master_security_group_id    = module.master.master_sg_id

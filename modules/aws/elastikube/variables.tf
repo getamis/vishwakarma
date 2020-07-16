@@ -1,5 +1,5 @@
 variable "name" {
-  description = " (Required) Name of the cluster."
+  description = "(Required) Name of the cluster."
   type        = string
 }
 
@@ -9,8 +9,17 @@ variable "kubernetes_version" {
   default     = "v1.18.5"
 }
 
-variable "container" {
-  description = "Desired containers(hyperkube, cfssl, coredns, and so on) repo and tag."
+variable "override_binaries" {
+  description = "Desired binaries(kubelet, kubectl, and cni) url and chechsum."
+  type = map(object({
+    url      = string
+    chechsum = string
+  }))
+  default = {}
+}
+
+variable "override_containers" {
+  description = "Desired containers(kube-apiserver, kube-controller-manager, cfssl, coredns, and so on) repo and tag."
   type = map(object({
     repo = string
     tag  = string

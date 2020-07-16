@@ -7,7 +7,7 @@ data "ignition_file" "kube_scheduler" {
 
   content {
     content = templatefile("${path.module}/templates/manifests/kube-scheduler.yaml.tpl", {
-      image       = "${local.container["hyperkube"].repo}:${local.container["hyperkube"].tag}"
+      image       = "${local.containers["kube_scheduler"].repo}:${local.containers["kube_scheduler"].tag}"
       kubeconfig  = local.kubeconfig_paths["scheduler"]
       extra_flags = local.scheduler_flags
     })

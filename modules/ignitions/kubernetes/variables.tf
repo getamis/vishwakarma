@@ -3,8 +3,23 @@ variable "control_plane" {
   default = false
 }
 
-variable "container" {
-  description = "Desired containers(hyperkube, cfssl, coredns, and so on) repo and tag."
+variable "kubernetes_version" {
+  description = "Kubernetes cluster version."
+  type        = string
+  default     = "v1.18.5"
+}
+
+variable "binaries" {
+  description = "Desired binaries(kubelet, kubectl, and cni) url and chechsum."
+  type = map(object({
+    url      = string
+    chechsum = string
+  }))
+  default = {}
+}
+
+variable "containers" {
+  description = "Desired containers(kube-apiserver, kube-controller-manager, cfssl, coredns, and so on) repo and tag."
   type = map(object({
     repo = string
     tag  = string
@@ -38,11 +53,11 @@ variable "network_plugin" {
 variable "tls_bootstrap_token" {
   description = "The token uses to authenticate API server."
   type = object({
-    id = string
+    id     = string
     secret = string
   })
   default = {
-    id = ""
+    id     = ""
     secret = ""
   }
 }
@@ -57,6 +72,11 @@ variable "cloud_config" {
     provider = ""
     path     = ""
   }
+}
+
+variable "kubelet_cert" {
+  description = "The kubelet cert args."
+  default     = {}
 }
 
 variable "kubelet_config" {
@@ -136,7 +156,7 @@ variable "enable_irsa" {
   default     = false
 }
 
-variable "oidc_confg" {
+variable "oidc_config" {
   description = "The service account config to enable pod identity feature."
   type = object({
     issuer        = string

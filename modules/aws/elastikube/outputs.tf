@@ -1,3 +1,8 @@
+output "kubernetes_version" {
+  value       = var.kubernetes_version
+  description = "Kubernetes cluster version."
+}
+
 output "id" {
   value       = var.name
   description = "Kubernetes cluster name."
@@ -6,11 +11,6 @@ output "id" {
 output "endpoint" {
   value       = module.master.endpoint
   description = "Kubernetes cluster endpoint."
-}
-
-output "kubernetes_version" {
-  value       = var.kubernetes_version
-  description = "Kubernetes cluster version."
 }
 
 output "vpc_id" {
@@ -24,7 +24,7 @@ output "ignition_s3_bucket" {
 }
 
 output "oidc_s3_bucket" {
-  value       = module.kube_auth.oidc_s3_bucket
+  value       = module.kube_iam_auth.oidc_s3_bucket
   description = "The S3 bucket for storing oidc data"
 }
 

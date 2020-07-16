@@ -1,8 +1,8 @@
 locals {
-  vpc_id       = data.aws_subnet.etcd[0].vpc_id
-  az_num       = length(data.aws_availability_zones.available.names)
-  client_port  = 2379
-  peer_port    = 2380
+  vpc_id             = data.aws_subnet.etcd[0].vpc_id
+  az_num             = length(data.aws_availability_zones.available.names)
+  client_port        = 2379
+  peer_port          = 2380
   node_exporter_port = 9100
 }
 
@@ -21,9 +21,9 @@ module "latest_os_ami" {
 }
 
 resource "aws_network_interface" "etcd" {
-  count             = local.instance_config["count"]
-  subnet_id         = var.subnet_ids[count.index % length(var.subnet_ids)]
-  security_groups   = compact(concat(
+  count     = local.instance_config["count"]
+  subnet_id = var.subnet_ids[count.index % length(var.subnet_ids)]
+  security_groups = compact(concat(
     var.security_group_ids,
     list(aws_security_group.etcd.id)
   ))

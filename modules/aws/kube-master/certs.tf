@@ -32,6 +32,7 @@ module "apiserver_cert" {
       "kubernetes",
       "kubernetes.default",
       "kubernetes.default.svc",
+      // TODO: pass "cluster.local" from variable
       "kubernetes.default.svc.cluster.local",
       aws_elb.master_internal.dns_name,
     ),
@@ -47,8 +48,7 @@ module "apiserver_cert" {
   cert_uses = [
     "key_encipherment",
     "digital_signature",
-    "server_auth",
-    "client_auth",
+    "server_auth"
   ]
 
   self_signed = true
@@ -64,7 +64,7 @@ module "admin_cert" {
   }
 
   cert_config = {
-    common_name           = "admin"
+    common_name           = "kubernetes-admin"
     organization          = "system:masters"
     validity_period_hours = var.certs_validity_period_hours
   }
@@ -75,7 +75,6 @@ module "admin_cert" {
   cert_uses = [
     "key_encipherment",
     "digital_signature",
-    "server_auth",
     "client_auth",
   ]
 
@@ -103,7 +102,6 @@ module "controller_manager_cert" {
   cert_uses = [
     "key_encipherment",
     "digital_signature",
-    "server_auth",
     "client_auth",
   ]
 
@@ -131,7 +129,6 @@ module "scheduler_cert" {
   cert_uses = [
     "key_encipherment",
     "digital_signature",
-    "server_auth",
     "client_auth",
   ]
 
@@ -156,7 +153,6 @@ module "apiserver_kubelet_client_cert" {
   cert_uses = [
     "key_encipherment",
     "digital_signature",
-    "server_auth",
     "client_auth",
   ]
 
@@ -181,7 +177,6 @@ module "apiserver_etcd_client_cert" {
   cert_uses = [
     "key_encipherment",
     "digital_signature",
-    "server_auth",
     "client_auth",
   ]
 
@@ -219,7 +214,6 @@ module "front_proxy_client_cert" {
   cert_uses = [
     "key_encipherment",
     "digital_signature",
-    "server_auth",
     "client_auth",
   ]
 

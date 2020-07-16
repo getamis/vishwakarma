@@ -1,7 +1,7 @@
 output "systemd_units" {
   value = concat(
     [
-      data.ignition_systemd_unit.kubelet_init.rendered,
+      data.ignition_systemd_unit.kubernetes_init.rendered,
       data.ignition_systemd_unit.kubelet.rendered,
     ],
     var.control_plane ? [data.ignition_systemd_unit.kube_addon_manager[0].rendered] : []
@@ -11,10 +11,14 @@ output "systemd_units" {
 output "files" {
   value = concat(
     [
+      data.ignition_file.kubernetes_env.rendered,
+      data.ignition_file.init_sh.rendered,
+      data.ignition_file.get_host_info_sh.rendered,
+      data.ignition_file.kubelet_wrapper_sh.rendered,
       data.ignition_file.kubelet_env.rendered,
-      data.ignition_file.kubelet_init_sh.rendered,
-      data.ignition_file.get_instance_info_sh.rendered,
       data.ignition_file.systemd_kubelet_conf.rendered,
+      data.ignition_file.kubelet_config_tpl.rendered,
+      data.ignition_file.sysctl_k8s_conf.rendered,
     ],
     var.control_plane ? [
       data.ignition_file.kube_apiserver_tpl[0].rendered,
@@ -58,7 +62,8 @@ output "cert_files" {
       data.ignition_file.front_proxy_client_key[0].rendered,
       data.ignition_file.service_account_public_key[0].rendered,
       data.ignition_file.service_account_private_key[0].rendered,
-      data.ignition_file.kubelet_csr_json[0].rendered,
+      data.ignition_file.kubelet_csr_json_tpl[0].rendered,
+      data.ignition_file.ca_config_json_tpl[0].rendered,
     ] : []
   )
 }
