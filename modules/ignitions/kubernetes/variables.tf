@@ -6,7 +6,7 @@ variable "control_plane" {
 variable "kubernetes_version" {
   description = "Kubernetes cluster version."
   type        = string
-  default     = "v1.18.5"
+  default     = "v1.18.6"
 }
 
 variable "binaries" {
@@ -25,6 +25,12 @@ variable "containers" {
     tag  = string
   }))
   default = {}
+}
+
+variable "internal_endpoint" {
+  description = "The internal endpoint of kube-apiserver."
+  type        = string
+  default     = "https://127.0.0.1"
 }
 
 variable "apiserver_secure_port" {
@@ -56,10 +62,6 @@ variable "tls_bootstrap_token" {
     id     = string
     secret = string
   })
-  default = {
-    id     = ""
-    secret = ""
-  }
 }
 
 variable "cloud_config" {

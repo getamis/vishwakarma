@@ -5,7 +5,6 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-Environment="PATH=/opt/bin:/opt/kubernetes/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
 ExecStart=/opt/kubernetes/bin/kubelet
 
 Restart=always
@@ -14,4 +13,4 @@ RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
-RequiredBy=kube-addon.service
+RequiredBy=kubernetes-init.service

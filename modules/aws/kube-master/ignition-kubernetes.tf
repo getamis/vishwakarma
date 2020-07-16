@@ -26,6 +26,7 @@ module "ignition_kubernetes" {
   service_network_cidr  = var.service_network_cidr
   pod_network_cidr      = var.cluster_network_cidr
   network_plugin        = var.network_plugin
+  internal_endpoint     = "https://${aws_elb.master_internal.dns_name}"
   etcd_endpoints        = join(",", var.etcd_endpoints)
 
   tls_bootstrap_token = {

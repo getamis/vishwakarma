@@ -1,12 +1,12 @@
-data "aws_subnet" "subnet" {
-  id = var.subnet_ids[0]
-}
-
 locals {
   vpc_id = data.aws_subnet.subnet.vpc_id
 
   extra_tags_keys   = keys(var.extra_tags)
   extra_tags_values = values(var.extra_tags)
+}
+
+data "aws_subnet" "subnet" {
+  id = var.subnet_ids[0]
 }
 
 data "null_data_source" "tags" {
@@ -20,10 +20,10 @@ data "null_data_source" "tags" {
 }
 
 resource "aws_autoscaling_group" "worker" {
-  name_prefix         = "${var.cluster_name}-worker-${var.worker_config["name"]}-"
-  desired_capacity    = var.worker_config["instance_count"]
-  max_size            = var.worker_config["instance_count"] * 3
-  min_size            = var.worker_config["instance_count"]
+  name_prefix         = "${var.name}-worker-${local.instance_config["name"]}-"
+  desired_capacity    = local.instance_config["count"]
+  max_size            = local.instance_config["count"] * 3
+  min_size            = local.instance_config["count"]
   vpc_zone_identifier = var.subnet_ids
   load_balancers      = var.load_balancer_ids
   target_group_arns   = var.target_group_arns
@@ -36,29 +36,29 @@ resource "aws_autoscaling_group" "worker" {
       }
 
       override {
-        instance_type = var.worker_config["ec2_type_1"]
+        instance_type = local.instance_config["ec2_type_1"]
       }
 
       override {
-        instance_type = var.worker_config["ec2_type_2"]
+        instance_type = local.instance_config["ec2_type_2"]
       }
     }
 
     instances_distribution {
-      on_demand_base_capacity                  = var.worker_config["on_demand_base_capacity"]
-      on_demand_percentage_above_base_capacity = var.worker_config["on_demand_percentage_above_base_capacity"]
-      spot_instance_pools                      = var.worker_config["spot_instance_pools"]
+      on_demand_base_capacity                  = local.instance_config["on_demand_base_capacity"]
+      on_demand_percentage_above_base_capacity = local.instance_config["on_demand_percentage_above_base_capacity"]
+      spot_instance_pools                      = local.instance_config["spot_instance_pools"]
     }
   }
 
   tags = concat(data.null_data_source.tags.*.outputs, [
     {
       key                 = "Name"
-      value               = "${var.cluster_name}-worker-${var.worker_config["name"]}"
+      value               = "${var.name}-worker-${local.instance_config["name"]}"
       propagate_at_launch = true
     },
     {
-      key                 = "kubernetes.io/cluster/${var.cluster_name}"
+      key                 = "kubernetes.io/cluster/${var.name}"
       value               = "owned"
       propagate_at_launch = true
     },
@@ -81,9 +81,9 @@ module "latest_os_ami" {
 }
 
 resource "aws_launch_template" "worker" {
-  instance_type = var.worker_config["ec2_type_1"]
+  instance_type = local.instance_config["ec2_type_1"]
   image_id      = module.latest_os_ami.image_id
-  name_prefix   = "${var.cluster_name}-worker-${var.worker_config["name"]}-"
+  name_prefix   = "${var.name}-worker-${local.instance_config["name"]}-"
 
   vpc_security_group_ids = var.security_group_ids
 
@@ -98,9 +98,9 @@ resource "aws_launch_template" "worker" {
     device_name = "/dev/xvda"
 
     ebs {
-      volume_type = var.worker_config["root_volume_type"]
-      volume_size = var.worker_config["root_volume_size"]
-      iops        = var.worker_config["root_volume_type"] == "io1" ? var.worker_config["root_volume_iops"] : var.worker_config["root_volume_type"] == "gp2" ? 0 : min(10000, max(100, 3 * var.worker_config["root_volume_size"]))
+      volume_type = local.instance_config["root_volume_type"]
+      volume_size = local.instance_config["root_volume_size"]
+      iops        = local.instance_config["root_volume_type"] == "io1" ? local.instance_config["root_volume_iops"] : local.instance_config["root_volume_type"] == "gp2" ? 0 : min(10000, max(100, 3 * local.instance_config["root_volume_size"]))
     }
   }
 

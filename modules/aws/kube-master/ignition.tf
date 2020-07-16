@@ -19,7 +19,7 @@ data "ignition_config" "main" {
     module.ignition_admin_kubeconfig.files,
     module.ignition_scheduler_kubeconfig.files,
     module.ignition_controller_manager_kubeconfig.files,
-    module.ignition_kubelet_kubeconfig_tpl.files,
+    module.ignition_kubelet_kubeconfig.files,
     module.ignition_kubernetes.files,
     module.ignition_kubernetes.cert_files,
     var.extra_ignition_file_ids,

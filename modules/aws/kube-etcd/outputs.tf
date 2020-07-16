@@ -6,13 +6,13 @@ output "endpoints" {
 }
 
 output "ca_cert" {
-  value     = module.etcd_ca.cert_pem
   sensitive = true
+  value     = module.etcd_ca.cert_pem
 }
 
 output "ca_key" {
-  value     = module.etcd_ca.private_key_pem
   sensitive = true
+  value     = module.etcd_ca.private_key_pem
 }
 
 output "default_role_name" {

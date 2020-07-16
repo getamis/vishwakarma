@@ -6,7 +6,7 @@ variable "name" {
 variable "kubernetes_version" {
   description = "Kubernetes cluster version."
   type        = string
-  default     = "v1.18.5"
+  default     = "v1.18.6"
 }
 
 variable "override_binaries" {
@@ -25,6 +25,12 @@ variable "override_containers" {
     tag  = string
   }))
   default = {}
+}
+
+variable "kube_apiserver_secure_port" {
+  description = "The port on which to serve HTTPS with authentication and authorization for kube-apiserver."
+  type        = number
+  default     = 6443
 }
 
 variable "kube_service_network_cidr" {

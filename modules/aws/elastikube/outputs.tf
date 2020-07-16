@@ -47,14 +47,19 @@ output "etcd_role_name" {
 }
 
 output "kubernetes_ca_cert" {
-  description = "Kubernetes root CA Cert"
+  description = "Kubernetes certificate authority."
+  sensitive   = true
   value       = module.master.kubernetes_ca_cert
 }
 
 output "tls_bootstrap_token_id" {
-  value = module.master.tls_bootstrap_token_id
+  description = "TLS bootstrapping token ID."
+  sensitive = true
+  value     = module.master.tls_bootstrap_token_id
 }
 
 output "tls_bootstrap_token_secret" {
-  value = module.master.tls_bootstrap_token_secret
+  description = "TLS bootstrapping token secret."
+  sensitive = true
+  value     = module.master.tls_bootstrap_token_secret
 }

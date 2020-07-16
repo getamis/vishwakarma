@@ -7,19 +7,23 @@ output "webhook_kubeconfig_path" {
 }
 
 output "webhook_cert" {
-  value = module.webhook_cert.cert_pem
+  sensitive = true
+  value     = module.webhook_cert.cert_pem
 }
 
 output "webhook_cert_key" {
-  value = module.webhook_cert.private_key_pem
+  sensitive = true
+  value     = module.webhook_cert.private_key_pem
 }
 
 output "oidc_issuer_pub_key" {
-  value = tls_private_key.oidc_issuer.public_key_pem
+  sensitive = true
+  value     = tls_private_key.oidc_issuer.public_key_pem
 }
 
 output "oidc_issuer_pri_key" {
-  value = tls_private_key.oidc_issuer.private_key_pem
+  sensitive = true
+  value     = tls_private_key.oidc_issuer.private_key_pem
 }
 
 output "oidc_s3_bucket" {

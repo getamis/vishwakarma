@@ -34,7 +34,19 @@ data "ignition_file" "kubernetes_env" {
   }
 }
 
+data "ignition_file" "install_sh" {
+  path       = "${local.opt_path}/bin/install.sh"
+  filesystem = "root"
+  mode       = 500
+
+  content {
+    content = file("${path.module}/files/script/install.sh")
+  }
+}
+
 data "ignition_file" "init_sh" {
+  count = var.control_plane ? 1 : 0
+  
   path       = "${local.opt_path}/bin/init.sh"
   filesystem = "root"
   mode       = 500
@@ -44,8 +56,18 @@ data "ignition_file" "init_sh" {
   }
 }
 
+data "ignition_systemd_unit" "kubernetes_install" {
+  name    = "kubernetes-install.service"
+  enabled = true
+  content = templatefile("${path.module}/templates/services/kubernetes-install.service.tpl", {})
+}
+
 data "ignition_systemd_unit" "kubernetes_init" {
+  count = var.control_plane ? 1 : 0
+
   name    = "kubernetes-init.service"
   enabled = true
-  content = templatefile("${path.module}/templates/services/kubernetes-init.service.tpl", {})
+  content = templatefile("${path.module}/templates/services/kubernetes-init.service.tpl", {
+    path = local.addons_path
+  })
 }

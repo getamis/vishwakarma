@@ -1,3 +1,10 @@
+locals {
+  kubelet_config_v1beta1 = merge(local.kubelet_config, {
+    apiVersion = "kubelet.config.k8s.io/v1beta1"
+    kind       = "KubeletConfiguration"
+  })
+}
+
 data "ignition_file" "sysctl_k8s_conf" {
   path       = "/etc/sysctl.d/k8s.conf"
   filesystem = "root"
@@ -64,7 +71,7 @@ data "ignition_file" "kubelet_config_tpl" {
 
   content {
     content = templatefile("${path.module}/templates/configs/kubelet.yaml.tpl", {
-      content = local.kubelet_config
+      content = local.kubelet_config_v1beta1
     })
   }
 }

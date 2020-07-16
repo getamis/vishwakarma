@@ -1,10 +1,12 @@
 output "systemd_units" {
   value = concat(
     [
-      data.ignition_systemd_unit.kubernetes_init.rendered,
+      data.ignition_systemd_unit.kubernetes_install.rendered,
       data.ignition_systemd_unit.kubelet.rendered,
     ],
-    var.control_plane ? [data.ignition_systemd_unit.kube_addon_manager[0].rendered] : []
+    var.control_plane ? [
+      data.ignition_systemd_unit.kubernetes_init[0].rendered,
+    ] : []
   )
 }
 
@@ -12,7 +14,7 @@ output "files" {
   value = concat(
     [
       data.ignition_file.kubernetes_env.rendered,
-      data.ignition_file.init_sh.rendered,
+      data.ignition_file.install_sh.rendered,
       data.ignition_file.get_host_info_sh.rendered,
       data.ignition_file.kubelet_wrapper_sh.rendered,
       data.ignition_file.kubelet_env.rendered,
@@ -21,14 +23,15 @@ output "files" {
       data.ignition_file.sysctl_k8s_conf.rendered,
     ],
     var.control_plane ? [
+      data.ignition_file.init_sh[0].rendered,
       data.ignition_file.kube_apiserver_tpl[0].rendered,
       data.ignition_file.kube_controller_manager[0].rendered,
       data.ignition_file.kube_scheduler[0].rendered,
       data.ignition_file.coredns[0].rendered,
       data.ignition_file.kube_proxy[0].rendered,
+      data.ignition_file.kube_proxy_cm[0].rendered,
       data.ignition_file.bootstrap_token_secret[0].rendered,
       data.ignition_file.bootstrap_token_rbac[0].rendered,
-      data.ignition_file.kube_proxy_cm_tpl[0].rendered,
       data.ignition_file.audit_log_policy[0].rendered,
       data.ignition_file.encryption_config[0].rendered,
     ] : [],

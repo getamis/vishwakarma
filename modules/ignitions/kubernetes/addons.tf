@@ -1,22 +1,12 @@
 locals {
-  kube_proxy_cm_content = {
+  kube_proxy_cm_v1alpha1 = {
     data = {
-      "config.conf" = merge({
+      "config.conf" = merge(local.kube_proxy_config, {
         apiVersion = "kubeproxy.config.k8s.io/v1alpha1"
         kind       = "KubeProxyConfiguration"
-      }, local.kube_proxy_config)
+      })
     }
   }
-}
-
-data "ignition_systemd_unit" "kube_addon_manager" {
-  count = var.control_plane ? 1 : 0
-
-  name    = "kube-addon-manager.service"
-  enabled = true
-  content = templatefile("${path.module}/templates/services/kube-addon-manager.service.tpl", {
-    path = local.addons_path
-  })
 }
 
 data "ignition_file" "kube_proxy" {
@@ -33,17 +23,17 @@ data "ignition_file" "kube_proxy" {
   }
 }
 
-data "ignition_file" "kube_proxy_cm_tpl" {
+data "ignition_file" "kube_proxy_cm" {
   count = var.control_plane ? 1 : 0
 
   filesystem = "root"
   mode       = 420
-  path       = "${local.opt_path}/templates/kube-proxy-cm.yaml.tpl"
+  path       = "${local.addons_path}/kube-proxy-cm.yaml"
 
   content {
     content = templatefile("${path.module}/templates/addons/kube-proxy-cm.yaml.tpl", {
-      secure_port = var.apiserver_secure_port
-      content     = local.kube_proxy_cm_content
+      endpoint = var.internal_endpoint
+      content  = local.kube_proxy_cm_v1alpha1
     })
   }
 }

@@ -25,8 +25,8 @@ data "ignition_file" "bootstrap_token_secret" {
 
   content {
     content = templatefile("${path.module}/templates/bootstrap-token/secret.yaml.tpl", {
-      id     = var.tls_bootstrap_token["id"]
-      secret = var.tls_bootstrap_token["secret"]
+      id     = var.tls_bootstrap_token.id
+      secret = var.tls_bootstrap_token.secret
     })
   }
 }

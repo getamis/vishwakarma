@@ -23,7 +23,7 @@ module "ignition_controller_manager_kubeconfig" {
   cluster  = var.name
   context  = "system:kube-controller-manager@kubernetes"
   user     = "system:kube-controller-manager"
-  endpoint = "https://127.0.0.1:6443"
+  endpoint = "https://127.0.0.1:${var.apiserver_secure_port}"
 
   certificates = {
     ca_cert     = module.kubernetes_ca.cert_pem
@@ -40,7 +40,7 @@ module "ignition_scheduler_kubeconfig" {
   cluster  = var.name
   context  = "system:kube-scheduler@kubernetes"
   user     = "system:kube-scheduler"
-  endpoint = "https://127.0.0.1:6443"
+  endpoint = "https://127.0.0.1:${var.apiserver_secure_port}"
 
   certificates = {
     ca_cert     = module.kubernetes_ca.cert_pem
@@ -49,16 +49,15 @@ module "ignition_scheduler_kubeconfig" {
   }
 }
 
-// TODO: pass "config_path" from variable
-module "ignition_kubelet_kubeconfig_tpl" {
+module "ignition_kubelet_kubeconfig" {
   source = "../../ignitions/kubeconfig"
 
-  config_path = "/opt/kubernetes/templates/kubelet.conf.tpl"
+  config_path = "/etc/kubernetes/kubelet.conf"
 
   cluster  = var.name
-  context  = "system:node:$${HOSTNAME}@kubernetes"
-  user     = "system:node:$${HOSTNAME}"
-  endpoint = "https://127.0.0.1:6443"
+  context  = "system:kubelet@kubernetes"
+  user     = "system:kubelet"
+  endpoint = "https://127.0.0.1:${var.apiserver_secure_port}"
 
   certificates = {
     ca_cert          = module.kubernetes_ca.cert_pem

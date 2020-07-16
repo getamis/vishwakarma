@@ -1,21 +1,17 @@
 [Unit]
-Description = Systemd unit for initing Kubernetes
-ConditionPathExists = !/opt/kubernetes/init.done
-Before = kubelet.service
-After = network.target
+Description=Systemd unit for initing Kubernetes resources
+After=kubelet.service
 
 [Service]
-Type=oneshot
+Type=simple
 RemainAfterExit=true
 
-User=root
-Group=root
-
-Environment="PATH=/opt/bin:/opt/kubernetes/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
 EnvironmentFile=-/etc/default/kubernetes.env
+Environment="ADDONS_PATH=${path}"
 ExecStart=/opt/kubernetes/bin/init.sh
-ExecStartPost=/bin/touch /opt/kubernetes/init.done
+      
+Restart=on-failure
+RestartSec=10
 
 [Install]
-WantedBy = multi-user.target
-RequiredBy = kubelet.service
+WantedBy=multi-user.target

@@ -11,17 +11,21 @@ output "default_role_name" {
 }
 
 output "kubernetes_ca_cert" {
-  value = base64encode(module.kubernetes_ca.cert_pem)
+  sensitive = true
+  value     = module.kubernetes_ca.cert_pem
 }
 
 output "service_account_pub_key" {
-  value = module.service_account.public_key_pem
+  sensitive = true
+  value     = module.service_account.public_key_pem
 }
 
 output "tls_bootstrap_token_id" {
-  value = random_id.bootstrap_token_id.hex
+  sensitive = true
+  value     = random_id.bootstrap_token_id.hex
 }
 
 output "tls_bootstrap_token_secret" {
-  value = random_id.bootstrap_token_secret.hex
+  sensitive = true
+  value     = random_id.bootstrap_token_secret.hex
 }

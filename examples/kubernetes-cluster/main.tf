@@ -67,72 +67,86 @@ module "master" {
   extra_tags = module.label.tags
 }
 
-# # ---------------------------------------------------------------------------------------------------------------------
-# # Worker Node (On Demand Instance)
-# # ---------------------------------------------------------------------------------------------------------------------
+# ---------------------------------------------------------------------------------------------------------------------
+# Nodes (On Demand Instance)
+# ---------------------------------------------------------------------------------------------------------------------
 
-# module "worker_on_demand" {
-#   source = "../../modules/aws/kube-worker"
+module "worker_on_demand" {
+  source = "../../modules/aws/kube-worker"
 
-#   cluster_name        = module.label.id
-#   hyperkube_container = var.hyperkube_container
-#   network_plugin      = var.network_plugin
-#   kube_service_cidr   = var.service_cidr
+  name                 = module.label.id
+  endpoint             = module.master.endpoint
+  kubernetes_version   = var.kubernetes_version
+  service_network_cidr = var.service_cidr
+  network_plugin       = var.network_plugin
 
-#   security_group_ids = module.master.worker_sg_ids
-#   subnet_ids         = module.network.private_subnet_ids
+  kubernetes_ca_cert = module.master.kubernetes_ca_cert
+  tls_bootstrap_token = {
+    id     = module.master.tls_bootstrap_token_id
+    secret = module.master.tls_bootstrap_token_secret
+  }
 
-#   worker_config = {
-#     name             = "on-demand"
-#     instance_count   = "2"
-#     ec2_type_1       = "t3.medium"
-#     ec2_type_2       = "t2.medium"
-#     root_volume_iops = "0"
-#     root_volume_size = "40"
-#     root_volume_type = "gp2"
+  security_group_ids = module.master.worker_sg_ids
+  subnet_ids         = module.network.private_subnet_ids
 
-#     on_demand_base_capacity                  = 0
-#     on_demand_percentage_above_base_capacity = 100
-#     spot_instance_pools                      = 1
-#   }
+  instance_config = {
+    name             = "on-demand"
+    count            = "1"
+    ec2_type_1       = "t3.medium"
+    ec2_type_2       = "t2.medium"
+    root_volume_iops = "0"
+    root_volume_size = "40"
+    root_volume_type = "gp2"
 
-#   s3_bucket = module.master.ignition_s3_bucket
-#   ssh_key   = var.key_pair_name
+    on_demand_base_capacity                  = 0
+    on_demand_percentage_above_base_capacity = 100
+    spot_instance_pools                      = 1
+  }
 
-#   extra_tags = module.label.tags
-# }
+  s3_bucket = module.master.ignition_s3_bucket
+  ssh_key   = var.key_pair_name
 
-# # ---------------------------------------------------------------------------------------------------------------------
-# # Worker Node (On Spot Instance)
-# # ---------------------------------------------------------------------------------------------------------------------
+  extra_tags = module.label.tags
+}
 
-# module "worker_spot" {
-#   source = "../../modules/aws/kube-worker"
+# ---------------------------------------------------------------------------------------------------------------------
+# Nodes (On Spot Instance)
+# ---------------------------------------------------------------------------------------------------------------------
 
-#   cluster_name        = module.label.id
-#   hyperkube_container = var.hyperkube_container
-#   network_plugin      = var.network_plugin
-#   kube_service_cidr   = var.service_cidr
+module "worker_spot" {
+  source = "../../modules/aws/kube-worker"
 
-#   security_group_ids = module.master.worker_sg_ids
-#   subnet_ids         = module.network.private_subnet_ids
+  name                 = module.label.id
+  endpoint             = module.master.endpoint
+  kubernetes_version   = var.kubernetes_version
+  service_network_cidr = var.service_cidr
+  network_plugin       = var.network_plugin
 
-#   worker_config = {
-#     name             = "spot"
-#     instance_count   = "2"
-#     ec2_type_1       = "m5.large"
-#     ec2_type_2       = "m4.large"
-#     root_volume_iops = "0"
-#     root_volume_size = "40"
-#     root_volume_type = "gp2"
+  kubernetes_ca_cert = module.master.kubernetes_ca_cert
+  tls_bootstrap_token = {
+    id     = module.master.tls_bootstrap_token_id
+    secret = module.master.tls_bootstrap_token_secret
+  }
 
-#     on_demand_base_capacity                  = 0
-#     on_demand_percentage_above_base_capacity = 0
-#     spot_instance_pools                      = 1
-#   }
+  security_group_ids = module.master.worker_sg_ids
+  subnet_ids         = module.network.private_subnet_ids
 
-#   s3_bucket = module.master.ignition_s3_bucket
-#   ssh_key   = var.key_pair_name
+  instance_config = {
+    name             = "spot"
+    count            = "2"
+    ec2_type_1       = "m5.large"
+    ec2_type_2       = "m4.large"
+    root_volume_iops = "0"
+    root_volume_size = "40"
+    root_volume_type = "gp2"
 
-#   extra_tags = module.label.tags
-# }
+    on_demand_base_capacity                  = 0
+    on_demand_percentage_above_base_capacity = 0
+    spot_instance_pools                      = 1
+  }
+
+  s3_bucket = module.master.ignition_s3_bucket
+  ssh_key   = var.key_pair_name
+
+  extra_tags = module.label.tags
+}
