@@ -2,6 +2,13 @@ locals {
   kubelet_config_v1beta1 = merge(local.kubelet_config, {
     apiVersion = "kubelet.config.k8s.io/v1beta1"
     kind       = "KubeletConfiguration"
+
+    authentication = {
+      x509 = {
+        clientCAFile = "${local.etc_path}/pki/ca.crt"
+      }
+    }
+    staticPodPath = "${local.etc_path}/manifests"
   })
 }
 
@@ -77,7 +84,7 @@ data "ignition_file" "kubelet_config_tpl" {
 }
 
 data "ignition_file" "kubelet_env" {
-  path       = "${local.kubelet_var_path}/kubelet-flags.env"
+  path       = "/var/lib/kubelet/kubelet-flags.env"
   filesystem = "root"
   mode       = 420
 
@@ -97,8 +104,8 @@ data "ignition_file" "systemd_kubelet_conf" {
 
   content {
     content = templatefile("${path.module}/templates/services/10-kubelet.conf.tpl", {
-      kubeconfig           = local.kubeconfig_paths["kubelet"]
-      bootstrap_kubeconfig = local.kubeconfig_paths["bootstrap_kubelet"]
+      kubeconfig           = "${local.etc_path}/kubelet.conf"
+      bootstrap_kubeconfig = "${local.etc_path}/bootstrap-kubelet.conf"
     })
   }
 }

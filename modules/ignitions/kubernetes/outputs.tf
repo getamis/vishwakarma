@@ -24,7 +24,7 @@ output "files" {
     ],
     var.control_plane ? [
       data.ignition_file.init_sh[0].rendered,
-      data.ignition_file.kube_apiserver_tpl[0].rendered,
+      data.ignition_file.kube_apiserver[0].rendered,
       data.ignition_file.kube_controller_manager[0].rendered,
       data.ignition_file.kube_scheduler[0].rendered,
       data.ignition_file.coredns[0].rendered,
@@ -46,27 +46,23 @@ output "files" {
 }
 
 output "cert_files" {
-  value = concat(
-    [
-      data.ignition_file.kubernetes_ca_cert.rendered,
-    ],
-    var.control_plane ? [
-      data.ignition_file.kubernetes_ca_key[0].rendered,
-      data.ignition_file.etcd_ca_cert[0].rendered,
-      data.ignition_file.front_proxy_ca_cert[0].rendered,
-      data.ignition_file.front_proxy_ca_key[0].rendered,
-      data.ignition_file.apiserver_cert[0].rendered,
-      data.ignition_file.apiserver_key[0].rendered,
-      data.ignition_file.apiserver_kubelet_client_cert[0].rendered,
-      data.ignition_file.apiserver_kubelet_client_key[0].rendered,
-      data.ignition_file.apiserver_etcd_client_cert[0].rendered,
-      data.ignition_file.apiserver_etcd_client_key[0].rendered,
-      data.ignition_file.front_proxy_client_cert[0].rendered,
-      data.ignition_file.front_proxy_client_key[0].rendered,
-      data.ignition_file.service_account_public_key[0].rendered,
-      data.ignition_file.service_account_private_key[0].rendered,
-      data.ignition_file.kubelet_csr_json_tpl[0].rendered,
-      data.ignition_file.ca_config_json_tpl[0].rendered,
-    ] : []
-  )
+  value = var.control_plane ? [
+    data.ignition_file.kubernetes_ca_cert[0].rendered,
+    data.ignition_file.kubernetes_ca_key[0].rendered,
+    data.ignition_file.etcd_ca_cert[0].rendered,
+    data.ignition_file.front_proxy_ca_cert[0].rendered,
+    data.ignition_file.front_proxy_ca_key[0].rendered,
+    data.ignition_file.apiserver_cert[0].rendered,
+    data.ignition_file.apiserver_key[0].rendered,
+    data.ignition_file.apiserver_kubelet_client_cert[0].rendered,
+    data.ignition_file.apiserver_kubelet_client_key[0].rendered,
+    data.ignition_file.apiserver_etcd_client_cert[0].rendered,
+    data.ignition_file.apiserver_etcd_client_key[0].rendered,
+    data.ignition_file.front_proxy_client_cert[0].rendered,
+    data.ignition_file.front_proxy_client_key[0].rendered,
+    data.ignition_file.service_account_public_key[0].rendered,
+    data.ignition_file.service_account_private_key[0].rendered,
+    data.ignition_file.kubelet_csr_json_tpl[0].rendered,
+    data.ignition_file.ca_config_json_tpl[0].rendered,
+  ] : []
 }

@@ -3,13 +3,15 @@ locals {
     local.apiserver_flags,
     local.audit_log_flags,
     {
-      encryption-provider-config = "${local.config_path}/encryption.yaml"
+      audit-policy-file          = "${local.etc_path}/config/policy.yaml"
+      audit-log-path             = "${local.log_path}/kube-apiserver-audit.log"
+      encryption-provider-config = "${local.etc_path}/config/encryption.yaml"
     },
     var.enable_iam_auth ? {
       authentication-token-webhook-config-file = var.auth_webhook_config_path,
     } : {},
     var.enable_irsa ? {
-      service-account-signing-key-file = "${local.pki_path}/sa.key",
+      service-account-signing-key-file = "${local.etc_path}/pki/sa.key",
       api-audiences                    = "${local.oidc_config.api_audiences}"
       service-account-issuer           = "${local.oidc_config.issuer}"
     } : {},
@@ -21,7 +23,7 @@ data "ignition_file" "bootstrap_token_secret" {
 
   filesystem = "root"
   mode       = 420
-  path       = "${local.addons_path}/bootstrap-token-secret.yaml"
+  path       = "${local.etc_path}/addons/bootstrap-token-secret.yaml"
 
   content {
     content = templatefile("${path.module}/templates/bootstrap-token/secret.yaml.tpl", {
@@ -36,7 +38,7 @@ data "ignition_file" "bootstrap_token_rbac" {
 
   filesystem = "root"
   mode       = 420
-  path       = "${local.addons_path}/bootstrap-token-rbac.yaml"
+  path       = "${local.etc_path}/addons/bootstrap-token-rbac.yaml"
 
   content {
     content = templatefile("${path.module}/templates/bootstrap-token/rbac.yaml.tpl", {})
@@ -48,7 +50,7 @@ data "ignition_file" "audit_log_policy" {
 
   filesystem = "root"
   mode       = 420
-  path       = "${local.config_path}/policy.yaml"
+  path       = "${local.etc_path}/config/policy.yaml"
 
   content {
     content = templatefile("${path.module}/templates/configs/audit-policy.yaml.tpl", {
@@ -62,7 +64,7 @@ data "ignition_file" "encryption_config" {
 
   filesystem = "root"
   mode       = 420
-  path       = "${local.config_path}/encryption.yaml"
+  path       = "${local.etc_path}/config/encryption.yaml"
 
   content {
     content = templatefile("${path.module}/templates/configs/encryption.yaml.tpl", {
@@ -71,26 +73,26 @@ data "ignition_file" "encryption_config" {
   }
 }
 
-data "ignition_file" "kube_apiserver_tpl" {
+data "ignition_file" "kube_apiserver" {
   count = var.control_plane ? 1 : 0
 
   filesystem = "root"
   mode       = 420
-  path       = "${local.opt_path}/templates/kube-apiserver.yaml.tpl"
+  path       = "${local.etc_path}/manifests/kube-apiserver.yaml"
 
   content {
     content = templatefile("${path.module}/templates/manifests/kube-apiserver.yaml.tpl", {
       image          = "${local.containers["kube_apiserver"].repo}:${local.containers["kube_apiserver"].tag}"
-      pki_path       = local.pki_path
-      etcd_pki_path  = local.etcd_pki_path
+      pki_path       = "${local.etc_path}/pki"
+      etcd_pki_path  = "${local.etc_path}/pki/etcd"
       log_path       = local.log_path
-      config_path    = local.config_path
+      config_path    = "${local.etc_path}/config"
       secure_port    = var.apiserver_secure_port
       etcd_endpoints = var.etcd_endpoints
       cluster_cidr   = var.pod_network_cidr
       service_cidr   = var.service_network_cidr
 
-      // TODO(k2r2bai): move to merged_apiserver_flags
+      // TODO: move to merged_apiserver_flags
       cloud_provider    = local.cloud_config.provider
       cloud_config_flag = local.cloud_config.path != "" ? "- --cloud-config=${local.cloud_config.path}" : "# no cloud provider config given"
       extra_flags       = local.merged_apiserver_flags

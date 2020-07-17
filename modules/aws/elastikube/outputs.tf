@@ -1,8 +1,3 @@
-output "kubernetes_version" {
-  value       = var.kubernetes_version
-  description = "Kubernetes cluster version."
-}
-
 output "id" {
   value       = var.name
   description = "Kubernetes cluster name."
@@ -44,22 +39,4 @@ output "master_role_name" {
 
 output "etcd_role_name" {
   value = module.etcd.default_role_name
-}
-
-output "kubernetes_ca_cert" {
-  description = "Kubernetes certificate authority."
-  sensitive   = true
-  value       = module.master.kubernetes_ca_cert
-}
-
-output "tls_bootstrap_token_id" {
-  description = "TLS bootstrapping token ID."
-  sensitive = true
-  value     = module.master.tls_bootstrap_token_id
-}
-
-output "tls_bootstrap_token_secret" {
-  description = "TLS bootstrapping token secret."
-  sensitive = true
-  value     = module.master.tls_bootstrap_token_secret
 }

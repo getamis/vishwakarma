@@ -29,7 +29,6 @@ module "master" {
   source = "../../modules/aws/elastikube"
 
   name                      = module.label.id
-  kubernetes_version        = var.kubernetes_version
   network_plugin            = var.network_plugin
   kube_service_network_cidr = var.service_cidr
   kube_cluster_network_cidr = var.cluster_cidr
@@ -75,16 +74,8 @@ module "worker_on_demand" {
   source = "../../modules/aws/kube-worker"
 
   name                 = module.label.id
-  endpoint             = module.master.endpoint
-  kubernetes_version   = var.kubernetes_version
   service_network_cidr = var.service_cidr
   network_plugin       = var.network_plugin
-
-  kubernetes_ca_cert = module.master.kubernetes_ca_cert
-  tls_bootstrap_token = {
-    id     = module.master.tls_bootstrap_token_id
-    secret = module.master.tls_bootstrap_token_secret
-  }
 
   security_group_ids = module.master.worker_sg_ids
   subnet_ids         = module.network.private_subnet_ids
@@ -117,16 +108,8 @@ module "worker_spot" {
   source = "../../modules/aws/kube-worker"
 
   name                 = module.label.id
-  endpoint             = module.master.endpoint
-  kubernetes_version   = var.kubernetes_version
   service_network_cidr = var.service_cidr
   network_plugin       = var.network_plugin
-
-  kubernetes_ca_cert = module.master.kubernetes_ca_cert
-  tls_bootstrap_token = {
-    id     = module.master.tls_bootstrap_token_id
-    secret = module.master.tls_bootstrap_token_secret
-  }
 
   security_group_ids = module.master.worker_sg_ids
   subnet_ids         = module.network.private_subnet_ids

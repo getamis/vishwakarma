@@ -13,7 +13,6 @@ spec:
     image: ${image}
     command:
     - kube-apiserver
-    - --advertise-address=$${HOST_IP}
     - --secure-port=${secure_port}
     - --client-ca-file=${pki_path}/ca.crt
     - --kubelet-client-certificate=${pki_path}/apiserver-kubelet-client.crt

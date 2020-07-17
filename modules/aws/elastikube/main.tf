@@ -12,11 +12,9 @@ module "master" {
   endpoint_public_access = var.endpoint_public_access
   s3_bucket              = aws_s3_bucket.ignition.id
 
-  // kubernetes
-  kubernetes_version = var.kubernetes_version
-  containers         = var.override_containers
-  binaries           = var.override_binaries
-  network_plugin     = var.network_plugin
+  containers     = var.override_containers
+  binaries       = var.override_binaries
+  network_plugin = var.network_plugin
 
   etcd_endpoints = module.etcd.endpoints
   etcd_certs = {

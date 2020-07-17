@@ -3,13 +3,13 @@ data "ignition_file" "kube_controller_manager" {
 
   filesystem = "root"
   mode       = 420
-  path       = "${local.mainifest_path}/kube-controller-manager.yaml"
+  path       = "${local.etc_path}/manifests/kube-controller-manager.yaml"
 
   content {
     content = templatefile("${path.module}/templates/manifests/kube-controller-manager.yaml.tpl", {
       image             = "${local.containers["kube_controller_manager"].repo}:${local.containers["kube_controller_manager"].tag}"
-      kubeconfig        = local.kubeconfig_paths["controller_manager"]
-      pki_path          = local.pki_path
+      kubeconfig        = "${local.etc_path}/controller-manager.conf"
+      pki_path          = "${local.etc_path}/pki"
       cluster_cidr      = var.pod_network_cidr
       service_cidr      = var.service_network_cidr
       cloud_provider    = local.cloud_config.provider

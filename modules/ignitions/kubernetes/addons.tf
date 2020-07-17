@@ -4,6 +4,9 @@ locals {
       "config.conf" = merge(local.kube_proxy_config, {
         apiVersion = "kubeproxy.config.k8s.io/v1alpha1"
         kind       = "KubeProxyConfiguration"
+        clientConnection = {
+          kubeconfig = "/var/lib/kube-proxy/kubeconfig.conf"
+        }
       })
     }
   }
@@ -14,7 +17,7 @@ data "ignition_file" "kube_proxy" {
 
   filesystem = "root"
   mode       = 420
-  path       = "${local.addons_path}/kube-proxy.yaml"
+  path       = "${local.etc_path}/addons/kube-proxy.yaml"
 
   content {
     content = templatefile("${path.module}/templates/addons/kube-proxy.yaml.tpl", {
@@ -28,7 +31,7 @@ data "ignition_file" "kube_proxy_cm" {
 
   filesystem = "root"
   mode       = 420
-  path       = "${local.addons_path}/kube-proxy-cm.yaml"
+  path       = "${local.etc_path}/addons/kube-proxy-cm.yaml"
 
   content {
     content = templatefile("${path.module}/templates/addons/kube-proxy-cm.yaml.tpl", {
@@ -44,7 +47,7 @@ data "ignition_file" "coredns" {
 
   filesystem = "root"
   mode       = 420
-  path       = "${local.addons_path}/coredns.yaml"
+  path       = "${local.etc_path}/addons/coredns.yaml"
 
   content {
     content = templatefile("${path.module}/templates/addons/coredns.yaml.tpl", {

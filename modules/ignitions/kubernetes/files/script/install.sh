@@ -95,10 +95,6 @@ function generate::file() {
   fi
 }
 
-APISERVER_YAML_SRC="${KUBE_OPT_PATH}/templates/kube-apiserver.yaml.tpl"
-APISERVER_YAML_DEST="${KUBE_ETC_PATH}/manifests/kube-apiserver.yaml"
-generate::file ${APISERVER_YAML_SRC} ${APISERVER_YAML_DEST}
-
 KUBELET_CONFIG_SRC="${KUBE_OPT_PATH}/templates/config.yaml.tpl"
 KUBELET_CONFIG_DEST="${KUBELET_VAR_PATH}/config.yaml"
 generate::file ${KUBELET_CONFIG_SRC} ${KUBELET_CONFIG_DEST}
@@ -107,12 +103,10 @@ CA_CONFIG_SRC="${KUBE_OPT_PATH}/templates/ca-config.json.tpl"
 CA_CONFIG_DEST="${KUBELET_VAR_PATH}/pki/ca-config.json"
 CSR_FILE_SRC="${KUBE_OPT_PATH}/templates/kubelet-csr.json.tpl"
 CSR_FILE_DEST="${KUBELET_VAR_PATH}/pki/csr.json"
-
-DATE=$(date +%Y-%m-%d)
 FILE_NAME="kubelet-client-current.pem"
 if test -f ${CSR_FILE_SRC} && ! test -f ${KUBELET_VAR_PATH}/pki/${FILE_NAME} ; then 
-  envsubst < ${CA_CONFIG_SRC} > ${CA_CONFIG_DEST}
-  envsubst < ${CSR_FILE_SRC} > ${CSR_FILE_DEST}
+  generate::file ${CA_CONFIG_SRC} ${CA_CONFIG_DEST}
+  generate::file ${CSR_FILE_SRC} ${CSR_FILE_DEST}
 
   ${DOCKER_EXEC} run --rm \
   -v ${KUBELET_VAR_PATH}/pki/:/tmp/pki/ \
@@ -121,6 +115,7 @@ if test -f ${CSR_FILE_SRC} && ! test -f ${KUBELET_VAR_PATH}/pki/${FILE_NAME} ; t
   ${CFSSL_IMAGE} \
     /bin/sh -c "cfssl gencert -ca=${KUBE_ETC_PATH}/pki/ca.crt -ca-key=${KUBE_ETC_PATH}/pki/ca.key -hostname=${HOSTNAME} -config=/tmp/pki/ca-config.json -profile=kubernetes /tmp/pki/csr.json | cfssljson -bare /tmp/pki/kubelet-client"
 
+  DATE=$(date +%Y-%m-%d)
   cat ${KUBELET_VAR_PATH}/pki/kubelet-client.pem > ${KUBELET_VAR_PATH}/pki/kubelet-client-${DATE}.pem
   cat ${KUBELET_VAR_PATH}/pki/kubelet-client-key.pem >> ${KUBELET_VAR_PATH}/pki/kubelet-client-${DATE}.pem
 
@@ -131,4 +126,9 @@ if test -f ${CSR_FILE_SRC} && ! test -f ${KUBELET_VAR_PATH}/pki/${FILE_NAME} ; t
     ${KUBELET_VAR_PATH}/pki/kubelet-client.csr \
     ${KUBELET_VAR_PATH}/pki/kubelet-client.pem \
     ${KUBELET_VAR_PATH}/pki/kubelet-client-key.pem
+fi
+
+BOOTSTRAPPING_KUBECONFIG="${KUBE_ETC_PATH}/bootstrap-kubelet.conf"
+if test -f ${BOOTSTRAPPING_KUBECONFIG} ; then 
+  grep 'certificate-authority-data' ${BOOTSTRAPPING_KUBECONFIG} | awk '{print $2}' | base64 -d > ${KUBE_ETC_PATH}/pki/ca.crt
 fi

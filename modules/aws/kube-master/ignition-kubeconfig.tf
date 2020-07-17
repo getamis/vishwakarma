@@ -66,9 +66,26 @@ module "ignition_kubelet_kubeconfig" {
   }
 }
 
-resource "aws_s3_bucket_object" "kubeconfig" {
+module "ignition_bootstrapping_kubeconfig" {
+  source = "../../ignitions/kubeconfig"
+
+  config_path = "/etc/kubernetes/bootstrap-kubelet.conf"
+
+  cluster  = var.name
+  context  = "kubelet-bootstrap@kubernetes"
+  user     = "kubelet-bootstrap"
+  endpoint = "https://${aws_elb.master_internal.dns_name}"
+
+  certificates = {
+    ca_cert = module.kubernetes_ca.cert_pem
+    token   = "${random_id.bootstrap_token_id.hex}.${random_id.bootstrap_token_secret.hex}"
+  }
+}
+
+// TODO: use AWS Secrets Manager to store this, or encryption by KMS.
+resource "aws_s3_bucket_object" "admin_kubeconfig" {
   bucket  = var.s3_bucket
-  key     = "kubeconfig"
+  key     = "admin.conf"
   content = module.ignition_admin_kubeconfig.content
   acl     = "private"
 
@@ -76,7 +93,24 @@ resource "aws_s3_bucket_object" "kubeconfig" {
   content_type           = "text/plain"
 
   tags = merge(var.extra_tags, map(
-    "Name", "kubeconfig",
+    "Name", "admin.conf",
+    "kubernetes.io/cluster/${var.name}", "owned",
+    "Role", "k8s-master"
+  ))
+}
+
+// TODO: use AWS Secrets Manager to store this, or encryption by KMS.
+resource "aws_s3_bucket_object" "bootstrapping_kubeconfig" {
+  bucket  = var.s3_bucket
+  key     = "bootstrap-kubelet.conf"
+  content = module.ignition_bootstrapping_kubeconfig.content
+  acl     = "private"
+
+  server_side_encryption = "AES256"
+  content_type           = "text/plain"
+
+  tags = merge(var.extra_tags, map(
+    "Name", "bootstrap-kubelet.conf",
     "kubernetes.io/cluster/${var.name}", "owned",
     "Role", "k8s-master"
   ))

@@ -1,12 +1,14 @@
 locals {
+  default_kubernetes_version = "v1.18.6"
+
   binaries = merge({
     kubelet = {
-      url      = "https://storage.googleapis.com/kubernetes-release/release/${var.kubernetes_version}/bin/linux/amd64/kubelet"
-      checksum = "8c328f65d30f0edd0fd4f529b09d6fc588cfb7b524d5c9f181e36de6e494e19c"
+      url      = "https://storage.googleapis.com/kubernetes-release/release/${local.default_kubernetes_version}/bin/linux/amd64/kubelet"
+      checksum = "2eb9baf5a65a7b94c653dbd7af03a768a520961eb27ef369e43ef12711e22d4a"
     }
     kubectl = {
-      url      = "https://storage.googleapis.com/kubernetes-release/release/${var.kubernetes_version}/bin/linux/amd64/kubectl"
-      checksum = "69d9b044ffaf544a4d1d4b40272f05d56aaf75d7e3c526d5418d1d3c78249e45"
+      url      = "https://storage.googleapis.com/kubernetes-release/release/${local.default_kubernetes_version}/bin/linux/amd64/kubectl"
+      checksum = "62fcb9922164725c7cba5747562f2ad2f4d834ad0a458c1e4c794cc203dcdfb3"
     }
     cni_plugin = {
       url      = "https://github.com/containernetworking/plugins/releases/download/v0.8.6/cni-plugins-linux-amd64-v0.8.6.tgz"
@@ -17,19 +19,19 @@ locals {
   containers = merge({
     kube_apiserver = {
       repo = "k8s.gcr.io/kube-apiserver"
-      tag  = var.kubernetes_version
+      tag  = local.default_kubernetes_version
     }
     kube_controller_manager = {
       repo = "k8s.gcr.io/kube-controller-manager"
-      tag  = var.kubernetes_version
+      tag  = local.default_kubernetes_version
     }
     kube_scheduler = {
       repo = "k8s.gcr.io/kube-scheduler"
-      tag  = var.kubernetes_version
+      tag  = local.default_kubernetes_version
     }
     kube_proxy = {
       repo = "k8s.gcr.io/kube-proxy"
-      tag  = var.kubernetes_version
+      tag  = local.default_kubernetes_version
     }
     pause = {
       repo = "k8s.gcr.io/pause"
@@ -65,13 +67,6 @@ locals {
     }
   }, var.containers)
 
-  kubeconfig_paths = merge({
-    scheduler          = "/etc/kubernetes/scheduler.conf"
-    controller_manager = "/etc/kubernetes/controller-manager.conf"
-    kubelet            = "/etc/kubernetes/kubelet.conf"
-    bootstrap_kubelet  = "/etc/kubernetes/bootstrap-kubelet.conf"
-  }, var.kubeconfig_paths)
-
   cloud_config = merge({
     // The provider for cloud services. Specify empty string for running with no cloud provider.
     provider = "aws"
@@ -93,12 +88,8 @@ locals {
       }
 
       webhook = {
-        cacheTTL = "0s"
+        cacheTTL = "2m0s"
         enabled  = true
-      }
-
-      x509 = {
-        clientCAFile = "/etc/kubernetes/pki/ca.crt"
       }
     }
 
@@ -114,18 +105,18 @@ locals {
     clusterDomain      = "cluster.local"
     healthzBindAddress = "127.0.0.1"
     healthzPort        = 10248
-    staticPodPath      = "/etc/kubernetes/manifests"
-    volumePluginDir    = "/opt/libexec/kubernetes/kubelet-plugins/volume/exec/"
     maxPods            = "$${MAX_PODS}"
   }, var.kubelet_config)
 
   kubelet_flags = merge({
-    volume-plugin-dir = "/opt/libexec/kubernetes/kubelet-plugins/volume/exec/"
+    pod-infra-container-image = "${local.containers["pause"].repo}:${local.containers["pause"].tag}"
+    volume-plugin-dir         = "/opt/libexec/kubernetes/kubelet-plugins/volume/exec/"
   }, var.kubelet_flags)
 
   apiserver_flags = merge({
     insecure-port    = 0
     allow-privileged = true
+
     // TODO: fix livenessProbe while disabled anonymous auth. 
     // See https://kubernetes.io/docs/reference/access-authn-authz/authentication/#anonymous-requests for more information.
     anonymous-auth                  = true
@@ -136,8 +127,8 @@ locals {
   }, var.apiserver_flags)
 
   controller_manager_flags = merge({
-    allocate-node-cidrs             = true
     leader-elect                    = true
+    allocate-node-cidrs             = true
     controllers                     = "*,bootstrapsigner"
     node-monitor-grace-period       = "40s"
     pod-eviction-timeout            = "5m"
@@ -150,8 +141,6 @@ locals {
   }, var.scheduler_flags)
 
   audit_log_flags = merge({
-    audit-policy-file   = "/etc/kubernetes/config/policy.yaml"
-    audit-log-path      = "/var/log/kubernetes/kube-apiserver-audit.log"
     audit-log-maxage    = 30
     audit-log-maxbackup = 3
     audit-log-maxsize   = 128
@@ -159,7 +148,7 @@ locals {
 
   coredns_config = merge({
     replicas                 = 2
-    cluster_dns_ip           = local.kubelet_config["clusterDNS"][0]
+    cluster_dns_ip           = cidrhost(var.service_network_cidr, 10)
     cluster_domain           = local.kubelet_config["clusterDomain"]
     reverse_cirds            = var.service_network_cidr
     upstream_nameserver      = "/etc/resolv.conf"
@@ -168,12 +157,8 @@ locals {
 
   kube_proxy_config = merge({
     bindAddress = "0.0.0.0"
-    clientConnection = {
-      kubeconfig = "/var/lib/kube-proxy/kubeconfig.conf"
-    }
-    clusterCIDR      = var.pod_network_cidr
-    mode             = "iptables"
-    configSyncPeriod = "0s"
+    clusterCIDR = var.pod_network_cidr
+    mode        = "iptables"
   }, var.kube_proxy_config)
 
   oidc_config = merge({

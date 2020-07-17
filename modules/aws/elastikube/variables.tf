@@ -3,12 +3,6 @@ variable "name" {
   type        = string
 }
 
-variable "kubernetes_version" {
-  description = "Kubernetes cluster version."
-  type        = string
-  default     = "v1.18.6"
-}
-
 variable "override_binaries" {
   description = "Desired binaries(kubelet, kubectl, and cni) url and chechsum."
   type = map(object({

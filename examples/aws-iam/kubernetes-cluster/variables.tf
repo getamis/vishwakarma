@@ -45,12 +45,6 @@ variable "extra_tags" {
   default     = {}
 }
 
-variable "kubernetes_version" {
-  description = "Kubernetes cluster version."
-  type        = string
-  default     = "v1.18.6"
-}
-
 variable "network_plugin" {
   description = "(Optional) Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc'"
   type        = string

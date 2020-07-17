@@ -3,12 +3,6 @@ variable "control_plane" {
   default = false
 }
 
-variable "kubernetes_version" {
-  description = "Kubernetes cluster version."
-  type        = string
-  default     = "v1.18.6"
-}
-
 variable "binaries" {
   description = "Desired binaries(kubelet, kubectl, and cni) url and chechsum."
   type = map(object({
@@ -62,6 +56,11 @@ variable "tls_bootstrap_token" {
     id     = string
     secret = string
   })
+
+  default = {
+    id     = ""
+    secret = ""
+  }
 }
 
 variable "cloud_config" {
@@ -103,12 +102,6 @@ variable "controller_manager_flags" {
 
 variable "scheduler_flags" {
   description = "The flags of kube-scheduler. The variables need to follow https://kubernetes.io/docs/reference/command-line-tools-reference/kube-scheduler/. Do not use underline."
-  default     = {}
-}
-
-variable "kubeconfig_paths" {
-  description = "The kubeconfig paths for Kubernetes components"
-  type        = map(string)
   default     = {}
 }
 
@@ -180,7 +173,7 @@ variable "coredns_config" {
   default     = {}
 }
 
-// TODO(k2r2bai): add support for setting feature gates.
+// TODO: add support for setting feature gates.
 variable "feature_gates" {
   description = "A set of key=value pairs that describe feature gates for alpha/experimental features."
   type        = map(bool)

@@ -3,17 +3,6 @@ variable "name" {
   type        = string
 }
 
-variable "endpoint" {
-  description = "(Required) The endpoint of Kubernetes API server."
-  type        = string
-}
-
-variable "kubernetes_version" {
-  description = "Kubernetes cluster version."
-  type        = string
-  default     = "v1.18.6"
-}
-
 variable "binaries" {
   description = "Desired binaries(kubelet, kubectl, and cni) url and chechsum."
   type = map(object({
@@ -41,20 +30,6 @@ variable "network_plugin" {
   description = "Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc'"
   type        = string
   default     = "amazon-vpc"
-}
-
-variable "kubernetes_ca_cert" {
-  description = "Kubernetes certificate authority."
-  type        = string
-  default     = ""
-}
-
-variable "tls_bootstrap_token" {
-  description = "The token uses to authenticate API server."
-  type = object({
-    id     = string
-    secret = string
-  })
 }
 
 variable "cloud_config" {

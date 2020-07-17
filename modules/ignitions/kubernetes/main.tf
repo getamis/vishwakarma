@@ -1,13 +1,7 @@
 locals {
-  root_path        = "/etc/kubernetes"
-  mainifest_path   = "/etc/kubernetes/manifests"
-  pki_path         = "/etc/kubernetes/pki"
-  etcd_pki_path    = "${local.pki_path}/etcd"
-  addons_path      = "/etc/kubernetes/addons"
-  config_path      = "/etc/kubernetes/config"
-  log_path         = "/var/log/kubernetes"
-  opt_path         = "/opt/kubernetes"
-  kubelet_var_path = "/var/lib/kubelet"
+  etc_path = "/etc/kubernetes"
+  opt_path = "/opt/kubernetes"
+  log_path = "/var/log/kubernetes"
 }
 
 data "ignition_file" "kubernetes_env" {
@@ -44,7 +38,7 @@ data "ignition_file" "install_sh" {
 
 data "ignition_file" "init_sh" {
   count = var.control_plane ? 1 : 0
-  
+
   path       = "${local.opt_path}/bin/init.sh"
   filesystem = "root"
   mode       = 500
@@ -66,6 +60,6 @@ data "ignition_systemd_unit" "kubernetes_init" {
   name    = "kubernetes-init.service"
   enabled = true
   content = templatefile("${path.module}/templates/services/kubernetes-init.service.tpl", {
-    path = local.addons_path
+    path = "${local.etc_path}/addons"
   })
 }

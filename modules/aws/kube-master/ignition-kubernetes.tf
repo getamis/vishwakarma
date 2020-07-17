@@ -1,7 +1,3 @@
-locals {
-  cluster_dns_ip = cidrhost(var.service_network_cidr, 10)
-}
-
 resource "random_id" "bootstrap_token_id" {
   byte_length = 3
 }
@@ -19,7 +15,6 @@ module "ignition_kubernetes" {
   source = "../../ignitions/kubernetes"
 
   control_plane         = true
-  kubernetes_version    = var.kubernetes_version
   binaries              = var.binaries
   containers            = var.containers
   apiserver_secure_port = var.apiserver_secure_port
@@ -34,9 +29,7 @@ module "ignition_kubernetes" {
     secret = random_id.bootstrap_token_secret.hex
   }
 
-  kubelet_config = merge(var.kubelet_extra_config, {
-    clusterDNS = [local.cluster_dns_ip]
-  })
+  kubelet_config = var.kubelet_extra_config
 
   cloud_config = {
     provider = "aws"
@@ -65,10 +58,8 @@ module "ignition_kubernetes" {
   oidc_config              = var.oidc_config
 
   certs = {
-    // etcd certs
     etcd_ca_cert = var.etcd_certs["ca_cert"]
 
-    // Kubernetes certs
     ca_cert                       = module.kubernetes_ca.cert_pem
     ca_key                        = module.kubernetes_ca.private_key_pem
     apiserver_cert                = module.apiserver_cert.cert_pem
@@ -83,5 +74,11 @@ module "ignition_kubernetes" {
     front_proxy_client_key        = module.front_proxy_client_cert.private_key_pem
     sa_pub                        = module.service_account.public_key_pem
     sa_key                        = module.service_account.private_key_pem
+  }
+
+  kubelet_cert = {
+    algo   = lower(module.kubernetes_ca.algorithm)
+    size   = 2048
+    expiry = "${var.certs_validity_period_hours}h"
   }
 }
