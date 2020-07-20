@@ -4,6 +4,41 @@ locals {
   log_path = "/var/log/kubernetes"
 }
 
+data "ignition_file" "kubelet_binary" {
+  filesystem = "root"
+  path       = "${local.opt_path}/bin/kubelet"
+  mode       = 500
+
+  source {
+    source       = local.binaries["kubelet"].source
+    verification = local.binaries["kubelet"].checksum
+  }
+}
+
+data "ignition_file" "kubectl_binary" {
+  count = var.control_plane ? 1 : 0
+
+  filesystem = "root"
+  path       = "${local.opt_path}/bin/kubectl"
+  mode       = 500
+
+  source {
+    source       = local.binaries["kubectl"].source
+    verification = local.binaries["kubectl"].checksum
+  }
+}
+
+data "ignition_file" "cni_plugin_tgz" {
+  filesystem = "root"
+  path       = "/opt/cni/cni-plugins-linux.tgz"
+  mode       = 500
+
+  source {
+    source       = local.binaries["cni_plugin"].source
+    verification = local.binaries["cni_plugin"].checksum
+  }
+}
+
 data "ignition_file" "kubernetes_env" {
   path       = "/etc/default/kubernetes.env"
   filesystem = "root"
@@ -11,55 +46,48 @@ data "ignition_file" "kubernetes_env" {
 
   content {
     content = templatefile("${path.module}/templates/services/kubernetes.env.tpl", {
-      kubelet_url         = local.binaries["kubelet"].url
-      kubelet_checksum    = local.binaries["kubelet"].checksum
-      kubectl_url         = local.binaries["kubectl"].url
-      kubectl_checksum    = local.binaries["kubectl"].checksum
-      cni_plugin_url      = local.binaries["cni_plugin"].url
-      cni_plugin_checksum = local.binaries["cni_plugin"].checksum
-      cfssl_image_repo    = local.containers["cfssl"].repo
-      cfssl_image_tag     = local.containers["cfssl"].tag
-
-      cloud_provider = local.cloud_config.provider
-      network_plugin = var.network_plugin
+      cfssl_image_repo = local.containers["cfssl"].repo
+      cfssl_image_tag  = local.containers["cfssl"].tag
+      cloud_provider   = local.cloud_config.provider
+      network_plugin   = var.network_plugin
     })
   }
 }
 
-data "ignition_file" "install_sh" {
-  path       = "${local.opt_path}/bin/install.sh"
+data "ignition_file" "init_configs_sh" {
+  path       = "${local.opt_path}/bin/init-configs.sh"
   filesystem = "root"
   mode       = 500
 
   content {
-    content = file("${path.module}/files/script/install.sh")
+    content = file("${path.module}/files/script/init-configs.sh")
   }
 }
 
-data "ignition_file" "init_sh" {
+data "ignition_file" "init_addons_sh" {
   count = var.control_plane ? 1 : 0
 
-  path       = "${local.opt_path}/bin/init.sh"
+  path       = "${local.opt_path}/bin/init-addons.sh"
   filesystem = "root"
   mode       = 500
 
   content {
-    content = file("${path.module}/files/script/init.sh")
+    content = file("${path.module}/files/script/init-addons.sh")
   }
 }
 
-data "ignition_systemd_unit" "kubernetes_install" {
-  name    = "kubernetes-install.service"
+data "ignition_systemd_unit" "kubeinit_configs" {
+  name    = "kubeinit-configs.service"
   enabled = true
-  content = templatefile("${path.module}/templates/services/kubernetes-install.service.tpl", {})
+  content = templatefile("${path.module}/templates/services/kubeinit-configs.service.tpl", {})
 }
 
-data "ignition_systemd_unit" "kubernetes_init" {
+data "ignition_systemd_unit" "kubeinit_addons" {
   count = var.control_plane ? 1 : 0
 
-  name    = "kubernetes-init.service"
+  name    = "kubeinit-addons.service"
   enabled = true
-  content = templatefile("${path.module}/templates/services/kubernetes-init.service.tpl", {
+  content = templatefile("${path.module}/templates/services/kubeinit-addons.service.tpl", {
     path = "${local.etc_path}/addons"
   })
 }

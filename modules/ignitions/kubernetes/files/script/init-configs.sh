@@ -1,5 +1,5 @@
 #!/bin/bash
-# Wrapper script for installing Kubernetes.
+# Wrapper script for initing Kubernetes configs.
 
 set -eu
 
@@ -24,8 +24,6 @@ function require_ev_one() {
 
 source /opt/kubernetes/bin/get-host-info.sh
 
-require_ev_all KUBELET_URL KUBECTL_URL CNI_PLUGIN_URL
-require_ev_all KUBELET_CHECKSUM KUBECTL_CHECKSUM CNI_PLUGIN_CHECKSUM
 require_ev_all CFSSL_IMAGE_REPO CFSSL_IMAGE_TAG
 
 CFSSL_IMAGE="${CFSSL_IMAGE_REPO}:${CFSSL_IMAGE_TAG}"
@@ -50,40 +48,7 @@ mkdir -p ${KUBELET_VAR_PATH}
 mkdir -p ${KUBELET_VAR_PATH}/pki
 mkdir -p /run/kubelet
 
-# Copy binaries to host
-function download::binary() {
-    local url=$1
-    local filename=$2
-    local checksum=$3
-
-    sudo curl -sL ${url} -o ${OPT_BIN_PATH}/${filename}
-    echo "${checksum} ${OPT_BIN_PATH}/${filename}" | sha256sum -c 
-    sudo chmod 500 ${OPT_BIN_PATH}/${filename}
-    sudo chown root ${OPT_BIN_PATH}/${filename}
-}
-
-function download::tar() {
-    local url=$1
-    local filename=$2
-    local checksum=$3
-    local dir=$4
-
-    sudo curl -sL ${url} -o /tmp/${filename}
-    echo "${checksum} /tmp/${filename}" | sha256sum -c 
-    sudo tar -xvf /tmp/${filename} -C ${dir}/
-}
-
-if ! test -f ${OPT_BIN_PATH}/kubelet ; then
-  download::binary ${KUBELET_URL} kubelet ${KUBELET_CHECKSUM}
-fi
-
-if ! test -f ${OPT_BIN_PATH}/kubectl ; then
-  download::binary ${KUBECTL_URL} kubectl ${KUBECTL_CHECKSUM}
-fi
-
-if ! test -f ${CNI_BIN_PATH}/host-local ; then
-  download::tar ${CNI_PLUGIN_URL} cni-plugins-linux.tgz ${CNI_PLUGIN_CHECKSUM} ${CNI_BIN_PATH}
-fi
+sudo tar -xvf /opt/cni/cni-plugins-linux.tgz -C ${CNI_BIN_PATH}/
 
 # Generate configs
 function generate::file() {

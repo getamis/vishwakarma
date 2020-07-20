@@ -13,4 +13,4 @@ RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
-RequiredBy=kubernetes-init.service
+RequiredBy=kubeinit-addons.service

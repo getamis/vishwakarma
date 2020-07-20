@@ -3,16 +3,16 @@ locals {
 
   binaries = merge({
     kubelet = {
-      url      = "https://storage.googleapis.com/kubernetes-release/release/${local.default_kubernetes_version}/bin/linux/amd64/kubelet"
-      checksum = "2eb9baf5a65a7b94c653dbd7af03a768a520961eb27ef369e43ef12711e22d4a"
+      source   = "https://storage.googleapis.com/kubernetes-release/release/${local.default_kubernetes_version}/bin/linux/amd64/kubelet"
+      checksum = "sha512-04ad4a6436642fc033a059e60ee1b96accf06450cc1d1c726321e2cd160210e9bea8f715258c177facf9f1404439a1904d89834584d3c1a76de3d151375d01cd"
     }
     kubectl = {
-      url      = "https://storage.googleapis.com/kubernetes-release/release/${local.default_kubernetes_version}/bin/linux/amd64/kubectl"
-      checksum = "62fcb9922164725c7cba5747562f2ad2f4d834ad0a458c1e4c794cc203dcdfb3"
+      source   = "https://storage.googleapis.com/kubernetes-release/release/${local.default_kubernetes_version}/bin/linux/amd64/kubectl"
+      checksum = "sha512-2d523472d0caef364ca6fbdabb696a67d93aa108b13597e396d35027681345b52a36f88e7b7e1a63620b5ca0dcbc954c7320dc23a84c7d0f2019bf2c76e6065d"
     }
     cni_plugin = {
-      url      = "https://github.com/containernetworking/plugins/releases/download/v0.8.6/cni-plugins-linux-amd64-v0.8.6.tgz"
-      checksum = "994fbfcdbb2eedcfa87e48d8edb9bb365f4e2747a7e47658482556c12fd9b2f5"
+      source   = "https://github.com/containernetworking/plugins/releases/download/v0.8.6/cni-plugins-linux-amd64-v0.8.6.tgz"
+      checksum = "sha512-76b29cc629449723fef45db6a6999b0617e6c9084678a4a3361caf3fc5e935084bc0644e47839b1891395e3cec984f7bfe581dd9455c4991ddeee1c78392e538"
     }
   }, var.binaries)
 

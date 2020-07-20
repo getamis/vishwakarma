@@ -17,16 +17,11 @@ data "ignition_disk" "ectd_data" {
   }
 }
 
-data "template_file" "etcd_data_mount" {
-  template = file("${path.module}/templates/data.mount.tpl")
+data "ignition_systemd_unit" "etcd_data_mount" {
+  name = "etcd.mount"
 
-  vars = {
+  content = templatefile("${path.module}/templates/data.mount.tpl", {
     device_name = var.device_name
     data_path   = "/etcd"
-  }
-}
-
-data "ignition_systemd_unit" "etcd_data_mount" {
-  content = data.template_file.etcd_data_mount.rendered
-  name    = "etcd.mount"
+  })
 }
