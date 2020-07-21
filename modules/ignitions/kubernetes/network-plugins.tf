@@ -7,7 +7,7 @@ data "ignition_file" "aws_vpc_cni_yaml" {
 
   content {
     content = templatefile("${path.module}/templates/network-plugins/amazon-vpc/aws-vpc-cni.yaml.tpl", {
-      image = "${local.containers["vpc_cni"].repo}:${local.containers["vpc_cni"].tag}"
+      cni_image  = "${local.containers["vpc_cni"].repo}:${local.containers["vpc_cni"].tag}"
     })
   }
 }
@@ -21,7 +21,6 @@ data "ignition_file" "aws_cni_calico_yaml" {
 
   content {
     content = templatefile("${path.module}/templates/network-plugins/amazon-vpc/calico.yaml.tpl", {
-      node_image       = "${local.containers["vpc_cni"].repo}:${local.containers["vpc_cni"].tag}"
       node_image       = "${local.containers["calico_node"].repo}:${local.containers["calico_node"].tag}"
       typha_image      = "${local.containers["calico_typha"].repo}:${local.containers["calico_typha"].tag}"
       autoscaler_image = "${local.containers["calico_autoscaler"].repo}:${local.containers["calico_autoscaler"].tag}"

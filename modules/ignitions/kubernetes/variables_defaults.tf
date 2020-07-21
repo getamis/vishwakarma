@@ -47,19 +47,19 @@ locals {
     }
     vpc_cni = {
       repo = "602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon-k8s-cni"
-      tag  = "v1.6.0"
+      tag  = "v1.6.3"
     }
     calico_node = {
       repo = "quay.io/calico/node"
-      tag  = "v3.8.1"
+      tag  = "v3.13.4"
     }
     calico_typha = {
       repo = "quay.io/calico/typha"
-      tag  = "v3.8.1"
+      tag  = "v3.13.4"
     }
     calico_autoscaler = {
       repo = "k8s.gcr.io/cluster-proportional-autoscaler-amd64"
-      tag  = "1.1.2"
+      tag  = "1.7.1"
     }
     flannel_cni = {
       repo = "quay.io/coreos/flannel"

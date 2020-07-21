@@ -65,7 +65,7 @@ func TestKubernetesCluster(t *testing.T) {
 
 		// Prepare kubectl options
 		ignitionS3Bucket := terraform.Output(t, terraformOptionsAll, "ignition_s3_bucket")
-		kubeconfigContext := "default"
+		kubeconfigContext := "kubernetes-admin@kubernetes"
 		kubectlOptions := configureKubectlOptions(t, exampleFolder, ignitionS3Bucket, awsRegion, kubeconfigContext)
 		test_structure.SaveKubectlOptions(t, exampleFolder, kubectlOptions)
 	})

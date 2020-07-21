@@ -1,4 +1,11 @@
-# Vendored from https://raw.githubusercontent.com/aws/amazon-vpc-cni-k8s/master/config/v1.6/aws-k8s-cni.yaml
+# Vendored from https://github.com/aws/amazon-vpc-cni-k8s/blob/master/config/v1.6/aws-k8s-cni.yaml
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: aws-node
+  namespace: kube-system
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -8,7 +15,6 @@ rules:
       - crd.k8s.amazonaws.com
     resources:
       - "*"
-      - namespaces
     verbs:
       - "*"
   - apiGroups: [""]
@@ -21,12 +27,6 @@ rules:
     resources:
       - daemonsets
     verbs: ["list", "watch"]
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: aws-node
-  namespace: kube-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -75,7 +75,20 @@ spec:
                     operator: In
                     values:
                       - amd64
-                  - key: eks.amazonaws.com/compute-type
+                  - key: "eks.amazonaws.com/compute-type"
+                    operator: NotIn
+                    values:
+                      - fargate
+              - matchExpressions:
+                  - key: "kubernetes.io/os"
+                    operator: In
+                    values:
+                      - linux
+                  - key: "kubernetes.io/arch"
+                    operator: In
+                    values:
+                      - amd64
+                  - key: "eks.amazonaws.com/compute-type"
                     operator: NotIn
                     values:
                       - fargate
@@ -84,7 +97,7 @@ spec:
       tolerations:
         - operator: Exists
       containers:
-        - image: ${image}
+        - image: ${cni_image}
           imagePullPolicy: Always
           ports:
             - containerPort: 61678

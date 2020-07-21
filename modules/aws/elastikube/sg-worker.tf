@@ -43,6 +43,39 @@ resource "aws_security_group_rule" "workers_ingress_cluster" {
   to_port   = 65535
 }
 
+resource "aws_security_group_rule" "workers_to_coredns_tcp" {
+  type                     = "ingress"
+  description              = "CoreDNS TCP."
+  security_group_id        = module.master.master_sg_id
+  source_security_group_id = aws_security_group.workers.id
+
+  protocol  = "tcp"
+  from_port = 53
+  to_port   = 53
+}
+
+resource "aws_security_group_rule" "workers_to_coredns_udp" {
+  type                     = "ingress"
+  description              = "CoreDNS UDP."
+  security_group_id        = module.master.master_sg_id
+  source_security_group_id = aws_security_group.workers.id
+
+  protocol  = "udp"
+  from_port = 53
+  to_port   = 53
+}
+
+resource "aws_security_group_rule" "workers_to_coredns_metrics" {
+  type                     = "ingress"
+  description              = "CoreDNS metrics."
+  security_group_id        = module.master.master_sg_id
+  source_security_group_id = aws_security_group.workers.id
+
+  protocol  = "tcp"
+  from_port = 9153
+  to_port   = 9153
+}
+
 resource "aws_security_group_rule" "workers_ingress_ssh" {
   type              = "ingress"
   description       = "Allow access from ssh."
@@ -54,7 +87,19 @@ resource "aws_security_group_rule" "workers_ingress_ssh" {
   to_port     = 22
 }
 
+resource "aws_security_group_rule" "master_ingress_flannel_from_worker" {
+  count                    = var.network_plugin == "flannel" ? 1 : 0
+  type                     = "ingress"
+  security_group_id        = module.master.master_sg_id
+  source_security_group_id = aws_security_group.workers.id
+
+  protocol  = "udp"
+  from_port = 4789
+  to_port   = 4789
+}
+
 resource "aws_security_group_rule" "worker_ingress_flannel" {
+  count             = var.network_plugin == "flannel" ? 1 : 0
   description       = "Allow access from other worker flannel."
   type              = "ingress"
   security_group_id = aws_security_group.workers.id
@@ -66,6 +111,7 @@ resource "aws_security_group_rule" "worker_ingress_flannel" {
 }
 
 resource "aws_security_group_rule" "worker_ingress_flannel_from_master" {
+  count                    = var.network_plugin == "flannel" ? 1 : 0
   description              = "Allow access from other master flannel."
   type                     = "ingress"
   security_group_id        = aws_security_group.workers.id

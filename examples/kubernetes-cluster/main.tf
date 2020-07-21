@@ -44,7 +44,7 @@ module "master" {
   }
 
   master_instance_config = {
-    count            = "1"
+    count            = "2"
     ec2_type_1       = "t3.medium"
     ec2_type_2       = "t2.medium"
     root_volume_iops = "100"
@@ -52,7 +52,7 @@ module "master" {
     root_volume_type = "gp2"
 
     on_demand_base_capacity                  = 0
-    on_demand_percentage_above_base_capacity = 100
+    on_demand_percentage_above_base_capacity = 0
     spot_instance_pools                      = 1
   }
 
