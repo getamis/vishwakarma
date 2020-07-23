@@ -1,3 +1,4 @@
+# Vendored from https://github.com/coreos/flannel/blob/master/Documentation/kube-flannel.yml
 ---
 apiVersion: policy/v1beta1
 kind: PodSecurityPolicy
@@ -20,30 +21,24 @@ spec:
     - pathPrefix: "/etc/kube-flannel"
     - pathPrefix: "/run/flannel"
   readOnlyRootFilesystem: false
-  # Users and groups
   runAsUser:
     rule: RunAsAny
   supplementalGroups:
     rule: RunAsAny
   fsGroup:
     rule: RunAsAny
-  # Privilege Escalation
   allowPrivilegeEscalation: false
   defaultAllowPrivilegeEscalation: false
-  # Capabilities
   allowedCapabilities: ['NET_ADMIN']
   defaultAddCapabilities: []
   requiredDropCapabilities: []
-  # Host namespaces
   hostPID: false
   hostIPC: false
   hostNetwork: true
   hostPorts:
   - min: 0
     max: 65535
-  # SELinux
   seLinux:
-    # SELinux is unsed in CaaSP
     rule: 'RunAsAny'
 ---
 kind: ClusterRole
@@ -106,6 +101,7 @@ data:
   cni-conf.json: |
     {
       "name": "cbr0",
+      "cniVersion": "0.3.1",
       "plugins": [
         {
           "type": "flannel",
@@ -134,7 +130,7 @@ data:
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: kube-flannel
+  name: kube-flannel-ds-amd64
   namespace: kube-system
   labels:
     tier: node
@@ -149,9 +145,20 @@ spec:
         tier: node
         app: flannel
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.io/os
+                    operator: In
+                    values:
+                      - linux
+                  - key: kubernetes.io/arch
+                    operator: In
+                    values:
+                      - amd64
       hostNetwork: true
-      nodeSelector:
-        beta.kubernetes.io/arch: amd64
       tolerations:
       - operator: Exists
         effect: NoSchedule
@@ -188,7 +195,7 @@ spec:
         securityContext:
           privileged: false
           capabilities:
-             add: ["NET_ADMIN"]
+            add: ["NET_ADMIN"]
         env:
         - name: POD_NAME
           valueFrom:
