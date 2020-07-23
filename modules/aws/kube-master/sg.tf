@@ -109,36 +109,6 @@ resource "aws_security_group_rule" "master_ingress_kubelet_secure_from_worker" {
   to_port     = 10255
 }
 
-# resource "aws_security_group_rule" "master_ingress_coredns_tcp_from_worker" {
-#   type              = "ingress"
-#   security_group_id = local.master_sg_id
-
-#   protocol    = "tcp"
-#   cidr_blocks = [data.aws_vpc.master.cidr_block]
-#   from_port   = 53
-#   to_port     = 53
-# }
-
-# resource "aws_security_group_rule" "master_ingress_coredns_udp_from_worker" {
-#   type              = "ingress"
-#   security_group_id = local.master_sg_id
-
-#   protocol    = "udp"
-#   cidr_blocks = [data.aws_vpc.master.cidr_block]
-#   from_port   = 53
-#   to_port     = 53
-# }
-
-# resource "aws_security_group_rule" "master_ingress_coredns_metrics_from_worker" {
-#   type              = "ingress"
-#   security_group_id = local.master_sg_id
-
-#   protocol    = "tcp"
-#   cidr_blocks = [data.aws_vpc.master.cidr_block]
-#   from_port   = 9153
-#   to_port     = 9153
-# }
-
 resource "aws_security_group_rule" "master_ingress_flannel" {
   count             = var.network_plugin == "flannel" ? 1 : 0
   type              = "ingress"
