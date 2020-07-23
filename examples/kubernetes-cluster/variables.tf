@@ -13,7 +13,7 @@ variable "service_cidr" {
 variable "cluster_cidr" {
   description = "(Optional) The Kubernetes cluster CIDR."
   type        = string
-  default     = "172.24.0.0/13"
+  default     = "10.244.0.0/16"
 }
 
 variable "key_pair_name" {

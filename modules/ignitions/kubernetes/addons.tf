@@ -53,7 +53,6 @@ data "ignition_file" "coredns" {
     content = templatefile("${path.module}/templates/addons/coredns.yaml.tpl", {
       image                    = "${local.containers["coredns"].repo}:${local.containers["coredns"].tag}"
       replicas                 = local.coredns_config["replicas"]
-      reverse_cirds            = local.coredns_config["reverse_cirds"]
       cluster_dns_ip           = local.coredns_config["cluster_dns_ip"]
       cluster_domain           = local.coredns_config["cluster_domain"]
       upstream_nameserver      = local.coredns_config["upstream_nameserver"]

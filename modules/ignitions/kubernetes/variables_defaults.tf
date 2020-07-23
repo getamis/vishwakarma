@@ -150,7 +150,6 @@ locals {
     replicas                 = 2
     cluster_dns_ip           = cidrhost(var.service_network_cidr, 10)
     cluster_domain           = local.kubelet_config["clusterDomain"]
-    reverse_cirds            = var.service_network_cidr
     upstream_nameserver      = "/etc/resolv.conf"
     located_on_the_same_host = false
   }, var.coredns_config)
