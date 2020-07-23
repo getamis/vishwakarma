@@ -209,7 +209,7 @@ func testKubernetes(t *testing.T, kubectlOptions *k8s.KubectlOptions, exampleFol
 	filters = metav1.ListOptions{
 		LabelSelector: fmt.Sprintf("app=%s", testResourceName),
 	}
-	k8s.WaitUntilNumPodsCreated(t, kubectlOptions, filters, 2, MaxRetries, TimeBetweenRetries)
+	k8s.WaitUntilNumPodsCreated(t, kubectlOptions, filters, 1, MaxRetries, TimeBetweenRetries)
 	pods = k8s.ListPods(t, kubectlOptions, filters)
 	for _, pod := range pods {
 		k8s.WaitUntilPodAvailable(t, kubectlOptions, pod.Name, MaxRetries, TimeBetweenRetries)
