@@ -7,7 +7,7 @@ data "ignition_file" "aws_vpc_cni_yaml" {
 
   content {
     content = templatefile("${path.module}/templates/network-plugins/amazon-vpc/aws-vpc-cni.yaml.tpl", {
-      cni_image  = "${local.containers["vpc_cni"].repo}:${local.containers["vpc_cni"].tag}"
+      cni_image = "${local.containers["vpc_cni"].repo}:${local.containers["vpc_cni"].tag}"
     })
   }
 }
