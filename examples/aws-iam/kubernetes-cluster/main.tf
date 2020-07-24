@@ -28,16 +28,15 @@ module "network" {
 module "master" {
   source = "../../../modules/aws/elastikube"
 
-  name         = module.label.id
-  service_cidr = var.service_cidr
-  cluster_cidr = var.cluster_cidr
+  name                      = module.label.id
+  kube_service_network_cidr = var.service_cidr
+  kube_cluster_network_cidr = var.cluster_cidr
 
-  enable_auth  = true
-  enable_irsa  = true
-  enable_audit = true
+  enable_irsa     = true
+  enable_iam_auth = true
 
-  etcd_config = {
-    instance_count     = "1"
+  etcd_instance_config = {
+    count              = "1"
     ec2_type           = "t3.medium"
     root_volume_size   = "40"
     data_volume_size   = "100"
@@ -46,8 +45,8 @@ module "master" {
     data_path          = "/etcd/data"
   }
 
-  master_config = {
-    instance_count   = "1"
+  master_instance_config = {
+    count            = "1"
     ec2_type_1       = "t3.medium"
     ec2_type_2       = "t2.medium"
     root_volume_iops = "100"
@@ -65,7 +64,7 @@ module "master" {
   public_subnet_ids      = module.network.public_subnet_ids
   ssh_key                = var.key_pair_name
   reboot_strategy        = "off"
-  
+
   extra_tags = module.label.tags
 }
 
@@ -76,15 +75,16 @@ module "master" {
 module "worker_spot" {
   source = "../../../modules/aws/kube-worker"
 
-  cluster_name      = module.label.id
-  kube_service_cidr = var.service_cidr
+  name                 = module.label.id
+  service_network_cidr = var.service_cidr
+  network_plugin       = var.network_plugin
 
   security_group_ids = module.master.worker_sg_ids
   subnet_ids         = module.network.private_subnet_ids
 
-  worker_config = {
+  instance_config = {
     name             = "spot"
-    instance_count   = "1"
+    count            = "1"
     ec2_type_1       = "m5.large"
     ec2_type_2       = "m4.large"
     root_volume_iops = "0"

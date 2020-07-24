@@ -1,21 +1,11 @@
 output "id" {
   value       = var.name
-  description = "K8S cluster name"
-}
-
-output "certificate_authority" {
-  value       = module.master.certificate_authority
-  description = "K8S root CA Cert"
+  description = "Kubernetes cluster name."
 }
 
 output "endpoint" {
   value       = module.master.endpoint
-  description = "K8S cluster endpoint"
-}
-
-output "version" {
-  value       = var.hyperkube_container["image_tag"]
-  description = "K8S cluster version"
+  description = "Kubernetes cluster endpoint."
 }
 
 output "vpc_id" {
@@ -29,7 +19,7 @@ output "ignition_s3_bucket" {
 }
 
 output "oidc_s3_bucket" {
-  value       = module.kube_auth.oidc_s3_bucket
+  value       = module.kube_iam_auth.oidc_s3_bucket
   description = "The S3 bucket for storing oidc data"
 }
 

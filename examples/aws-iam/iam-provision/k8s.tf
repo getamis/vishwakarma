@@ -2,8 +2,8 @@ data "template_file" "iam_auth_yaml" {
   template = file("${path.module}/resources/iam-auth.yaml")
 
   vars = {
-    image              = var.aws_iam_authenticator_image
-    cluster_name       = local.kubernetes_name
+    image        = var.aws_iam_authenticator_image
+    cluster_name = local.kubernetes_name
   }
 }
 
@@ -17,12 +17,12 @@ data "template_file" "iam_admin_yaml" {
 }
 
 resource "local_file" "iam_auth_yaml" {
-  content = data.template_file.iam_auth_yaml.rendered
+  content  = data.template_file.iam_auth_yaml.rendered
   filename = "./deploy/kubernetes/iam-auth.yaml"
 }
 
 resource "local_file" "iam_admin_yaml" {
-  content = data.template_file.iam_admin_yaml.rendered
+  content  = data.template_file.iam_admin_yaml.rendered
   filename = "./deploy/kubernetes/iam-admin.yaml"
 }
 
@@ -30,13 +30,13 @@ data "template_file" "irsa_yaml" {
   template = file("${path.module}/resources/irsa.yaml")
 
   vars = {
-    image = var.pod_identity_webhook_image
+    image     = var.pod_identity_webhook_image
     ca_bundle = base64encode(data.aws_s3_bucket_object.pod_identity_webhook_crt.body)
   }
 }
 
 resource "local_file" "irsa_yaml" {
-  content = data.template_file.irsa_yaml.rendered
+  content  = data.template_file.irsa_yaml.rendered
   filename = "./deploy/kubernetes/irsa.yaml"
 }
 
@@ -80,6 +80,6 @@ resource "aws_s3_bucket_object" "kubeconfig_iam" {
 }
 
 resource "local_file" "kubeconfig_iam" {
-  content = data.template_file.kubeconfig_iam.rendered
+  content  = data.template_file.kubeconfig_iam.rendered
   filename = "./deploy/kubernetes/kubeconfig.iam"
 }

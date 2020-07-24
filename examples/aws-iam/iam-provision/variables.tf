@@ -18,7 +18,7 @@ variable "ignition_s3_bucket" {
 variable "kubeconfig_s3_key" {
   description = "The kubeconfig s3 key name"
   type        = string
-  default     = "kubeconfig"
+  default     = "admin.conf"
 }
 
 variable "oidc_s3_bucket" {

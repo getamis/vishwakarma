@@ -86,7 +86,7 @@ func configureTerraformOptions(t *testing.T, exampleFolder string, target string
 }
 
 func configureKubectlOptions(t *testing.T, exampleFolder string, ignitionS3Bucket string, awsRegion string, kubeconfigContext string) *k8s.KubectlOptions {
-	kubeconfig := aws.GetS3ObjectContents(t, awsRegion, ignitionS3Bucket, "kubeconfig")
+	kubeconfig := aws.GetS3ObjectContents(t, awsRegion, ignitionS3Bucket, "admin.conf")
 	kubeconfigPath, _ := createKubeconfig(t, exampleFolder, kubeconfig)
 	return k8s.NewKubectlOptions(kubeconfigContext, kubeconfigPath, "")
 }

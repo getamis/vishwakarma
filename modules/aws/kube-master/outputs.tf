@@ -1,7 +1,3 @@
-output "certificate_authority" {
-  value = base64encode(module.kube_root_ca.cert_pem)
-}
-
 output "endpoint" {
   value = "https://${aws_elb.master_internal.dns_name}"
 }
@@ -14,6 +10,22 @@ output "default_role_name" {
   value = aws_iam_role.master.name
 }
 
-output "service_account_pubkey" {
-  value = module.ignition_kube_control_plane.service_account_pubkey
+output "kubernetes_ca_cert" {
+  sensitive = true
+  value     = module.kubernetes_ca.cert_pem
+}
+
+output "service_account_pub_key" {
+  sensitive = true
+  value     = module.service_account.public_key_pem
+}
+
+output "tls_bootstrap_token_id" {
+  sensitive = true
+  value     = random_id.bootstrap_token_id.hex
+}
+
+output "tls_bootstrap_token_secret" {
+  sensitive = true
+  value     = random_id.bootstrap_token_secret.hex
 }

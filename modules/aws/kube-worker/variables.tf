@@ -1,13 +1,92 @@
-variable "cluster_name" {
-  description = "Name of the cluster."
+variable "name" {
+  description = " (Required) Name of the cluster."
   type        = string
 }
 
-variable "enable_autoscaler" {
-  description = "Enable to add autoscaler tag or not"
-  type        = string
-  default     = "false"
+variable "binaries" {
+  description = "Desired binaries(kubelet, kubectl, and cni) url and chechsum."
+  type = map(object({
+    url      = string
+    chechsum = string
+  }))
+  default = {}
 }
+
+variable "containers" {
+  description = "Desired containers(kube-apiserver, kube-controller-manager, cfssl, coredns, and so on) repo and tag."
+  type = map(object({
+    repo = string
+    tag  = string
+  }))
+  default = {}
+}
+
+variable "service_network_cidr" {
+  description = "The kubernetes service ip range"
+  type        = string
+}
+
+variable "network_plugin" {
+  description = "Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc'"
+  type        = string
+  default     = "amazon-vpc"
+}
+
+variable "cloud_config" {
+  description = "The cloud provider configuration."
+  type = object({
+    provider = string
+    path     = string
+  })
+  default = {
+    provider = ""
+    path     = ""
+  }
+}
+
+variable "kubelet_config" {
+  description = "The configuration of kubelet. The variables need to follow https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/kubelet/config/v1beta1/types.go. Do not use underline."
+  default     = {}
+}
+
+variable "kubelet_flags" {
+  description = "The flags of kubelet. The variables need to follow https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/. Do not use underline."
+  default     = {}
+}
+
+variable "kubelet_node_labels" {
+  description = "Labels to add when registering the node in the cluster. Labels must be key=value pairs."
+  type        = list(string)
+  default     = []
+}
+
+variable "kubelet_node_taints" {
+  description = "Register the node with the given list of taints (\"<key>=<value>:<effect>\")."
+  type        = list(string)
+  default     = []
+}
+
+variable "reboot_strategy" {
+  description = "CoreOS reboot strategies on updates, two option here: etcd-lock or off"
+  type        = string
+  default     = "etcd-lock"
+}
+
+variable "extra_ignition_file_ids" {
+  description = "Additional ignition file IDs. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details."
+  type        = list(string)
+  default     = []
+}
+
+variable "extra_ignition_systemd_unit_ids" {
+  description = "Additional ignition systemd unit IDs. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details."
+  type        = list(string)
+  default     = []
+}
+
+// -----------------------------------------
+// AWS-related Variables
+// -----------------------------------------
 
 variable "role_name" {
   description = "The Amazon Resource Name of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf."
@@ -34,62 +113,22 @@ EOF
   default     = []
 }
 
-variable "hyperkube_container" {
-  description = "(Optional) Desired Hyperkube container to boot K8S cluster. If you do not specify a value, the latest available version is used."
-  type        = map(string)
-  default = {
-    image_path = "gcr.io/google-containers/hyperkube-amd64"
-    image_tag  = "v1.15.12"
-  }
-}
-
-variable "network_plugin" {
-  description = "(Optional) Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc'"
-  type        = string
-  default     = "flannel"
-}
-
-variable "worker_config" {
+variable "instance_config" {
   description = "Desired worker nodes configuration."
   type        = map(string)
-  default = {
-    instance_count   = "1"
-    ec2_type_1       = "t3.medium"
-    ec2_type_2       = "t2.medium"
-    name             = "general"
-    root_volume_iops = "100"
-    root_volume_size = "256"
-    root_volume_type = "gp2"
+  default     = {}
+}
 
-    on_demand_base_capacity                  = 0
-    on_demand_percentage_above_base_capacity = 100
-    spot_instance_pools                      = 1
-  }
+variable "enable_autoscaler" {
+  description = "Enable to add autoscaler tag or not"
+  type        = string
+  default     = "false"
 }
 
 variable "ssh_key" {
   description = "The key name that should be used for the instance."
   type        = string
   default     = ""
-}
-
-variable "kube_service_cidr" {
-  description = "The kubernetes service ip range"
-  type        = string
-}
-
-variable "kube_node_labels" {
-  description = "Labels to add when registering the node in the cluster. Labels must be key=value pairs."
-  type        = list(string)
-  default     = []
-}
-
-variable "kube_node_taints" {
-  description = <<EOF
-Register the node with the given list of taints ("<key>=<value>:<effect>").
-EOF
-  type        = list(string)
-  default     = []
 }
 
 variable "s3_bucket" {
@@ -101,24 +140,6 @@ EOF
   default     = ""
 }
 
-variable "reboot_strategy" {
-  description = "CoreOS reboot strategies on updates, two option here: etcd-lock or off"
-  type        = string
-  default     = "etcd-lock"
-}
-
-variable "extra_ignition_file_ids" {
-  description = "Additional ignition file IDs. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details."
-  type        = list(string)
-  default     = []
-}
-
-variable "extra_ignition_systemd_unit_ids" {
-  description = "Additional ignition systemd unit IDs. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details."
-  type        = list(string)
-  default     = []
-}
-
 variable "load_balancer_ids" {
   description = "A list of elastic load balancer names to add to the autoscaling group names. Only valid for classic load balancers. For ALBs, use target_group_arns instead."
   type        = list(string)
@@ -127,12 +148,6 @@ variable "load_balancer_ids" {
 
 variable "target_group_arns" {
   description = "A list of aws_alb_target_group ARNs, for use with Application Load Balancing."
-  type        = list(string)
-  default     = []
-}
-
-variable "kubelet_flag_extra_flags" {
-  description = "Extra user-provided flags to kubelet."
   type        = list(string)
   default     = []
 }

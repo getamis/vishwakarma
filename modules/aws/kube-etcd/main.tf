@@ -1,17 +1,18 @@
+locals {
+  vpc_id             = data.aws_subnet.etcd[0].vpc_id
+  az_num             = length(data.aws_availability_zones.available.names)
+  client_port        = 2379
+  peer_port          = 2380
+  node_exporter_port = 9100
+}
+
 data "aws_availability_zones" "available" {
   state = "available"
 }
 
 data "aws_subnet" "etcd" {
-  count = var.etcd_config["instance_count"]
+  count = local.instance_config["count"]
   id    = var.subnet_ids[count.index % length(var.subnet_ids)]
-}
-
-locals {
-  vpc_id       = data.aws_subnet.etcd[0].vpc_id
-  az_num       = length(data.aws_availability_zones.available.names)
-  client_port  = 2379
-  peer_port    = 2380
 }
 
 module "latest_os_ami" {
@@ -20,9 +21,9 @@ module "latest_os_ami" {
 }
 
 resource "aws_network_interface" "etcd" {
-  count             = var.etcd_config["instance_count"]
-  subnet_id         = var.subnet_ids[count.index % length(var.subnet_ids)]
-  security_groups   = compact(concat(
+  count     = local.instance_config["count"]
+  subnet_id = var.subnet_ids[count.index % length(var.subnet_ids)]
+  security_groups = compact(concat(
     var.security_group_ids,
     list(aws_security_group.etcd.id)
   ))
@@ -36,9 +37,9 @@ resource "aws_network_interface" "etcd" {
 }
 
 resource "aws_ebs_volume" "etcd" {
-  count             = var.etcd_config["instance_count"]
+  count             = local.instance_config["count"]
   availability_zone = data.aws_subnet.etcd[count.index].availability_zone
-  size              = var.etcd_config["data_volume_size"]
+  size              = local.instance_config["data_volume_size"]
 
   tags = merge(var.extra_tags, map(
     "Name", "${var.name}-etcd-${count.index}",
@@ -48,17 +49,17 @@ resource "aws_ebs_volume" "etcd" {
 }
 
 resource "aws_volume_attachment" "etcd" {
-  count       = var.etcd_config["instance_count"]
-  device_name = var.etcd_config["data_device_name"]
+  count       = local.instance_config["count"]
+  device_name = local.instance_config["data_device_name"]
   volume_id   = aws_ebs_volume.etcd[count.index].id
   instance_id = aws_instance.etcd[count.index].id
 }
 
 resource "aws_instance" "etcd" {
-  count = var.etcd_config["instance_count"]
+  count = local.instance_config["count"]
 
   ami                  = module.latest_os_ami.image_id
-  instance_type        = var.etcd_config["ec2_type"]
+  instance_type        = local.instance_config["ec2_type"]
   key_name             = var.ssh_key
   iam_instance_profile = aws_iam_instance_profile.etcd.id
 
@@ -70,7 +71,7 @@ resource "aws_instance" "etcd" {
   }
 
   root_block_device {
-    volume_size = var.etcd_config["root_volume_size"]
+    volume_size = local.instance_config["root_volume_size"]
   }
 
   volume_tags = merge(var.extra_tags, map(

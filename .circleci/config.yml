@@ -32,7 +32,7 @@ default: &default
     GOPATH: /go
     GO111MODULE: "on"
     TF_VERSION: "0.12.17"
-    KUBE_VERSION: "1.15.12"
+    KUBE_VERSION: "1.18.6"
     AWS_SDK_LOAD_CONFIG: "True"
     INSTALL_AWS_CLI: "true"
     INSTALL_TERRAFORM: "true"

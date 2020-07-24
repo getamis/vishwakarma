@@ -10,23 +10,23 @@ variable "server_port" {
   default     = 21362
 }
 
-variable "webhook_kubeconfig_path" {
+variable "kubeconfig_dir_path" {
   description = "A path for using iam aws authenticator to authenticate to a Kubernetes cluster."
   type        = string
-  default     = "/etc/kubernetes/aws-iam-authenticator"
+  default     = "/etc/kubernetes/config/aws-iam-authenticator"
 }
 
-variable "aws_iam_auth_ca" {
+variable "auth_ca_cert" {
   description = "Certificate for verifying the AWS iam authenticator webhook"
   type        = string
 }
 
-variable "aws_iam_auth_crt_pem" {
-  description = "AWS iam authenticator webhook tls crt"
+variable "auth_cert" {
+  description = "AWS iam authenticator webhook tls cert"
   type        = string
 }
 
-variable "aws_iam_auth_key_pem" {
-  description = "AWS iam authenticator webhook tls key"
+variable "auth_cert_key" {
+  description = "AWS iam authenticator webhook tls cert key"
   type        = string
 }

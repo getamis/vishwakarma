@@ -15,7 +15,7 @@ resource "aws_iam_openid_connect_provider" "irsa" {
   url = "https://s3-${data.aws_region.current.name}.amazonaws.com/${var.oidc_s3_bucket}"
 
   client_id_list = [var.oidc_api_audiences]
- 
+
   thumbprint_list = [chomp(data.local_file.oidc_thumbprint.content)]
 }
 
@@ -42,7 +42,7 @@ resource "aws_s3_bucket_object" "discovery_json" {
 }
 
 data "local_file" "keys_json" {
-    filename = "./deploy/secrets/keys.json"
+  filename = "./deploy/secrets/keys.json"
 }
 
 resource "aws_s3_bucket_object" "keys_json" {

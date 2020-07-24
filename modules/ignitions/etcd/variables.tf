@@ -2,6 +2,27 @@ variable "name" {
   type = string
 }
 
+variable "containers" {
+  description = "Desired containers(etcd) repo and tag."
+  type = map(object({
+    repo = string
+    tag  = string
+  }))
+  default = {}
+}
+
+variable "cloud_provider" {
+  description = "The name of public cloud."
+  type        = string
+  default     = "aws"
+}
+
+variable "certs" {
+  description = "The etcd certificates."
+  type        = map(string)
+  default     = {}
+}
+
 variable "cert_file_owner" {
   type = object({
     uid = number
@@ -26,25 +47,6 @@ variable "peer_port" {
   default = 2380
 }
 
-variable "certs_path" {
-  type    = string
-  default = "/etc/ssl/etcd"
-}
-
-variable "certs_config" {
-  type = map(string)
-
-  default = {
-    # ca_cert_pem     = ""
-    # client_key_pem  = ""
-    # client_cert_pem = ""
-    # server_key_pem  = ""
-    # server_cert_pem = ""
-    # peer_key_pem    = ""
-    # peer_cert_pem   = ""
-  }
-}
-
 variable "data_path" {
   type    = string
   default = "/var/lib/etcd"
@@ -52,13 +54,4 @@ variable "data_path" {
 
 variable "device_name" {
   type = string
-}
-
-variable "container" {
-  type = map(string)
-
-  default = {
-    image_path = "quay.io/coreos/etcd"
-    image_tag  = "v3.4.4"
-  }
 }

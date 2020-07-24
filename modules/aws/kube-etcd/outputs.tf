@@ -5,19 +5,14 @@ output "endpoints" {
   ]
 }
 
-output "ca_cert_pem" {
-  value     = module.etcd_root_ca.cert_pem
+output "ca_cert" {
   sensitive = true
+  value     = module.etcd_ca.cert_pem
 }
 
-output "client_cert_pem" {
-  value     = module.etcd_client_cert.cert_pem
+output "ca_key" {
   sensitive = true
-}
-
-output "client_key_pem" {
-  value     = module.etcd_client_cert.private_key_pem
-  sensitive = true
+  value     = module.etcd_ca.private_key_pem
 }
 
 output "default_role_name" {

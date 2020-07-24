@@ -13,7 +13,7 @@ resource "aws_elb" "master_internal" {
   connection_draining_timeout = 300
 
   listener {
-    instance_port     = 443
+    instance_port     = var.apiserver_secure_port
     instance_protocol = "tcp"
     lb_port           = 443
     lb_protocol       = "tcp"
@@ -23,7 +23,7 @@ resource "aws_elb" "master_internal" {
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 3
-    target              = "SSL:443"
+    target              = "SSL:${var.apiserver_secure_port}"
     interval            = 5
   }
 

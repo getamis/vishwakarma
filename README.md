@@ -62,12 +62,12 @@ $ export KUBECONFIG=#{The Path You Put kubeconfig}/kubeconfig
 $ kubectl get node
 
 NAME                          STATUS    ROLES     AGE       VERSION
-ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.15.12
-ip-10-0-48-117.ec2.internal   Ready     master    9m        v1.15.12
-ip-10-0-66-127.ec2.internal   Ready     on-demand 5m        v1.15.12
-ip-10-0-66-127.ec2.internal   Ready     on-demand 6m        v1.15.12
-ip-10-0-71-121.ec2.internal   Ready     spot      3m        v1.15.12
-ip-10-0-86-182.ec2.internal   Ready     spot      4m        v1.15.12
+ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.18.6
+ip-10-0-48-117.ec2.internal   Ready     master    9m        v1.18.6
+ip-10-0-66-127.ec2.internal   Ready     on-demand 5m        v1.18.6
+ip-10-0-66-127.ec2.internal   Ready     on-demand 6m        v1.18.6
+ip-10-0-71-121.ec2.internal   Ready     spot      3m        v1.18.6
+ip-10-0-86-182.ec2.internal   Ready     spot      4m        v1.18.6
 ```
 
 ## What’s Going On?
@@ -76,18 +76,18 @@ You have completed one Kubernetes cluster the same as below picture, and let me 
 ![Alt text](https://cdn-images-1.medium.com/max/800/1*tvAY88CzHhxo4lBB6OUSyA.png)
 
 ## Modules
-Vishwakarma include serveral major modules:
+Vishwakarma includes serveral major modules:
 
 ### aws/network
-Create one AWS VPC including private and public subnet, and one ec2 instance called bastion hosts in public subnet, hence, one can access the resource hosting in the private subnet, refer [**aws/network**](VARIABLES.md#aws/network) for the detail variable inputs.
+Create one AWS VPC including private and public subnet, and one ec2 instance called bastion hosts in public subnet, hence, one can access the resource hosting in the private subnet, refer [**aws/network**](Documentation/variables/aws/network.md) for the detail variable inputs.
 
 ### aws/elastikube
-This module creates the Kubernetes control plane, Terraform is responsible for the complicated Kubernetes compoments, and it takes about 10~15 minutes to complete, refer [**aws/elastikube**](VARIABLES.md#aws/elastikube) for the detail variable inputs.
+This module creates the Kubernetes control plane, Terraform is responsible for the complicated Kubernetes compoments, and it takes about 10~15 minutes to complete, refer [**aws/elastikube**](Documentation/variables/aws/elastikube.md) for the detail variable inputs.
 
 ### aws/kube-worker
 Create a AWS auto-scaling group with CoreOS container linux and leverage ignition to provision and register to ElastiKube automatically.
 
-Due to using AWS launch template, hence, it's up to user to choose spot or on demand instance type by changing the variable, refer [**aws/kube-worker**](VARIABLES.md#aws/kube-worker) for the detail variable inputs.
+Due to using AWS launch template, hence, it's up to user to choose spot or on demand instance type by changing the variable, refer [**aws/kube-worker**](Documentation/variables/aws/kube-worker.md) for the detail variable inputs.
 
 ## Contributing
 There are several ways to contribute to this project:

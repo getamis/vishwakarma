@@ -1,10 +1,10 @@
 data "aws_region" "current" {}
 
-module "etcd_root_ca" {
+module "etcd_ca" {
   source = "../../tls/certificate-authority"
 
   cert_config = {
-    common_name           = "etcd"
+    common_name           = "etcd-ca"
     organization          = "etcd"
     validity_period_hours = var.certs_validity_period_hours
   }
@@ -17,13 +17,13 @@ module "etcd_server_cert" {
   source = "../../tls/certificate"
 
   ca_config = {
-    algorithm = module.etcd_root_ca.algorithm
-    key_pem   = module.etcd_root_ca.private_key_pem
-    cert_pem  = module.etcd_root_ca.cert_pem
+    algorithm = module.etcd_ca.algorithm
+    key_pem   = module.etcd_ca.private_key_pem
+    cert_pem  = module.etcd_ca.cert_pem
   }
 
   cert_config = {
-    common_name           = "etcd"
+    common_name           = "etcd-server"
     organization          = "etcd"
     validity_period_hours = var.certs_validity_period_hours
   }
@@ -58,13 +58,13 @@ module "etcd_client_cert" {
   source = "../../tls/certificate"
 
   ca_config = {
-    algorithm = module.etcd_root_ca.algorithm
-    key_pem   = module.etcd_root_ca.private_key_pem
-    cert_pem  = module.etcd_root_ca.cert_pem
+    algorithm = module.etcd_ca.algorithm
+    key_pem   = module.etcd_ca.private_key_pem
+    cert_pem  = module.etcd_ca.cert_pem
   }
 
   cert_config = {
-    common_name           = "etcd"
+    common_name           = "etcd-client"
     organization          = "etcd"
     validity_period_hours = var.certs_validity_period_hours
   }
@@ -81,13 +81,13 @@ module "etcd_peer_cert" {
   source = "../../tls/certificate"
 
   ca_config = {
-    algorithm = module.etcd_root_ca.algorithm
-    key_pem   = module.etcd_root_ca.private_key_pem
-    cert_pem  = module.etcd_root_ca.cert_pem
+    algorithm = module.etcd_ca.algorithm
+    key_pem   = module.etcd_ca.private_key_pem
+    cert_pem  = module.etcd_ca.cert_pem
   }
 
   cert_config = {
-    common_name           = "etcd"
+    common_name           = "etcd-peer"
     organization          = "etcd"
     validity_period_hours = var.certs_validity_period_hours
   }

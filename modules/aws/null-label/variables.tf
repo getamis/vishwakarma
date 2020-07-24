@@ -118,7 +118,7 @@ variable "regex_replace_chars" {
 }
 
 variable "tags" {
-  description =  "Additional tags (e.g. `map('BusinessUnit','XYZ')`"
+  description = "Additional tags (e.g. `map('BusinessUnit','XYZ')`"
   type        = map(string)
   default     = {}
 }

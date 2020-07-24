@@ -15,22 +15,26 @@ module "ignition_etcd" {
   source = "../../ignitions/etcd"
 
   name              = var.name
-  container         = var.etcd_container
+  containers        = var.containers
   discovery_service = local.discovery_service
   client_port       = local.client_port
   peer_port         = local.peer_port
-  device_name       = var.etcd_config["data_device_rename"]
-  data_path         = var.etcd_config["data_path"]
-  
-  certs_config = {
-    ca_cert_pem     = module.etcd_root_ca.cert_pem
-    client_key_pem  = module.etcd_client_cert.private_key_pem
-    client_cert_pem = module.etcd_client_cert.cert_pem
-    server_key_pem  = module.etcd_server_cert.private_key_pem
-    server_cert_pem = module.etcd_server_cert.cert_pem
-    peer_key_pem    = module.etcd_peer_cert.private_key_pem
-    peer_cert_pem   = module.etcd_peer_cert.cert_pem
+  device_name       = local.instance_config["data_device_rename"]
+  data_path         = local.instance_config["data_path"]
+
+  certs = {
+    ca_cert     = module.etcd_ca.cert_pem
+    client_key  = module.etcd_client_cert.private_key_pem
+    client_cert = module.etcd_client_cert.cert_pem
+    server_key  = module.etcd_server_cert.private_key_pem
+    server_cert = module.etcd_server_cert.cert_pem
+    peer_key    = module.etcd_peer_cert.private_key_pem
+    peer_cert   = module.etcd_peer_cert.cert_pem
   }
+}
+
+module "ignition_node_exporter" {
+  source = "../../ignitions/node-exporter"
 }
 
 data "ignition_config" "main" {

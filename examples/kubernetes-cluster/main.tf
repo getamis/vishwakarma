@@ -21,6 +21,10 @@ module "network" {
   extra_tags       = module.label.tags
 }
 
+locals {
+  cluster_cidr = var.network_plugin == "amazon-vpc" ? module.network.vpc_cidr : var.cluster_cidr
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # ElastiKube
 # ---------------------------------------------------------------------------------------------------------------------
@@ -28,14 +32,13 @@ module "network" {
 module "master" {
   source = "../../modules/aws/elastikube"
 
-  name                = module.label.id
-  hyperkube_container = var.hyperkube_container
-  network_plugin      = var.network_plugin
-  service_cidr        = var.service_cidr
-  cluster_cidr        = var.cluster_cidr
+  name                      = module.label.id
+  network_plugin            = var.network_plugin
+  kube_service_network_cidr = var.service_cidr
+  kube_cluster_network_cidr = local.cluster_cidr
 
-  etcd_config = {
-    instance_count     = "3"
+  etcd_instance_config = {
+    count              = "1"
     ec2_type           = "t3.medium"
     root_volume_size   = "40"
     data_volume_size   = "100"
@@ -44,8 +47,8 @@ module "master" {
     data_path          = "/etcd/data"
   }
 
-  master_config = {
-    instance_count   = "2"
+  master_instance_config = {
+    count            = "2"
     ec2_type_1       = "t3.medium"
     ec2_type_2       = "t2.medium"
     root_volume_iops = "100"
@@ -53,7 +56,7 @@ module "master" {
     root_volume_type = "gp2"
 
     on_demand_base_capacity                  = 0
-    on_demand_percentage_above_base_capacity = 100
+    on_demand_percentage_above_base_capacity = 0
     spot_instance_pools                      = 1
   }
 
@@ -68,23 +71,22 @@ module "master" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# Worker Node (On Demand Instance)
+# Nodes (On Demand Instance)
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "worker_on_demand" {
   source = "../../modules/aws/kube-worker"
 
-  cluster_name        = module.label.id
-  hyperkube_container = var.hyperkube_container
-  network_plugin      = var.network_plugin
-  kube_service_cidr   = var.service_cidr
+  name                 = module.label.id
+  service_network_cidr = var.service_cidr
+  network_plugin       = var.network_plugin
 
   security_group_ids = module.master.worker_sg_ids
   subnet_ids         = module.network.private_subnet_ids
 
-  worker_config = {
+  instance_config = {
     name             = "on-demand"
-    instance_count   = "2"
+    count            = "1"
     ec2_type_1       = "t3.medium"
     ec2_type_2       = "t2.medium"
     root_volume_iops = "0"
@@ -103,23 +105,22 @@ module "worker_on_demand" {
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
-# Worker Node (On Spot Instance)
+# Nodes (On Spot Instance)
 # ---------------------------------------------------------------------------------------------------------------------
 
 module "worker_spot" {
   source = "../../modules/aws/kube-worker"
 
-  cluster_name        = module.label.id
-  hyperkube_container = var.hyperkube_container
-  network_plugin      = var.network_plugin
-  kube_service_cidr   = var.service_cidr
+  name                 = module.label.id
+  service_network_cidr = var.service_cidr
+  network_plugin       = var.network_plugin
 
   security_group_ids = module.master.worker_sg_ids
   subnet_ids         = module.network.private_subnet_ids
 
-  worker_config = {
+  instance_config = {
     name             = "spot"
-    instance_count   = "2"
+    count            = "2"
     ec2_type_1       = "m5.large"
     ec2_type_2       = "m4.large"
     root_volume_iops = "0"

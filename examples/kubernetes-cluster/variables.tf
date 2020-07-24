@@ -7,27 +7,18 @@ variable "aws_region" {
 variable "service_cidr" {
   description = "(Optional) The Kubernetes service CIDR."
   type        = string
-  default     = "172.16.0.0/13"
+  default     = "10.96.0.0/12"
 }
 
 variable "cluster_cidr" {
   description = "(Optional) The Kubernetes cluster CIDR."
   type        = string
-  default     = "172.24.0.0/13"
+  default     = "10.244.0.0/16"
 }
 
 variable "key_pair_name" {
   description = "The ssh key name for all instance, e.g. bastion, master, etcd, worker"
   type        = string
-}
-
-variable "hyperkube_container" {
-  description = "(Optional) Desired Hyperkube container to boot K8S cluster. If you do not specify a value, the latest available version is used."
-  type        = map(string)
-  default = {
-    image_path = "gcr.io/google-containers/hyperkube-amd64"
-    image_tag  = "v1.15.12"
-  }
 }
 
 variable "network_plugin" {

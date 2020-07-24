@@ -3,11 +3,10 @@ Description=etcd service
 Requires=network-online.target
 
 [Service]
+Environment="PATH=/opt/bin:/opt/etcd/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
 EnvironmentFile=/etc/etcd/etcd.env
-Environment="PATH=/opt/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
-
 ExecStartPre=-/usr/bin/docker rm -f etcd
-ExecStart=/opt/etcd/etcd-wrapper.sh
+ExecStart=/opt/etcd/bin/etcd-wrapper.sh
 ExecStop=-/usr/bin/docker stop etcd
 
 Restart=always
