@@ -20,6 +20,7 @@ This document gives an overview of variables used in the AWS platform of the net
 | bastion\_public\_ip | the public ip address for ssh |
 | private\_subnet\_ids | resource can not be accessed publicly when use it |
 | public\_subnet\_ids | resource can be accessed publicly when use it |
+| vpc\_cidr | The CIDR block for AWS VPC. |
 | vpc\_id | vpc id created by this module |
-| zone\_id | private zone id for k8s |
+| zone\_id | private zone id for Kubernetes |
 

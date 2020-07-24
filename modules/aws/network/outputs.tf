@@ -19,6 +19,11 @@ output "bastion_public_ip" {
 }
 
 output "zone_id" {
-  description = "private zone id for k8s"
+  description = "private zone id for Kubernetes"
   value       = var.private_zone ? join("", aws_route53_zone.zone.*.zone_id) : ""
+}
+
+output "vpc_cidr" {
+  description = "The CIDR block for AWS VPC."
+  value       = var.cidr_block
 }

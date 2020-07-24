@@ -21,6 +21,10 @@ module "network" {
   extra_tags       = module.label.tags
 }
 
+locals {
+  cluster_cidr = var.network_plugin == "amazon-vpc" ? module.network.vpc_cidr : var.cluster_cidr
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # ElastiKube
 # ---------------------------------------------------------------------------------------------------------------------
@@ -31,7 +35,7 @@ module "master" {
   name                      = module.label.id
   network_plugin            = var.network_plugin
   kube_service_network_cidr = var.service_cidr
-  kube_cluster_network_cidr = var.cluster_cidr
+  kube_cluster_network_cidr = local.cluster_cidr
 
   etcd_instance_config = {
     count              = "1"
