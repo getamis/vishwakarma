@@ -27,11 +27,11 @@ locals {
 
 data "aws_ami" "os" {
   most_recent = true
-  owners      = [local.image_info[var.os_name]["owner_id"]]
+  owners      = [local.image_info[var.flavor]["owner_id"]]
 
   filter {
     name   = "name"
-    values = [local.image_info[var.os_name]["name"]]
+    values = [local.image_info[var.flavor]["name"]]
   }
 
   filter {
