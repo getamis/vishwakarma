@@ -15,11 +15,6 @@ data "aws_subnet" "etcd" {
   id    = var.subnet_ids[count.index % length(var.subnet_ids)]
 }
 
-module "latest_os_ami" {
-  source  = "../../aws/latest-os-ami"
-  os_name = "coreos"
-}
-
 resource "aws_network_interface" "etcd" {
   count     = local.instance_config["count"]
   subnet_id = var.subnet_ids[count.index % length(var.subnet_ids)]
@@ -58,7 +53,7 @@ resource "aws_volume_attachment" "etcd" {
 resource "aws_instance" "etcd" {
   count = local.instance_config["count"]
 
-  ami                  = module.latest_os_ami.image_id
+  ami                  = local.instance_config["image_id"]
   instance_type        = local.instance_config["ec2_type"]
   key_name             = var.ssh_key
   iam_instance_profile = aws_iam_instance_profile.etcd.id

@@ -17,6 +17,11 @@ module "network" {
   extra_tags       = module.label.tags
 }
 
+module "latest_os_ami" {
+  source = "../../modules/aws/latest-os-ami"
+  flavor = "coreos"
+}
+
 module "etcd" {
   source = "../../modules/aws/kube-etcd"
 
@@ -25,6 +30,7 @@ module "etcd" {
 
   instance_config = {
     count              = "3"
+    image_id           = module.latest_os_ami.image_id
     ec2_type           = "t3.medium"
     root_volume_size   = "40"
     data_volume_size   = "100"
