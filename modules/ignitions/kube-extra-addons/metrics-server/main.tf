@@ -5,7 +5,7 @@ data "ignition_file" "metrics_server_components" {
 
   content {
     content = templatefile("${path.module}/templates/components.yaml.tpl", {
-      image = "${var.container["repo"]}:${var.container["tag"]}"
+      image       = "${var.container["repo"]}:${var.container["tag"]}"
       secure_port = var.secure_port
     })
   }
