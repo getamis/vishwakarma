@@ -23,6 +23,7 @@ output "files" {
       data.ignition_file.systemd_kubelet_conf.rendered,
       data.ignition_file.kubelet_config_tpl.rendered,
       data.ignition_file.sysctl_k8s_conf.rendered,
+      data.ignition_file.sysctl_max_user_watches_conf.rendered,
     ],
     var.control_plane ? [
       data.ignition_file.kubectl_binary[0].rendered,

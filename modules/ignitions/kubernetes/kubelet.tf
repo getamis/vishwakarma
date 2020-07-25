@@ -12,16 +12,6 @@ locals {
   })
 }
 
-data "ignition_file" "sysctl_k8s_conf" {
-  path       = "/etc/sysctl.d/k8s.conf"
-  filesystem = "root"
-  mode       = 420
-
-  content {
-    content = file("${path.module}/files/sysctl.d/k8s.conf")
-  }
-}
-
 data "ignition_file" "get_host_info_sh" {
   path       = "${local.opt_path}/bin/get-host-info.sh"
   filesystem = "root"
