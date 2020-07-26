@@ -32,8 +32,8 @@ data "template_file" "user_data" {
 }
 
 module "latest_os_ami" {
-  source  = "../../aws/latest-os-ami"
-  os_name = "ubuntu"
+  source = "../../aws/latest-os-ami"
+  flavor = "ubuntu"
 }
 
 resource "aws_instance" "bastion" {

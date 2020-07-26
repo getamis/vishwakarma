@@ -5,12 +5,17 @@ locals {
   image_info = {
     coreos = {
       owner_id = "595879546273"
-      name     = "CoreOS-stable-*"
+      name     = "CoreOS-${var.channel}-*"
+    }
+
+    flatcar = {
+      owner_id = "075585003325"
+      name     = "Flatcar-${var.channel}-*"
     }
 
     fedora_coreos = {
       owner_id = "125523088429"
-      name     = "fedora-coreos-??.????????.?.?-*"
+      name     = "fedora-coreos-??.????????.${var.channel_version}"
     }
 
     ubuntu = {
@@ -22,11 +27,11 @@ locals {
 
 data "aws_ami" "os" {
   most_recent = true
-  owners      = [local.image_info[var.os_name]["owner_id"]]
+  owners      = [local.image_info[var.flavor]["owner_id"]]
 
   filter {
     name   = "name"
-    values = [local.image_info[var.os_name]["name"]]
+    values = [local.image_info[var.flavor]["name"]]
   }
 
   filter {

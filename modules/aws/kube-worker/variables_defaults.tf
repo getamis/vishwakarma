@@ -11,5 +11,8 @@ locals {
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 100
     spot_instance_pools                      = 1
+
+    // CoreOS Container Linux stable 2512.3.0
+    image_id = "ami-0c45c2b94700c3e25"
   }, var.instance_config)
 }

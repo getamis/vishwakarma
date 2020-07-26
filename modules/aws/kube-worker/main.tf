@@ -75,14 +75,9 @@ resource "aws_autoscaling_group" "worker" {
   ])
 }
 
-module "latest_os_ami" {
-  source  = "../../aws/latest-os-ami"
-  os_name = "coreos"
-}
-
 resource "aws_launch_template" "worker" {
   instance_type = local.instance_config["ec2_type_1"]
-  image_id      = module.latest_os_ami.image_id
+  image_id      = local.instance_config["image_id"]
   name_prefix   = "${var.name}-worker-${local.instance_config["name"]}-"
 
   vpc_security_group_ids = var.security_group_ids
