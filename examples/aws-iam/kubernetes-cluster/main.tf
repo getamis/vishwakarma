@@ -22,7 +22,7 @@ module "network" {
 }
 
 module "latest_os_ami" {
-  source = "../../modules/aws/latest-os-ami"
+  source = "../../../modules/aws/latest-os-ami"
   flavor = "flatcar"
 }
 
