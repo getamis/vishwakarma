@@ -2,14 +2,6 @@ locals {
   default_kubernetes_version = "v1.18.6"
 
   binaries = merge({
-    kubelet = {
-      source   = "https://storage.googleapis.com/kubernetes-release/release/${local.default_kubernetes_version}/bin/linux/amd64/kubelet"
-      checksum = "sha512-04ad4a6436642fc033a059e60ee1b96accf06450cc1d1c726321e2cd160210e9bea8f715258c177facf9f1404439a1904d89834584d3c1a76de3d151375d01cd"
-    }
-    kubectl = {
-      source   = "https://storage.googleapis.com/kubernetes-release/release/${local.default_kubernetes_version}/bin/linux/amd64/kubectl"
-      checksum = "sha512-2d523472d0caef364ca6fbdabb696a67d93aa108b13597e396d35027681345b52a36f88e7b7e1a63620b5ca0dcbc954c7320dc23a84c7d0f2019bf2c76e6065d"
-    }
     cni_plugin = {
       source   = "https://github.com/containernetworking/plugins/releases/download/v0.8.6/cni-plugins-linux-amd64-v0.8.6.tgz"
       checksum = "sha512-76b29cc629449723fef45db6a6999b0617e6c9084678a4a3361caf3fc5e935084bc0644e47839b1891395e3cec984f7bfe581dd9455c4991ddeee1c78392e538"
@@ -17,6 +9,14 @@ locals {
   }, var.binaries)
 
   containers = merge({
+    kubelet = {
+      repo = "quay.io/poseidon/kubelet"
+      tag  = local.default_kubernetes_version
+    }
+    kubectl = {
+      repo = "quay.io/poseidon/kubelet"
+      tag  = local.default_kubernetes_version
+    }
     kube_apiserver = {
       repo = "k8s.gcr.io/kube-apiserver"
       tag  = local.default_kubernetes_version
@@ -104,14 +104,10 @@ locals {
     clusterDNS         = [cidrhost(var.service_network_cidr, 10)]
     clusterDomain      = "cluster.local"
     healthzBindAddress = "127.0.0.1"
-    healthzPort        = 10248
+    healthzPort        = 0
+    readOnlyPort       = 0
     maxPods            = "$${MAX_PODS}"
   }, var.kubelet_config)
-
-  kubelet_flags = merge({
-    pod-infra-container-image = "${local.containers["pause"].repo}:${local.containers["pause"].tag}"
-    volume-plugin-dir         = "/opt/libexec/kubernetes/kubelet-plugins/volume/exec/"
-  }, var.kubelet_flags)
 
   apiserver_flags = merge({
     insecure-port    = 0

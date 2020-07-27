@@ -4,7 +4,7 @@ variable "control_plane" {
 }
 
 variable "binaries" {
-  description = "Desired binaries(kubelet, kubectl, and cni) url and chechsum."
+  description = "Desired binaries(cni_plugin) url and checksum."
   type = map(object({
     url      = string
     chechsum = string

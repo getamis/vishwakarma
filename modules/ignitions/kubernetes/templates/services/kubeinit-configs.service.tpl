@@ -12,7 +12,7 @@ User=root
 Group=root
 
 EnvironmentFile=-/etc/default/kubernetes.env
-ExecStart=/opt/kubernetes/bin/init-configs.sh
+ExecStart=/opt/kubernetes/bin/init-configs
 ExecStartPost=/bin/touch /opt/kubernetes/init-configs.done
 
 [Install]
