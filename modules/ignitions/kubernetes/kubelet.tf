@@ -10,6 +10,11 @@ locals {
     }
     staticPodPath = "${local.etc_path}/manifests"
   })
+
+  kube_extra_flags = merge(var.kubelet_flags, {
+    pod-infra-container-image = "${local.containers["pause"].repo}:${local.containers["pause"].tag}"
+    volume-plugin-dir         = "/var/lib/kubelet/volumeplugins"
+  })
 }
 
 data "ignition_file" "get_host_info_sh" {
@@ -82,7 +87,7 @@ data "ignition_file" "kubelet_env" {
     content = templatefile("${path.module}/templates/services/kubelet-flags.env.tpl", {
       kubelet_cloud_provider_flag    = local.cloud_config.provider != "" ? "--cloud-provider=${local.cloud_config.provider}" : ""
       kubelet_cloud_config_path_flag = local.cloud_config.path != "" ? "--cloud-config=${local.cloud_config.path}" : ""
-      extra_flags                    = local.kubelet_flags
+      extra_flags                    = local.kube_extra_flags
     })
   }
 }

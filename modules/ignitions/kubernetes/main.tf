@@ -4,30 +4,6 @@ locals {
   log_path = "/var/log/kubernetes"
 }
 
-data "ignition_file" "kubelet_binary" {
-  filesystem = "root"
-  path       = "${local.opt_path}/bin/kubelet"
-  mode       = 500
-
-  source {
-    source       = local.binaries["kubelet"].source
-    verification = local.binaries["kubelet"].checksum
-  }
-}
-
-data "ignition_file" "kubectl_binary" {
-  count = var.control_plane ? 1 : 0
-
-  filesystem = "root"
-  path       = "${local.opt_path}/bin/kubectl"
-  mode       = 500
-
-  source {
-    source       = local.binaries["kubectl"].source
-    verification = local.binaries["kubectl"].checksum
-  }
-}
-
 data "ignition_file" "cni_plugin_tgz" {
   filesystem = "root"
   path       = "/opt/cni/cni-plugins-linux.tgz"
@@ -46,16 +22,20 @@ data "ignition_file" "kubernetes_env" {
 
   content {
     content = templatefile("${path.module}/templates/services/kubernetes.env.tpl", {
-      cfssl_image_repo = local.containers["cfssl"].repo
-      cfssl_image_tag  = local.containers["cfssl"].tag
-      cloud_provider   = local.cloud_config.provider
-      network_plugin   = var.network_plugin
+      kubelet_image_repo = local.containers["kubelet"].repo
+      kubelet_image_tag  = local.containers["kubelet"].tag
+      kubectl_image_repo = local.containers["kubectl"].repo
+      kubectl_image_tag  = local.containers["kubectl"].tag
+      cfssl_image_repo   = local.containers["cfssl"].repo
+      cfssl_image_tag    = local.containers["cfssl"].tag
+      cloud_provider     = local.cloud_config.provider
+      network_plugin     = var.network_plugin
     })
   }
 }
 
 data "ignition_file" "init_configs_sh" {
-  path       = "${local.opt_path}/bin/init-configs.sh"
+  path       = "${local.opt_path}/bin/init-configs"
   filesystem = "root"
   mode       = 500
 
@@ -67,7 +47,7 @@ data "ignition_file" "init_configs_sh" {
 data "ignition_file" "init_addons_sh" {
   count = var.control_plane ? 1 : 0
 
-  path       = "${local.opt_path}/bin/init-addons.sh"
+  path       = "${local.opt_path}/bin/init-addons"
   filesystem = "root"
   mode       = 500
 

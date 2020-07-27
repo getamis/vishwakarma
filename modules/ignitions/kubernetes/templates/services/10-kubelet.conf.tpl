@@ -5,4 +5,6 @@ Environment="KUBELET_NETWORK_ARGS=--network-plugin=cni"
 EnvironmentFile=-/etc/default/kubernetes.env
 EnvironmentFile=-/var/lib/kubelet/kubelet-flags.env
 ExecStart=
+ExecStartPre=-/bin/docker rm kubelet
 ExecStart=/opt/kubernetes/bin/kubelet-wrapper $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELET_NETWORK_ARGS $KUBELET_CLOUD_PROVIDER_ARGS $KUBELET_EXTRA_ARGS
+ExecStop=-/usr/bin/docker stop kubelet

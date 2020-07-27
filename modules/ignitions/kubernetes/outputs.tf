@@ -13,7 +13,6 @@ output "systemd_units" {
 output "files" {
   value = concat(
     [
-      data.ignition_file.kubelet_binary.rendered,
       data.ignition_file.cni_plugin_tgz.rendered,
       data.ignition_file.kubernetes_env.rendered,
       data.ignition_file.init_configs_sh.rendered,
@@ -26,7 +25,6 @@ output "files" {
       data.ignition_file.sysctl_max_user_watches_conf.rendered,
     ],
     var.control_plane ? [
-      data.ignition_file.kubectl_binary[0].rendered,
       data.ignition_file.init_addons_sh[0].rendered,
       data.ignition_file.kube_apiserver[0].rendered,
       data.ignition_file.kube_controller_manager[0].rendered,
