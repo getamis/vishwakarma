@@ -11,16 +11,20 @@ module "ignition_update_ca_certificates" {
   source = "../../ignitions/update-ca-certificates"
 }
 
-module "ignition_etcd" {
-  source = "../../ignitions/etcd"
+module "ignition_node_exporter" {
+  source = "../../ignitions/node-exporter"
+}
 
-  name              = var.name
-  containers        = var.containers
-  discovery_service = local.discovery_service
-  client_port       = local.client_port
-  peer_port         = local.peer_port
-  device_name       = local.instance_config["data_device_rename"]
-  data_path         = local.instance_config["data_path"]
+module "ignition_etcd" {
+  source = "git::ssh://git@github.com/getamis/terraform-etcd-ignition?ref=v0.1.0"
+
+  name                  = var.name
+  containers            = var.containers
+  discovery_service_srv = local.discovery_service
+  client_port           = local.client_port
+  peer_port             = local.peer_port
+  device_name           = local.instance_config["data_device_rename"]
+  data_path             = local.instance_config["data_path"]
 
   certs = {
     ca_cert     = module.etcd_ca.cert_pem
@@ -31,10 +35,6 @@ module "ignition_etcd" {
     peer_key    = module.etcd_peer_cert.private_key_pem
     peer_cert   = module.etcd_peer_cert.cert_pem
   }
-}
-
-module "ignition_node_exporter" {
-  source = "../../ignitions/node-exporter"
 }
 
 data "ignition_config" "main" {

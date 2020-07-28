@@ -20,25 +20,16 @@ data "aws_s3_bucket_object" "bootstrapping_kubeconfig" {
   key    = "bootstrap-kubelet.conf"
 }
 
-module "ignition_bootstrapping_kubeconfig" {
-  source = "../../ignitions/kubeconfig"
+module "ignition_kubelet" {
+  source = "git::ssh://git@github.com/getamis/terraform-kubernetes-ignition//modules/kubelet?ref=v0.1.0"
 
-  config_path = "/etc/kubernetes/bootstrap-kubelet.conf"
-  content     = data.aws_s3_bucket_object.bootstrapping_kubeconfig.body
-}
-
-module "ignition_kubernetes" {
-  source = "../../ignitions/kubernetes"
-
-  control_plane        = false
   binaries             = var.binaries
   containers           = var.containers
   service_network_cidr = var.service_network_cidr
   network_plugin       = var.network_plugin
 
-  kubelet_config = var.kubelet_config
-
-  kubelet_flags = merge(var.kubelet_flags, {
+  extra_config = var.kubelet_config
+  extra_flags = merge(var.kubelet_flags, {
     node-labels          = join(",", var.kubelet_node_labels)
     register-with-taints = join(",", var.kubelet_node_taints)
   })
@@ -47,6 +38,8 @@ module "ignition_kubernetes" {
     provider = "aws"
     path     = ""
   }
+
+  bootstrap_kubeconfig_content = data.aws_s3_bucket_object.bootstrapping_kubeconfig.body
 }
 
 data "ignition_config" "main" {
@@ -54,9 +47,7 @@ data "ignition_config" "main" {
     module.ignition_docker.files,
     module.ignition_locksmithd.files,
     module.ignition_update_ca_certificates.files,
-    module.ignition_bootstrapping_kubeconfig.files,
-    module.ignition_kubernetes.files,
-    module.ignition_kubernetes.cert_files,
+    module.ignition_kubelet.files,
     var.extra_ignition_file_ids,
   ))
 
@@ -64,7 +55,7 @@ data "ignition_config" "main" {
     module.ignition_docker.systemd_units,
     module.ignition_locksmithd.systemd_units,
     module.ignition_update_ca_certificates.systemd_units,
-    module.ignition_kubernetes.systemd_units,
+    module.ignition_kubelet.systemd_units,
     var.extra_ignition_systemd_unit_ids,
   ))
 }
