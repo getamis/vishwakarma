@@ -112,6 +112,7 @@ locals {
   apiserver_flags = merge({
     insecure-port    = 0
     allow-privileged = true
+    profiling        = false
 
     // TODO: fix livenessProbe while disabled anonymous auth. 
     // See https://kubernetes.io/docs/reference/access-authn-authz/authentication/#anonymous-requests for more information.
@@ -120,9 +121,11 @@ locals {
     enable-admission-plugins        = "NodeRestriction"
     enable-bootstrap-token-auth     = true
     kubelet-preferred-address-types = "InternalIP,ExternalIP,Hostname"
+    tls-cipher-suites               = "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256"
   }, var.apiserver_flags)
 
   controller_manager_flags = merge({
+    profiling                       = false
     leader-elect                    = true
     allocate-node-cidrs             = true
     controllers                     = "*,bootstrapsigner"
@@ -130,15 +133,17 @@ locals {
     pod-eviction-timeout            = "5m"
     configure-cloud-routes          = false
     use-service-account-credentials = true
+    terminated-pod-gc-threshold     = 10
   }, var.controller_manager_flags)
 
   scheduler_flags = merge({
+    profiling    = false
     leader-elect = true
   }, var.scheduler_flags)
 
   audit_log_flags = merge({
     audit-log-maxage    = 30
-    audit-log-maxbackup = 3
+    audit-log-maxbackup = 10
     audit-log-maxsize   = 128
   }, var.audit_log_flags)
 
