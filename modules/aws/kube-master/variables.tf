@@ -102,8 +102,8 @@ variable "enable_iam_auth" {
   default     = false
 }
 
-variable "auth_webhook_config_path" {
-  description = "The path of webhook config for kube-apiserver."
+variable "auth_webhook_kubeconfig_path" {
+  description = "The path of webhook kubeconfig for kube-apiserver."
   type        = string
   default     = "/etc/kubernetes/config/aws-iam-authenticator/kubeconfig"
 }
@@ -144,6 +144,19 @@ variable "certs_validity_period_hours" {
   // bacause *some* of etcd internal certs are still self-generated and need
   // this variable set
   default = 87600
+}
+
+variable "service_account_content" {
+  description = "The service account keypair content for Kubernetes."
+  type = object({
+    pub_key = string
+    pri_key = string
+  })
+
+  default = {
+    pub_key = ""
+    pri_key = ""
+  }
 }
 
 // -----------------------------------------

@@ -89,16 +89,29 @@ variable "enable_iam_auth" {
   default     = false
 }
 
+variable "auth_webhook_kubeconfig_path" {
+  description = "The path of webhook kubeconfig for kube-apiserver."
+  type        = string
+  default     = "/etc/kubernetes/config/aws-iam-authenticator/kubeconfig"
+}
+
 variable "enable_irsa" {
   description = "(Optional) Enable AWS IAM role service account or not"
   type        = bool
   default     = false
 }
 
-variable "oidc_api_audiences" {
-  description = "the OIDC authenticator pre-introduction of API audiences"
-  type        = string
-  default     = "sts.amazonaws.com"
+variable "irsa_oidc_config" {
+  description = "The service account config to enable pod identity feature"
+  type = object({
+    issuer        = string
+    api_audiences = string
+  })
+
+  default = {
+    issuer        = ""
+    api_audiences = "sts.amazonaws.com"
+  }
 }
 
 variable "certs_validity_period_hours" {
@@ -108,6 +121,19 @@ variable "certs_validity_period_hours" {
   // bacause *some* of etcd internal certs are still self-generated and need
   // this variable set
   default = 87600
+}
+
+variable "service_account_content" {
+  description = "The service account keypair content for Kubernetes. If keypair is empty, "
+  type = object({
+    pub_key = string
+    pri_key = string
+  })
+
+  default = {
+    pub_key = ""
+    pri_key = ""
+  }
 }
 
 variable "reboot_strategy" {

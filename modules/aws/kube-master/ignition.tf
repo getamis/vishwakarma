@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes?ref=v0.1.0"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes"
 
   binaries              = var.binaries
   containers            = var.containers
@@ -52,7 +52,7 @@ module "ignition_kubernetes" {
   audit_log_policy_content = var.audit_log_policy_content
   encryption_secret        = random_password.encryption_secret.result
   enable_iam_auth          = var.enable_iam_auth
-  auth_webhook_config_path = var.auth_webhook_config_path
+  auth_webhook_config_path = var.auth_webhook_kubeconfig_path
   enable_irsa              = var.enable_irsa
   oidc_config              = var.oidc_config
 
@@ -77,8 +77,8 @@ module "ignition_kubernetes" {
     front_proxy_ca_key            = module.front_proxy_ca.private_key_pem
     front_proxy_client_cert       = module.front_proxy_client_cert.cert_pem
     front_proxy_client_key        = module.front_proxy_client_cert.private_key_pem
-    sa_pub                        = module.service_account.public_key_pem
-    sa_key                        = module.service_account.private_key_pem
+    sa_pub                        = var.service_account_content.pub_key == "" ? module.service_account.public_key_pem : var.service_account_content.pub_key
+    sa_key                        = var.service_account_content.pri_key == "" ? module.service_account.private_key_pem : var.service_account_content.pri_key
   }
 
   kubelet_cert = {

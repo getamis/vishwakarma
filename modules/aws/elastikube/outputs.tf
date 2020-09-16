@@ -18,11 +18,6 @@ output "ignition_s3_bucket" {
   description = "The S3 bucket for storing provision ignition file"
 }
 
-output "oidc_s3_bucket" {
-  value       = module.kube_iam_auth.oidc_s3_bucket
-  description = "The S3 bucket for storing oidc data"
-}
-
 output "master_sg_ids" {
   value       = [module.master.master_sg_id]
   description = "The security group which used by K8S master"
@@ -39,4 +34,9 @@ output "master_role_name" {
 
 output "etcd_role_name" {
   value = module.etcd.default_role_name
+}
+
+output "service_account_pub_key" {
+  sensitive = true
+  value     = var.service_account_content.pub_key == "" ? module.master.service_account_pub_key : var.service_account_content.pub_key
 }

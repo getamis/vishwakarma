@@ -4,6 +4,9 @@
 .terratest/
 vendor/
 .test-data
+.secret
+kubeconfig/
+deploy/
 .DS_Store
 .vscode
 examples/aws-iam/iam-provision/deploy
