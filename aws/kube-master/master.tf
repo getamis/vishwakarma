@@ -46,7 +46,7 @@ resource "aws_autoscaling_group" "master" {
 
 resource "aws_launch_configuration" "master" {
   instance_type = "${var.master_config["ec2_type"]}"
-  image_id      = "${data.aws_ami.coreos_ami.image_id}"
+  image_id      = "${data.aws_ami.os.id}"
   name_prefix   = "${var.name}-master-"
 
   security_groups = [

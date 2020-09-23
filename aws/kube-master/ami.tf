@@ -1,36 +1,30 @@
+provider "external" {
+  version = "1.0.0"
+}
+
 locals {
-  ami_owner = "595879546273"
-  arn       = "aws"
-
-  container_linux_channel = "stable"
-  container_linux_version = "latest"
+  architecture        = "x86_64"
+  virtualization_type = "hvm"
+  ami_owner           = "075585003325"
+  ami_name            = "Flatcar-stable-*"
 }
 
-module "container_linux" {
-  source = "../container_linux"
+data "aws_ami" "os" {
+  most_recent = true
+  owners      = ["${local.ami_owner}"]
 
-  release_channel = "${local.container_linux_channel}"
-  release_version = "${local.container_linux_version}"
-}
-
-data "aws_ami" "coreos_ami" {
   filter {
     name   = "name"
-    values = ["CoreOS-${local.container_linux_channel}-${module.container_linux.version}-*"]
+    values = ["${local.ami_name}"]
   }
 
   filter {
     name   = "architecture"
-    values = ["x86_64"]
+    values = ["${local.architecture}"]
   }
 
   filter {
     name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  filter {
-    name   = "owner-id"
-    values = ["${local.ami_owner}"]
+    values = ["${local.virtualization_type}"]
   }
 }

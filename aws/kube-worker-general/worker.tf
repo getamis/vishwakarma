@@ -51,7 +51,7 @@ resource "aws_autoscaling_group" "worker" {
 
 resource "aws_launch_template" "worker" {
   instance_type = "${var.worker_config["ec2_type"]}"
-  image_id      = "${data.aws_ami.coreos_ami.image_id}"
+  image_id      = "${data.aws_ami.os.id}"
   name_prefix   = "${var.name}-worker-${var.worker_config["name"]}-"  
 
   vpc_security_group_ids = [
