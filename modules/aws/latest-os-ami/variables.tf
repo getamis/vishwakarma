@@ -1,11 +1,11 @@
 variable "flavor" {
-  description = "Name of the operating system.(ex: 'coreos', 'flatcar', 'fedora_coreos', 'ubuntu')"
+  description = "Name of the operating system.(ex: 'flatcar', 'fedora_coreos' and 'ubuntu')"
   type        = string
 }
 
 variable "channel" {
   type        = string
-  description = "AMI channel for a Container Linux derivative (coreos-stable, coreos-beta, coreos-alpha, flatcar-stable, flatcar-beta, flatcar-alpha, flatcar-edge)"
+  description = "AMI channel for Flatcar Container Linux derivative ('stable', 'beta', 'alpha' and 'edge')"
   default     = "stable"
 }
 
