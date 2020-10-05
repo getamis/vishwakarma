@@ -1,24 +1,26 @@
+data "aws_iam_policy_document" "s3_echoer_policy" {
+  statement {
+    sid     = "AssumeRole"
+    effect  = "Allow"
+    actions = ["sts:AssumeRoleWithWebIdentity"]
+
+    principals {
+      type        = "Federated"
+      identifiers = ["${var.oidc_provider_arn}"]
+    }
+
+    condition {
+      test     = "StringEquals"
+      variable = "${var.oidc_issuer}:sub"
+      values = ["system:serviceaccount:default:s3-echoer"]
+    }
+  }
+}
+
 resource "aws_iam_role" "s3_echoer" {
   name               = "s3-echoer"
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": {
-        "Federated": "${var.oidc_provider_arn}"
-      },
-      "Action": "sts:AssumeRoleWithWebIdentity",
-      "Condition": {
-        "StringEquals": {
-          "${var.oidc_issuer}:sub": "system:serviceaccount:default:s3-echoer"
-        }
-      }
-    }
-  ]
-}
-EOF
+  path               = "/"
+  assume_role_policy = data.aws_iam_policy_document.s3_echoer_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "s3_echoer" {
