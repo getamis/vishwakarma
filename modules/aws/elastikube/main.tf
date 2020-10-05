@@ -16,7 +16,9 @@ module "master" {
   binaries       = var.override_binaries
   network_plugin = var.network_plugin
 
-  etcd_endpoints = module.etcd.endpoints
+  etcd_endpoints          = module.etcd.endpoints
+  service_account_content = var.service_account_content
+
   etcd_certs = {
     ca_cert = module.etcd.ca_cert
     ca_key  = module.etcd.ca_key
@@ -36,7 +38,6 @@ module "master" {
   ))
 
   extra_ignition_file_ids = compact(concat(
-    module.kube_iam_auth.files,
     var.extra_ignition_file_ids
   ))
 
@@ -44,14 +45,11 @@ module "master" {
     var.extra_ignition_systemd_unit_ids
   ))
 
-  enable_iam_auth          = var.enable_iam_auth
-  auth_webhook_config_path = module.kube_iam_auth.webhook_kubeconfig_path
+  enable_iam_auth              = var.enable_iam_auth
+  auth_webhook_kubeconfig_path = var.auth_webhook_kubeconfig_path
 
   enable_irsa = var.enable_irsa
-  oidc_config = {
-    issuer        = module.kube_iam_auth.oidc_issuer
-    api_audiences = var.oidc_api_audiences
-  }
+  oidc_config = var.irsa_oidc_config
 
   audit_log_policy_content = var.kube_audit_log_policy_content
 

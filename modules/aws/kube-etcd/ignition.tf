@@ -16,7 +16,7 @@ module "ignition_node_exporter" {
 }
 
 module "ignition_etcd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-etcd?ref=v0.1.0"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-etcd"
 
   name                  = var.name
   containers            = var.containers

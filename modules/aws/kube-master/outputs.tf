@@ -17,7 +17,7 @@ output "kubernetes_ca_cert" {
 
 output "service_account_pub_key" {
   sensitive = true
-  value     = module.service_account.public_key_pem
+  value     = var.service_account_content.pub_key == "" ? module.service_account.public_key_pem : var.service_account_content.pub_key
 }
 
 output "tls_bootstrap_token_id" {
