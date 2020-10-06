@@ -3,11 +3,6 @@ locals {
   virtualization_type = "hvm"
 
   image_info = {
-    coreos = {
-      owner_id = "595879546273"
-      name     = "CoreOS-${var.channel}-*"
-    }
-
     flatcar = {
       owner_id = "075585003325"
       name     = "Flatcar-${var.channel}-*"
