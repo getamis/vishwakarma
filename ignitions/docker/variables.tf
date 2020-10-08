@@ -7,5 +7,6 @@ variable "docker_opts" {
     "max-size=50m",
     "--log-opt",
     "max-file=3",
+    "--experimental"
   ]
 }
