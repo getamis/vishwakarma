@@ -18,7 +18,7 @@ module "network" {
 }
 
 module "os_ami" {
-  source          = "../../../modules/aws/os-ami"
+  source          = "../../modules/aws/os-ami"
   flavor          = "flatcar"
   flatcar_version = "2512.5.0"
 }
