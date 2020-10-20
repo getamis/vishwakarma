@@ -3,6 +3,12 @@ variable "name" {
   type        = string
 }
 
+variable "kubernetes_version" {
+  description = "Desired Kubernetes version."
+  type        = string
+  default     = "v1.19.3"
+}
+
 variable "override_binaries" {
   description = "Desired binaries(cni_plugin) url and checksum."
   type = map(object({

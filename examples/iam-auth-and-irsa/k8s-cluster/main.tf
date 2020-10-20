@@ -47,6 +47,7 @@ module "master" {
 
   name                      = module.label.id
   network_plugin            = var.network_plugin
+  kubernetes_version        = var.kubernetes_version
   kube_service_network_cidr = var.service_cidr
   kube_cluster_network_cidr = local.cluster_cidr
   enable_iam_auth           = true

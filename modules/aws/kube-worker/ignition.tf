@@ -25,6 +25,7 @@ module "ignition_kubelet" {
 
   binaries             = var.binaries
   containers           = var.containers
+  kubernetes_version   = var.kubernetes_version
   service_network_cidr = var.service_network_cidr
   network_plugin       = var.network_plugin
 
