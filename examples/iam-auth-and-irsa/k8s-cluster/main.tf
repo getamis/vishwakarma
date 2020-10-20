@@ -17,9 +17,10 @@ locals {
   cluster_cidr = var.network_plugin == "amazon-vpc" ? module.network.vpc_cidr : var.cluster_cidr
 }
 
-module "latest_os_ami" {
-  source = "../../../modules/aws/latest-os-ami"
-  flavor = "flatcar"
+module "os_ami" {
+  source          = "../../../modules/aws/os-ami"
+  flavor          = "flatcar"
+  flatcar_version = "2512.5.0"
 }
 
 module "service_account" {
@@ -65,7 +66,7 @@ module "master" {
 
   etcd_instance_config = {
     count              = "1"
-    image_id           = module.latest_os_ami.image_id
+    image_id           = module.os_ami.image_id
     ec2_type           = "t3.medium"
     root_volume_size   = "40"
     data_volume_size   = "100"
@@ -76,7 +77,7 @@ module "master" {
 
   master_instance_config = {
     count            = "1"
-    image_id         = module.latest_os_ami.image_id
+    image_id         = module.os_ami.image_id
     ec2_type_1       = "t3.medium"
     ec2_type_2       = "t2.medium"
     root_volume_iops = "100"

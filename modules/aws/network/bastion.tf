@@ -31,13 +31,13 @@ data "template_file" "user_data" {
   template = file("${path.module}/resources/user_data")
 }
 
-module "latest_os_ami" {
-  source = "../../aws/latest-os-ami"
+module "os_ami" {
+  source = "../../aws/os-ami"
   flavor = "ubuntu"
 }
 
 resource "aws_instance" "bastion" {
-  ami                         = var.bastion_ami_id == "" ? module.latest_os_ami.image_id : var.bastion_ami_id
+  ami                         = var.bastion_ami_id == "" ? module.os_ami.image_id : var.bastion_ami_id
   associate_public_ip_address = true
   instance_type               = var.bastion_instance_type
   key_name                    = var.bastion_key_name

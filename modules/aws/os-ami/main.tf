@@ -5,7 +5,7 @@ locals {
   image_info = {
     flatcar = {
       owner_id = "075585003325"
-      name     = "Flatcar-${var.channel}-*"
+      name     = "Flatcar-${var.channel}-${var.flatcar_version}-*"
     }
 
     fedora_coreos = {
