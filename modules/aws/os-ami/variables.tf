@@ -3,6 +3,12 @@ variable "flavor" {
   type        = string
 }
 
+variable "most_recent" {
+  description = " (Optional) If more than one result is returned, use the most recent AMI."
+  type        = bool
+  default     = true
+}
+
 variable "channel" {
   type        = string
   description = "AMI channel for Flatcar Container Linux derivative ('stable', 'beta', 'alpha' and 'edge')."

@@ -39,6 +39,7 @@ module "master" {
   source = "../../modules/aws/elastikube"
 
   name                      = module.label.id
+  kubernetes_version        = var.kubernetes_version
   network_plugin            = var.network_plugin
   kube_service_network_cidr = var.service_cidr
   kube_cluster_network_cidr = local.cluster_cidr
@@ -86,6 +87,7 @@ module "worker_on_demand" {
   source = "../../modules/aws/kube-worker"
 
   name                 = module.label.id
+  kubernetes_version   = var.kubernetes_version
   service_network_cidr = var.service_cidr
   network_plugin       = var.network_plugin
 
@@ -122,6 +124,7 @@ module "worker_spot" {
 
   name                 = module.label.id
   service_network_cidr = var.service_cidr
+  kubernetes_version   = var.kubernetes_version
   network_plugin       = var.network_plugin
 
   security_group_ids = module.master.worker_sg_ids

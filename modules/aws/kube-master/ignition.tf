@@ -16,6 +16,7 @@ module "ignition_kubernetes" {
 
   binaries              = var.binaries
   containers            = var.containers
+  kubernetes_version    = var.kubernetes_version
   apiserver_secure_port = var.apiserver_secure_port
   service_network_cidr  = var.service_network_cidr
   pod_network_cidr      = var.cluster_network_cidr

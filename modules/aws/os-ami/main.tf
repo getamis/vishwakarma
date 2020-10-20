@@ -21,7 +21,7 @@ locals {
 }
 
 data "aws_ami" "os" {
-  most_recent = true
+  most_recent = var.most_recent
   owners      = [local.image_info[var.flavor]["owner_id"]]
 
   filter {

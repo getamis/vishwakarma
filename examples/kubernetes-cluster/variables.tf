@@ -4,6 +4,12 @@ variable "aws_region" {
   default     = "us-west-2"
 }
 
+variable "kubernetes_version" {
+  description = "Desired Kubernetes version."
+  type        = string
+  default     = "v1.19.3"
+}
+
 variable "service_cidr" {
   description = "(Optional) The Kubernetes service CIDR."
   type        = string
