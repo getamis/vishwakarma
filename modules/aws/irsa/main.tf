@@ -1,7 +1,7 @@
 data "aws_region" "current" {}
 
 module "ignition_pod_idenity_webhook" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-pod-identity-webhook"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-pod-identity-webhook?ref=master"
 
   container             = var.container
   webhook_flags         = var.webhook_flags
