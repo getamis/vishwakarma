@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes?ref=master"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes?ref=v1.0.0"
 
   binaries              = var.binaries
   containers            = var.containers
@@ -90,16 +90,16 @@ module "ignition_kubernetes" {
 }
 
 module "ignition_docker" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=master"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.0.0"
 }
 
 module "ignition_locksmithd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=master"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.0.0"
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=master"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.0.0"
 }
 
 data "ignition_config" "main" {
