@@ -7,7 +7,11 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 
 <a name="v1.0.0"></a>
-## [v1.0.0] - 2020-10-22
+## [v1.0.0] - 2020-10-23
+BUG FIXES:
+- lock terraform required version ([#94](https://github.com/getamis/vishwakarma/issues/94))
+- rename CHANGELOG.pre-v0.2.0.md to v0.1.0 ([#84](https://github.com/getamis/vishwakarma/issues/84))
+
 FEATURES:
 - move ignitions modules to new repo ([#92](https://github.com/getamis/vishwakarma/issues/92))
 - add new var for setting Kubernetes version ([#91](https://github.com/getamis/vishwakarma/issues/91))
@@ -22,9 +26,6 @@ REFACTORS:
 ENHANCEMENTS:
 - update etcd and kubernetes ignition source ([#87](https://github.com/getamis/vishwakarma/issues/87))
 - update README.md ([#85](https://github.com/getamis/vishwakarma/issues/85))
-
-BUG FIXES:
-- rename CHANGELOG.pre-v0.2.0.md to v0.1.0 ([#84](https://github.com/getamis/vishwakarma/issues/84))
 
 TESTS:
 - make sure that tests run in different region ([#47](https://github.com/getamis/vishwakarma/issues/47))
