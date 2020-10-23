@@ -6,67 +6,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
 
-<a name="v0.1.0"></a>
-## [v0.1.0] - 2020-08-04
-
-- feat: move etcd and Kubernetes ignition to new repos ([#82](https://github.com/getamis/vishwakarma/issues/82))
-- Merge pull request [#81](https://github.com/getamis/vishwakarma/issues/81) from kairen/fix-from-kube-hunter
-- Merge pull request [#80](https://github.com/getamis/vishwakarma/issues/80) from kairen/fix-kubelet
-- Merge pull request [#79](https://github.com/getamis/vishwakarma/issues/79) from kairen/fix-examples
-- Merge pull request [#77](https://github.com/getamis/vishwakarma/issues/77) from kairen/add-extra-addons
-- Merge pull request [#76](https://github.com/getamis/vishwakarma/issues/76) from kairen/add-flatcar-linux
-- Merge pull request [#78](https://github.com/getamis/vishwakarma/issues/78) from kairen/add-max-user-watches
-- Merge pull request [#74](https://github.com/getamis/vishwakarma/issues/74) from kairen/kyle/refactor-kubernetes
-- Add support AWS IRSA and new AWS IAM authenticator ([#71](https://github.com/getamis/vishwakarma/issues/71))
-- Update testing and remove unnecessary files ([#69](https://github.com/getamis/vishwakarma/issues/69))
-- Add latest AMI module ([#68](https://github.com/getamis/vishwakarma/issues/68))
-- export etcd role ([#67](https://github.com/getamis/vishwakarma/issues/67))
-- add /opt/bin into ectd & kubelet service ([#66](https://github.com/getamis/vishwakarma/issues/66))
-- extract container related variable for top level module ([#64](https://github.com/getamis/vishwakarma/issues/64))
-- Update changelog for v0.0.16 ([#63](https://github.com/getamis/vishwakarma/issues/63))
-- Bump k8s version to v1.15.10 as default ([#62](https://github.com/getamis/vishwakarma/issues/62))
-- Run kubelet on host directly ([#60](https://github.com/getamis/vishwakarma/issues/60))
-- Use docker to replace rkt for running etcd ([#59](https://github.com/getamis/vishwakarma/issues/59))
-- Limit max pods while network is amazon-vpc ([#58](https://github.com/getamis/vishwakarma/issues/58))
-- Remove EKS modules and examples ([#57](https://github.com/getamis/vishwakarma/issues/57))
-- Add new CNI support for Amazon VPC ([#56](https://github.com/getamis/vishwakarma/issues/56))
-- Output master's default role name ([#54](https://github.com/getamis/vishwakarma/issues/54))
-- addon/coredns: make sure that replicas is match master count ([#53](https://github.com/getamis/vishwakarma/issues/53))
-- eks: add support for fargate ([#51](https://github.com/getamis/vishwakarma/issues/51))
-- Bump Kubernetes version to v1.15 as default ([#49](https://github.com/getamis/vishwakarma/issues/49))
-- Restructure addon folder ([#48](https://github.com/getamis/vishwakarma/issues/48))
-- test: make sure that tests run in different region ([#47](https://github.com/getamis/vishwakarma/issues/47))
-- fix packets drop issue ([#45](https://github.com/getamis/vishwakarma/issues/45))
-- Fix EKS test ([#46](https://github.com/getamis/vishwakarma/issues/46))
-- Bump Kubernetes to v1.14.10 ([#44](https://github.com/getamis/vishwakarma/issues/44))
-- Fix tests and move TravisCI to CircleCI ([#43](https://github.com/getamis/vishwakarma/issues/43))
-- Fix terraform validate and check-fmt ([#42](https://github.com/getamis/vishwakarma/issues/42))
-- Update markdown format ([#41](https://github.com/getamis/vishwakarma/issues/41))
-- Merge pull request [#40](https://github.com/getamis/vishwakarma/issues/40) from kairen/add-ci
-- Merge pull request [#39](https://github.com/getamis/vishwakarma/issues/39) from kairen/fix-interpolation-only
-- Bump Kubernetes to v1.14.9 ([#38](https://github.com/getamis/vishwakarma/issues/38))
-- Merge pull request [#37](https://github.com/getamis/vishwakarma/issues/37) from kairen/update-provider
-- Merge pull request [#36](https://github.com/getamis/vishwakarma/issues/36) from kairen/remove-quotes
-- Merge pull request [#33](https://github.com/getamis/vishwakarma/issues/33) from getamis/feature/v1.0.0
-- Merge pull request [#35](https://github.com/getamis/vishwakarma/issues/35) from kairen/bump-k8s-version
-- Merge pull request [#34](https://github.com/getamis/vishwakarma/issues/34) from kairen/add-coredns-affinity
-- Merge pull request [#29](https://github.com/getamis/vishwakarma/issues/29) from getamis/feature/v0.0.15
-- Merge pull request [#28](https://github.com/getamis/vishwakarma/issues/28) from getamis/feature/spot_master
-
-
-<a name="v0.0.13-3426987"></a>
-## [v0.0.13-3426987] - 2020-01-20
-
-- Output master's default role name
-
-
-<a name="v0.0.13-f56d0ff"></a>
-## [v0.0.13-f56d0ff] - 2019-11-25
-
-- Bump Kubernetes version to 1.13.12 as default
-- modules/kube-addon-dns: use affinity to replace nodeSelector
-
-
 <a name="v0.0.16"></a>
 ## [v0.0.16] - 2019-11-15
 
@@ -248,11 +187,6 @@ project adheres to [Semantic Versioning](http://semver.org/).
 - add basic vpc setup into network
 - initial
 
-
-[Unreleased]: https://github.com/getamis/vishwakarma/compare/v0.1.0...HEAD
-[v0.1.0]: https://github.com/getamis/vishwakarma/compare/v0.0.13-3426987...v0.1.0
-[v0.0.13-3426987]: https://github.com/getamis/vishwakarma/compare/v0.0.13-f56d0ff...v0.0.13-3426987
-[v0.0.13-f56d0ff]: https://github.com/getamis/vishwakarma/compare/v0.0.16...v0.0.13-f56d0ff
 [v0.0.16]: https://github.com/getamis/vishwakarma/compare/v0.0.15...v0.0.16
 [v0.0.15]: https://github.com/getamis/vishwakarma/compare/v0.0.14...v0.0.15
 [v0.0.14]: https://github.com/getamis/vishwakarma/compare/v0.0.13...v0.0.14

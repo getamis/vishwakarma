@@ -3,7 +3,7 @@ TF_FILES = $(shell find . -type f -name "*.tf" -not -path "*/.terraform/*" -exec
 TF_EXAMPLES = $(shell find ./examples -type f -name "*.tf" -not -path "*/.terraform/*" -exec dirname {} \; |sort -u)
 
 SEMTAG=tools/semtag
-TAG_QUERY=v0.1.0..
+TAG_QUERY=v1.0.0..
 
 scope ?= "minor"
 
@@ -34,7 +34,7 @@ test-kubernetes-cluster:
 
 .PHONY: changelog
 changelog:
-	git-chglog -o CHANGELOG.md --next-tag `$(SEMTAG) final -s $(scope) -o -f` $(TAG_QUERY)
+	git-chglog -o CHANGELOG.md $(TAG_QUERY)
 
 .PHONY: release
 release:
