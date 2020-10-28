@@ -37,6 +37,11 @@ resource "null_resource" "generate_oidc_keys_json" {
       PKCS_KEY    = "${path.root}/.secret/oidc-pkcs8.pub"
     }
   }
+
+  triggers = {
+    controller_primary = timestamp()
+  }
+
   depends_on = [local_file.oidc_pub_key]
 }
 
