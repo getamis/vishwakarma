@@ -44,6 +44,11 @@ resource "null_resource" "apply_iam_admin_mapping" {
       KUBECONFIG = "./.secret/kubeconfig"
     }
   }
+
+  triggers = {
+    controller_primary = timestamp()
+  }
+
   depends_on = [local_file.iam_admin_yaml, local_file.kubeconfig]
 }
 

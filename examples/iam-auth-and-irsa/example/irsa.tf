@@ -42,5 +42,10 @@ resource "null_resource" "apply_s3_echoer" {
       KUBECONFIG = "./.secret/kubeconfig"
     }
   }
+
+  triggers = {
+    controller_primary = timestamp()
+  }
+
   depends_on = [local_file.s3_echoer, local_file.kubeconfig]
 }
