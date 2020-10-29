@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
 
+<a name="v1.0.1"></a>
+## [v1.0.1] - 2020-10-28
+FEATURES:
+- add controller primary for null_resource ([#96](https://github.com/getamis/vishwakarma/issues/96))
+
+
 <a name="v1.0.0"></a>
 ## [v1.0.0] - 2020-10-23
 BUG FIXES:
@@ -31,5 +37,6 @@ TESTS:
 - make sure that tests run in different region ([#47](https://github.com/getamis/vishwakarma/issues/47))
 
 
-[Unreleased]: https://github.com/getamis/vishwakarma/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/getamis/vishwakarma/compare/v1.0.1...HEAD
+[v1.0.1]: https://github.com/getamis/vishwakarma/compare/v1.0.0...v1.0.1
 [v1.0.0]: https://github.com/getamis/vishwakarma/compare/v0.0.16...v1.0.0
