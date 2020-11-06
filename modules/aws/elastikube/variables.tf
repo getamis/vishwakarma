@@ -228,14 +228,57 @@ variable "endpoint_public_access" {
 
 variable "master_instance_config" {
   description = "(Optional) Desired master nodes configuration."
-  type        = map(string)
-  default     = {}
+  type = object({
+    count            = number
+    image_id         = string
+    ec2_type         = list(string)
+    root_volume_iops = number
+    root_volume_size = number
+    root_volume_type = string
+
+    on_demand_base_capacity                  = number
+    on_demand_percentage_above_base_capacity = number
+    spot_instance_pools                      = number
+  })
+  default = {
+    count            = 1
+    image_id         = "ami-0b75e2f157200889f"
+    ec2_type         = [
+      "t3.medium",
+      "t2.medium"
+    ]
+    root_volume_iops = 100
+    root_volume_size = 256
+    root_volume_type = "gp2"
+
+    on_demand_base_capacity                  = 0
+    on_demand_percentage_above_base_capacity = 100
+    spot_instance_pools                      = 1
+  }
 }
 
 variable "etcd_instance_config" {
   description = "(Optional) Desired etcd nodes configuration."
-  type        = map(string)
-  default     = {}
+  type        = object({
+    count              = number
+    image_id           = string
+    ec2_type           = string
+    root_volume_size   = number
+    data_volume_size   = number
+    data_device_name   = string
+    data_device_rename = string
+    data_path          = string
+  })
+  default     = {
+    count              = 1
+    image_id           = "ami-0b75e2f157200889f"
+    ec2_type           = "t3.medium"
+    root_volume_size   = 40
+    data_volume_size   = 100
+    data_device_name   = "/dev/sdf"
+    data_device_rename = "/dev/nvme1n1"
+    data_path          = "/etcd/data"    
+  }
 }
 
 variable "ssh_key" {

@@ -38,7 +38,7 @@ module "ignition_kubernetes" {
 
   kube_proxy_config = var.kube_proxy_config
   coredns_config = merge(var.coredns_config, {
-    replicas = parseint(local.instance_config["count"], 3)
+    replicas = var.instance_config["count"]
   })
 
   kubelet_flags = merge(var.extra_flags["kubelet"], {

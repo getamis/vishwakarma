@@ -11,3 +11,9 @@ sudo apt-get install -y kubectl jq
 sudo apt-get install -y python3-pip
 export LC_ALL=C
 sudo pip3 install awscli --upgrade
+
+# install terraform
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+sudo apt-get update
+sudo apt-get install terraform=0.12.29

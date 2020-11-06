@@ -11,12 +11,12 @@ data "aws_availability_zones" "available" {
 }
 
 data "aws_subnet" "etcd" {
-  count = local.instance_config["count"]
+  count = var.instance_config["count"]
   id    = var.subnet_ids[count.index % length(var.subnet_ids)]
 }
 
 resource "aws_network_interface" "etcd" {
-  count     = local.instance_config["count"]
+  count     = var.instance_config["count"]
   subnet_id = var.subnet_ids[count.index % length(var.subnet_ids)]
   security_groups = compact(concat(
     var.security_group_ids,
@@ -32,9 +32,9 @@ resource "aws_network_interface" "etcd" {
 }
 
 resource "aws_ebs_volume" "etcd" {
-  count             = local.instance_config["count"]
+  count             = var.instance_config["count"]
   availability_zone = data.aws_subnet.etcd[count.index].availability_zone
-  size              = local.instance_config["data_volume_size"]
+  size              = var.instance_config["data_volume_size"]
 
   tags = merge(var.extra_tags, map(
     "Name", "${var.name}-etcd-${count.index}",
@@ -44,17 +44,17 @@ resource "aws_ebs_volume" "etcd" {
 }
 
 resource "aws_volume_attachment" "etcd" {
-  count       = local.instance_config["count"]
-  device_name = local.instance_config["data_device_name"]
+  count       = var.instance_config["count"]
+  device_name = var.instance_config["data_device_name"]
   volume_id   = aws_ebs_volume.etcd[count.index].id
   instance_id = aws_instance.etcd[count.index].id
 }
 
 resource "aws_instance" "etcd" {
-  count = local.instance_config["count"]
+  count = var.instance_config["count"]
 
-  ami                  = local.instance_config["image_id"]
-  instance_type        = local.instance_config["ec2_type"]
+  ami                  = var.instance_config["image_id"]
+  instance_type        = var.instance_config["ec2_type"]
   key_name             = var.ssh_key
   iam_instance_profile = aws_iam_instance_profile.etcd.id
 
@@ -66,7 +66,7 @@ resource "aws_instance" "etcd" {
   }
 
   root_block_device {
-    volume_size = local.instance_config["root_volume_size"]
+    volume_size = var.instance_config["root_volume_size"]
   }
 
   volume_tags = merge(var.extra_tags, map(

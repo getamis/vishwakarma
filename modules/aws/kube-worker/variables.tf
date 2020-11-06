@@ -121,8 +121,19 @@ EOF
 
 variable "instance_config" {
   description = "Desired worker nodes configuration."
-  type        = map(string)
-  default     = {}
+  type = object({
+    count            = number
+    name             = string
+    image_id         = string
+    ec2_type         = list(string)
+    root_volume_iops = number
+    root_volume_size = number
+    root_volume_type = string
+
+    on_demand_base_capacity                  = number
+    on_demand_percentage_above_base_capacity = number
+    spot_instance_pools                      = number
+  })
 }
 
 variable "enable_autoscaler" {

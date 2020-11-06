@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "default" {
+data "aws_iam_policy_document" "etcd_profile" {
   statement {
     sid = "KubeEtcdAssumeRole"
 
@@ -15,7 +15,7 @@ data "aws_iam_policy_document" "default" {
 
 resource "aws_iam_role" "etcd" {
   name_prefix        = "${var.name}-etcd-"
-  assume_role_policy = data.aws_iam_policy_document.default.json
+  assume_role_policy = data.aws_iam_policy_document.etcd_profile.json
 }
 
 resource "aws_iam_instance_profile" "etcd" {
@@ -23,25 +23,23 @@ resource "aws_iam_instance_profile" "etcd" {
   role = aws_iam_role.etcd.name
 }
 
+data "aws_iam_policy_document" "etcd" {
+  statement {
+    sid     = "S3"
+    actions = [
+      "s3:GetObject",
+    ]
+    resources = [
+      "arn:aws:s3:::${var.s3_bucket}/*"
+    ]
+  }
+}
+
 resource "aws_iam_policy" "etcd" {
   name        = "${var.name}-etcd"
   path        = "/"
   description = "policy for kubernetes etcds"
-
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action" : [
-        "s3:GetObject"
-      ],
-      "Resource": "arn:aws:s3:::${var.s3_bucket}/*",
-      "Effect": "Allow"
-    }
-  ]
-}
-EOF
+  policy      = data.aws_iam_policy_document.etcd.json 
 }
 
 resource "aws_iam_role_policy_attachment" "etcd" {

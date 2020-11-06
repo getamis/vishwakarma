@@ -30,11 +30,11 @@ module "etcd" {
   ssh_key = var.key_pair_name
 
   instance_config = {
-    count              = "3"
+    count              = 3
     image_id           = module.os_ami.image_id
     ec2_type           = "t3.medium"
-    root_volume_size   = "40"
-    data_volume_size   = "100"
+    root_volume_size   = 40
+    data_volume_size   = 100
     data_device_name   = "/dev/sdf"
     data_device_rename = "/dev/nvme1n1"
     data_path          = "/etcd/data"

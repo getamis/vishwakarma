@@ -20,10 +20,10 @@ data "null_data_source" "tags" {
 }
 
 resource "aws_autoscaling_group" "worker" {
-  name_prefix         = "${var.name}-worker-${local.instance_config["name"]}-"
-  desired_capacity    = local.instance_config["count"]
-  max_size            = local.instance_config["count"] * 3
-  min_size            = local.instance_config["count"]
+  name_prefix         = "${var.name}-worker-${var.instance_config["name"]}-"
+  desired_capacity    = var.instance_config["count"]
+  max_size            = var.instance_config["count"] * 3
+  min_size            = var.instance_config["count"]
   vpc_zone_identifier = var.subnet_ids
   load_balancers      = var.load_balancer_ids
   target_group_arns   = var.target_group_arns
@@ -35,26 +35,26 @@ resource "aws_autoscaling_group" "worker" {
         version            = "$Latest"
       }
 
-      override {
-        instance_type = local.instance_config["ec2_type_1"]
-      }
+      dynamic "override" {
+        for_each = var.instance_config["ec2_type"]
 
-      override {
-        instance_type = local.instance_config["ec2_type_2"]
+        content {
+          instance_type = override.value
+        }
       }
     }
 
     instances_distribution {
-      on_demand_base_capacity                  = local.instance_config["on_demand_base_capacity"]
-      on_demand_percentage_above_base_capacity = local.instance_config["on_demand_percentage_above_base_capacity"]
-      spot_instance_pools                      = local.instance_config["spot_instance_pools"]
+      on_demand_base_capacity                  = var.instance_config["on_demand_base_capacity"]
+      on_demand_percentage_above_base_capacity = var.instance_config["on_demand_percentage_above_base_capacity"]
+      spot_instance_pools                      = var.instance_config["spot_instance_pools"]
     }
   }
 
   tags = concat(data.null_data_source.tags.*.outputs, [
     {
       key                 = "Name"
-      value               = "${var.name}-worker-${local.instance_config["name"]}"
+      value               = "${var.name}-worker-${var.instance_config["name"]}"
       propagate_at_launch = true
     },
     {
@@ -76,9 +76,9 @@ resource "aws_autoscaling_group" "worker" {
 }
 
 resource "aws_launch_template" "worker" {
-  instance_type = local.instance_config["ec2_type_1"]
-  image_id      = local.instance_config["image_id"]
-  name_prefix   = "${var.name}-worker-${local.instance_config["name"]}-"
+  instance_type = var.instance_config["ec2_type"][0]
+  image_id      = var.instance_config["image_id"]
+  name_prefix   = "${var.name}-worker-${var.instance_config["name"]}-"
 
   vpc_security_group_ids = var.security_group_ids
 
@@ -93,9 +93,9 @@ resource "aws_launch_template" "worker" {
     device_name = "/dev/xvda"
 
     ebs {
-      volume_type = local.instance_config["root_volume_type"]
-      volume_size = local.instance_config["root_volume_size"]
-      iops        = local.instance_config["root_volume_type"] == "io1" ? local.instance_config["root_volume_iops"] : local.instance_config["root_volume_type"] == "gp2" ? 0 : min(10000, max(100, 3 * local.instance_config["root_volume_size"]))
+      volume_type = var.instance_config["root_volume_type"]
+      volume_size = var.instance_config["root_volume_size"]
+      iops        = var.instance_config["root_volume_type"] == "io1" ? var.instance_config["root_volume_iops"] : var.instance_config["root_volume_type"] == "gp2" ? 0 : min(10000, max(100, 3 * var.instance_config["root_volume_size"]))
     }
   }
 

@@ -4,7 +4,7 @@ data "aws_route53_zone" "etcd" {
 }
 
 locals {
-  discovery_service = substr(data.aws_route53_zone.etcd.name, 0, length(data.aws_route53_zone.etcd.name) - 1)
+  discovery_service = data.aws_route53_zone.etcd.name
   etcd_private_ips = [
     for private_ips in aws_network_interface.etcd.*.private_ips :
     join(", ", private_ips)
@@ -46,7 +46,7 @@ resource "aws_route53_record" "etcd_discovery_client_ssl" {
 }
 
 resource "aws_route53_record" "etcd" {
-  count   = local.instance_config["count"]
+  count   = var.instance_config["count"]
   zone_id = data.aws_route53_zone.etcd.zone_id
   name    = "ip-${replace(local.etcd_private_ips[count.index], ".", "-")}.${local.discovery_service}"
   type    = "A"
