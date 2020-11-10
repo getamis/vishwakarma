@@ -23,8 +23,8 @@ module "ignition_etcd" {
   discovery_service_srv = local.discovery_service
   client_port           = local.client_port
   peer_port             = local.peer_port
-  device_name           = local.instance_config["data_device_rename"]
-  data_path             = local.instance_config["data_path"]
+  device_name           = var.instance_config["data_device_rename"]
+  data_path             = var.instance_config["data_path"]
 
   certs = {
     ca_cert     = module.etcd_ca.cert_pem
