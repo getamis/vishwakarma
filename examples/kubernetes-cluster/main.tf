@@ -45,23 +45,25 @@ module "master" {
   kube_cluster_network_cidr = local.cluster_cidr
 
   etcd_instance_config = {
-    count              = "1"
+    count              = 1
     image_id           = module.os_ami.image_id
     ec2_type           = "t3.medium"
-    root_volume_size   = "40"
-    data_volume_size   = "100"
+    root_volume_size   = 40
+    data_volume_size   = 100
     data_device_name   = "/dev/sdf"
     data_device_rename = "/dev/nvme1n1"
     data_path          = "/etcd/data"
   }
 
   master_instance_config = {
-    count            = "2"
+    count            = 2
     image_id         = module.os_ami.image_id
-    ec2_type_1       = "t3.medium"
-    ec2_type_2       = "t2.medium"
-    root_volume_iops = "100"
-    root_volume_size = "256"
+    ec2_type         = [
+      "t3.medium",
+      "t2.medium"
+    ]
+    root_volume_iops = 100
+    root_volume_size = 256
     root_volume_type = "gp2"
 
     on_demand_base_capacity                  = 0
@@ -96,10 +98,12 @@ module "worker_on_demand" {
 
   instance_config = {
     name             = "on-demand"
-    count            = "1"
+    count            = 1
     image_id         = module.os_ami.image_id
-    ec2_type_1       = "t3.medium"
-    ec2_type_2       = "t2.medium"
+    ec2_type         = [
+      "t3.medium",
+      "t2.medium"
+    ]
     root_volume_iops = "0"
     root_volume_size = "40"
     root_volume_type = "gp2"
@@ -133,11 +137,13 @@ module "worker_spot" {
   instance_config = {
     name             = "spot"
     image_id         = module.os_ami.image_id
-    count            = "2"
-    ec2_type_1       = "m5.large"
-    ec2_type_2       = "m4.large"
-    root_volume_iops = "0"
-    root_volume_size = "40"
+    count            = 2
+    ec2_type         = [
+      "m5.large",
+      "m4.large"
+    ]
+    root_volume_iops = 0
+    root_volume_size = 40
     root_volume_type = "gp2"
 
     on_demand_base_capacity                  = 0

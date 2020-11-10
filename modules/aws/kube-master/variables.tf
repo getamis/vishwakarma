@@ -228,20 +228,19 @@ variable "endpoint_public_access" {
 }
 
 variable "instance_config" {
-  description = "(Optional) Desired master nodes configuration."
-  type        = map(string)
-  default = {
-    count            = "1"
-    ec2_type_1       = "t3.medium"
-    ec2_type_2       = "t2.medium"
-    root_volume_iops = "100"
-    root_volume_size = "256"
-    root_volume_type = "gp2"
+  description = "Desired master nodes configuration."
+  type = object({
+    count            = number
+    image_id         = string
+    ec2_type         = list(string)
+    root_volume_iops = number
+    root_volume_size = number
+    root_volume_type = string
 
-    on_demand_base_capacity                  = 0
-    on_demand_percentage_above_base_capacity = 100
-    spot_instance_pools                      = 1
-  }
+    on_demand_base_capacity                  = number
+    on_demand_percentage_above_base_capacity = number
+    spot_instance_pools                      = number
+  })
 }
 
 variable "ssh_key" {

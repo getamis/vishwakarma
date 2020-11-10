@@ -30,11 +30,12 @@ resource "local_file" "oidc_pub_key" {
 
 resource "null_resource" "generate_oidc_keys_json" {
   provisioner "local-exec" {
-    command = "go run ${path.module}/tools/self-hosted/main.go -key $PKCS_KEY  | jq '.keys += [.keys[0]] | .keys[1].kid = \"\"' > ${path.root}/.secret/keys.json"
+    working_dir = "${path.module}/tools/self-hosted"
+    command = "go run main.go -key $PKCS_KEY  | jq '.keys += [.keys[0]] | .keys[1].kid = \"\"' > ${path.cwd}/.secret/keys.json"
 
     environment = {
       GO111MODULE = "on"
-      PKCS_KEY    = "${path.root}/.secret/oidc-pkcs8.pub"
+      PKCS_KEY    = "${path.cwd}/.secret/oidc-pkcs8.pub"
     }
   }
 

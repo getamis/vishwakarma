@@ -19,10 +19,11 @@ users:
     exec:
       apiVersion: client.authentication.k8s.io/v1alpha1
       args:
-      - token
-      - -i
+      - eks
+      - get-token
+      - --cluster-name
       - ${cluster_name}
-      - -r
+      - --role-arn
       - ${k8s_admin_iam_role}
-      command: aws-iam-authenticator
+      command: aws
       env: null

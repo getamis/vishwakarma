@@ -1,5 +1,10 @@
 locals {
   cluster_dns_ip = cidrhost(var.service_network_cidr, 10)
+
+  kubelet_node_labels = compact(concat(
+    list("node.kubernetes.io/role=${var.instance_config["name"]}"),
+    var.kubelet_node_labels
+  ))
 }
 
 module "ignition_docker" {
@@ -31,7 +36,7 @@ module "ignition_kubelet" {
 
   extra_config = var.kubelet_config
   extra_flags = merge(var.kubelet_flags, {
-    node-labels          = join(",", var.kubelet_node_labels)
+    node-labels          = join(",", local.kubelet_node_labels)
     register-with-taints = join(",", var.kubelet_node_taints)
   })
 
@@ -63,14 +68,14 @@ data "ignition_config" "main" {
 
 resource "aws_s3_bucket_object" "ignition" {
   bucket  = var.s3_bucket
-  key     = "ign-worker-${local.instance_config["name"]}.json"
+  key     = "ign-worker-${var.instance_config["name"]}.json"
   content = data.ignition_config.main.rendered
   acl     = "private"
 
   server_side_encryption = "AES256"
 
   tags = merge(var.extra_tags, map(
-    "Name", "ign-worker-${local.instance_config["name"]}.json",
+    "Name", "ign-worker-${var.instance_config["name"]}.json",
     "kubernetes.io/cluster/${var.name}", "owned",
     "Role", "k8s-worker"
   ))

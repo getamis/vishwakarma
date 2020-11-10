@@ -77,12 +77,14 @@ module "master" {
   }
 
   master_instance_config = {
-    count            = "1"
+    count            = 1
     image_id         = module.os_ami.image_id
-    ec2_type_1       = "t3.medium"
-    ec2_type_2       = "t2.medium"
-    root_volume_iops = "100"
-    root_volume_size = "256"
+    ec2_type         = [
+      "t3.medium",
+      "t2.medium"
+    ]
+    root_volume_iops = 100
+    root_volume_size = 256
     root_volume_type = "gp2"
 
     on_demand_base_capacity                  = 0
@@ -104,6 +106,3 @@ module "master" {
     module.iam_auth.ignitions_files,
   )
 }
-
-
-

@@ -95,9 +95,17 @@ EOF
 }
 
 variable "instance_config" {
-  description = "(Optional) Desired etcd nodes configuration."
-  type        = map(string)
-  default     = {}
+  description = "Desired etcd nodes configuration."
+  type        = object({
+    count              = number
+    image_id           = string
+    ec2_type           = string
+    root_volume_size   = number
+    data_volume_size   = number
+    data_device_name   = string
+    data_device_rename = string
+    data_path          = string
+  })
 }
 
 variable "ssh_key" {

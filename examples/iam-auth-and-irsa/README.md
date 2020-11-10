@@ -9,7 +9,9 @@ This example demonstrates how to setup IAM Authenticator and IRSA(IAM roles for 
    `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables. If you're using the `~/.aws/config` file for profiles then export `AWS_SDK_LOAD_CONFIG` as "True".
 3. Install [Terraform v0.12+](https://www.terraform.io/) and make sure it's on your `PATH`.
 
-4. Execute below commands to setup Kubernetes cluster:
+4. Install Golang environment for IRSA preparation
+
+5. Execute below commands to setup Kubernetes cluster:
 
 ```sh
 # Go to k8s-cluster directory
@@ -31,7 +33,7 @@ $ terraform apply -target=module.master
 $ terraform apply
 ```
 
-5. Execute below commands to deploy IAM role and examples:
+5. Login Besion and Execute below commands to deploy IAM role and examples:
 
 ```sh
 # Go to example directory, and type your oidc endpoint, ARN, and ignition bucket name.
@@ -51,7 +53,6 @@ $ kubectl exec -ti s3-echoer-89ddf8b7f-82pfb aws s3 ls
 $ terraform destroy
 
 # Go to k8s-cluster directory
-$ terraform destroy -target=module.worker_spot
 $ terraform destroy -target=module.master
 $ terraform destroy -target=module.irsa
 $ terraform destroy -target=module.network

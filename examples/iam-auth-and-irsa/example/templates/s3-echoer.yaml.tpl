@@ -3,7 +3,7 @@ kind: ServiceAccount
 metadata:
   name: s3-echoer
   annotations:
-    k8s.amazonaws.com/role-arn: "arn:aws:iam::${account_id}:role/s3-echoer"
+    k8s.amazonaws.com/role-arn: "${role_arn}"
 ---
 apiVersion: apps/v1
 kind: Deployment

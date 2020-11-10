@@ -18,20 +18,20 @@ data "aws_iam_policy_document" "s3_echoer_policy" {
 }
 
 resource "aws_iam_role" "s3_echoer" {
-  name               = "s3-echoer"
+  name_prefix        = "s3-echoer-"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.s3_echoer_policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "s3_echoer" {
   role       = aws_iam_role.s3_echoer.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
 resource "local_file" "s3_echoer" {
   filename = "./deploy/s3-echoer.yaml"
   content = templatefile("${path.module}/templates/s3-echoer.yaml.tpl", {
-    account_id = data.aws_caller_identity.current.account_id
+    role_arn = aws_iam_role.s3_echoer.arn
   })
 }
 

@@ -21,9 +21,9 @@ data "null_data_source" "tags" {
 
 resource "aws_autoscaling_group" "master" {
   name_prefix         = "${var.name}-master-"
-  desired_capacity    = local.instance_config["count"]
-  max_size            = local.instance_config["count"] * 3
-  min_size            = local.instance_config["count"]
+  desired_capacity    = var.instance_config["count"]
+  max_size            = var.instance_config["count"] * 3
+  min_size            = var.instance_config["count"]
   vpc_zone_identifier = var.private_subnet_ids
   load_balancers      = [aws_elb.master_internal.id]
 
@@ -34,19 +34,19 @@ resource "aws_autoscaling_group" "master" {
         version            = "$Latest"
       }
 
-      override {
-        instance_type = local.instance_config["ec2_type_1"]
-      }
+      dynamic "override" {
+        for_each = var.instance_config["ec2_type"]
 
-      override {
-        instance_type = local.instance_config["ec2_type_2"]
+        content {
+          instance_type = override.value
+        }
       }
     }
 
     instances_distribution {
-      on_demand_base_capacity                  = local.instance_config["on_demand_base_capacity"]
-      on_demand_percentage_above_base_capacity = local.instance_config["on_demand_percentage_above_base_capacity"]
-      spot_instance_pools                      = local.instance_config["spot_instance_pools"]
+      on_demand_base_capacity                  = var.instance_config["on_demand_base_capacity"]
+      on_demand_percentage_above_base_capacity = var.instance_config["on_demand_percentage_above_base_capacity"]
+      spot_instance_pools                      = var.instance_config["spot_instance_pools"]
     }
   }
 
@@ -70,8 +70,8 @@ resource "aws_autoscaling_group" "master" {
 }
 
 resource "aws_launch_template" "master" {
-  instance_type = local.instance_config["ec2_type_1"]
-  image_id      = local.instance_config["image_id"]
+  instance_type = var.instance_config["ec2_type"][0]
+  image_id      = var.instance_config["image_id"]
   name_prefix   = "${var.name}-master-"
 
   vpc_security_group_ids = compact(concat(
@@ -90,9 +90,9 @@ resource "aws_launch_template" "master" {
     device_name = "/dev/xvda"
 
     ebs {
-      volume_type = local.instance_config["root_volume_type"]
-      volume_size = local.instance_config["root_volume_size"]
-      iops        = local.instance_config["root_volume_type"] == "io1" ? local.instance_config["root_volume_iops"] : local.instance_config["root_volume_type"] == "gp2" ? 0 : min(10000, max(100, 3 * local.instance_config["root_volume_size"]))
+      volume_type = var.instance_config["root_volume_type"]
+      volume_size = var.instance_config["root_volume_size"]
+      iops        = var.instance_config["root_volume_type"] == "io1" ? var.instance_config["root_volume_iops"] : var.instance_config["root_volume_type"] == "gp2" ? 0 : min(10000, max(100, 3 * var.instance_config["root_volume_size"]))
     }
   }
 

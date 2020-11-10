@@ -36,10 +36,88 @@ module "os_ami" {
   flavor = "ubuntu"
 }
 
+data "aws_iam_policy_document" "bastion_profile" {
+  statement {
+    sid = "BastionAssumeRole"
+
+    actions = [
+      "sts:AssumeRole",
+    ]
+
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "bastion" {
+  name_prefix        = "${var.name}-bastion-"
+  assume_role_policy = data.aws_iam_policy_document.bastion_profile.json
+}
+
+resource "aws_iam_instance_profile" "bastion" {
+  name_prefix = "${var.name}-bastion-"
+  role        = aws_iam_role.bastion.name
+}
+
+data "aws_iam_policy_document" "bastion" {
+  statement {
+    sid     = "IAM"
+    actions = [
+      "iam:*",
+      "organizations:DescribeAccount",
+      "organizations:DescribeOrganization",
+      "organizations:DescribeOrganizationalUnit",
+      "organizations:DescribePolicy",
+      "organizations:ListChildren",
+      "organizations:ListParents",
+      "organizations:ListPoliciesForTarget",
+      "organizations:ListRoots",
+      "organizations:ListPolicies",
+      "organizations:ListTargetsForPolicy"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+  statement {
+    sid     = "S3"
+    actions = [
+      "s3:*"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+  statement {
+    sid     = "STS"
+    actions = [
+      "sts:AssumeRole"
+    ]
+    resources = [
+      "*"
+    ]
+  }      
+}
+
+resource "aws_iam_policy" "bastion" {
+  name        = "${var.name}-bastion"
+  path        = "/"
+  description = "policy for bastion"
+  policy      = data.aws_iam_policy_document.bastion.json 
+}
+
+resource "aws_iam_role_policy_attachment" "bastion" {
+  policy_arn = aws_iam_policy.bastion.arn
+  role       = aws_iam_role.bastion.name
+}
+
 resource "aws_instance" "bastion" {
   ami                         = var.bastion_ami_id == "" ? module.os_ami.image_id : var.bastion_ami_id
   associate_public_ip_address = true
   instance_type               = var.bastion_instance_type
+  iam_instance_profile        = aws_iam_instance_profile.bastion.name
   key_name                    = var.bastion_key_name
   source_dest_check           = true
   subnet_id                   = aws_subnet.public_subnet.*.id[0]
