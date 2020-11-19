@@ -7,7 +7,7 @@ project adheres to [Semantic Versioning](http://semver.org/).
 
 
 <a name="v1.0.2"></a>
-## [v1.0.1] - 2020-11-11
+## [v1.0.2] - 2020-11-11
 FEATURES:
 - Refactory IAM role for bastion, etcd, master and worker node
 - K8s master and worker node AWS ASG support multiple instance type
