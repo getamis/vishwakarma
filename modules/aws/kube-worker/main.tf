@@ -25,8 +25,6 @@ resource "aws_autoscaling_group" "worker" {
   max_size            = var.instance_config["count"] * 3
   min_size            = var.instance_config["count"]
   vpc_zone_identifier = var.subnet_ids
-  load_balancers      = var.load_balancer_ids
-  target_group_arns   = var.target_group_arns
 
   mixed_instances_policy {
     launch_template {
@@ -73,6 +71,13 @@ resource "aws_autoscaling_group" "worker" {
       propagate_at_launch = true
     }
   ])
+
+  lifecycle {
+    ignore_changes = [
+      "load_balancers",
+      "target_group_arns"
+    ]
+  }  
 }
 
 resource "aws_launch_template" "worker" {
