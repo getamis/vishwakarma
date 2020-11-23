@@ -6,7 +6,7 @@ variable "name" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.19.3"
+  default     = "v1.19.4"
 }
 
 variable "binaries" {
@@ -155,18 +155,6 @@ variable "s3_bucket" {
 EOF
   type        = string
   default     = ""
-}
-
-variable "load_balancer_ids" {
-  description = "A list of elastic load balancer names to add to the autoscaling group names. Only valid for classic load balancers. For ALBs, use target_group_arns instead."
-  type        = list(string)
-  default     = []
-}
-
-variable "target_group_arns" {
-  description = "A list of aws_alb_target_group ARNs, for use with Application Load Balancing."
-  type        = list(string)
-  default     = []
 }
 
 variable "extra_tags" {

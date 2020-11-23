@@ -6,7 +6,7 @@ variable "name" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.19.3"
+  default     = "v1.19.4"
 }
 
 variable "override_binaries" {
