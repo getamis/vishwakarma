@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
+<a name="v1.0.3"></a>
+## [v1.0.3] - 2020-11-23
+FEATURES:
+- Upgrade default Kubernetes to 1.19.4
+- Remove the load balancer control from worker group's autoscaling group
 
 <a name="v1.0.2"></a>
 ## [v1.0.2] - 2020-11-11
