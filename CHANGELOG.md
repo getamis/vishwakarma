@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
 
+<a name="v1.0.5"></a>
+## [v1.0.5] - 2020-12-08
+FEATURES:
+- unify binary key name
+
+
+<a name="v1.0.4"></a>
+## [v1.0.4] - 2020-12-07
+
+
+
 <a name="v1.0.3"></a>
 ## [v1.0.3] - 2020-11-23
 
@@ -48,7 +59,9 @@ TESTS:
 - make sure that tests run in different region ([#47](https://github.com/getamis/vishwakarma/issues/47))
 
 
-[Unreleased]: https://github.com/getamis/vishwakarma/compare/v1.0.3...HEAD
+[Unreleased]: https://github.com/getamis/vishwakarma/compare/v1.0.5...HEAD
+[v1.0.5]: https://github.com/getamis/vishwakarma/compare/v1.0.4...v1.0.5
+[v1.0.4]: https://github.com/getamis/vishwakarma/compare/v1.0.3...v1.0.4
 [v1.0.3]: https://github.com/getamis/vishwakarma/compare/v1.0.2...v1.0.3
 [v1.0.2]: https://github.com/getamis/vishwakarma/compare/v1.0.1...v1.0.2
 [v1.0.1]: https://github.com/getamis/vishwakarma/compare/v1.0.0...v1.0.1
