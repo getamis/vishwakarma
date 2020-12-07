@@ -96,7 +96,7 @@ EOF
 
 variable "instance_config" {
   description = "Desired etcd nodes configuration."
-  type        = object({
+  type = object({
     count              = number
     image_id           = string
     ec2_type           = string

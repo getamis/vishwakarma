@@ -5,19 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
+
 <a name="v1.0.3"></a>
 ## [v1.0.3] - 2020-11-23
-FEATURES:
-- Upgrade default Kubernetes to 1.19.4
-- Remove the load balancer control from worker group's autoscaling group
+
+
 
 <a name="v1.0.2"></a>
-## [v1.0.2] - 2020-11-11
-FEATURES:
-- Refactory IAM role for bastion, etcd, master and worker node
-- K8s master and worker node AWS ASG support multiple instance type
-- Upgrade Terraform AWS provider to the latest version
-- Modify IAM and IRSA example for easier to get start
+## [v1.0.2] - 2020-11-19
+REFACTORS:
+- refactory IAM role for bastion, etcd, master and worker node ([#99](https://github.com/getamis/vishwakarma/issues/99))
+
 
 <a name="v1.0.1"></a>
 ## [v1.0.1] - 2020-10-28
@@ -50,6 +48,8 @@ TESTS:
 - make sure that tests run in different region ([#47](https://github.com/getamis/vishwakarma/issues/47))
 
 
-[Unreleased]: https://github.com/getamis/vishwakarma/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/getamis/vishwakarma/compare/v1.0.3...HEAD
+[v1.0.3]: https://github.com/getamis/vishwakarma/compare/v1.0.2...v1.0.3
+[v1.0.2]: https://github.com/getamis/vishwakarma/compare/v1.0.1...v1.0.2
 [v1.0.1]: https://github.com/getamis/vishwakarma/compare/v1.0.0...v1.0.1
 [v1.0.0]: https://github.com/getamis/vishwakarma/compare/v0.0.16...v1.0.0

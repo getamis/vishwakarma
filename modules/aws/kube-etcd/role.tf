@@ -25,7 +25,7 @@ resource "aws_iam_instance_profile" "etcd" {
 
 data "aws_iam_policy_document" "etcd" {
   statement {
-    sid     = "S3"
+    sid = "S3"
     actions = [
       "s3:GetObject",
     ]
@@ -39,7 +39,7 @@ resource "aws_iam_policy" "etcd" {
   name        = "${var.name}-etcd"
   path        = "/"
   description = "policy for kubernetes etcds"
-  policy      = data.aws_iam_policy_document.etcd.json 
+  policy      = data.aws_iam_policy_document.etcd.json
 }
 
 resource "aws_iam_role_policy_attachment" "etcd" {

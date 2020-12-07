@@ -39,7 +39,7 @@ resource "aws_ebs_volume" "etcd" {
   tags = merge(var.extra_tags, map(
     "Name", "${var.name}-etcd-${count.index}",
     "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "ectd"
+    "Role", "etcd"
   ))
 }
 
@@ -70,7 +70,7 @@ resource "aws_instance" "etcd" {
   }
 
   volume_tags = merge(var.extra_tags, map(
-    "Name", "${var.name}-etcd-root-${count.index}",
+    "Name", "${var.name}-etcd-${count.index}",
     "kubernetes.io/cluster/${var.name}", "owned",
     "Role", "etcd"
   ))

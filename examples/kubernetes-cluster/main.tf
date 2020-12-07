@@ -56,9 +56,9 @@ module "master" {
   }
 
   master_instance_config = {
-    count            = 2
-    image_id         = module.os_ami.image_id
-    ec2_type         = [
+    count    = 2
+    image_id = module.os_ami.image_id
+    ec2_type = [
       "t3.medium",
       "t2.medium"
     ]
@@ -97,10 +97,10 @@ module "worker_on_demand" {
   subnet_ids         = module.network.private_subnet_ids
 
   instance_config = {
-    name             = "on-demand"
-    count            = 1
-    image_id         = module.os_ami.image_id
-    ec2_type         = [
+    name     = "on-demand"
+    count    = 1
+    image_id = module.os_ami.image_id
+    ec2_type = [
       "t3.medium",
       "t2.medium"
     ]
@@ -135,10 +135,10 @@ module "worker_spot" {
   subnet_ids         = module.network.private_subnet_ids
 
   instance_config = {
-    name             = "spot"
-    image_id         = module.os_ami.image_id
-    count            = 2
-    ec2_type         = [
+    name     = "spot"
+    image_id = module.os_ami.image_id
+    count    = 2
+    ec2_type = [
       "m5.large",
       "m4.large"
     ]

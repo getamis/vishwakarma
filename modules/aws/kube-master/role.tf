@@ -26,41 +26,41 @@ resource "aws_iam_instance_profile" "master" {
 
 data "aws_iam_policy_document" "master" {
   statement {
-    sid     = "EC2"
+    sid = "EC2"
 
     actions = [
-        "ec2:DescribeAccountAttributes",
-        "ec2:DescribeInstances",
-        "ec2:DescribeInternetGateways",
-        "ec2:DescribeRegions",
-        "ec2:DescribeRouteTables",
-        "ec2:DescribeSecurityGroups",
-        "ec2:DescribeSubnets",
-        "ec2:DescribeVolumes",
-        "ec2:CreateSecurityGroup",
-        "ec2:CreateTags",
-        "ec2:CreateVolume",
-        "ec2:DescribeVolumesModifications",
-        "ec2:ModifyInstanceAttribute",
-        "ec2:ModifyVolume",
-        "ec2:AttachVolume",
-        "ec2:AuthorizeSecurityGroupIngress",
-        "ec2:CreateRoute",
-        "ec2:DeleteRoute",
-        "ec2:DeleteSecurityGroup",
-        "ec2:DeleteVolume",
-        "ec2:DetachVolume",
-        "ec2:RevokeSecurityGroupIngress",
-        "ec2:DescribeLaunchTemplateVersions",
-        "autoscaling:DescribeAutoScalingGroups",
-        "autoscaling:DescribeAutoScalingInstances"
+      "ec2:DescribeAccountAttributes",
+      "ec2:DescribeInstances",
+      "ec2:DescribeInternetGateways",
+      "ec2:DescribeRegions",
+      "ec2:DescribeRouteTables",
+      "ec2:DescribeSecurityGroups",
+      "ec2:DescribeSubnets",
+      "ec2:DescribeVolumes",
+      "ec2:CreateSecurityGroup",
+      "ec2:CreateTags",
+      "ec2:CreateVolume",
+      "ec2:DescribeVolumesModifications",
+      "ec2:ModifyInstanceAttribute",
+      "ec2:ModifyVolume",
+      "ec2:AttachVolume",
+      "ec2:AuthorizeSecurityGroupIngress",
+      "ec2:CreateRoute",
+      "ec2:DeleteRoute",
+      "ec2:DeleteSecurityGroup",
+      "ec2:DeleteVolume",
+      "ec2:DetachVolume",
+      "ec2:RevokeSecurityGroupIngress",
+      "ec2:DescribeLaunchTemplateVersions",
+      "autoscaling:DescribeAutoScalingGroups",
+      "autoscaling:DescribeAutoScalingInstances"
     ]
     resources = [
       "*"
     ]
   }
   statement {
-    sid     = "S3"
+    sid = "S3"
     actions = [
       "s3:GetObject",
     ]
@@ -69,7 +69,7 @@ data "aws_iam_policy_document" "master" {
     ]
   }
   statement {
-    sid     = "ECR"
+    sid = "ECR"
     actions = [
       "ecr:GetAuthorizationToken",
       "ecr:BatchCheckLayerAvailability",
@@ -87,7 +87,7 @@ data "aws_iam_policy_document" "master" {
     resources = [
       "*"
     ]
-  }  
+  }
 }
 
 resource "aws_iam_policy" "master" {
@@ -100,7 +100,7 @@ resource "aws_iam_policy" "master" {
 
 data "aws_iam_policy_document" "master_vpc_cni" {
   statement {
-    sid     = "EC2General"
+    sid = "EC2General"
     actions = [
       "ec2:AssignPrivateIpAddresses",
       "ec2:AttachNetworkInterface",
@@ -119,14 +119,14 @@ data "aws_iam_policy_document" "master_vpc_cni" {
     ]
   }
   statement {
-    sid     = "EC2Specific"
+    sid = "EC2Specific"
     actions = [
       "ec2:CreateTags"
     ]
     resources = [
       "arn:aws:ec2:*:*:network-interface/*"
     ]
-  } 
+  }
 }
 
 resource "aws_iam_policy" "master_vpc_cni" {

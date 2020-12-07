@@ -12,12 +12,12 @@ This document gives an overview of variables used in the AWS platform of the kub
 | extra\_ignition\_file\_ids | Additional ignition file IDs. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details. | `list(string)` | `[]` |
 | extra\_ignition\_systemd\_unit\_ids | Additional ignition systemd unit IDs. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details. | `list(string)` | `[]` |
 | extra\_tags | Extra AWS tags to be applied to created resources. | `map(string)` | `{}` |
-| instance\_config | Desired worker nodes configuration. | `map(string)` | `{}` |
+| instance\_config | Desired worker nodes configuration. | <pre>object({<br>    count            = number<br>    name             = string<br>    image_id         = string<br>    ec2_type         = list(string)<br>    root_volume_iops = number<br>    root_volume_size = number<br>    root_volume_type = string<br><br>    on_demand_base_capacity                  = number<br>    on_demand_percentage_above_base_capacity = number<br>    spot_instance_pools                      = number<br>  })</pre> | n/a |
 | kubelet\_config | The configuration of kubelet. The variables need to follow https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/kubelet/config/v1beta1/types.go. Do not use underline. | `map` | `{}` |
 | kubelet\_flags | The flags of kubelet. The variables need to follow https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/. Do not use underline. | `map` | `{}` |
 | kubelet\_node\_labels | Labels to add when registering the node in the cluster. Labels must be key=value pairs. | `list(string)` | `[]` |
 | kubelet\_node\_taints | Register the node with the given list of taints ("<key>=<value>:<effect>"). | `list(string)` | `[]` |
-| load\_balancer\_ids | A list of elastic load balancer names to add to the autoscaling group names. Only valid for classic load balancers. For ALBs, use target\_group\_arns instead. | `list(string)` | `[]` |
+| kubernetes\_version | Desired Kubernetes version. | `string` | `"v1.19.4"` |
 | name | (Required) Name of the cluster. | `string` | n/a |
 | network\_plugin | Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc' | `string` | `"amazon-vpc"` |
 | reboot\_strategy | CoreOS reboot strategies on updates, two option here: etcd-lock or off | `string` | `"etcd-lock"` |
@@ -27,7 +27,6 @@ This document gives an overview of variables used in the AWS platform of the kub
 | service\_network\_cidr | The kubernetes service ip range | `string` | n/a |
 | ssh\_key | The key name that should be used for the instance. | `string` | `""` |
 | subnet\_ids | List of subnet IDs. Must be in at least two different availability zones.<br>    Cross-account elastic network interfaces will be created in these subnets to allow<br>    communication between your worker nodes and the Kubernetes control plane. | `list(string)` | `[]` |
-| target\_group\_arns | A list of aws\_alb\_target\_group ARNs, for use with Application Load Balancing. | `list(string)` | `[]` |
 
 ## Outputs
 

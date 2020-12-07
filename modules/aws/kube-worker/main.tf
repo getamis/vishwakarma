@@ -77,7 +77,7 @@ resource "aws_autoscaling_group" "worker" {
       "load_balancers",
       "target_group_arns"
     ]
-  }  
+  }
 }
 
 resource "aws_launch_template" "worker" {

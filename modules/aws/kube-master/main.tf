@@ -14,7 +14,7 @@ data "null_data_source" "tags" {
 
   inputs = {
     key                 = local.extra_tags_keys[count.index]
-    value               = local.extra_tags_values[count.index]
+    value               = local.extra_tags_keys[count.index] == "Name" ? "${local.extra_tags_values[count.index]}-master" : local.extra_tags_values[count.index]
     propagate_at_launch = true
   }
 }
@@ -51,11 +51,6 @@ resource "aws_autoscaling_group" "master" {
   }
 
   tags = concat(data.null_data_source.tags.*.outputs, [
-    {
-      key                 = "Name"
-      value               = "${var.name}-master"
-      propagate_at_launch = true
-    },
     {
       key                 = "kubernetes.io/cluster/${var.name}"
       value               = "owned"

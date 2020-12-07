@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "s3_echoer_policy" {
     condition {
       test     = "StringEquals"
       variable = "${var.oidc_issuer}:sub"
-      values = ["system:serviceaccount:default:s3-echoer"]
+      values   = ["system:serviceaccount:default:s3-echoer"]
     }
   }
 }
