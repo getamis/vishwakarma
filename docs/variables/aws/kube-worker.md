@@ -5,7 +5,7 @@ This document gives an overview of variables used in the AWS platform of the kub
 
 | Name | Description | Type | Default |
 |------|-------------|------|---------|
-| binaries | Desired binaries(cni\_plugin) url and checksum. | <pre>map(object({<br>    url      = string<br>    checksum = string<br>  }))</pre> | `{}` |
+| binaries | Desired binaries(cni\_plugin) url and checksum. | <pre>map(object({<br>    source   = string<br>    checksum = string<br>  }))</pre> | `{}` |
 | cloud\_config | The cloud provider configuration. | <pre>object({<br>    provider = string<br>    path     = string<br>  })</pre> | <pre>{<br>  "path": "",<br>  "provider": ""<br>}</pre> |
 | containers | Desired containers(kube-apiserver, kube-controller-manager, cfssl, coredns, and so on) repo and tag. | <pre>map(object({<br>    repo = string<br>    tag  = string<br>  }))</pre> | `{}` |
 | enable\_autoscaler | Enable to add autoscaler tag or not | `string` | `"false"` |

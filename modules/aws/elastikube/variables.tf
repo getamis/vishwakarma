@@ -12,7 +12,7 @@ variable "kubernetes_version" {
 variable "override_binaries" {
   description = "Desired binaries(cni_plugin) url and checksum."
   type = map(object({
-    url      = string
+    source   = string
     checksum = string
   }))
   default = {}
