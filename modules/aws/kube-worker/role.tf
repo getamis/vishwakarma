@@ -25,7 +25,7 @@ resource "aws_iam_instance_profile" "worker" {
 
 data "aws_iam_policy_document" "worker" {
   statement {
-    sid     = "EC2"
+    sid = "EC2"
     actions = [
       "ec2:DescribeInstances",
       "ec2:DescribeRegions"
@@ -35,7 +35,7 @@ data "aws_iam_policy_document" "worker" {
     ]
   }
   statement {
-    sid     = "S3"
+    sid = "S3"
     actions = [
       "s3:GetObject",
     ]
@@ -44,7 +44,7 @@ data "aws_iam_policy_document" "worker" {
     ]
   }
   statement {
-    sid     = "ECR"
+    sid = "ECR"
     actions = [
       "ecr:GetAuthorizationToken",
       "ecr:BatchCheckLayerAvailability",
@@ -62,7 +62,7 @@ data "aws_iam_policy_document" "worker" {
     resources = [
       "*"
     ]
-  }  
+  }
 }
 
 resource "aws_iam_policy" "worker" {
@@ -70,12 +70,12 @@ resource "aws_iam_policy" "worker" {
   name_prefix = "${var.name}-worker-${var.instance_config["name"]}-"
   path        = "/"
   description = "policy for kubernetes workers"
-  policy      = data.aws_iam_policy_document.worker.json 
+  policy      = data.aws_iam_policy_document.worker.json
 }
 
 data "aws_iam_policy_document" "worker_vpc_cni" {
   statement {
-    sid     = "EC2General"
+    sid = "EC2General"
     actions = [
       "ec2:AssignPrivateIpAddresses",
       "ec2:AttachNetworkInterface",
@@ -94,14 +94,14 @@ data "aws_iam_policy_document" "worker_vpc_cni" {
     ]
   }
   statement {
-    sid     = "EC2Specific"
+    sid = "EC2Specific"
     actions = [
       "ec2:CreateTags"
     ]
     resources = [
       "arn:aws:ec2:*:*:network-interface/*"
     ]
-  } 
+  }
 }
 
 resource "aws_iam_policy" "worker_vpc_cni" {

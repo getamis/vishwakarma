@@ -63,7 +63,7 @@ resource "aws_iam_instance_profile" "bastion" {
 
 data "aws_iam_policy_document" "bastion" {
   statement {
-    sid     = "IAM"
+    sid = "IAM"
     actions = [
       "iam:*",
       "organizations:DescribeAccount",
@@ -82,7 +82,7 @@ data "aws_iam_policy_document" "bastion" {
     ]
   }
   statement {
-    sid     = "S3"
+    sid = "S3"
     actions = [
       "s3:*"
     ]
@@ -91,21 +91,21 @@ data "aws_iam_policy_document" "bastion" {
     ]
   }
   statement {
-    sid     = "STS"
+    sid = "STS"
     actions = [
       "sts:AssumeRole"
     ]
     resources = [
       "*"
     ]
-  }      
+  }
 }
 
 resource "aws_iam_policy" "bastion" {
   name        = "${var.name}-bastion"
   path        = "/"
   description = "policy for bastion"
-  policy      = data.aws_iam_policy_document.bastion.json 
+  policy      = data.aws_iam_policy_document.bastion.json
 }
 
 resource "aws_iam_role_policy_attachment" "bastion" {

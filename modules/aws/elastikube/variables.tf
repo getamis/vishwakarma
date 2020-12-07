@@ -241,9 +241,9 @@ variable "master_instance_config" {
     spot_instance_pools                      = number
   })
   default = {
-    count            = 1
-    image_id         = "ami-0b75e2f157200889f"
-    ec2_type         = [
+    count    = 1
+    image_id = "ami-0b75e2f157200889f"
+    ec2_type = [
       "t3.medium",
       "t2.medium"
     ]
@@ -259,7 +259,7 @@ variable "master_instance_config" {
 
 variable "etcd_instance_config" {
   description = "(Optional) Desired etcd nodes configuration."
-  type        = object({
+  type = object({
     count              = number
     image_id           = string
     ec2_type           = string
@@ -269,7 +269,7 @@ variable "etcd_instance_config" {
     data_device_rename = string
     data_path          = string
   })
-  default     = {
+  default = {
     count              = 1
     image_id           = "ami-0b75e2f157200889f"
     ec2_type           = "t3.medium"
@@ -277,7 +277,7 @@ variable "etcd_instance_config" {
     data_volume_size   = 100
     data_device_name   = "/dev/sdf"
     data_device_rename = "/dev/nvme1n1"
-    data_path          = "/etcd/data"    
+    data_path          = "/etcd/data"
   }
 }
 
