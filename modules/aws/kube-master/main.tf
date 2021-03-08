@@ -5,16 +5,16 @@ locals {
   extra_tags_values = values(var.extra_tags)
 
   iops_by_type       = {
-    "gp2": min(10000, max(100, 3 * var.instance_config["root_volume_size"])),
-    "gp3": max(3000, var.instance_config["root_volume_iops"]),
-    "io1": max(100, var.instance_config["root_volume_iops"]),
-    "io2": max(100, var.instance_config["root_volume_iops"]),
+    root = {
+      "gp3": max(3000, var.instance_config["root_volume_iops"]),
+      "io1": max(100, var.instance_config["root_volume_iops"]),
+      "io2": max(100, var.instance_config["root_volume_iops"]),
+    }
   }
   throughput_by_type = {
-    "gp2": 0,
-    "gp3": 125,
-    "io1": 0,
-    "io2": 0,
+    root = {
+      "gp3": 125,
+    }
   }
 }
 
@@ -100,8 +100,8 @@ resource "aws_launch_template" "master" {
     ebs {
       volume_type = var.instance_config["root_volume_type"]
       volume_size = var.instance_config["root_volume_size"]
-      iops        = lookup(local.iops_by_type, var.instance_config["root_volume_type"], 0)
-      throughput  = lookup(local.throughput_by_type, var.instance_config["root_volume_type"], 0)
+      iops        = lookup(local.iops_by_type.root, var.instance_config["root_volume_type"], 0)
+      throughput  = lookup(local.throughput_by_type.root, var.instance_config["root_volume_type"], 0)
     }
   }
 
