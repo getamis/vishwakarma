@@ -81,6 +81,7 @@ variable "extra_flags" {
 The user-provided flags to kubelet, kube-apiserver, kube-controller-manager, kube-scheduler and audit log. 
 For flags, we need to follow component flag string format. Do not use underline.
 EOF 
+  type    = map(map(string))
   default = {
     kubelet            = {}
     apiserver          = {}
