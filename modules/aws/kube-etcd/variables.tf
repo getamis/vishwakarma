@@ -108,6 +108,34 @@ variable "instance_config" {
   })
 }
 
+variable "instance_volume_config" {
+  type = object({
+    root = object({
+      type       = string
+      iops       = number
+      throughput = number
+    })
+    data = object({
+      type       = string
+      iops       = number
+      throughput = number
+    })
+  })
+
+  default = {
+    root = {
+      type       = "gp3"
+      iops       = 0
+      throughput = 0
+    }
+    data = {
+      type       = "gp3"
+      iops       = 0
+      throughput = 0
+    }
+  }
+}
+
 variable "ssh_key" {
   description = "The key name that should be used for the instances."
   type        = string
