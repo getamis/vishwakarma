@@ -58,7 +58,8 @@ resource "aws_ebs_volume" "etcd" {
   size              = var.instance_config["data_volume_size"]
   type              = var.instance_volume_config.data.type
   iops              = lookup(local.iops_by_type.data, var.instance_volume_config.data.type, 0)
-  throughput        = lookup(local.throughput_by_type.data, var.instance_volume_config.data.type, 0)
+  # aws_ebs_volume always checks the range of throughput.(125 ~ 1000)
+  throughput        = lookup(local.throughput_by_type.data, var.instance_volume_config.data.type, 125)
 
   tags = merge(var.extra_tags, map(
     "Name", "${var.name}-etcd-${count.index}",
