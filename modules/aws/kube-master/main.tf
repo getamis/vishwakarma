@@ -100,8 +100,8 @@ resource "aws_launch_template" "master" {
     ebs {
       volume_type = var.instance_config["root_volume_type"]
       volume_size = var.instance_config["root_volume_size"]
-      iops        = lookup(local.iops_by_type.root, var.instance_config["root_volume_type"], 0)
-      throughput  = lookup(local.throughput_by_type.root, var.instance_config["root_volume_type"], 0)
+      iops        = lookup(local.iops_by_type.root, var.instance_config["root_volume_type"], null)
+      throughput  = lookup(local.throughput_by_type.root, var.instance_config["root_volume_type"], null)
     }
   }
 

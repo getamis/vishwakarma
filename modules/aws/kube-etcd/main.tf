@@ -57,9 +57,9 @@ resource "aws_ebs_volume" "etcd" {
   availability_zone = data.aws_subnet.etcd[count.index].availability_zone
   size              = var.instance_config["data_volume_size"]
   type              = var.instance_volume_config.data.type
-  iops              = lookup(local.iops_by_type.data, var.instance_volume_config.data.type, 0)
+  iops              = lookup(local.iops_by_type.data, var.instance_volume_config.data.type, null)
   # aws_ebs_volume always checks the range of throughput.(125 ~ 1000)
-  throughput        = lookup(local.throughput_by_type.data, var.instance_volume_config.data.type, 125)
+  throughput        = lookup(local.throughput_by_type.data, var.instance_volume_config.data.type, null)
 
   tags = merge(var.extra_tags, map(
     "Name", "${var.name}-etcd-${count.index}",
@@ -93,8 +93,8 @@ resource "aws_instance" "etcd" {
   root_block_device {
     volume_size = var.instance_config["root_volume_size"]
     volume_type = var.instance_volume_config.root.type
-    iops        = lookup(local.iops_by_type.root, var.instance_volume_config.root.type, 0)
-    throughput  = lookup(local.throughput_by_type.root, var.instance_volume_config.root.type, 0)
+    iops        = lookup(local.iops_by_type.root, var.instance_volume_config.root.type, null)
+    throughput  = lookup(local.throughput_by_type.root, var.instance_volume_config.root.type, null)
   }
 
   volume_tags = merge(var.extra_tags, map(
