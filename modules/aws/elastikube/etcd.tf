@@ -6,6 +6,8 @@ module "etcd" {
   instance_config = var.etcd_instance_config
   containers      = var.override_containers
 
+  instance_volume_config = var.etcd_instance_volume_config
+
   subnet_ids                  = var.private_subnet_ids
   master_security_group_id    = module.master.master_sg_id
   zone_id                     = aws_route53_zone.private.zone_id
