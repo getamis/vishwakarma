@@ -124,12 +124,12 @@ variable "instance_volume_config" {
 
   default = {
     root = {
-      type       = "gp3"
+      type       = "gp2"
       iops       = 0
       throughput = 0
     }
     data = {
-      type       = "gp3"
+      type       = "gp2"
       iops       = 0
       throughput = 0
     }
