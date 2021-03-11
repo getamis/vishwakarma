@@ -74,6 +74,13 @@ resource "aws_s3_bucket_object" "discovery_json" {
 }
 
 data "local_file" "keys_json" {
+  # The fileexists() would be called before `apply`.
+  # And, the file in this data source would be read after the `local-exec` in `null_resource.generate_oidc_keys_json` source.
+  #
+  # It means, if `keys.json` is not exist, the `null_resource.generate_oidc_keys_json` source would generate it.
+  # then, we would have a brand new `keys.json` when we use the content of this data source.
+  count = fileexists("${path.root}/.secret/keys.json") ? 0 : 1
+
   filename   = "${path.root}/.secret/keys.json"
   depends_on = [null_resource.generate_oidc_keys_json]
 }
@@ -82,7 +89,7 @@ resource "aws_s3_bucket_object" "keys_json" {
   bucket = aws_s3_bucket.oidc.id
 
   key          = "keys.json"
-  content      = fileexists("${path.root}/.secret/keys.json") ? file("${path.root}/.secret/keys.json") : data.local_file.keys_json.content
+  content      = fileexists("${path.root}/.secret/keys.json") ? file("${path.root}/.secret/keys.json") : data.local_file.keys_json[0].content
   acl          = "public-read"
   content_type = "application/json"
 
