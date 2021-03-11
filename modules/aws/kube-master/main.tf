@@ -1,8 +1,7 @@
 locals {
   vpc_id = data.aws_subnet.subnet.vpc_id
 
-  extra_tags_keys   = keys(var.extra_tags)
-  extra_tags_values = values(var.extra_tags)
+  asg_extra_tags = [for k, v in var.extra_tags : { key = k, value = v, propagate_at_launch = true} if k != "Name"]
 
   iops_by_type       = {
     root = {
@@ -20,16 +19,6 @@ locals {
 
 data "aws_subnet" "subnet" {
   id = var.private_subnet_ids[0]
-}
-
-data "null_data_source" "tags" {
-  count = length(keys(var.extra_tags))
-
-  inputs = {
-    key                 = local.extra_tags_keys[count.index]
-    value               = local.extra_tags_keys[count.index] == "Name" ? "${local.extra_tags_values[count.index]}-master" : local.extra_tags_values[count.index]
-    propagate_at_launch = true
-  }
 }
 
 resource "aws_autoscaling_group" "master" {
@@ -63,7 +52,12 @@ resource "aws_autoscaling_group" "master" {
     }
   }
 
-  tags = concat(data.null_data_source.tags.*.outputs, [
+  tags = concat(local.asg_extra_tags, [
+    {
+      key                 = "Name"
+      value               = "${var.name}-master"
+      propagate_at_launch = true
+    },
     {
       key                 = "kubernetes.io/cluster/${var.name}"
       value               = "owned"
