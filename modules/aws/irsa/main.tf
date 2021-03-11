@@ -40,7 +40,8 @@ resource "null_resource" "generate_oidc_keys_json" {
   }
 
   triggers = {
-    controller_primary = timestamp()
+    oidc_pub_key_md5 = md5(var.oidc_pub_key)
+    is_exist         = fileexists("${path.root}/.secret/keys.json")
   }
 
   depends_on = [local_file.oidc_pub_key]
@@ -81,7 +82,7 @@ resource "aws_s3_bucket_object" "keys_json" {
   bucket = aws_s3_bucket.oidc.id
 
   key          = "keys.json"
-  content      = data.local_file.keys_json.content
+  content      = fileexists("${path.root}/.secret/keys.json") ? file("${path.root}/.secret/keys.json") : data.local_file.keys_json.content
   acl          = "public-read"
   content_type = "application/json"
 
