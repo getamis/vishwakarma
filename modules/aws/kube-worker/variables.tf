@@ -57,6 +57,7 @@ variable "kubelet_config" {
 
 variable "kubelet_flags" {
   description = "The flags of kubelet. The variables need to follow https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/. Do not use underline."
+  type        = map(string)
   default     = {}
 }
 
