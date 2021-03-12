@@ -3,6 +3,19 @@ locals {
 
   extra_tags_keys   = keys(var.extra_tags)
   extra_tags_values = values(var.extra_tags)
+
+  iops_by_type       = {
+    root = {
+      "gp3": max(3000, var.instance_config["root_volume_iops"]),
+      "io1": max(100, var.instance_config["root_volume_iops"]),
+      "io2": max(100, var.instance_config["root_volume_iops"]),
+    }
+  }
+  throughput_by_type = {
+    root = {
+      "gp3": 125,
+    }
+  }
 }
 
 data "aws_subnet" "subnet" {
@@ -87,7 +100,8 @@ resource "aws_launch_template" "master" {
     ebs {
       volume_type = var.instance_config["root_volume_type"]
       volume_size = var.instance_config["root_volume_size"]
-      iops        = var.instance_config["root_volume_type"] == "io1" ? var.instance_config["root_volume_iops"] : var.instance_config["root_volume_type"] == "gp2" ? 0 : min(10000, max(100, 3 * var.instance_config["root_volume_size"]))
+      iops        = lookup(local.iops_by_type.root, var.instance_config["root_volume_type"], null)
+      throughput  = lookup(local.throughput_by_type.root, var.instance_config["root_volume_type"], null)
     }
   }
 

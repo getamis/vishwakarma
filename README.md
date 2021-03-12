@@ -22,6 +22,8 @@ Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging Hash
 
 - **Key Pair**: In order to access worker node through ssh protocol, please create a key pair in example region **US West (Oregon) us-west-2**.
 
+- **jq**: It's a necessary command-line for filtering JSON in many operations.
+
 ## Getting Started
 First, acquire Vishwakarma from github:
 

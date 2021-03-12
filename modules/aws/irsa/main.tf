@@ -30,7 +30,7 @@ resource "aws_iam_openid_connect_provider" "irsa" {
   url = "https://s3-${data.aws_region.current.name}.amazonaws.com/${var.oidc_s3_bucket}"
 
   client_id_list  = [var.oidc_api_audiences]
-  thumbprint_list = [data.external.thumbprint.result.thumbprint]
+  thumbprint_list = [lower(data.external.thumbprint.result.thumbprint)]
 }
 
 resource "local_file" "oidc_pub_key" {
