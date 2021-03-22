@@ -247,6 +247,11 @@ variable "instance_config" {
   })
 }
 
+variable "instance_spot_max_price" {
+  default = null
+  description = "Desired master nodes spot maximum price, default is the on-demand price."
+}
+
 variable "ssh_key" {
   description = "The key name that should be used for the instance."
   type        = string

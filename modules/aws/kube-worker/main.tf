@@ -50,6 +50,8 @@ resource "aws_autoscaling_group" "worker" {
           instance_type = override.value
         }
       }
+
+      spot_max_price = var.instance_spot_max_price
     }
 
     instances_distribution {
@@ -78,6 +80,11 @@ resource "aws_autoscaling_group" "worker" {
     {
       key                 = "k8s.io/cluster-autoscaler/enabled"
       value               = "${var.enable_autoscaler}"
+      propagate_at_launch = true
+    },
+    (var.instance_spot_max_price == null) ? null : {
+      key                 = "spot-max-price"
+      value               = var.instance_spot_max_price
       propagate_at_launch = true
     }
   ])
