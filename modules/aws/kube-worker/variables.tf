@@ -140,6 +140,11 @@ variable "instance_config" {
   })
 }
 
+variable "instance_spot_max_price" {
+  default = null
+  description = "Desired worker nodes spot maximum price, default is the on-demand price."
+}
+
 variable "enable_autoscaler" {
   description = "Enable to add autoscaler tag or not"
   type        = string

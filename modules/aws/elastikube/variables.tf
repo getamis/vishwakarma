@@ -264,6 +264,12 @@ variable "master_instance_config" {
   }
 }
 
+variable "master_instance_spot_max_price" {
+  default = null
+  description = "Desired master nodes spot maximum price, default is the on-demand price."
+}
+
+
 variable "etcd_instance_config" {
   description = "(Optional) Desired etcd nodes configuration."
   type = object({

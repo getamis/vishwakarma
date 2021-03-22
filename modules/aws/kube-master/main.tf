@@ -51,6 +51,8 @@ resource "aws_autoscaling_group" "master" {
           instance_type = override.value
         }
       }
+
+      spot_max_price = var.instance_spot_max_price
     }
 
     instances_distribution {
@@ -76,6 +78,11 @@ resource "aws_autoscaling_group" "master" {
       value               = "k8s-master"
       propagate_at_launch = true
     },
+    (var.instance_spot_max_price == null) ? null : {
+      key                 = "spot-max-price"
+      value               = var.instance_spot_max_price
+      propagate_at_launch = true
+    }
   ])
 }
 
