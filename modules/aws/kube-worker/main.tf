@@ -76,8 +76,8 @@ resource "aws_autoscaling_group" "worker" {
 
   lifecycle {
     ignore_changes = [
-      "load_balancers",
-      "target_group_arns"
+      load_balancers,
+      target_group_arns
     ]
   }
 }
