@@ -8,16 +8,16 @@ locals {
 }
 
 module "ignition_docker" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=master"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.1.1"
 }
 
 module "ignition_locksmithd" {
-  source          = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=master"
+  source          = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.1.1"
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=master"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.1.1"
 }
 
 data "aws_s3_bucket_object" "bootstrapping_kubeconfig" {
@@ -26,7 +26,7 @@ data "aws_s3_bucket_object" "bootstrapping_kubeconfig" {
 }
 
 module "ignition_kubelet" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/kubelet"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.1.0"
 
   binaries             = var.binaries
   containers           = var.containers
