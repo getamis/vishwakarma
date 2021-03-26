@@ -1,5 +1,17 @@
+output "master_internal_elb_name" {
+  value = aws_elb.master_internal.name
+}
+
 output "endpoint" {
   value = "https://${aws_elb.master_internal.dns_name}"
+}
+
+output "master_asg_name" {
+  value = aws_autoscaling_group.master.name
+}
+
+output "master_launch_template_name" {
+  value = aws_launch_template.master.name
 }
 
 output "master_sg_id" {

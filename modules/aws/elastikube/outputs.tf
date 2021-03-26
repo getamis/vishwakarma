@@ -28,8 +28,20 @@ output "worker_sg_ids" {
   description = "The security gruop for worker group"
 }
 
+output "master_internal_elb_name" {
+  value = module.master.master_internal_elb_name
+}
+
 output "master_role_name" {
   value = module.master.default_role_name
+}
+
+output "master_launch_template_name" {
+  value = module.master.master_launch_template_name
+}
+
+output "master_asg_name" {
+  value = module.master.master_asg_name
 }
 
 output "etcd_role_name" {
