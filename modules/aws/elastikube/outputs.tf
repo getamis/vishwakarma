@@ -52,3 +52,9 @@ output "service_account_pub_key" {
   sensitive = true
   value     = var.service_account_content.pub_key == "" ? module.master.service_account_pub_key : var.service_account_content.pub_key
 }
+
+output "kubernetes_ca_cert" {
+  sensitive = true
+  value     = module.master.kubernetes_ca_cert
+}
+
