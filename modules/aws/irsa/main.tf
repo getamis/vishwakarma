@@ -11,12 +11,14 @@ locals {
 data "aws_region" "current" {}
 
 module "ignition_pod_idenity_webhook" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-pod-identity-webhook?ref=v1.1.0"
+  #source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-pod-identity-webhook?ref=v1.1.0"
+  #FIXME
+  source = "git::ssh://git@github.com/soem/terraform-ignition-kubernetes//modules/extra-addons/aws-pod-identity-webhook?ref=test"
 
   container             = var.container
   webhook_flags         = var.webhook_flags
   addons_dir_path       = var.kube_addons_dir_path
-  tls_cert_ca           = var.webhook_ca_bundle
+  mutating_webhook_ca_bundle = var.webhook_ca_bundle
   tls_cert              = module.webhook_cert.cert_pem
   tls_key               = module.webhook_cert.private_key_pem
   located_control_plane = true
