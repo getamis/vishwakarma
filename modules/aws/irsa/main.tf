@@ -16,7 +16,7 @@ module "ignition_pod_idenity_webhook" {
   container             = var.container
   webhook_flags         = var.webhook_flags
   addons_dir_path       = var.kube_addons_dir_path
-  tls_cert_ca           = module.webhook_ca.cert_pem
+  tls_cert_ca           = var.webhook_ca_bundle
   tls_cert              = module.webhook_cert.cert_pem
   tls_key               = module.webhook_cert.private_key_pem
   located_control_plane = true

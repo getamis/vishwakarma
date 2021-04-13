@@ -24,6 +24,11 @@ variable "pki_dir_path" {
   default     = "/etc/kubernetes/pki/pod-identity-webhook"
 }
 
+variable "webhook_ca_bundle" {
+  description = "The ca bundle for mutatingwebhookconfigurations of pod identity webhook."
+  type        = string
+}
+
 variable "webhook_flags" {
   description = "The flags of pod identity webhook. The variables need to follow https://github.com/aws/amazon-eks-pod-identity-webhook/blob/master/main.go. Do not use underline."
   default     = {}
