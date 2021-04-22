@@ -89,6 +89,9 @@ module "master" {
     root_volume_size = 256
     root_volume_type = "gp2"
 
+    instance_warmup        = 30
+    min_healthy_percentage = 100
+
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 0
     spot_instance_pools                      = 1

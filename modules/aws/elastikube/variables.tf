@@ -6,7 +6,7 @@ variable "name" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.19.4"
+  default     = "v1.19.10"
 }
 
 variable "override_binaries" {
@@ -237,6 +237,9 @@ variable "master_instance_config" {
     root_volume_size = number
     root_volume_type = string
 
+    instance_warmup        = number
+    min_healthy_percentage = number
+
     on_demand_base_capacity                  = number
     on_demand_percentage_above_base_capacity = number
     spot_instance_pools                      = number
@@ -251,6 +254,9 @@ variable "master_instance_config" {
     root_volume_iops = 100
     root_volume_size = 256
     root_volume_type = "gp2"
+
+    instance_warmup        = 30
+    min_healthy_percentage = 100
 
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 100

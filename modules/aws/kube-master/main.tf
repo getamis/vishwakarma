@@ -29,6 +29,14 @@ resource "aws_autoscaling_group" "master" {
   vpc_zone_identifier = var.private_subnet_ids
   load_balancers      = [aws_elb.master_internal.id]
 
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      instance_warmup        = var.instance_config["instance_warmup"]
+      min_healthy_percentage = var.instance_config["min_healthy_percentage"]
+    }
+  }
+
   mixed_instances_policy {
     launch_template {
       launch_template_specification {
@@ -107,4 +115,25 @@ resource "aws_launch_template" "master" {
     # out.
     ignore_changes = [image_id]
   }
+}
+
+
+module "lifecycle_hook" {
+  source = "git::ssh://git@github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v0.0.2"
+
+  name                           = "${var.name}-master"
+  cluster_name                   = var.name
+  autoscaling_group_name         = aws_autoscaling_group.master.name
+  kubeconfig_s3_bucket           = var.s3_bucket
+  kubeconfig_s3_object           = aws_s3_bucket_object.admin_kubeconfig.id
+  kubernetes_node_role           = "master"
+  lambda_function_vpc_subnet_ids = var.private_subnet_ids
+
+  extra_tags = merge(
+    {
+      "Name"                              = "${var.name}-master"
+      "kubernetes.io/cluster/${var.name}" = "owned"
+    },
+    var.extra_tags,
+  )
 }

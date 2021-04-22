@@ -6,7 +6,7 @@ install_tools: &install_tools
     command: |
       # Install AWS CLI and AWS IAM Authenticator
       if [ "${INSTALL_AWS_CLI}" == "true" ]; then
-        sudo apt-get update && sudo apt-get install -y python3 python3-pip
+        sudo apt-get update && sudo apt-get install -y python3.7 python3-pip
         pip3 install awscli --upgrade --user
         wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/aws-iam-authenticator -O /tmp/aws-iam-authenticator
         chmod +x /tmp/aws-iam-authenticator && sudo mv /tmp/aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
