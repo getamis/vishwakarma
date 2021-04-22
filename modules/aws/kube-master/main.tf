@@ -77,7 +77,7 @@ resource "aws_autoscaling_group" "master" {
       value               = "k8s-master"
       propagate_at_launch = true
     },
-    (var.instance_spot_max_price == null) ? null : {
+    (var.instance_spot_max_price == "") ? {} : {
       key                 = "spot-max-price"
       value               = var.instance_spot_max_price
       propagate_at_launch = true
