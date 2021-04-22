@@ -81,7 +81,7 @@ variable "extra_flags" {
 The user-provided flags to kubelet, kube-apiserver, kube-controller-manager, kube-scheduler and audit log. 
 For flags, we need to follow component flag string format. Do not use underline.
 EOF 
-  type    = map(map(string))
+  type        = map(map(string))
   default = {
     kubelet            = {}
     apiserver          = {}
@@ -237,7 +237,7 @@ variable "instance_config" {
     root_volume_iops = number
     root_volume_size = number
     root_volume_type = string
-    
+
     instance_warmup        = number
     min_healthy_percentage = number
 
