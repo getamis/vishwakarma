@@ -1,18 +1,18 @@
 locals {
   vpc_id = data.aws_subnet.subnet.vpc_id
 
-  asg_extra_tags = [for k, v in var.extra_tags : { key = k, value = v, propagate_at_launch = true} if k != "Name"]
+  asg_extra_tags = [for k, v in var.extra_tags : { key = k, value = v, propagate_at_launch = true } if k != "Name"]
 
-  iops_by_type       = {
+  iops_by_type = {
     root = {
-      "gp3": max(3000, var.instance_config["root_volume_iops"]),
-      "io1": max(100, var.instance_config["root_volume_iops"]),
-      "io2": max(100, var.instance_config["root_volume_iops"]),
+      "gp3" : max(3000, var.instance_config["root_volume_iops"]),
+      "io1" : max(100, var.instance_config["root_volume_iops"]),
+      "io2" : max(100, var.instance_config["root_volume_iops"]),
     }
   }
   throughput_by_type = {
     root = {
-      "gp3": 125,
+      "gp3" : 125,
     }
   }
 }
