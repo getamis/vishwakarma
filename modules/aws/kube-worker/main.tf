@@ -81,7 +81,7 @@ resource "aws_autoscaling_group" "worker" {
       value               = "${var.enable_autoscaler}"
       propagate_at_launch = true
     },
-    (var.instance_spot_max_price == null) ? null : {
+    (var.instance_spot_max_price == "") ? {} : {
       key                 = "spot-max-price"
       value               = var.instance_spot_max_price
       propagate_at_launch = true

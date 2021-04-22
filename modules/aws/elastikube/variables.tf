@@ -265,7 +265,8 @@ variable "master_instance_config" {
 }
 
 variable "master_instance_spot_max_price" {
-  default = null
+  type        = string
+  default     = ""
   description = "Desired master nodes spot maximum price, default is the on-demand price."
 }
 
