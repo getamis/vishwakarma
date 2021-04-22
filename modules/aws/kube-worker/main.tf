@@ -28,6 +28,14 @@ resource "aws_autoscaling_group" "worker" {
   min_size            = var.instance_config["count"]
   vpc_zone_identifier = var.subnet_ids
 
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      instance_warmup        = var.instance_config["instance_warmup"]
+      min_healthy_percentage = var.instance_config["min_healthy_percentage"]
+    }
+  }
+
   mixed_instances_policy {
     launch_template {
       launch_template_specification {
@@ -115,4 +123,24 @@ resource "aws_launch_template" "worker" {
     # out.
     ignore_changes = [image_id]
   }
+}
+
+module "lifecycle_hook" {
+  source = "git::ssh://git@github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v0.0.2"
+
+  name                           = "${var.name}-worker-${var.instance_config["name"]}"
+  cluster_name                   = var.name
+  autoscaling_group_name         = aws_autoscaling_group.worker.name
+  kubeconfig_s3_bucket           = var.s3_bucket
+  kubeconfig_s3_object           = var.s3_object
+  kubernetes_node_role           = var.instance_config["name"]
+  lambda_function_vpc_subnet_ids = var.subnet_ids
+
+  extra_tags = merge(
+    {
+      "Name"                              = "${var.name}-worker-${var.instance_config["name"]}"
+      "kubernetes.io/cluster/${var.name}" = "owned"
+    },
+    var.extra_tags,
+  )
 }

@@ -6,7 +6,7 @@ variable "name" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.19.4"
+  default     = "v1.19.10"
 }
 
 variable "binaries" {
@@ -237,6 +237,9 @@ variable "instance_config" {
     root_volume_iops = number
     root_volume_size = number
     root_volume_type = string
+    
+    instance_warmup        = number
+    min_healthy_percentage = number
 
     on_demand_base_capacity                  = number
     on_demand_percentage_above_base_capacity = number

@@ -6,7 +6,7 @@ variable "name" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.19.4"
+  default     = "v1.19.10"
 }
 
 variable "binaries" {
@@ -131,6 +131,9 @@ variable "instance_config" {
     root_volume_size = number
     root_volume_type = string
 
+    instance_warmup        = number
+    min_healthy_percentage = number
+
     on_demand_base_capacity                  = number
     on_demand_percentage_above_base_capacity = number
     spot_instance_pools                      = number
@@ -158,6 +161,10 @@ EOF
   default     = ""
 }
 
+variable "s3_object" {
+  type    = string
+  default = "admin.conf"
+}
 variable "extra_tags" {
   description = "Extra AWS tags to be applied to created resources."
   type        = map(string)
