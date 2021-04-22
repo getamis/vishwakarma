@@ -51,14 +51,13 @@ resource "aws_autoscaling_group" "master" {
           instance_type = override.value
         }
       }
-
-      spot_max_price = var.instance_spot_max_price
     }
 
     instances_distribution {
       on_demand_base_capacity                  = var.instance_config["on_demand_base_capacity"]
       on_demand_percentage_above_base_capacity = var.instance_config["on_demand_percentage_above_base_capacity"]
       spot_instance_pools                      = var.instance_config["spot_instance_pools"]
+      spot_max_price                           = var.instance_spot_max_price
     }
   }
 
