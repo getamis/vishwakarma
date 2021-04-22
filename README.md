@@ -14,9 +14,9 @@ Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging Hash
 
 ## Requirements
 
-- **Terraform**: All of the AWS resource will be create by Terraform, hence, you need to [**install it**](https://www.terraform.io/intro/getting-started/install.html) and confirm the [**permission setup**](https://www.terraform.io/docs/providers/aws/index.html) correctly, then Terraform have the permission to create AWS resource automatically. **Minimum required 1.19.10 of Terraform is v0.12.29**.
+- **Terraform**: All of the AWS resource will be create by Terraform, hence, you need to [**install it**](https://www.terraform.io/intro/getting-started/install.html) and confirm the [**permission setup**](https://www.terraform.io/docs/providers/aws/index.html) correctly, then Terraform have the permission to create AWS resource automatically. **Minimum required version of Terraform is v0.12.29**.
 
-- **kubectl**: After the cluster created completely, there is a Kubernetes ConfigMap aws-auth need to be created through kubectl, so need to [**install it**](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl). **Minimum required 1.19.10 of Kubernetes is v1.18.0**.
+- **kubectl**: After the cluster created completely, there is a Kubernetes ConfigMap aws-auth need to be created through kubectl, so need to [**install it**](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl). **Minimum required version of Kubernetes is v1.18.0**.
 
 - **[aws-iam-authenticator](https://docs.aws.amazon.com/zh_tw/eks/latest/userguide/install-aws-iam-authenticator.html)**: The clsuter access permission integrate with AWS IAM, in order to let the cluster know whether you have the right to access, aws-iam-authenticator need to be [**installed**](https://docs.aws.amazon.com/eks/latest/userguide/configure-kubectl.html) in the client side.
 
