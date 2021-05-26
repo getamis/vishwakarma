@@ -138,3 +138,8 @@ variable "extra_tags" {
   default     = {}
   description = "Extra AWS tags to be applied to created resources."
 }
+
+variable "create_additional_sg" {
+  default     = false
+  description = "Create a independent security group for workers"
+}

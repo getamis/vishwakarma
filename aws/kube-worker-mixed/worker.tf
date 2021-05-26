@@ -7,6 +7,9 @@ locals {
 
   extra_tags_keys   = "${keys(var.extra_tags)}"
   extra_tags_values = "${values(var.extra_tags)}"
+
+  additional_worker_sg_id = "${var.create_additional_sg ? join("", aws_security_group.additional_worker.*.id) : ""}"
+  vpc_sg_ids = "${compact(concat(var.security_group_ids, split(",", local.additional_worker_sg_id)))}"
 }
 
 data "null_data_source" "tags" {
@@ -72,9 +75,7 @@ resource "aws_launch_template" "worker" {
   image_id      = "${data.aws_ami.os.id}"
   name_prefix   = "${var.name}-worker-${var.worker_config["name"]}-"  
 
-  vpc_security_group_ids = [
-    "${var.security_group_ids}",
-  ]
+  vpc_security_group_ids = ["${local.vpc_sg_ids}"]
 
   iam_instance_profile {
     arn = "${aws_iam_instance_profile.worker.arn}"
