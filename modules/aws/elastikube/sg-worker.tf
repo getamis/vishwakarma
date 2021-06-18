@@ -76,17 +76,6 @@ resource "aws_security_group_rule" "workers_to_coredns_metrics" {
   to_port   = 9153
 }
 
-resource "aws_security_group_rule" "workers_ingress_ssh" {
-  type              = "ingress"
-  description       = "Allow access from ssh."
-  security_group_id = aws_security_group.workers.id
-
-  protocol    = "tcp"
-  cidr_blocks = var.allowed_ssh_cidr
-  from_port   = 22
-  to_port     = 22
-}
-
 resource "aws_security_group_rule" "master_ingress_flannel_from_worker" {
   count                    = var.network_plugin == "flannel" ? 1 : 0
   type                     = "ingress"
