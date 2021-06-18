@@ -89,16 +89,6 @@ resource "aws_security_group_rule" "master_ingress_from_lb" {
   to_port   = var.apiserver_secure_port
 }
 
-resource "aws_security_group_rule" "master_ssh" {
-  type              = "ingress"
-  security_group_id = local.master_sg_id
-
-  protocol    = "tcp"
-  cidr_blocks = [data.aws_vpc.master.cidr_block]
-  from_port   = 22
-  to_port     = 22
-}
-
 resource "aws_security_group_rule" "master_ingress_kubelet_secure_from_worker" {
   type              = "ingress"
   security_group_id = local.master_sg_id
