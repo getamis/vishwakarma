@@ -42,16 +42,6 @@ resource "aws_security_group_rule" "etcd_ingress_from_master" {
   to_port   = local.client_port
 }
 
-resource "aws_security_group_rule" "etcd_ssh" {
-  type              = "ingress"
-  security_group_id = aws_security_group.etcd.id
-
-  protocol    = "tcp"
-  cidr_blocks = [data.aws_vpc.etcd.cidr_block]
-  from_port   = 22
-  to_port     = 22
-}
-
 resource "aws_security_group_rule" "ingress_node_exporter_from_worker" {
   type              = "ingress"
   security_group_id = aws_security_group.etcd.id
