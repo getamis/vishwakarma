@@ -56,7 +56,7 @@ variable "kube_extra_flags" {
 The user-provided flags to kubelet, kube-apiserver, kube-controller-manager, kube-scheduler and audit log. 
 For flags, we need to follow component flag string format. Do not use underline.
 EOF 
-  type    = map(map(string))
+  type        = map(map(string))
   default = {
     kubelet            = {}
     apiserver          = {}
@@ -263,6 +263,13 @@ variable "master_instance_config" {
     spot_instance_pools                      = 1
   }
 }
+
+variable "master_instance_spot_max_price" {
+  type        = string
+  default     = ""
+  description = "Desired master nodes spot maximum price, default is the on-demand price."
+}
+
 
 variable "etcd_instance_config" {
   description = "(Optional) Desired etcd nodes configuration."
