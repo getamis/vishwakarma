@@ -33,8 +33,6 @@ module "irsa" {
   name           = module.label.id
   oidc_s3_bucket = "oidc-${md5(module.label.id)}"
   oidc_pub_key   = module.service_account.public_key_pem
-
-  webhook_ca_bundle = module.master.kubernetes_ca_cert
 }
 
 module "iam_auth" {

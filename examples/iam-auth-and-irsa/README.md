@@ -37,12 +37,13 @@ $ terraform apply
 
 ```sh
 # Go to example directory, and type your oidc endpoint, ARN, and ignition bucket name.
+$ terraform init
 $ terraform apply
 
 # export kubeconfig in this directory, and execute the following commands
 $ export KUBECONFIG=.secret/kubeconfig
 $ kubectl taint nodes --all node-role.kubernetes.io/master-
-$ kubectl certificate approve $(kubectl get csr -o jsonpath='{.items[?(@.spec.username=="system:serviceaccount:kube-system:pod-identity-webhook")].metadata.name}')
+$ kubectl get pod
 $ kubectl exec -ti s3-echoer-89ddf8b7f-82pfb aws s3 ls
 ```
 

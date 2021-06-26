@@ -12,6 +12,18 @@ variable "container" {
   }
 }
 
+variable "service_name" {
+  description = "The pod identity webhook K8s service name"
+  type        = string
+  default     = "pod-identity-webhook"
+}
+
+variable "namespace" {
+  description = "The pod identity webhook K8s namespace"
+  type        = string
+  default     = "kube-system"
+}
+
 variable "kube_addons_dir_path" {
   description = "A path for installing addons."
   type        = string
@@ -22,11 +34,6 @@ variable "pki_dir_path" {
   description = "A path for writting PKI."
   type        = string
   default     = "/etc/kubernetes/pki/pod-identity-webhook"
-}
-
-variable "webhook_ca_bundle" {
-  description = "The ca bundle for mutatingwebhookconfigurations of pod identity webhook."
-  type        = string
 }
 
 variable "webhook_flags" {
