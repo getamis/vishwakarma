@@ -26,8 +26,13 @@ module "webhook_cert" {
     validity_period_hours = var.certs_validity_period_hours
   }
 
-  cert_hostnames = ["pod-identity-webhook.kube-system.svc"]
-
+  cert_hostnames = [
+    var.service_name,
+    "${var.service_name}.${var.namespace}",
+    "${var.service_name}.${var.namespace}.svc",
+    "${var.service_name}.${var.namespace}.svc.local"
+  ]
+  
   cert_uses = [
     "key_encipherment",
     "digital_signature",
