@@ -1,18 +1,18 @@
 locals {
   vpc_id = data.aws_subnet.subnet.vpc_id
 
-  asg_extra_tags = [for k, v in var.extra_tags : { key = k, value = v, propagate_at_launch = true} if k != "Name"]
+  asg_extra_tags = [for k, v in var.extra_tags : { key = k, value = v, propagate_at_launch = true } if k != "Name"]
 
-  iops_by_type       = {
+  iops_by_type = {
     root = {
-      "gp3": max(3000, var.instance_config["root_volume_iops"]),
-      "io1": max(100, var.instance_config["root_volume_iops"]),
-      "io2": max(100, var.instance_config["root_volume_iops"]),
+      "gp3" : max(3000, var.instance_config["root_volume_iops"]),
+      "io1" : max(100, var.instance_config["root_volume_iops"]),
+      "io2" : max(100, var.instance_config["root_volume_iops"]),
     }
   }
   throughput_by_type = {
     root = {
-      "gp3": 125,
+      "gp3" : 125,
     }
   }
 }
@@ -57,6 +57,7 @@ resource "aws_autoscaling_group" "master" {
       on_demand_base_capacity                  = var.instance_config["on_demand_base_capacity"]
       on_demand_percentage_above_base_capacity = var.instance_config["on_demand_percentage_above_base_capacity"]
       spot_instance_pools                      = var.instance_config["spot_instance_pools"]
+      spot_max_price                           = var.instance_spot_max_price
     }
   }
 
@@ -76,6 +77,11 @@ resource "aws_autoscaling_group" "master" {
       value               = "k8s-master"
       propagate_at_launch = true
     },
+    (var.instance_spot_max_price == "") ? {} : {
+      key                 = "spot-max-price"
+      value               = var.instance_spot_max_price
+      propagate_at_launch = true
+    }
   ])
 }
 
