@@ -24,6 +24,12 @@ variable "namespace" {
   default     = "kube-system"
 }
 
+variable "replicas" {
+  description = "The pod identity webhook deployment replicas"
+  type        = number
+  default     = 1
+}
+
 variable "kube_addons_dir_path" {
   description = "A path for installing addons."
   type        = string
