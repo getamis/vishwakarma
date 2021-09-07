@@ -76,9 +76,14 @@ resource "aws_autoscaling_group" "worker" {
       value               = "k8s-worker"
       propagate_at_launch = true
     },
-    {
+    (var.enable_autoscaler != "true" ) ? {} : {
       key                 = "k8s.io/cluster-autoscaler/enabled"
-      value               = "${var.enable_autoscaler}"
+      value               = "true"
+      propagate_at_launch = true
+    },
+    (var.enable_node_termination_handler != "true" ) ? {} : {
+      key                 = "aws-node-termination-handler/managed"
+      value               = "true"
       propagate_at_launch = true
     },
     (var.instance_spot_max_price == "") ? {} : {

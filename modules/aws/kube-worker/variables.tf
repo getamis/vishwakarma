@@ -152,6 +152,12 @@ variable "enable_autoscaler" {
   default     = "false"
 }
 
+variable "enable_node_termination_handler" {
+  description = "Enable to add aws-node-termination-handler tag or not"
+  type        = string
+  default     = "false"
+}
+
 variable "ssh_key" {
   description = "The key name that should be used for the instance."
   type        = string
