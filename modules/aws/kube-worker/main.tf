@@ -24,7 +24,7 @@ data "aws_subnet" "subnet" {
 resource "aws_autoscaling_group" "worker" {
   name_prefix         = "${var.name}-worker-${var.instance_config["name"]}-"
   desired_capacity    = var.instance_config["count"]
-  max_size            = var.instance_config["count"] * 3
+  max_size            = var.instance_config["count"] == 0 ? 3 : (var.instance_config["count"] * 3)
   min_size            = var.instance_config["count"]
   vpc_zone_identifier = var.subnet_ids
 
@@ -96,7 +96,8 @@ resource "aws_autoscaling_group" "worker" {
   lifecycle {
     ignore_changes = [
       load_balancers,
-      target_group_arns
+      target_group_arns,
+      desired_capacity
     ]
   }
 }
