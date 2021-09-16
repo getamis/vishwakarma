@@ -27,7 +27,7 @@ module "apiserver_cert" {
   }
 
   cert_hostnames = compact(concat(
-    list(
+    [
       "localhost",
       "kubernetes",
       "kubernetes.default",
@@ -35,14 +35,14 @@ module "apiserver_cert" {
       // TODO: pass "cluster.local" from variable
       "kubernetes.default.svc.cluster.local",
       aws_elb.master_internal.dns_name,
-    ),
+    ],
   ))
 
   cert_ip_addresses = compact(concat(
-    list(
+    [
       "127.0.0.1",
       "${cidrhost(var.service_network_cidr, 1)}",
-    ),
+    ],
   ))
 
   cert_uses = [

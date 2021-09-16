@@ -1,5 +1,6 @@
 *.tfvars
 *.tfstate*
+.terraform.lock.hcl
 .terraform/
 .terratest/
 vendor/

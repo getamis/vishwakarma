@@ -37,7 +37,7 @@ module "master" {
   kubelet_node_labels = var.kubelet_node_labels
 
   kubelet_node_taints = compact(concat(
-    list("node-role.kubernetes.io/master=:NoSchedule"),
+    ["node-role.kubernetes.io/master=:NoSchedule"],
     var.kubelet_node_taints
   ))
 
@@ -58,6 +58,6 @@ module "master" {
   audit_log_policy_content = var.kube_audit_log_policy_content
 
   certs_validity_period_hours = var.certs_validity_period_hours
-  reboot_strategy             = var.reboot_strategy
+  auto_updates                = var.auto_updates
   extra_tags                  = var.extra_tags
 }

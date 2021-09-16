@@ -4,7 +4,7 @@ resource "aws_elb" "master_internal" {
   internal = var.endpoint_public_access == true ? false : true
 
   security_groups = compact(concat(
-    list(aws_security_group.master_lb.id),
+    [aws_security_group.master_lb.id],
     var.lb_security_group_ids
   ))
 
@@ -27,22 +27,26 @@ resource "aws_elb" "master_internal" {
     interval            = 5
   }
 
-  tags = merge(var.extra_tags, map(
-    "Name", "${var.name}-master",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "k8s-master"
-  ))
+  tags = merge(var.extra_tags,
+    {
+      Name                                = "${var.name}-master"
+      Role                                = "k8s-master"
+      "kubernetes.io/cluster/${var.name}" = "owned"
+    }
+  )
 }
 
 resource "aws_security_group" "master_lb" {
   name_prefix = "${var.name}-master-lb-"
   vpc_id      = data.aws_vpc.master.id
 
-  tags = merge(var.extra_tags, map(
-    "Name", "${var.name}-master-lb",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "k8s-master"
-  ))
+  tags = merge(var.extra_tags, 
+    {
+      Name                                = "${var.name}-master-lb"
+      Role                                = "k8s-master"
+      "kubernetes.io/cluster/${var.name}" = "owned"
+    }
+  )
 }
 
 resource "aws_security_group_rule" "master_lb_egress" {

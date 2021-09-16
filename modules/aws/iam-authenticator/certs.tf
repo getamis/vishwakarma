@@ -27,9 +27,9 @@ module "iam_auth_cert" {
   }
 
   cert_ip_addresses = compact(concat(
-    list(
+    [
       "127.0.0.1"
-    ),
+    ],
   ))
 
   cert_uses = [

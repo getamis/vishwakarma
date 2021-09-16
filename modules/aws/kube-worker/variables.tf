@@ -6,7 +6,7 @@ variable "name" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.19.10"
+  default     = "v1.19.15"
 }
 
 variable "binaries" {
@@ -73,10 +73,10 @@ variable "kubelet_node_taints" {
   default     = []
 }
 
-variable "reboot_strategy" {
-  description = "CoreOS reboot strategies on updates, two option here: etcd-lock or off"
+variable "auto_updates" {
+  description = "(Optional) Allow Zincati to auto update CoreOS or not"
   type        = string
-  default     = "etcd-lock"
+  default     = "false"
 }
 
 variable "extra_ignition_file_ids" {

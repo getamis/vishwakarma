@@ -132,7 +132,7 @@ resource "aws_launch_template" "worker" {
 }
 
 module "lifecycle_hook" {
-  source = "git::ssh://git@github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v0.0.2"
+  source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=fedora_coreos"
 
   name                           = "${var.name}-worker-${var.instance_config["name"]}"
   cluster_name                   = var.name

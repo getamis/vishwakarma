@@ -6,11 +6,11 @@ variable "name" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.19.10"
+  default     = "v1.19.15"
 }
 
 variable "override_binaries" {
-  description = "Desired binaries(cni_plugin) url and checksum."
+  description = "Desired binaries(etcd, kubelet, cni_plugin) url and checksum."
   type = map(object({
     source   = string
     checksum = string
@@ -143,10 +143,10 @@ variable "service_account_content" {
   }
 }
 
-variable "reboot_strategy" {
-  description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
+variable "auto_updates" {
+  description = "(Optional) Allow Zincati to auto update CoreOS or not"
   type        = string
-  default     = "off"
+  default     = "false"
 }
 
 variable "extra_etcd_ignition_file_ids" {

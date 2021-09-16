@@ -3,11 +3,6 @@ locals {
   virtualization_type = "hvm"
 
   image_info = {
-    flatcar = {
-      owner_id = "075585003325"
-      name     = "Flatcar-${var.channel}-${var.flatcar_version}-*"
-    }
-
     fedora_coreos = {
       owner_id = "125523088429"
       name     = "fedora-coreos-??.????????.${var.channel_version}"

@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes?ref=v1.4.3"
+  source = "github.com/getamis/terraform-ignition-kubernetes?ref=fedora_coreos"
 
   binaries              = var.binaries
   containers            = var.containers
@@ -90,23 +90,28 @@ module "ignition_kubernetes" {
 }
 
 module "ignition_docker" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.1.1"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=fedora_coreos"
 }
 
-module "ignition_locksmithd" {
-  source          = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.1.1"
-  reboot_strategy = var.reboot_strategy
+module "ignition_update_ca_trust" {
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-trust?ref=fedora_coreos"
 }
 
-module "ignition_update_ca_certificates" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.1.1"
+module "ignition_wait_for_dns" {
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/wait-for-dns?ref=fedora_coreos"
+}
+
+module "ignition_zincati" {
+  source          = "github.com/getamis/terraform-ignition-reinforcements//modules/zincati?ref=fedora_coreos"
+  auto_updates = var.auto_updates
 }
 
 data "ignition_config" "main" {
   files = compact(concat(
     module.ignition_docker.files,
-    module.ignition_locksmithd.files,
-    module.ignition_update_ca_certificates.files,
+    module.ignition_update_ca_trust.files,
+    module.ignition_wait_for_dns.files,
+    module.ignition_zincati.files,
     module.ignition_kubernetes.files,
     module.ignition_kubernetes.cert_files,
     var.extra_ignition_file_ids,
@@ -114,8 +119,9 @@ data "ignition_config" "main" {
 
   systemd = compact(concat(
     module.ignition_docker.systemd_units,
-    module.ignition_locksmithd.systemd_units,
-    module.ignition_update_ca_certificates.systemd_units,
+    module.ignition_update_ca_trust.systemd_units,
+    module.ignition_wait_for_dns.systemd_units,
+    module.ignition_zincati.systemd_units,
     module.ignition_kubernetes.systemd_units,
     var.extra_ignition_systemd_unit_ids,
   ))
@@ -131,11 +137,13 @@ resource "aws_s3_bucket_object" "admin_kubeconfig" {
   server_side_encryption = "AES256"
   content_type           = "text/plain"
 
-  tags = merge(var.extra_tags, map(
-    "Name", "admin.conf",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "k8s-master"
-  ))
+  tags = merge(var.extra_tags, 
+    {
+      Name                                = "admin.conf"
+      Role                                = "k8s-master"
+      "kubernetes.io/cluster/${var.name}" = "owned"
+    }
+  )
 }
 
 // TODO: use AWS Secrets Manager to store this, or encryption by KMS.
@@ -148,11 +156,13 @@ resource "aws_s3_bucket_object" "bootstrapping_kubeconfig" {
   server_side_encryption = "AES256"
   content_type           = "text/plain"
 
-  tags = merge(var.extra_tags, map(
-    "Name", "bootstrap-kubelet.conf",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "k8s-master"
-  ))
+  tags = merge(var.extra_tags,
+    {
+      Name                                = "bootstrap-kubelet.conf"
+      Role                                = "k8s-master"
+      "kubernetes.io/cluster/${var.name}" = "owned"
+    }
+  )
 }
 
 resource "aws_s3_bucket_object" "ignition" {
@@ -163,11 +173,13 @@ resource "aws_s3_bucket_object" "ignition" {
 
   server_side_encryption = "AES256"
 
-  tags = merge(var.extra_tags, map(
-    "Name", "ign-master-${var.name}.json",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "k8s-master",
-  ))
+  tags = merge(var.extra_tags,
+    {
+      Name                                = "ign-master-${var.name}.json"
+      Role                                = "k8s-master"
+      "kubernetes.io/cluster/${var.name}" = "owned"
+    }
+  )
 }
 
 data "ignition_config" "s3" {

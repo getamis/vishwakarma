@@ -4,7 +4,7 @@ module "etcd" {
   name            = var.name
   ssh_key         = var.ssh_key
   instance_config = var.etcd_instance_config
-  containers      = var.override_containers
+  binaries        = var.override_binaries
 
   instance_volume_config = var.etcd_instance_volume_config
 
@@ -12,7 +12,7 @@ module "etcd" {
   master_security_group_id    = module.master.master_sg_id
   zone_id                     = aws_route53_zone.private.zone_id
   s3_bucket                   = aws_s3_bucket.ignition.id
-  reboot_strategy             = var.reboot_strategy
+  auto_updates                = var.auto_updates
   certs_validity_period_hours = var.certs_validity_period_hours
 
   extra_ignition_file_ids         = var.extra_etcd_ignition_file_ids

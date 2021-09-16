@@ -3,11 +3,11 @@ variable "name" {
   type        = string
 }
 
-variable "containers" {
-  description = "Desired containers(etcd) repo and tag."
+variable "binaries" {
+  description = "Desired binaries(etcd) url and checksum."
   type = map(object({
-    repo = string
-    tag  = string
+    source   = string
+    checksum = string
   }))
   default = {}
 }
@@ -40,8 +40,8 @@ EOF
   default = 87600
 }
 
-variable "reboot_strategy" {
-  description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
+variable "auto_updates" {
+  description = "(Optional) Allow Zincati to auto update CoreOS or not"
   type        = string
 }
 

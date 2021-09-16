@@ -62,10 +62,12 @@ resource "aws_s3_bucket_object" "kubeconfig_iam" {
   server_side_encryption = "AES256"
   content_type           = "text/plain"
 
-  tags = merge(module.label.tags, map(
-    "Name", "kubeconfig.iam",
-    "Role", "k8s-master"
-  ))
+  tags = merge(module.label.tags, 
+    {
+      Name = "kubeconfig.iam"
+      Role = "k8s-master"
+    }
+  )
 }
 
 resource "local_file" "kubeconfig_iam_local" {

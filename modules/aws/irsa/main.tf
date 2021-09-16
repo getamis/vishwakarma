@@ -11,7 +11,7 @@ locals {
 data "aws_region" "current" {}
 
 module "ignition_pod_idenity_webhook" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-pod-identity-webhook?ref=v1.4.3"
+  source = "github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-pod-identity-webhook?ref=fedora_coreos"
 
   container                  = var.container
   service_name               = var.service_name
@@ -65,7 +65,7 @@ resource "aws_s3_bucket" "oidc" {
   acl    = "private"
 
   tags = merge(
-    map("Name", "${var.name}-oidc-${md5("${var.name}-oidc")}"),
+    {Name = "${var.name}-oidc-${md5("${var.name}-oidc")}"},
   var.extra_tags)
 }
 
@@ -80,10 +80,10 @@ resource "aws_s3_bucket_object" "discovery_json" {
     issuer_host = "https://s3-${data.aws_region.current.name}.amazonaws.com/${var.oidc_s3_bucket}"
   })
 
-  tags = merge(map(
-    "Name", "discovery.json",
-    "Role", "k8s-master"
-  ), var.extra_tags)
+  tags = merge({
+    Name = "discovery.json",
+    Role = "k8s-master"
+  }, var.extra_tags)
 }
 
 data "local_file" "keys_json" {
@@ -101,8 +101,8 @@ resource "aws_s3_bucket_object" "keys_json" {
   acl          = "public-read"
   content_type = "application/json"
 
-  tags = merge(map(
-    "Name", "keys.json",
-    "Role", "k8s-master"
-  ), var.extra_tags)
+  tags = merge({
+    Name = "keys.json",
+    Role = "k8s-master"
+  }, var.extra_tags)
 }

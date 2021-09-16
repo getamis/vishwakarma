@@ -14,7 +14,7 @@ Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging Hash
 
 ## Requirements
 
-- **Terraform**: All of the AWS resource will be create by Terraform, hence, you need to [**install it**](https://www.terraform.io/intro/getting-started/install.html) and confirm the [**permission setup**](https://www.terraform.io/docs/providers/aws/index.html) correctly, then Terraform have the permission to create AWS resource automatically. **Minimum required version of Terraform is v0.12.29**.
+- **Terraform**: All of the AWS resource will be create by Terraform, hence, you need to [**install it**](https://www.terraform.io/intro/getting-started/install.html) and confirm the [**permission setup**](https://www.terraform.io/docs/providers/aws/index.html) correctly, then Terraform have the permission to create AWS resource automatically. **Minimum required version of Terraform is v1.0.0**.
 
 - **kubectl**: After the cluster created completely, there is a Kubernetes ConfigMap aws-auth need to be created through kubectl, so need to [**install it**](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl). **Minimum required version of Kubernetes is v1.18.0**.
 
@@ -24,7 +24,7 @@ Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging Hash
 
 - **jq**: It's a necessary command-line for filtering JSON in many operations.
 
-- **python**: In order to support node rolling udate, need the lambda function, hence, this tf module need **python 1.19.10 3.7** and python package management tool **pip**
+- **python**: In order to support node rolling udate, need the lambda function, hence, this tf module need **python 3.7** and python package management tool **pip**
 
 ## Getting Started
 First, acquire Vishwakarma from github:
@@ -74,12 +74,12 @@ $ export KUBECONFIG=#{The Path You Put kubeconfig}/kubeconfig
 $ kubectl get node
 
 NAME                          STATUS    ROLES     AGE       VERSION
-ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.19.10
-ip-10-0-48-117.ec2.internal   Ready     master    9m        v1.19.10
-ip-10-0-66-127.ec2.internal   Ready     on-demand 5m        v1.19.10
-ip-10-0-66-127.ec2.internal   Ready     on-demand 6m        v1.19.10
-ip-10-0-71-121.ec2.internal   Ready     spot      3m        v1.19.10
-ip-10-0-86-182.ec2.internal   Ready     spot      4m        v1.19.10
+ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.19.15
+ip-10-0-48-117.ec2.internal   Ready     master    9m        v1.19.15
+ip-10-0-66-127.ec2.internal   Ready     on-demand 5m        v1.19.15
+ip-10-0-66-127.ec2.internal   Ready     on-demand 6m        v1.19.15
+ip-10-0-71-121.ec2.internal   Ready     spot      3m        v1.19.15
+ip-10-0-86-182.ec2.internal   Ready     spot      4m        v1.19.15
 ```
 
 ## What’s Going On?

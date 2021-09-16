@@ -1,25 +1,29 @@
 module "ignition_docker" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.1.1"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=fedora_coreos"
 }
 
-module "ignition_locksmithd" {
-  source          = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.1.1"
-  reboot_strategy = var.reboot_strategy
+module "ignition_update_ca_trust" {
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-trust?ref=fedora_coreos"
 }
 
-module "ignition_update_ca_certificates" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.1.1"
+module "ignition_wait_for_dns" {
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/wait-for-dns?ref=fedora_coreos"
+}
+
+module "ignition_zincati" {
+  source          = "github.com/getamis/terraform-ignition-reinforcements//modules/zincati?ref=fedora_coreos"
+  auto_updates = var.auto_updates
 }
 
 module "ignition_node_exporter" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=v1.1.1"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=fedora_coreos"
 }
 
 module "ignition_etcd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-etcd?ref=v1.1.0"
+  source = "github.com/getamis/terraform-ignition-etcd?ref=fedora_coreos"
 
   name                  = var.name
-  containers            = var.containers
+  binaries              = var.binaries
   discovery_service_srv = local.discovery_service
   client_port           = local.client_port
   peer_port             = local.peer_port
@@ -40,8 +44,9 @@ module "ignition_etcd" {
 data "ignition_config" "main" {
   files = compact(concat(
     module.ignition_docker.files,
-    module.ignition_locksmithd.files,
-    module.ignition_update_ca_certificates.files,
+    module.ignition_update_ca_trust.files,
+    module.ignition_wait_for_dns.files,
+    module.ignition_zincati.files,
     module.ignition_etcd.files,
     module.ignition_node_exporter.files,
     var.extra_ignition_file_ids
@@ -49,8 +54,9 @@ data "ignition_config" "main" {
 
   systemd = compact(concat(
     module.ignition_docker.systemd_units,
-    module.ignition_locksmithd.systemd_units,
-    module.ignition_update_ca_certificates.systemd_units,
+    module.ignition_update_ca_trust.systemd_units,
+    module.ignition_wait_for_dns.systemd_units,
+    module.ignition_zincati.systemd_units,
     module.ignition_etcd.systemd_units,
     module.ignition_node_exporter.systemd_units,
     var.extra_ignition_systemd_unit_ids
@@ -68,11 +74,13 @@ resource "aws_s3_bucket_object" "ignition" {
 
   server_side_encryption = "AES256"
 
-  tags = merge(var.extra_tags, map(
-    "Name", "ign-etcd-${var.name}.json",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "etcd"
-  ))
+  tags = merge(var.extra_tags,
+    {
+      Name                                = "ign-etcd-${var.name}.json"
+      Role                                = "etcd"
+      "kubernetes.io/cluster/${var.name}" = "owned"
+    }
+  )
 }
 
 data "ignition_config" "s3" {

@@ -26,7 +26,7 @@ This document gives an overview of variables used in the AWS platform of the ela
 | kube\_service\_network\_cidr | The kubernetes service ip range | `string` | `"172.16.0.0/13"` |
 | kubelet\_node\_labels | Labels to add when registering the node in the cluster. Labels must be key=value pairs. | `list(string)` | `[]` |
 | kubelet\_node\_taints | Register the node with the given list of taints ("<key>=<value>:<effect>"). | `list(string)` | `[]` |
-| kubernetes\_version | Desired Kubernetes version. | `string` | `"v1.19.10"` |
+| kubernetes\_version | Desired Kubernetes version. | `string` | `"v1.19.15"` |
 | lb\_security\_group\_ids | (Optional) List of security group IDs for the cross-account elastic network interfaces<br>    to use to allow communication to the kubernetes api server load balancer. | `list(string)` | `[]` |
 | master\_instance\_config | (Optional) Desired master nodes configuration. | <pre>object({<br>    count            = number<br>    image_id         = string<br>    ec2_type         = list(string)<br>    root_volume_iops = number<br>    root_volume_size = number<br>    root_volume_type = string<br><br>    on_demand_base_capacity                  = number<br>    on_demand_percentage_above_base_capacity = number<br>    spot_instance_pools                      = number<br>  })</pre> | <pre>{<br>  "count": 1,<br>  "ec2_type": [<br>    "t3.medium",<br>    "t2.medium"<br>  ],<br>  "image_id": "ami-0b75e2f157200889f",<br>  "on_demand_base_capacity": 0,<br>  "on_demand_percentage_above_base_capacity": 100,<br>  "root_volume_iops": 100,<br>  "root_volume_size": 256,<br>  "root_volume_type": "gp2",<br>  "spot_instance_pools": 1<br>}</pre> |
 | name | (Required) Name of the cluster. | `string` | n/a |

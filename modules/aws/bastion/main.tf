@@ -1,10 +1,12 @@
 resource "aws_security_group" "bastion" {
-  vpc_id = aws_vpc.new_vpc.id
+  vpc_id = var.vpc_id
 
-  tags = merge(var.extra_tags, map(
-    "Name", "${var.name}-bastion",
-    "Role", "bastion"
-  ))
+  tags = merge(var.extra_tags,
+    {
+      Name = "${var.name}-bastion",
+      Role = "bastion"
+    }
+  )
 }
 
 resource "aws_security_group_rule" "bastion_egress" {
@@ -114,13 +116,13 @@ resource "aws_iam_role_policy_attachment" "bastion" {
 }
 
 resource "aws_instance" "bastion" {
-  ami                         = var.bastion_ami_id == "" ? module.os_ami.image_id : var.bastion_ami_id
+  ami                         = var.ami_id == "" ? module.os_ami.image_id : var.ami_id
   associate_public_ip_address = true
-  instance_type               = var.bastion_instance_type
+  instance_type               = var.instance_type
   iam_instance_profile        = aws_iam_instance_profile.bastion.name
-  key_name                    = var.bastion_key_name
+  key_name                    = var.key_name
   source_dest_check           = true
-  subnet_id                   = aws_subnet.public_subnet.*.id[0]
+  subnet_id                   = var.subnet_id
   user_data                   = data.template_file.user_data.rendered
 
   root_block_device {
@@ -132,8 +134,10 @@ resource "aws_instance" "bastion" {
     aws_security_group.bastion.id,
   ]
 
-  tags = merge(var.extra_tags, map(
-    "Name", "${var.name}-bastion",
-    "Role", "bastion"
-  ), )
+  tags = merge(var.extra_tags,
+    {
+      Name = "${var.name}-bastion",
+      Role = "bastion"
+    }
+  )
 }

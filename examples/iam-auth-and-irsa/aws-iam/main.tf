@@ -1,9 +1,16 @@
 module "label" {
-  source      = "../../../modules/aws/null-label"
+  source      = "cloudposse/label/null"
+  version     = "0.25.0"
   environment = var.environment
-  project     = var.project
+  namespace   = var.project
   name        = var.name
-  service     = var.service
+  label_order = ["environment", "namespace", "name"]
+  tags        = {
+    Project   = var.project
+    Service   = var.service
+    CreatedBy = "Terraform"
+    BuiltWith = "Vishwakarma"
+  }
 }
 
 data "aws_caller_identity" "current" {}

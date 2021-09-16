@@ -39,10 +39,10 @@ variable "hostzone" {
   default     = ""
 }
 
-variable "reboot_strategy" {
-  description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
+variable "auto_updates" {
+  description = "(Optional) Allow Zincati to auto update CoreOS or not"
   type        = string
-  default     = "off"
+  default     = "false"
 }
 
 variable "certs_validity_period_hours" {

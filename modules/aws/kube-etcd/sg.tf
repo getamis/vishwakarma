@@ -6,10 +6,12 @@ resource "aws_security_group" "etcd" {
   name_prefix = "${var.name}-etcd-"
   vpc_id      = local.vpc_id
 
-  tags = merge(var.extra_tags, map(
-    "Name", "${var.name}-etcd",
-    "Role", "etcd"
-  ))
+  tags = merge(var.extra_tags,
+    {
+      Name = "${var.name}-etcd"
+      Role = "etcd"
+    }
+  )
 }
 
 resource "aws_security_group_rule" "etcd_egress" {

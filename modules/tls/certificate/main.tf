@@ -35,5 +35,5 @@ resource "tls_locally_signed_cert" "cert" {
   ca_cert_pem           = var.ca_config["cert_pem"]
   validity_period_hours = var.cert_config["validity_period_hours"]
 
-  allowed_uses = concat(list("key_encipherment"), var.cert_uses)
+  allowed_uses = concat(["key_encipherment"], var.cert_uses)
 }

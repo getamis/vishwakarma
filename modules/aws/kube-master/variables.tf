@@ -6,7 +6,7 @@ variable "name" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.19.10"
+  default     = "v1.19.15"
 }
 
 variable "binaries" {
@@ -266,8 +266,8 @@ EOF
   type        = string
 }
 
-variable "reboot_strategy" {
-  description = "(Optional) CoreOS reboot strategies on updates, two option here: etcd-lock or off"
+variable "auto_updates" {
+  description = "(Optional) Allow Zincati to auto update CoreOS or not"
   type        = string
 }
 

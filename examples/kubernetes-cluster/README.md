@@ -19,23 +19,14 @@ Check out [test/cluster_test.go](/test/cluster_test.go) to see how you can write
 # initial for sync terraform module and install provider plugins
 $ terraform init
 
-# create the network infrastructure
-$ terraform apply -target=module.network
-
-# create the kubernetes master compoment
-$ terraform apply -target=module.master
-
-# create the general and spot k8s worker group
+# create the AWS resource for kubernetes cluster 
 $ terraform apply
 ```
 
 5. When you're done, execute below command to destroy:
 
 ```sh
-$ terraform destroy -target=module.worker_on_demand
-$ terraform destroy -target=module.worker_spot
-$ terraform destroy -target=module.master
-$ terraform destroy -target=module.network
+$ terraform destroy
 ```
 
 ## Running automated tests against this module

@@ -1,5 +1,5 @@
 variable "flavor" {
-  description = "Name of the operating system.(ex: 'flatcar', 'fedora_coreos' and 'ubuntu')."
+  description = "Name of the operating system.(ex: 'fedora_coreos' and 'ubuntu')."
   type        = string
 }
 
@@ -7,18 +7,6 @@ variable "most_recent" {
   description = " (Optional) If more than one result is returned, use the most recent AMI."
   type        = bool
   default     = true
-}
-
-variable "channel" {
-  type        = string
-  description = "AMI channel for Flatcar Container Linux derivative ('stable', 'beta', 'alpha' and 'edge')."
-  default     = "stable"
-}
-
-variable "flatcar_version" {
-  type        = string
-  description = "Version for Flatcar Container Linux derivative."
-  default     = "*"
 }
 
 variable "channel_version" {

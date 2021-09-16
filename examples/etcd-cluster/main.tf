@@ -1,26 +1,21 @@
-locals {
-  private_zone_name = coalesce(var.hostzone, format("%s.com", module.label.id))
-}
-
 module "label" {
-  source      = "../../modules/aws/null-label"
+  source      = "cloudposse/label/null"
+  version     = "0.25.0"
   environment = var.environment
-  project     = var.project
+  namespace   = var.project
   name        = var.name
-  service     = var.service
-}
-
-module "network" {
-  source           = "../../modules/aws/network"
-  bastion_key_name = var.key_pair_name
-  name             = module.label.id
-  extra_tags       = module.label.tags
+  label_order = ["environment", "namespace", "name"]
+  tags        = {
+    Project   = var.project
+    Service   = var.service
+    CreatedBy = "Terraform"
+    BuiltWith = "Vishwakarma"
+  }
 }
 
 module "os_ami" {
   source          = "../../modules/aws/os-ami"
-  flavor          = "flatcar"
-  flatcar_version = "2512.5.0"
+  flavor          = "fedora_coreos"
 }
 
 module "etcd" {
@@ -37,14 +32,14 @@ module "etcd" {
     data_volume_size   = 100
     data_device_name   = "/dev/sdf"
     data_device_rename = "/dev/nvme1n1"
-    data_path          = "/etcd/data"
+    data_path          = "/var/lib/etcd"
   }
 
-  subnet_ids                  = module.network.private_subnet_ids
+  subnet_ids                  = module.vpc.private_subnets
   master_security_group_id    = local.etcd_sg_id
   zone_id                     = aws_route53_zone.private.zone_id
   s3_bucket                   = aws_s3_bucket.ignition.id
-  reboot_strategy             = var.reboot_strategy
+  auto_updates                = var.auto_updates
   certs_validity_period_hours = var.certs_validity_period_hours
 
   extra_tags = module.label.tags

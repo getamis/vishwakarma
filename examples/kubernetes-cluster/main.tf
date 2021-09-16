@@ -1,34 +1,66 @@
 # ---------------------------------------------------------------------------------------------------------------------
 # Naming and Tags
 # ---------------------------------------------------------------------------------------------------------------------
-
 module "label" {
-  source      = "../../modules/aws/null-label"
+  source      = "cloudposse/label/null"
+  version     = "0.25.0"
   environment = var.environment
-  project     = var.project
+  namespace   = var.project
   name        = var.name
-  service     = var.service
+  label_order = ["environment", "namespace", "name"]
+  tags        = {
+    Project   = var.project
+    Service   = var.service
+    CreatedBy = "Terraform"
+    BuiltWith = "Vishwakarma"
+  }
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
 # Network
 # ---------------------------------------------------------------------------------------------------------------------
 
-module "network" {
-  source           = "../../modules/aws/network"
-  bastion_key_name = var.key_pair_name
-  name             = module.label.id
-  extra_tags       = module.label.tags
+locals {
+  cluster_cidr = var.network_plugin == "amazon-vpc" ? module.vpc.vpc_cidr_block : var.cluster_cidr
+
+  vpc = {
+    cidr            = "10.0.0.0/16"
+    azs             = ["us-west-2a", "us-west-2b", "us-west-2c"]
+    private_subnets = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
+    public_subnets  = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
+  }
 }
 
-locals {
-  cluster_cidr = var.network_plugin == "amazon-vpc" ? module.network.vpc_cidr : var.cluster_cidr
+module "vpc" {
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "3.7.0"
+
+  name = module.label.id
+  cidr = local.vpc["cidr"]
+
+  azs             = local.vpc["azs"]
+  private_subnets = local.vpc["private_subnets"]
+  public_subnets  = local.vpc["public_subnets"]
+
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+  enable_nat_gateway   = true
+
+  tags = module.label.tags
+}
+
+module "bastion" {
+  source           = "../../modules/aws/bastion"
+  key_name = var.key_pair_name
+  name             = module.label.id
+  vpc_id           = module.vpc.vpc_id
+  subnet_id        = module.vpc.public_subnets[0]
+  extra_tags       = module.label.tags
 }
 
 module "os_ami" {
   source          = "../../modules/aws/os-ami"
-  flavor          = "flatcar"
-  flatcar_version = "2512.5.0"
+  flavor          = "fedora_coreos"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -52,7 +84,7 @@ module "master" {
     data_volume_size   = 100
     data_device_name   = "/dev/sdf"
     data_device_rename = "/dev/nvme1n1"
-    data_path          = "/etcd/data"
+    data_path          = "/var/lib/etcd"
   }
 
   master_instance_config = {
@@ -76,10 +108,10 @@ module "master" {
 
   hostzone               = "${var.project}.cluster"
   endpoint_public_access = var.endpoint_public_access
-  private_subnet_ids     = module.network.private_subnet_ids
-  public_subnet_ids      = module.network.public_subnet_ids
+  private_subnet_ids     = module.vpc.private_subnets
+  public_subnet_ids      = module.vpc.public_subnets
   ssh_key                = var.key_pair_name
-  reboot_strategy        = "off"
+  auto_updates           = "false"
 
   extra_tags = module.label.tags
 }
@@ -97,11 +129,11 @@ module "worker_on_demand" {
   network_plugin       = var.network_plugin
 
   security_group_ids = module.master.worker_sg_ids
-  subnet_ids         = module.network.private_subnet_ids
+  subnet_ids         = module.vpc.private_subnets
 
   instance_config = {
     name     = "on-demand"
-    count    = 1
+    count    = 0
     image_id = module.os_ami.image_id
     ec2_type = [
       "t3.medium",
@@ -138,12 +170,12 @@ module "worker_spot" {
   network_plugin       = var.network_plugin
 
   security_group_ids = module.master.worker_sg_ids
-  subnet_ids         = module.network.private_subnet_ids
+  subnet_ids         = module.vpc.private_subnets
 
   instance_config = {
     name     = "spot"
     image_id = module.os_ami.image_id
-    count    = 2
+    count    = 0
     ec2_type = [
       "m5.large",
       "m4.large"

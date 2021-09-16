@@ -7,7 +7,7 @@ This example demonstrates how to setup IAM Authenticator and IRSA(IAM roles for 
 2. Configure your AWS credentials using one of the [supported methods for AWS CLI
    tools](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html), such as setting the
    `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables. If you're using the `~/.aws/config` file for profiles then export `AWS_SDK_LOAD_CONFIG` as "True".
-3. Install [Terraform v0.12+](https://www.terraform.io/) and make sure it's on your `PATH`.
+3. Install [Terraform v1.0.0+](https://www.terraform.io/) and make sure it's on your `PATH`.
 
 4. Install Golang environment for IRSA preparation
 
@@ -20,23 +20,14 @@ $ cd k8s-cluster
 # Initial for sync terraform module and install provider plugins
 $ terraform init
 
-# Apply the network module for creating VPC networking
-$ terraform apply -target=module.network
-
-# Apply the irsa module for creating AWS OIDC
-$ terraform apply -target=module.irsa
-
-# Apply the kubernetes master module for creating Kubernetes control plane nodes
-$ terraform apply -target=module.master
-
-# Finally, create Kubernetes nodes group by your flavor
+# create the AWS resource for kubernetes cluster 
 $ terraform apply
 ```
 
-5. Login Besion and Execute below commands to deploy IAM role and examples:
+5. Login Bastion and Execute below commands to deploy IAM role and examples:
 
 ```sh
-# Go to example directory, and type your oidc endpoint, ARN, and ignition bucket name.
+# Go to aws-iam directory, and type your oidc endpoint, ARN, and ignition bucket name.
 $ terraform init
 $ terraform apply
 

@@ -92,7 +92,7 @@ resource "aws_launch_template" "master" {
 
   vpc_security_group_ids = compact(concat(
     var.security_group_ids,
-    list(local.master_sg_id)
+    [local.master_sg_id]
   ))
 
   iam_instance_profile {
@@ -125,7 +125,7 @@ resource "aws_launch_template" "master" {
 
 
 module "lifecycle_hook" {
-  source = "git::ssh://git@github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v0.0.2"
+  source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=fedora_coreos"
 
   name                           = "${var.name}-master"
   cluster_name                   = var.name
