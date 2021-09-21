@@ -17,7 +17,7 @@ This document gives an overview of variables used in the AWS platform of the kub
 | kubelet\_flags | The flags of kubelet. The variables need to follow https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/. Do not use underline. | `map` | `{}` |
 | kubelet\_node\_labels | Labels to add when registering the node in the cluster. Labels must be key=value pairs. | `list(string)` | `[]` |
 | kubelet\_node\_taints | Register the node with the given list of taints ("<key>=<value>:<effect>"). | `list(string)` | `[]` |
-| kubernetes\_version | Desired Kubernetes version. | `string` | `"v1.19.10"` |
+| kubernetes\_version | Desired Kubernetes version. | `string` | `"v1.19.15"` |
 | name | (Required) Name of the cluster. | `string` | n/a |
 | network\_plugin | Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc' | `string` | `"amazon-vpc"` |
 | reboot\_strategy | CoreOS reboot strategies on updates, two option here: etcd-lock or off | `string` | `"etcd-lock"` |

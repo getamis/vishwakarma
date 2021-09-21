@@ -6,7 +6,7 @@ variable "name" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.19.10"
+  default     = "v1.19.15"
 }
 
 variable "binaries" {
@@ -171,6 +171,13 @@ variable "s3_object" {
   type    = string
   default = "admin.conf"
 }
+
+variable "debug_mode" {
+  description = "Enable the functionailty for trouble shooting, e.g. sshd"
+  type        = bool
+  default     = false
+}
+
 variable "extra_tags" {
   description = "Extra AWS tags to be applied to created resources."
   type        = map(string)

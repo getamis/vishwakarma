@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes?ref=v1.4.3"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes?ref=v1.4.5"
 
   binaries              = var.binaries
   containers            = var.containers
@@ -90,16 +90,28 @@ module "ignition_kubernetes" {
 }
 
 module "ignition_docker" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.1.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.1.2"
 }
 
 module "ignition_locksmithd" {
-  source          = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.1.1"
+  source          = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.1.2"
+
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.1.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.1.2"
+}
+
+module "ignition_sshd" {
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.1.2"
+  enable = var.debug_mode
+}
+
+module "ignition_systemd_networkd" {
+  source   = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.1.2"
+
+  debug_log = var.debug_mode
 }
 
 data "ignition_config" "main" {
@@ -107,6 +119,8 @@ data "ignition_config" "main" {
     module.ignition_docker.files,
     module.ignition_locksmithd.files,
     module.ignition_update_ca_certificates.files,
+    module.ignition_sshd.files,
+    module.ignition_systemd_networkd.files,
     module.ignition_kubernetes.files,
     module.ignition_kubernetes.cert_files,
     var.extra_ignition_file_ids,
@@ -116,6 +130,8 @@ data "ignition_config" "main" {
     module.ignition_docker.systemd_units,
     module.ignition_locksmithd.systemd_units,
     module.ignition_update_ca_certificates.systemd_units,
+    module.ignition_sshd.systemd_units,
+    module.ignition_systemd_networkd.systemd_units,
     module.ignition_kubernetes.systemd_units,
     var.extra_ignition_systemd_unit_ids,
   ))

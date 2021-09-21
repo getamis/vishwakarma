@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.19.10"
+  default     = "v1.19.15"
 }
 
 variable "service_cidr" {
@@ -59,5 +59,11 @@ variable "service" {
 
 variable "endpoint_public_access" {
   description = "(Optional) kubernetes apiserver endpoint"
+  default     = false
+}
+
+variable "debug_mode" {
+  description = "Enable the functionailty for trouble shooting, e.g. sshd"
+  type        = bool
   default     = false
 }

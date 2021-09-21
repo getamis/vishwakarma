@@ -20,7 +20,7 @@ module "network" {
 module "os_ami" {
   source          = "../../modules/aws/os-ami"
   flavor          = "flatcar"
-  flatcar_version = "2512.5.0"
+  flatcar_version = "2905.2.3"
 }
 
 module "etcd" {
@@ -37,7 +37,7 @@ module "etcd" {
     data_volume_size   = 100
     data_device_name   = "/dev/sdf"
     data_device_rename = "/dev/nvme1n1"
-    data_path          = "/etcd/data"
+    data_path          = "/var/lib/etcd"
   }
 
   subnet_ids                  = module.network.private_subnet_ids

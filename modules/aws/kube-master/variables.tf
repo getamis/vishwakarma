@@ -6,7 +6,7 @@ variable "name" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.19.10"
+  default     = "v1.19.15"
 }
 
 variable "binaries" {
@@ -281,6 +281,12 @@ variable "extra_ignition_systemd_unit_ids" {
   description = "(Optional) Additional ignition systemd unit IDs. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details."
   type        = list(string)
   default     = []
+}
+
+variable "debug_mode" {
+  description = "Enable the functionailty for trouble shooting, e.g. sshd"
+  type        = bool
+  default     = false
 }
 
 variable "extra_tags" {

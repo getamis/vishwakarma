@@ -6,7 +6,7 @@ install_tools: &install_tools
     command: |
       # Install AWS CLI and AWS IAM Authenticator
       if [ "${INSTALL_AWS_CLI}" == "true" ]; then
-        sudo apt-get update && sudo apt-get install -y python3.7 python3-pip
+        sudo apt-get --allow-releaseinfo-change update && sudo apt-get install -y python3.7 python3-pip
         pip3 install awscli --upgrade --user
         wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/aws-iam-authenticator -O /tmp/aws-iam-authenticator
         chmod +x /tmp/aws-iam-authenticator && sudo mv /tmp/aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
@@ -31,8 +31,8 @@ default: &default
   environment:
     GOPATH: /go
     GO111MODULE: "on"
-    TF_VERSION: "0.12.29"
-    KUBE_VERSION: "1.18.6"
+    TF_VERSION: "0.12.31"
+    KUBE_VERSION: "1.19.15"
     AWS_SDK_LOAD_CONFIG: "True"
     INSTALL_AWS_CLI: "true"
     INSTALL_TERRAFORM: "true"
@@ -42,7 +42,7 @@ jobs:
   validate-and-format:
     <<: *default
     environment:
-      TF_VERSION: "0.12.29"
+      TF_VERSION: "0.12.31"
       INSTALL_TERRAFORM: "true"
     steps:
       - checkout

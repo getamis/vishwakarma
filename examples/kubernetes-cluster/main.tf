@@ -28,7 +28,7 @@ locals {
 module "os_ami" {
   source          = "../../modules/aws/os-ami"
   flavor          = "flatcar"
-  flatcar_version = "2512.5.0"
+  flatcar_version = "2905.2.3"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ module "master" {
     data_volume_size   = 100
     data_device_name   = "/dev/sdf"
     data_device_rename = "/dev/nvme1n1"
-    data_path          = "/etcd/data"
+    data_path          = "/var/lib/etcd"
   }
 
   master_instance_config = {
@@ -80,6 +80,7 @@ module "master" {
   public_subnet_ids      = module.network.public_subnet_ids
   ssh_key                = var.key_pair_name
   reboot_strategy        = "off"
+  debug_mode             = var.debug_mode
 
   extra_tags = module.label.tags
 }
@@ -119,8 +120,9 @@ module "worker_on_demand" {
     spot_instance_pools                      = 1
   }
 
-  s3_bucket = module.master.ignition_s3_bucket
-  ssh_key   = var.key_pair_name
+  s3_bucket  = module.master.ignition_s3_bucket
+  ssh_key    = var.key_pair_name
+  debug_mode = var.debug_mode
 
   extra_tags = module.label.tags
 }
@@ -160,8 +162,9 @@ module "worker_spot" {
     spot_instance_pools                      = 1
   }
 
-  s3_bucket = module.master.ignition_s3_bucket
-  ssh_key   = var.key_pair_name
+  s3_bucket  = module.master.ignition_s3_bucket
+  ssh_key    = var.key_pair_name
+  debug_mode = var.debug_mode
 
   extra_tags = module.label.tags
 }

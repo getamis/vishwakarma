@@ -6,7 +6,7 @@ variable "name" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.19.10"
+  default     = "v1.19.15"
 }
 
 variable "override_binaries" {
@@ -291,7 +291,7 @@ variable "etcd_instance_config" {
     data_volume_size   = 100
     data_device_name   = "/dev/sdf"
     data_device_rename = "/dev/nvme1n1"
-    data_path          = "/etcd/data"
+    data_path          = "/var/lib/etcd"
   }
 }
 
@@ -338,6 +338,12 @@ variable "hostzone" {
   description = "(Optional) The cluster private hostname. If not specified, <cluster name>.com will be used."
   type        = string
   default     = ""
+}
+
+variable "debug_mode" {
+  description = "Enable the functionailty for trouble shooting, e.g. sshd"
+  type        = bool
+  default     = false
 }
 
 variable "extra_tags" {

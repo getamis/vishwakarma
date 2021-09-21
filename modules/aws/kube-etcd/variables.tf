@@ -151,6 +151,12 @@ EOF
   default     = ""
 }
 
+variable "debug_mode" {
+  description = "Enable the functionailty for trouble shooting, e.g. sshd"
+  type        = bool
+  default     = false
+}
+
 variable "extra_tags" {
   description = "Extra AWS tags to be applied to created resources."
   type        = map(string)
