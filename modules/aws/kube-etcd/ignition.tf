@@ -22,7 +22,7 @@ module "ignition_sshd" {
 }
 
 module "ignition_etcd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-etcd?ref=v1.1.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-etcd?ref=v1.1.2"
 
   name                  = var.name
   containers            = var.containers
@@ -31,6 +31,7 @@ module "ignition_etcd" {
   peer_port             = local.peer_port
   device_name           = var.instance_config["data_device_rename"]
   data_path             = var.instance_config["data_path"]
+  log_level             = var.debug_mode ? "debug" : "error"
 
   certs = {
     ca_cert     = module.etcd_ca.cert_pem
