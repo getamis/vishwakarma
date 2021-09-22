@@ -11,7 +11,7 @@ locals {
 data "aws_region" "current" {}
 
 module "ignition_pod_idenity_webhook" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-pod-identity-webhook?ref=v1.4.5"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-pod-identity-webhook?ref=v1.4.6"
 
   container                  = var.container
   service_name               = var.service_name

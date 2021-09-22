@@ -61,3 +61,9 @@ variable "endpoint_public_access" {
   description = "(Optional) kubernetes apiserver endpoint"
   default     = true
 }
+
+variable "debug_mode" {
+  description = "Enable the functionailty for trouble shooting, e.g. sshd"
+  type        = bool
+  default     = true
+}
