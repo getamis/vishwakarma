@@ -37,7 +37,7 @@ data "aws_s3_bucket_object" "bootstrapping_kubeconfig" {
 }
 
 module "ignition_kubelet" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.4.5"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.4.6"
 
   binaries             = var.binaries
   containers           = var.containers

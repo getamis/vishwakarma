@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes?ref=v1.4.5"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes?ref=v1.4.6"
 
   binaries              = var.binaries
   containers            = var.containers

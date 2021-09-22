@@ -101,6 +101,7 @@ module "master" {
   public_subnet_ids      = module.network.public_subnet_ids
   ssh_key                = var.key_pair_name
   reboot_strategy        = "off"
+  debug_mode             = var.debug_mode
 
   extra_tags = module.label.tags
 
