@@ -46,6 +46,7 @@ module "etcd" {
   s3_bucket                   = aws_s3_bucket.ignition.id
   reboot_strategy             = var.reboot_strategy
   certs_validity_period_hours = var.certs_validity_period_hours
+  debug_mode                  = var.debug_mode
 
   extra_tags = module.label.tags
 }
