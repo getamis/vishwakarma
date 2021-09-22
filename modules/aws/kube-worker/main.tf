@@ -24,7 +24,7 @@ data "aws_subnet" "subnet" {
 resource "aws_autoscaling_group" "worker" {
   name_prefix         = "${var.name}-worker-${var.instance_config["name"]}-"
   desired_capacity    = var.instance_config["count"]
-  max_size            = var.instance_config["count"] * 3
+  max_size            = var.instance_config["count"] == 0 ? 3 : (var.instance_config["count"] * 3)
   min_size            = var.instance_config["count"]
   vpc_zone_identifier = var.subnet_ids
 
@@ -76,9 +76,14 @@ resource "aws_autoscaling_group" "worker" {
       value               = "k8s-worker"
       propagate_at_launch = true
     },
-    {
+    (var.enable_autoscaler != "true" ) ? {} : {
       key                 = "k8s.io/cluster-autoscaler/enabled"
-      value               = "${var.enable_autoscaler}"
+      value               = "true"
+      propagate_at_launch = true
+    },
+    (var.enable_node_termination_handler != "true" ) ? {} : {
+      key                 = "aws-node-termination-handler/managed"
+      value               = "true"
       propagate_at_launch = true
     },
     (var.instance_spot_max_price == "") ? {} : {
@@ -91,7 +96,8 @@ resource "aws_autoscaling_group" "worker" {
   lifecycle {
     ignore_changes = [
       load_balancers,
-      target_group_arns
+      target_group_arns,
+      desired_capacity
     ]
   }
 }
