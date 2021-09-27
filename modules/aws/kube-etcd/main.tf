@@ -80,7 +80,7 @@ resource "aws_instance" "etcd" {
 
   ami                  = var.instance_config["image_id"]
   instance_type        = var.instance_config["ec2_type"]
-  key_name             = var.ssh_key
+  key_name             = var.debug_mode ? var.ssh_key : ""
   iam_instance_profile = aws_iam_instance_profile.etcd.id
 
   user_data = data.ignition_config.s3.rendered

@@ -59,3 +59,17 @@ agent.go:68: could not serve ssh agent read unix /tmp/ssh-agent-589722746/ssh_au
 PASS
 ok  	github.com/vishwakarma/test	1223.186s
 ```
+
+## How to rolling update etcd instance
+ 
+Depend on how many etcd instaces created by this Terraform module, then below steps need to perform for the etcd instance one by one, e.g. there are three etcd instance, hence, below steps need to perform 3 times
+
+So there should be at least 3 etcd instances in production environment, to avoid single point of failure, during the etcd rolling update process, the K8s cluster still can work without any issue
+
+1. Terminate specific etcd instance manually from AWS console, due to the terraform imply dependncy feature, so that cannot complete 
+2. Execute below command to refresh terraform state and create a new etcd instance with exist network interface and ebs volume
+
+```sh
+~$ terraform refresh
+~$ terraform apply -target=module.master
+```
