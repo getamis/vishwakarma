@@ -1,29 +1,29 @@
 module "ignition_docker" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.1.3"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.1.3"
 }
 
 module "ignition_locksmithd" {
-  source          = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.1.3"
+  source          = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.1.3"
 
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.1.3"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.1.3"
 }
 
 module "ignition_node_exporter" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=v1.1.3"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=v1.1.3"
 }
 
 module "ignition_sshd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.1.3"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.1.3"
 
   enable = var.debug_mode
 }
 
 module "ignition_etcd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-etcd?ref=v1.1.2"
+  source = "github.com/getamis/terraform-ignition-etcd?ref=v1.1.2"
 
   name                  = var.name
   containers            = var.containers

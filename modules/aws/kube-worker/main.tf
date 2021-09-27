@@ -113,7 +113,7 @@ resource "aws_launch_template" "worker" {
     arn = aws_iam_instance_profile.worker.arn
   }
 
-  key_name  = var.ssh_key
+  key_name  = var.debug_mode ? var.ssh_key : ""
   user_data = base64encode(data.ignition_config.s3.rendered)
 
   block_device_mappings {
@@ -138,7 +138,7 @@ resource "aws_launch_template" "worker" {
 }
 
 module "lifecycle_hook" {
-  source = "git::ssh://git@github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v0.0.2"
+  source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v0.0.2"
 
   name                           = "${var.name}-worker-${var.instance_config["name"]}"
   cluster_name                   = var.name
