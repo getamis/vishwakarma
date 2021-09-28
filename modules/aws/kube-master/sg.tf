@@ -96,7 +96,7 @@ resource "aws_security_group_rule" "master_ssh" {
   security_group_id = local.master_sg_id
 
   protocol    = "tcp"
-  cidr_blocks = [data.aws_vpc.master.cidr_block]
+  cidr_blocks = var.allowed_ssh_cidr
   from_port   = 22
   to_port     = 22
 }

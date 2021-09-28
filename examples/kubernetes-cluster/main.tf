@@ -79,6 +79,7 @@ module "master" {
   private_subnet_ids     = module.network.private_subnet_ids
   public_subnet_ids      = module.network.public_subnet_ids
   ssh_key                = var.key_pair_name
+  allowed_ssh_cidr       = [module.network.vpc_cidr]
   reboot_strategy        = "off"
   debug_mode             = var.debug_mode
 

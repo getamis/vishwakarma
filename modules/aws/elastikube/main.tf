@@ -1,8 +1,9 @@
 module "master" {
   source = "../../aws/kube-master"
 
-  name    = var.name
-  ssh_key = var.ssh_key
+  name             = var.name
+  ssh_key          = var.ssh_key
+  allowed_ssh_cidr = var.allowed_ssh_cidr
 
   instance_config         = var.master_instance_config
   instance_spot_max_price = var.master_instance_spot_max_price
