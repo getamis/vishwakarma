@@ -329,9 +329,8 @@ variable "ssh_key" {
 }
 
 variable "allowed_ssh_cidr" {
-  description = "(Optional) A list of CIDR networks to allow ssh access to. Defaults to \"0.0.0.0/0\""
+  description = "(Optional) A list of CIDR networks to allow ssh access to."
   type        = list(string)
-  default     = ["0.0.0.0/0"]
 }
 
 variable "hostzone" {
