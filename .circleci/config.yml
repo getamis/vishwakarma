@@ -4,6 +4,7 @@ install_tools: &install_tools
   run: 
     name: Install tools
     command: |
+      sudo apt-get install -y ca-certificates
       # Install AWS CLI and AWS IAM Authenticator
       if [ "${INSTALL_AWS_CLI}" == "true" ]; then
         sudo apt-get --allow-releaseinfo-change update && sudo apt-get install -y python3.7 python3-pip
@@ -26,7 +27,7 @@ install_tools: &install_tools
 
 default: &default
   docker: 
-    - image: circleci/golang:1.12
+    - image: circleci/golang:1.15
   working_directory: /go/src/github.com/getamis/vishwakarma
   environment:
     GOPATH: /go

@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.4.7"
+  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.4.8"
 
   binaries              = var.binaries
   containers            = var.containers
@@ -56,6 +56,7 @@ module "ignition_kubernetes" {
   auth_webhook_config_path = var.auth_webhook_kubeconfig_path
   enable_irsa              = var.enable_irsa
   oidc_config              = var.oidc_config
+  enable_eni_prefix        = var.enable_eni_prefix
 
   certs = {
     etcd_ca_cert = var.etcd_certs["ca_cert"]

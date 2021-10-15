@@ -14,7 +14,7 @@ Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging Hash
 
 ## Requirements
 
-- **Terraform**: All of the AWS resource will be create by Terraform, hence, you need to [**install it**](https://www.terraform.io/intro/getting-started/install.html) and confirm the [**permission setup**](https://www.terraform.io/docs/providers/aws/index.html) correctly, then Terraform have the permission to create AWS resource automatically. **Minimum required version of Terraform is v0.12.29**.
+- **Terraform**: All of the AWS resource will be create by Terraform, hence, you need to [**install it**](https://www.terraform.io/intro/getting-started/install.html) and confirm the [**permission setup**](https://www.terraform.io/docs/providers/aws/index.html) correctly, then Terraform have the permission to create AWS resource automatically. **Minimum required version of Terraform is v0.12.31**.
 
 - **kubectl**: After the cluster created completely, there is a Kubernetes ConfigMap aws-auth need to be created through kubectl, so need to [**install it**](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl). **Minimum required version of Kubernetes is v1.18.0**.
 
