@@ -38,13 +38,14 @@ data "aws_s3_bucket_object" "bootstrapping_kubeconfig" {
 }
 
 module "ignition_kubelet" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.4.7"
+  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.4.8"
 
   binaries             = var.binaries
   containers           = var.containers
   kubernetes_version   = var.kubernetes_version
   service_network_cidr = var.service_network_cidr
   network_plugin       = var.network_plugin
+  enable_eni_prefix    = var.enable_eni_prefix
 
   extra_config = var.kubelet_config
   extra_flags = merge(var.kubelet_flags, {

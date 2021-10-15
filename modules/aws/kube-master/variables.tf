@@ -228,6 +228,12 @@ variable "endpoint_public_access" {
   default     = false
 }
 
+variable "enable_eni_prefix" {
+  description = "(Optional) assign prefix to AWS EC2 network interface"
+  type        = bool
+  default     = true
+}
+
 variable "instance_config" {
   description = "Desired master nodes configuration."
   type = object({

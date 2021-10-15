@@ -56,6 +56,8 @@ module "master" {
   enable_irsa = var.enable_irsa
   oidc_config = var.irsa_oidc_config
 
+  enable_eni_prefix = var.enable_eni_prefix
+
   audit_log_policy_content = var.kube_audit_log_policy_content
 
   certs_validity_period_hours = var.certs_validity_period_hours
