@@ -76,7 +76,7 @@ variable "kubelet_node_taints" {
   default     = []
 }
 
-variable "extra_flags" {
+variable "kube_extra_flags" {
   description = <<EOF
 The user-provided flags to kubelet, kube-apiserver, kube-controller-manager, kube-scheduler and audit log. 
 For flags, we need to follow component flag string format. Do not use underline.

@@ -74,6 +74,16 @@ module "master" {
     spot_instance_pools                      = 1
   }
 
+  kubelet_extra_config = {
+    # https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture#memory_cpu
+    # calculate with node size t3.medium 2 cpu, 4Gi mem
+    kubeReserved = "{cpu: 35m, memory: 500Mi, ephemeral-storage: 1Gi}"
+    systemReserved = "{cpu: 35m, memory: 500Mi, ephemeral-storage: 1Gi}"
+    evictionSoft = "{memory.available: 100Mi, nodefs.available: 10%}"
+    evictionSoftGracePeriod = "{memory.available: 1m, nodefs.available: 1m}"
+    evictionMaxPodGracePeriod = "90"
+  }
+
   hostzone               = "${var.project}.cluster"
   endpoint_public_access = var.endpoint_public_access
   private_subnet_ids     = module.network.private_subnet_ids
@@ -121,6 +131,16 @@ module "worker_on_demand" {
     spot_instance_pools                      = 1
   }
 
+  kubelet_config = {
+    # https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture#memory_cpu
+    # calculate with node size t3.medium 2 cpu, 4Gi mem
+    kubeReserved = "{cpu: 35m, memory: 500Mi, ephemeral-storage: 1Gi}"
+    systemReserved = "{cpu: 35m, memory: 500Mi, ephemeral-storage: 1Gi}"
+    evictionSoft = "{memory.available: 100Mi, nodefs.available : 10%}"
+    evictionSoftGracePeriod = "{memory.available: 1m, nodefs.available: 1m}"
+    evictionMaxPodGracePeriod = "90"
+  }  
+
   s3_bucket  = module.master.ignition_s3_bucket
   ssh_key    = var.key_pair_name
   debug_mode = var.debug_mode
@@ -161,6 +181,16 @@ module "worker_spot" {
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 0
     spot_instance_pools                      = 1
+  }
+
+  kubelet_config = {
+    # https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture#memory_cpu
+    # calculate with node size m5.large 2 cpu, 8Gi mem
+    kubeReserved = "{cpu: 35m, memory: 900Mi, ephemeral-storage: 1Gi}"
+    systemReserved = "{cpu: 35m, memory: 900Mi, ephemeral-storage: 1Gi}"
+    evictionSoft = "{memory.available: 100Mi, nodefs.available : 10%}"
+    evictionSoftGracePeriod = "{memory.available: 1m, nodefs.available: 1m}"
+    evictionMaxPodGracePeriod = "90"
   }
 
   s3_bucket  = module.master.ignition_s3_bucket
