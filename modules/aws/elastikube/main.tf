@@ -32,7 +32,8 @@ module "master" {
   service_network_cidr = var.kube_service_network_cidr
   cluster_network_cidr = var.kube_cluster_network_cidr
 
-  extra_flags = var.kube_extra_flags
+  kube_extra_flags     = var.kube_extra_flags
+  kubelet_extra_config = var.kubelet_extra_config
 
   // Nodes are not permitted to assert their own role labels. See https://github.com/kubernetes/kubernetes/issues/84912.
   kubelet_node_labels = var.kubelet_node_labels

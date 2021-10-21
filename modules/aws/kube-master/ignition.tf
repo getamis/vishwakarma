@@ -41,15 +41,15 @@ module "ignition_kubernetes" {
     replicas = var.instance_config["count"]
   })
 
-  kubelet_flags = merge(var.extra_flags["kubelet"], {
+  kubelet_flags = merge(var.kube_extra_flags["kubelet"], {
     node-labels          = join(",", var.kubelet_node_labels)
     register-with-taints = join(",", var.kubelet_node_taints)
   })
 
-  apiserver_flags          = var.extra_flags["apiserver"]
-  controller_manager_flags = var.extra_flags["controller_manager"]
-  scheduler_flags          = var.extra_flags["scheduler"]
-  audit_log_flags          = var.extra_flags["audit_log"]
+  apiserver_flags          = var.kube_extra_flags["apiserver"]
+  controller_manager_flags = var.kube_extra_flags["controller_manager"]
+  scheduler_flags          = var.kube_extra_flags["scheduler"]
+  audit_log_flags          = var.kube_extra_flags["audit_log"]
   audit_log_policy_content = var.audit_log_policy_content
   encryption_secret        = random_password.encryption_secret.result
   enable_iam_auth          = var.enable_iam_auth

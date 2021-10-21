@@ -66,6 +66,11 @@ EOF
   }
 }
 
+variable "kubelet_extra_config" {
+  description = "The user-provided configs to kubelet. See https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/ for more information."
+  default     = {}
+}
+
 variable "kubelet_node_labels" {
   description = "Labels to add when registering the node in the cluster. Labels must be key=value pairs."
   type        = list(string)
