@@ -78,7 +78,8 @@ module "master" {
 
   etcd_instance_config = {
     count              = 1
-    image_id           = module.os_ami.image_id
+    #image_id           = module.os_ami.image_id
+    image_id = "ami-02f8b71d61ef96e62" # fedora-coreos-35.20211017.1.0-x86_64
     ec2_type           = "t3.medium"
     root_volume_size   = 40
     data_volume_size   = 100
@@ -88,8 +89,9 @@ module "master" {
   }
 
   master_instance_config = {
-    count    = 2
-    image_id = module.os_ami.image_id
+    count    = 1
+    #image_id = module.os_ami.image_id
+    image_id = "ami-02f8b71d61ef96e62" # fedora-coreos-35.20211017.1.0-x86_64
     ec2_type = [
       "t3.medium",
       "t2.medium"
@@ -134,7 +136,8 @@ module "worker_on_demand" {
   instance_config = {
     name     = "on-demand"
     count    = 0
-    image_id = module.os_ami.image_id
+    #image_id = module.os_ami.image_id
+    image_id = "ami-02f8b71d61ef96e62" # fedora-coreos-35.20211017.1.0-x86_64
     ec2_type = [
       "t3.medium",
       "t2.medium"
@@ -174,7 +177,8 @@ module "worker_spot" {
 
   instance_config = {
     name     = "spot"
-    image_id = module.os_ami.image_id
+    #image_id = module.os_ami.image_id
+    image_id = "ami-02f8b71d61ef96e62" # fedora-coreos-35.20211017.1.0-x86_64s
     count    = 0
     ec2_type = [
       "m5.large",
