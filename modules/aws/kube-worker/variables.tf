@@ -126,6 +126,12 @@ variable "enable_eni_prefix" {
   default     = true
 }
 
+variable "max_pods" {
+  description = "(Optional) the max pod number in the node when enable eni prefix"
+  type        = string
+  default     = "110"
+}
+
 variable "instance_config" {
   description = "Desired worker nodes configuration."
   type = object({
