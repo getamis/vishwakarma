@@ -58,6 +58,7 @@ module "master" {
   oidc_config = var.irsa_oidc_config
 
   enable_eni_prefix = var.enable_eni_prefix
+  max_pods          = var.max_pods
 
   audit_log_policy_content = var.kube_audit_log_policy_content
 
