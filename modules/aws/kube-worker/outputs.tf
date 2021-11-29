@@ -7,7 +7,7 @@ output "worker_launch_template_name" {
 }
 
 output "worker_role_name" {
-  value = aws_iam_role.worker.name
+  value = length(aws_iam_role.worker[*].name) > 0 ? aws_iam_role.worker[0].name : var.role_name
 }
 
 output "worker_instance_profile_name" {
