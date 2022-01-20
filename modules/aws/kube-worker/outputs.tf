@@ -13,3 +13,7 @@ output "worker_role_name" {
 output "worker_instance_profile_name" {
   value = aws_iam_instance_profile.worker.name
 }
+
+output "worker_extra_sg_id" {
+  value = var.enable_extra_sg ? aws_security_group.worker_group[0].id : "N/A"
+}

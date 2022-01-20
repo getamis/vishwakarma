@@ -15,6 +15,8 @@ locals {
       "gp3" : 125,
     }
   }
+
+  vpc_security_group_ids = var.enable_extra_sg ? concat([aws_security_group.worker_group[0].id], var.security_group_ids) : var.security_group_ids
 }
 
 data "aws_subnet" "subnet" {
@@ -107,7 +109,7 @@ resource "aws_launch_template" "worker" {
   image_id      = var.instance_config["image_id"]
   name_prefix   = "${var.name}-worker-${var.instance_config["name"]}-"
 
-  vpc_security_group_ids = var.security_group_ids
+  vpc_security_group_ids = local.vpc_security_group_ids
 
   iam_instance_profile {
     arn = aws_iam_instance_profile.worker.arn
