@@ -201,3 +201,9 @@ variable "extra_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "enable_extra_sg" {
+  description = "Enable extra security group for worker group."
+  type        = bool
+  default     = false
+}
