@@ -7,7 +7,6 @@ resource "aws_security_group" "worker_group" {
 
   tags = merge(var.extra_tags, map(
     "Name", "${var.name}-worker-${var.instance_config["name"]}",
-    "kubernetes.io/cluster/${var.name}", "owned",
     "Role", "k8s-worker"
   ))
 }
