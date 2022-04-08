@@ -9,7 +9,7 @@ variable "container" {
   type        = map(string)
   default = {
     repo = "quay.io/amis/aws-iam-authenticator"
-    tag  = "v0.5.1"
+    tag  = "v0.5.5"
   }
 }
 
