@@ -65,7 +65,7 @@ No requirements.
 | <a name="input_kubelet_flags"></a> [kubelet\_flags](#input\_kubelet\_flags) | The flags of kubelet. The variables need to follow https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/. Do not use underline. | `map(string)` | `{}` | no |
 | <a name="input_kubelet_node_labels"></a> [kubelet\_node\_labels](#input\_kubelet\_node\_labels) | Labels to add when registering the node in the cluster. Labels must be key=value pairs. | `list(string)` | `[]` | no |
 | <a name="input_kubelet_node_taints"></a> [kubelet\_node\_taints](#input\_kubelet\_node\_taints) | Register the node with the given list of taints ("<key>=<value>:<effect>"). | `list(string)` | `[]` | no |
-| <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Desired Kubernetes version. | `string` | `"v1.19.15"` | no |
+| <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Desired Kubernetes version. | `string` | `"v1.19.16"` | no |
 | <a name="input_name"></a> [name](#input\_name) | (Required) Name of the cluster. | `string` | n/a | yes |
 | <a name="input_network_plugin"></a> [network\_plugin](#input\_network\_plugin) | Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc' | `string` | `"amazon-vpc"` | no |
 | <a name="input_reboot_strategy"></a> [reboot\_strategy](#input\_reboot\_strategy) | CoreOS reboot strategies on updates, two option here: etcd-lock or off | `string` | `"etcd-lock"` | no |

@@ -8,7 +8,7 @@ variable "container" {
   type        = map(string)
   default = {
     repo = "quay.io/amis/aws-pod-identity-webhook"
-    tag  = "ed8c41f"
+    tag  = "v0.4.0"
   }
 }
 

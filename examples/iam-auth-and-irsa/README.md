@@ -33,7 +33,7 @@ $ terraform apply -target=module.master
 $ terraform apply
 ```
 
-5. Login Besion and Execute below commands to deploy IAM role and examples:
+5. Login Bastion and Execute below commands to deploy IAM role and examples:
 
 ```sh
 # Go to example directory, and type your oidc endpoint, ARN, and ignition bucket name.
