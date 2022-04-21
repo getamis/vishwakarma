@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.4.12"
+  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.4.13"
 
   binaries              = var.binaries
   containers            = var.containers
@@ -49,6 +49,7 @@ module "ignition_kubernetes" {
   apiserver_flags          = var.kube_extra_flags["apiserver"]
   controller_manager_flags = var.kube_extra_flags["controller_manager"]
   scheduler_flags          = var.kube_extra_flags["scheduler"]
+  components_resource      = var.components_resource
   audit_log_flags          = var.kube_extra_flags["audit_log"]
   audit_log_policy_content = var.audit_log_policy_content
   encryption_secret        = random_password.encryption_secret.result
@@ -57,6 +58,7 @@ module "ignition_kubernetes" {
   enable_irsa              = var.enable_irsa
   oidc_config              = var.oidc_config
   enable_eni_prefix        = var.enable_eni_prefix
+  annotate_pod_ip          = var.annotate_pod_ip
   max_pods                 = var.max_pods
 
   certs = {
