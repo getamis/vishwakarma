@@ -114,9 +114,9 @@ module "ignition_sshd" {
 }
 
 module "ignition_systemd_networkd" {
-  source   = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.1.3"
+  source   = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1_1_4"
 
-  debug_log = var.debug_mode
+  debug = var.debug_mode
 }
 
 data "ignition_config" "main" {
