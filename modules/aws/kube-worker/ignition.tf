@@ -8,28 +8,32 @@ locals {
 }
 
 module "ignition_docker" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.1.3"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.1.4"
 }
 
 module "ignition_locksmithd" {
-  source          = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.1.3"
+  source          = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.1.4"
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.1.3"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.1.4"
 }
 
 module "ignition_sshd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.1.3"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.1.4"
 
   enable = var.debug_mode
 }
 
 module "ignition_systemd_networkd" {
-  source   = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1_1_4"
+  source   = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.1.4"
 
   debug = var.debug_mode
+}
+
+module "ignition_legacy_cgroups" {
+  source   = "github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups?ref=v1.1.4"  
 }
 
 data "aws_s3_bucket_object" "bootstrapping_kubeconfig" {
@@ -38,7 +42,7 @@ data "aws_s3_bucket_object" "bootstrapping_kubeconfig" {
 }
 
 module "ignition_kubelet" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.4.12"
+  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.4.14"
 
   binaries             = var.binaries
   containers           = var.containers
@@ -69,6 +73,7 @@ data "ignition_config" "main" {
     module.ignition_update_ca_certificates.files,
     module.ignition_sshd.files,
     module.ignition_systemd_networkd.files,
+    module.ignition_legacy_cgroups.files,
     module.ignition_kubelet.files,
     var.extra_ignition_file_ids,
   ))
@@ -79,8 +84,13 @@ data "ignition_config" "main" {
     module.ignition_update_ca_certificates.systemd_units,
     module.ignition_sshd.systemd_units,
     module.ignition_systemd_networkd.systemd_units,
+    module.ignition_legacy_cgroups.systemd_units,
     module.ignition_kubelet.systemd_units,
     var.extra_ignition_systemd_unit_ids,
+  ))
+
+  filesystems = compact(concat(
+    module.ignition_legacy_cgroups.filesystems,
   ))
 }
 

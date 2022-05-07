@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.19.15"
+  default     = "v1.19.16"
 }
 
 variable "service_cidr" {
@@ -66,4 +66,10 @@ variable "debug_mode" {
   description = "Enable the functionailty for trouble shooting, e.g. sshd"
   type        = bool
   default     = true
+}
+
+variable "enable_eni_prefix" {
+  description = "(Optional) assign prefix to AWS EC2 network interface"
+  type        = bool
+  default     = false
 }
