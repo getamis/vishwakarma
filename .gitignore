@@ -10,5 +10,5 @@ kubeconfig/
 deploy/
 .DS_Store
 .vscode
-examples/iam-auth-and-irsa/k8s-cluster/builds
+builds
 examples/kubernetes-cluster

@@ -60,7 +60,30 @@ PASS
 ok  	github.com/vishwakarma/test	1223.186s
 ```
 
-## How to rolling update etcd instance
+## How to rolling update the kubernetes cluster
+
+master nodes
+
+```shell
+$ terraform taint module.master.module.master.aws_launch_template.master
+$ terraform apply -var key_pair_name=vishwakarma 
+```
+
+on demand worker nodes
+
+```shell
+$ terraform taint module.worker_on_demand.aws_launch_template.worker
+$ terraform apply
+```
+
+spot worker nodes
+
+```shell
+$ terraform taint module.worker_spot.aws_launch_template.worker
+$ terraform apply
+```
+
+## How to rolling update etcd cluster
  
 Depend on how many etcd instaces created by this Terraform module, then below steps need to perform for the etcd instance one by one, e.g. there are three etcd instance, hence, below steps need to perform 3 times
 

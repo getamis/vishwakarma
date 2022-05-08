@@ -28,7 +28,7 @@ locals {
 module "os_ami" {
   source          = "../../modules/aws/os-ami"
   flavor          = "flatcar"
-  flatcar_version = "2905.2.3"
+  flatcar_version = "3139.2.0"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -90,7 +90,7 @@ module "master" {
   public_subnet_ids      = module.network.public_subnet_ids
   ssh_key                = var.key_pair_name
   allowed_ssh_cidr       = [module.network.vpc_cidr]
-  reboot_strategy        = "off"
+  enable_eni_prefix      = var.enable_eni_prefix
   debug_mode             = var.debug_mode
 
   extra_tags = module.label.tags
@@ -141,9 +141,10 @@ module "worker_on_demand" {
     evictionMaxPodGracePeriod = "90"
   }  
 
-  s3_bucket  = module.master.ignition_s3_bucket
-  ssh_key    = var.key_pair_name
-  debug_mode = var.debug_mode
+  s3_bucket         = module.master.ignition_s3_bucket
+  ssh_key           = var.key_pair_name
+  enable_eni_prefix = var.enable_eni_prefix
+  debug_mode        = var.debug_mode
 
   extra_tags = module.label.tags
 }
@@ -193,9 +194,10 @@ module "worker_spot" {
     evictionMaxPodGracePeriod = "90"
   }
 
-  s3_bucket  = module.master.ignition_s3_bucket
-  ssh_key    = var.key_pair_name
-  debug_mode = var.debug_mode
+  s3_bucket         = module.master.ignition_s3_bucket
+  ssh_key           = var.key_pair_name
+  enable_eni_prefix = var.enable_eni_prefix
+  debug_mode        = var.debug_mode
 
   extra_tags = module.label.tags
 }

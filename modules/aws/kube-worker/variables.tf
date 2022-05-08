@@ -76,7 +76,7 @@ variable "kubelet_node_taints" {
 variable "reboot_strategy" {
   description = "CoreOS reboot strategies on updates, two option here: etcd-lock or off"
   type        = string
-  default     = "etcd-lock"
+  default     = "off"
 }
 
 variable "extra_ignition_file_ids" {

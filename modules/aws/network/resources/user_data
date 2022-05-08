@@ -17,3 +17,25 @@ curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 sudo apt-get update
 sudo apt-get install terraform=0.12.31
+
+# install k8s release tools
+curl -L -O https://github.com/ahmetb/kubectx/releases/download/v0.9.4/kubectx_v0.9.4_linux_x86_64.tar.gz
+tar -zxv -f kubectx_v0.9.4_linux_x86_64.tar.gz
+sudo mv kubectx /usr/local/bin/
+rm -f kubectx_v0.9.4_linux_x86_64.tar.gz LICENSE
+
+curl -L -O https://github.com/ahmetb/kubectx/releases/download/v0.9.4/kubens_v0.9.4_linux_x86_64.tar.gz
+tar -zxv -f kubens_v0.9.4_linux_x86_64.tar.gz
+rm -f kubens_v0.9.4_linux_x86_64.tar.gz LICENSE
+
+curl -L -O https://github.com/derailed/k9s/releases/download/v0.25.18/k9s_Linux_x86_64.tar.gz
+tar -zxv -f k9s_Linux_x86_64.tar.gz
+sudo mv k9s /usr/local/bin/
+rm -f k9s_Linux_x86_64.tar.gz LICENSE README.md
+
+git clone https://github.com/jonmosco/kube-ps1.git /home/ubuntu/kube-ps1
+
+echo "" >> /home/ubuntu/.profile
+echo "source /home/ubuntu/kube-ps1/kube-ps1.sh" >> /home/ubuntu/.profile
+echo "KUBE_PS1_SYMBOL_ENABLE=false" >> /home/ubuntu/.profile
+echo "PS1='\$(kube_ps1)\$ '" >> /home/ubuntu/.profile
