@@ -41,7 +41,7 @@ resource "aws_autoscaling_group" "master" {
     launch_template {
       launch_template_specification {
         launch_template_id = aws_launch_template.master.id
-        version            = "$Latest"
+        version            = aws_launch_template.master.latest_version
       }
 
       dynamic "override" {
