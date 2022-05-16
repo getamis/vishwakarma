@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.4.14"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes?ref=feature/node-graceful-shutdown"
 
   binaries              = var.binaries
   containers            = var.containers
