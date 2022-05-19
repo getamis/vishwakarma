@@ -26,8 +26,9 @@ module "os_ami" {
 module "etcd" {
   source = "../../modules/aws/kube-etcd"
 
-  name    = module.label.id
-  ssh_key = var.key_pair_name
+  name             = module.label.id
+  ssh_key          = var.key_pair_name
+  allowed_ssh_cidr = [module.network.vpc_cidr]
 
   instance_config = {
     count              = 3

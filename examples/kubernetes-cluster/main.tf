@@ -66,21 +66,25 @@ module "master" {
     root_volume_size = 256
     root_volume_type = "gp2"
 
+    default_cooldown          = 30
+    health_check_grace_period = 30
+
     instance_warmup        = 30
     min_healthy_percentage = 100
 
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 0
     spot_instance_pools                      = 1
+    spot_allocation_strategy                 = "lowest-price"
   }
 
   kubelet_extra_config = {
     # https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture#memory_cpu
     # calculate with node size t3.medium 2 cpu, 4Gi mem
-    kubeReserved = "{cpu: 35m, memory: 500Mi, ephemeral-storage: 1Gi}"
-    systemReserved = "{cpu: 35m, memory: 500Mi, ephemeral-storage: 1Gi}"
-    evictionSoft = "{memory.available: 100Mi, nodefs.available: 10%}"
-    evictionSoftGracePeriod = "{memory.available: 1m, nodefs.available: 1m}"
+    kubeReserved              = "{cpu: 35m, memory: 500Mi, ephemeral-storage: 1Gi}"
+    systemReserved            = "{cpu: 35m, memory: 500Mi, ephemeral-storage: 1Gi}"
+    evictionSoft              = "{memory.available: 100Mi, nodefs.available: 10%}"
+    evictionSoftGracePeriod   = "{memory.available: 1m, nodefs.available: 1m}"
     evictionMaxPodGracePeriod = "90"
   }
 
@@ -123,23 +127,33 @@ module "worker_on_demand" {
     root_volume_size = "40"
     root_volume_type = "gp2"
 
+    default_cooldown          = 30
+    health_check_grace_period = 30
+
     instance_warmup        = 30
     min_healthy_percentage = 100
 
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 100
-    spot_instance_pools                      = 1
+    spot_instance_pools                      = null
+    spot_allocation_strategy                 = null
+  }
+
+  asg_warm_pool = {
+    enabled           = true
+    min_size          = 1
+    reuse_on_scale_in = false
   }
 
   kubelet_config = {
     # https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture#memory_cpu
     # calculate with node size t3.medium 2 cpu, 4Gi mem
-    kubeReserved = "{cpu: 35m, memory: 500Mi, ephemeral-storage: 1Gi}"
-    systemReserved = "{cpu: 35m, memory: 500Mi, ephemeral-storage: 1Gi}"
-    evictionSoft = "{memory.available: 100Mi, nodefs.available : 10%}"
-    evictionSoftGracePeriod = "{memory.available: 1m, nodefs.available: 1m}"
+    kubeReserved              = "{cpu: 35m, memory: 500Mi, ephemeral-storage: 1Gi}"
+    systemReserved            = "{cpu: 35m, memory: 500Mi, ephemeral-storage: 1Gi}"
+    evictionSoft              = "{memory.available: 100Mi, nodefs.available : 10%}"
+    evictionSoftGracePeriod   = "{memory.available: 1m, nodefs.available: 1m}"
     evictionMaxPodGracePeriod = "90"
-  }  
+  }
 
   s3_bucket         = module.master.ignition_s3_bucket
   ssh_key           = var.key_pair_name
@@ -176,21 +190,25 @@ module "worker_spot" {
     root_volume_size = 40
     root_volume_type = "gp2"
 
+    default_cooldown          = 30
+    health_check_grace_period = 30
+
     instance_warmup        = 30
     min_healthy_percentage = 100
 
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 0
     spot_instance_pools                      = 1
+    spot_allocation_strategy                 = "lowest-price"
   }
 
   kubelet_config = {
     # https://cloud.google.com/kubernetes-engine/docs/concepts/cluster-architecture#memory_cpu
     # calculate with node size m5.large 2 cpu, 8Gi mem
-    kubeReserved = "{cpu: 35m, memory: 900Mi, ephemeral-storage: 1Gi}"
-    systemReserved = "{cpu: 35m, memory: 900Mi, ephemeral-storage: 1Gi}"
-    evictionSoft = "{memory.available: 100Mi, nodefs.available : 10%}"
-    evictionSoftGracePeriod = "{memory.available: 1m, nodefs.available: 1m}"
+    kubeReserved              = "{cpu: 35m, memory: 900Mi, ephemeral-storage: 1Gi}"
+    systemReserved            = "{cpu: 35m, memory: 900Mi, ephemeral-storage: 1Gi}"
+    evictionSoft              = "{memory.available: 100Mi, nodefs.available : 10%}"
+    evictionSoftGracePeriod   = "{memory.available: 1m, nodefs.available: 1m}"
     evictionMaxPodGracePeriod = "90"
   }
 
