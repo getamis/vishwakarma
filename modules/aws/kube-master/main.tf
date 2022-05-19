@@ -29,6 +29,9 @@ resource "aws_autoscaling_group" "master" {
   vpc_zone_identifier = var.private_subnet_ids
   load_balancers      = [aws_elb.master_internal.id]
 
+  default_cooldown          = var.instance_config["default_cooldown"]
+  health_check_grace_period = var.instance_config["health_check_grace_period"]
+
   instance_refresh {
     strategy = "Rolling"
     preferences {
@@ -57,6 +60,7 @@ resource "aws_autoscaling_group" "master" {
       on_demand_base_capacity                  = var.instance_config["on_demand_base_capacity"]
       on_demand_percentage_above_base_capacity = var.instance_config["on_demand_percentage_above_base_capacity"]
       spot_instance_pools                      = var.instance_config["spot_instance_pools"]
+      spot_allocation_strategy                 = var.instance_config["spot_allocation_strategy"]
       spot_max_price                           = var.instance_spot_max_price
     }
   }

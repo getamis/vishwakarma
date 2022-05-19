@@ -267,12 +267,16 @@ variable "instance_config" {
     root_volume_size = number
     root_volume_type = string
 
+    default_cooldown          = number
+    health_check_grace_period = number
+
     instance_warmup        = number
     min_healthy_percentage = number
 
     on_demand_base_capacity                  = number
     on_demand_percentage_above_base_capacity = number
     spot_instance_pools                      = number
+    spot_allocation_strategy                 = string
   })
 }
 

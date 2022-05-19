@@ -30,6 +30,9 @@ resource "aws_autoscaling_group" "worker" {
   min_size            = var.instance_config["count"]
   vpc_zone_identifier = var.subnet_ids
 
+  default_cooldown          = var.instance_config["default_cooldown"]
+  health_check_grace_period = var.instance_config["health_check_grace_period"]
+
   instance_refresh {
     strategy = "Rolling"
     preferences {
