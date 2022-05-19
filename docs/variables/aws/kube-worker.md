@@ -17,12 +17,12 @@ No requirements.
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_ignition_docker"></a> [ignition\_docker](#module\_ignition\_docker) | github.com/getamis/terraform-ignition-reinforcements//modules/docker | v1.1.5 |
-| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | github.com/getamis/terraform-ignition-kubernetes//modules/kubelet | v1.4.15 |
+| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | github.com/getamis/terraform-ignition-kubernetes//modules/kubelet | v1.5.0 |
 | <a name="module_ignition_locksmithd"></a> [ignition\_locksmithd](#module\_ignition\_locksmithd) | github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd | v1.1.5 |
 | <a name="module_ignition_sshd"></a> [ignition\_sshd](#module\_ignition\_sshd) | github.com/getamis/terraform-ignition-reinforcements//modules/sshd | v1.1.5 |
 | <a name="module_ignition_systemd_networkd"></a> [ignition\_systemd\_networkd](#module\_ignition\_systemd\_networkd) | github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd | v1.1.5 |
 | <a name="module_ignition_update_ca_certificates"></a> [ignition\_update\_ca\_certificates](#module\_ignition\_update\_ca\_certificates) | github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates | v1.1.5 |
-| <a name="module_lifecycle_hook"></a> [lifecycle\_hook](#module\_lifecycle\_hook) | github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes | v0.0.2 |
+| <a name="module_lifecycle_hook"></a> [lifecycle\_hook](#module\_lifecycle\_hook) | github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes | v0.1.0 |
 
 ## Resources
 

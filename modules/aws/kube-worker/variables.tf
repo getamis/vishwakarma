@@ -156,6 +156,20 @@ variable "instance_config" {
   })
 }
 
+variable "asg_warm_pool" {
+  description = "Warm pool arguments of Auto Scaling group."
+  type = object({
+    enabled                     = bool
+    min_size                    = number
+    reuse_on_scale_in           = bool
+  })
+  default = {
+    enabled                     = false
+    min_size                    = 1
+    reuse_on_scale_in           = false
+  }
+}
+
 variable "instance_spot_max_price" {
   type        = string
   default     = ""

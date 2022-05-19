@@ -42,7 +42,7 @@ data "aws_s3_bucket_object" "bootstrapping_kubeconfig" {
 }
 
 module "ignition_kubelet" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=feature/node-graceful-shutdown"
+  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.5.0"
 
   binaries             = var.binaries
   containers           = var.containers

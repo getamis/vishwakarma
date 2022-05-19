@@ -129,7 +129,7 @@ resource "aws_launch_template" "master" {
 
 
 module "lifecycle_hook" {
-  source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v0.0.2"
+  source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v0.1.0"
 
   name                           = "${var.name}-master"
   cluster_name                   = var.name

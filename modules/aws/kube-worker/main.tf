@@ -15,8 +15,8 @@ locals {
       "gp3" : 125,
     }
   }
-
   vpc_security_group_ids = var.enable_extra_sg ? concat([aws_security_group.worker_group[0].id], var.security_group_ids) : var.security_group_ids
+  asg_max_size = var.instance_config["count"] == 0 ? 3 : (var.instance_config["count"] * 3)
 }
 
 data "aws_subnet" "subnet" {
@@ -26,7 +26,7 @@ data "aws_subnet" "subnet" {
 resource "aws_autoscaling_group" "worker" {
   name_prefix         = "${var.name}-worker-${var.instance_config["name"]}-"
   desired_capacity    = var.instance_config["count"]
-  max_size            = var.instance_config["count"] == 0 ? 3 : (var.instance_config["count"] * 3)
+  max_size            = local.asg_max_size
   min_size            = var.instance_config["count"]
   vpc_zone_identifier = var.subnet_ids
 
@@ -41,27 +41,56 @@ resource "aws_autoscaling_group" "worker" {
     }
   }
 
-  mixed_instances_policy {
-    launch_template {
-      launch_template_specification {
-        launch_template_id = aws_launch_template.worker.id
-        version            = aws_launch_template.worker.latest_version
-      }
+  dynamic launch_template {
+    for_each = var.asg_warm_pool["enabled"] ? [1] : []
 
-      dynamic "override" {
-        for_each = var.instance_config["ec2_type"]
+    content {
+      id      = aws_launch_template.worker.id
+      version = aws_launch_template.worker.latest_version
+    }
+  }
 
-        content {
-          instance_type = override.value
-        }
+  dynamic warm_pool {
+    for_each = var.asg_warm_pool["enabled"] ? [1] : []
+
+    content {
+      pool_state                  = "Stopped"
+      min_size                    = var.asg_warm_pool["min_size"]
+      max_group_prepared_capacity = local.asg_max_size
+
+      instance_reuse_policy {
+        reuse_on_scale_in = var.asg_warm_pool["reuse_on_scale_in"]
       }
     }
+  }
 
-    instances_distribution {
-      on_demand_base_capacity                  = var.instance_config["on_demand_base_capacity"]
-      on_demand_percentage_above_base_capacity = var.instance_config["on_demand_percentage_above_base_capacity"]
-      spot_instance_pools                      = var.instance_config["spot_instance_pools"]
-      spot_max_price                           = var.instance_spot_max_price
+  # Cannot add a warm pool to Auto Scaling groups that have a mixed instances policy.
+  dynamic mixed_instances_policy {
+    for_each = var.asg_warm_pool["enabled"] ? [] : [1]
+
+    content {
+      launch_template {
+        launch_template_specification {
+          launch_template_id = aws_launch_template.worker.id
+          version            = aws_launch_template.worker.latest_version
+        }
+
+        dynamic "override" {
+          for_each = var.instance_config["ec2_type"]
+
+          content {
+            instance_type = override.value
+          }
+        }
+      }
+
+      instances_distribution {
+        on_demand_base_capacity                  = var.instance_config["on_demand_base_capacity"]
+        on_demand_percentage_above_base_capacity = var.instance_config["on_demand_percentage_above_base_capacity"]
+        spot_allocation_strategy                 = var.instance_config["spot_allocation_strategy"]
+        spot_instance_pools                      = var.instance_config["spot_instance_pools"]
+        spot_max_price                           = var.instance_spot_max_price
+      }
     }
   }
 
@@ -143,7 +172,7 @@ resource "aws_launch_template" "worker" {
 }
 
 module "lifecycle_hook" {
-  source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v0.0.2"
+  source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v0.1.0"
 
   name                           = "${var.name}-worker-${var.instance_config["name"]}"
   cluster_name                   = var.name
