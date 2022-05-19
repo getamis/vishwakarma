@@ -32,7 +32,7 @@ module "webhook_cert" {
     "${var.service_name}.${var.namespace}.svc",
     "${var.service_name}.${var.namespace}.svc.local"
   ]
-  
+
   cert_uses = [
     "key_encipherment",
     "digital_signature",

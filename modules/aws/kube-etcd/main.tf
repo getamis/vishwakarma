@@ -5,24 +5,24 @@ locals {
   peer_port          = 2380
   node_exporter_port = 9100
 
-  iops_by_type       = {
+  iops_by_type = {
     root = {
-      "gp3": max(3000, var.instance_volume_config.root.iops),
-      "io1": max(100, var.instance_volume_config.root.iops),
-      "io2": max(100, var.instance_volume_config.root.iops),
+      "gp3" : max(3000, var.instance_volume_config.root.iops),
+      "io1" : max(100, var.instance_volume_config.root.iops),
+      "io2" : max(100, var.instance_volume_config.root.iops),
     }
     data = {
-      "gp3": max(3000, var.instance_volume_config.data.iops),
-      "io1": max(100, var.instance_volume_config.data.iops),
-      "io2": max(100, var.instance_volume_config.data.iops),
+      "gp3" : max(3000, var.instance_volume_config.data.iops),
+      "io1" : max(100, var.instance_volume_config.data.iops),
+      "io2" : max(100, var.instance_volume_config.data.iops),
     }
   }
   throughput_by_type = {
     root = {
-      "gp3": max(125, var.instance_volume_config.root.throughput),
+      "gp3" : max(125, var.instance_volume_config.root.throughput),
     }
     data = {
-      "gp3": max(125, var.instance_volume_config.data.throughput),
+      "gp3" : max(125, var.instance_volume_config.data.throughput),
     }
   }
 }
@@ -59,7 +59,7 @@ resource "aws_ebs_volume" "etcd" {
   type              = var.instance_volume_config.data.type
   iops              = lookup(local.iops_by_type.data, var.instance_volume_config.data.type, null)
   # aws_ebs_volume always checks the range of throughput.(125 ~ 1000)
-  throughput        = lookup(local.throughput_by_type.data, var.instance_volume_config.data.type, null)
+  throughput = lookup(local.throughput_by_type.data, var.instance_volume_config.data.type, null)
 
   tags = merge(var.extra_tags, map(
     "Name", "${var.name}-etcd-${count.index}",

@@ -27,13 +27,13 @@ module "ignition_sshd" {
 }
 
 module "ignition_systemd_networkd" {
-  source   = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.1.5"
 
   debug = var.debug_mode
 }
 
 module "ignition_legacy_cgroups" {
-  source   = "github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups?ref=v1.1.5"
 }
 
 data "aws_s3_bucket_object" "bootstrapping_kubeconfig" {

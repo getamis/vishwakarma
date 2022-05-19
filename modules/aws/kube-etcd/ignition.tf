@@ -3,7 +3,7 @@ module "ignition_docker" {
 }
 
 module "ignition_locksmithd" {
-  source          = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.1.5"
 
   reboot_strategy = var.reboot_strategy
 }

@@ -16,7 +16,7 @@ locals {
     }
   }
   vpc_security_group_ids = var.enable_extra_sg ? concat([aws_security_group.worker_group[0].id], var.security_group_ids) : var.security_group_ids
-  asg_max_size = var.instance_config["count"] == 0 ? 3 : (var.instance_config["count"] * 3)
+  asg_max_size           = var.instance_config["count"] == 0 ? 3 : (var.instance_config["count"] * 3)
 }
 
 data "aws_subnet" "subnet" {
@@ -110,12 +110,12 @@ resource "aws_autoscaling_group" "worker" {
       value               = "k8s-worker"
       propagate_at_launch = true
     },
-    (var.enable_autoscaler != "true" ) ? {} : {
+    (var.enable_autoscaler != "true") ? {} : {
       key                 = "k8s.io/cluster-autoscaler/enabled"
       value               = "true"
       propagate_at_launch = true
     },
-    (var.enable_node_termination_handler != "true" ) ? {} : {
+    (var.enable_node_termination_handler != "true") ? {} : {
       key                 = "aws-node-termination-handler/managed"
       value               = "true"
       propagate_at_launch = true
