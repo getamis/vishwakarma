@@ -90,8 +90,8 @@ resource "aws_security_group_rule" "master_ingress_from_lb" {
 }
 
 resource "aws_security_group_rule" "master_ssh" {
-  count             = var.debug_mode ? 1 : 0
-  
+  count = var.debug_mode ? 1 : 0
+
   type              = "ingress"
   security_group_id = local.master_sg_id
 

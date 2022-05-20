@@ -258,7 +258,7 @@ variable "max_pods" {
   description = "(Optional) the max pod number in the node when enable eni prefix"
   type        = string
   default     = "110"
-} 
+}
 
 variable "master_instance_config" {
   description = "(Optional) Desired master nodes configuration."
@@ -270,12 +270,16 @@ variable "master_instance_config" {
     root_volume_size = number
     root_volume_type = string
 
+    default_cooldown          = number
+    health_check_grace_period = number
+
     instance_warmup        = number
     min_healthy_percentage = number
 
     on_demand_base_capacity                  = number
     on_demand_percentage_above_base_capacity = number
     spot_instance_pools                      = number
+    spot_allocation_strategy                 = string
   })
   default = {
     count    = 1
@@ -288,12 +292,16 @@ variable "master_instance_config" {
     root_volume_size = 256
     root_volume_type = "gp2"
 
+    default_cooldown          = 300
+    health_check_grace_period = 300
+
     instance_warmup        = 30
     min_healthy_percentage = 100
 
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 100
     spot_instance_pools                      = 1
+    spot_allocation_strategy                 = "lowest-price"
   }
 }
 

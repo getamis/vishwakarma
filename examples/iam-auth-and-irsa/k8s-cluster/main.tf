@@ -87,12 +87,16 @@ module "master" {
     root_volume_size = 256
     root_volume_type = "gp2"
 
+    default_cooldown          = 30
+    health_check_grace_period = 30
+
     instance_warmup        = 30
     min_healthy_percentage = 100
 
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 0
     spot_instance_pools                      = 1
+    spot_allocation_strategy                 = "lowest-price"
   }
 
   hostzone               = "${var.project}.cluster"

@@ -31,14 +31,14 @@ locals {
     pause = {
       repo = "public.ecr.aws/eks-distro/kubernetes/pause"
       tag  = "v1.18.9-eks-1-18-1"
-    }         
+    }
   }
 
   override_worker_containers = {
     pause = {
       repo = "public.ecr.aws/eks-distro/kubernetes/pause"
       tag  = "v1.18.9-eks-1-18-1"
-    }      
+    }
   }
 }
 
@@ -111,12 +111,16 @@ module "master" {
     root_volume_size = 256
     root_volume_type = "gp2"
 
+    default_cooldown          = 30
+    health_check_grace_period = 30
+
     instance_warmup        = 30
     min_healthy_percentage = 100
 
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 0
     spot_instance_pools                      = 1
+    spot_allocation_strategy                 = "lowest-price"
   }
 
   hostzone               = "${var.project}.cluster"
@@ -124,6 +128,7 @@ module "master" {
   private_subnet_ids     = module.network.private_subnet_ids
   public_subnet_ids      = module.network.public_subnet_ids
   ssh_key                = var.key_pair_name
+  allowed_ssh_cidr       = [module.network.vpc_cidr]
   reboot_strategy        = "off"
 
   extra_tags = module.label.tags
@@ -157,12 +162,22 @@ module "worker_on_demand" {
     root_volume_size = "40"
     root_volume_type = "gp2"
 
+    default_cooldown          = 30
+    health_check_grace_period = 30
+
     instance_warmup        = 30
     min_healthy_percentage = 100
 
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 100
-    spot_instance_pools                      = 1
+    spot_instance_pools                      = null
+    spot_allocation_strategy                 = null
+  }
+
+  asg_warm_pool = {
+    enabled           = true
+    min_size          = 1
+    reuse_on_scale_in = false
   }
 
   s3_bucket = module.master.ignition_s3_bucket
@@ -199,12 +214,16 @@ module "worker_spot" {
     root_volume_size = 40
     root_volume_type = "gp2"
 
+    default_cooldown          = 30
+    health_check_grace_period = 30
+
     instance_warmup        = 30
     min_healthy_percentage = 100
 
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 0
     spot_instance_pools                      = 1
+    spot_allocation_strategy                 = "lowest-price"
   }
 
   s3_bucket = module.master.ignition_s3_bucket
