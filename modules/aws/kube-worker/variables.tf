@@ -160,14 +160,16 @@ variable "instance_config" {
 variable "asg_warm_pool" {
   description = "Warm pool arguments of Auto Scaling group."
   type = object({
-    enabled           = bool
-    min_size          = number
-    reuse_on_scale_in = bool
+    enabled                     = bool
+    min_size                    = number
+    reuse_on_scale_in           = bool
+    max_group_prepared_capacity = number
   })
   default = {
-    enabled           = false
-    min_size          = 1
-    reuse_on_scale_in = false
+    enabled                     = false
+    min_size                    = 1
+    reuse_on_scale_in           = false
+    max_group_prepared_capacity = 1
   }
 }
 

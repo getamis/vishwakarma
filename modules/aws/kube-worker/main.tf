@@ -56,7 +56,7 @@ resource "aws_autoscaling_group" "worker" {
     content {
       pool_state                  = "Stopped"
       min_size                    = var.asg_warm_pool["min_size"]
-      max_group_prepared_capacity = local.asg_max_size
+      max_group_prepared_capacity = var.asg_warm_pool["max_group_prepared_capacity"]
 
       instance_reuse_policy {
         reuse_on_scale_in = var.asg_warm_pool["reuse_on_scale_in"]
