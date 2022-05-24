@@ -16,7 +16,7 @@ locals {
     }
   }
   vpc_security_group_ids = var.enable_extra_sg ? concat([aws_security_group.worker_group[0].id], var.security_group_ids) : var.security_group_ids
-  asg_max_size           = var.instance_config["count"] == 0 ? 3 : (var.instance_config["count"] * 3)
+  asg_max_size           = var.instance_config["max_count"] != null ? var.instance_config["max_count"] : (var.instance_config["count"] == 0 ? 3 : (var.instance_config["count"] * 3))
 }
 
 data "aws_subnet" "subnet" {
@@ -56,7 +56,7 @@ resource "aws_autoscaling_group" "worker" {
     content {
       pool_state                  = "Stopped"
       min_size                    = var.asg_warm_pool["min_size"]
-      max_group_prepared_capacity = local.asg_max_size
+      max_group_prepared_capacity = var.asg_warm_pool["max_group_prepared_capacity"]
 
       instance_reuse_policy {
         reuse_on_scale_in = var.asg_warm_pool["reuse_on_scale_in"]

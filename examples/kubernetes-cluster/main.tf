@@ -116,9 +116,10 @@ module "worker_on_demand" {
   subnet_ids         = module.network.private_subnet_ids
 
   instance_config = {
-    name     = "on-demand"
-    count    = 1
-    image_id = module.os_ami.image_id
+    name      = "on-demand"
+    count     = 1
+    max_count = null
+    image_id  = module.os_ami.image_id
     ec2_type = [
       "t3.medium",
       "t2.medium"
@@ -140,9 +141,10 @@ module "worker_on_demand" {
   }
 
   asg_warm_pool = {
-    enabled           = true
-    min_size          = 1
-    reuse_on_scale_in = false
+    enabled                     = true
+    min_size                    = 1
+    reuse_on_scale_in           = false
+    max_group_prepared_capacity = 1
   }
 
   kubelet_config = {
@@ -179,9 +181,10 @@ module "worker_spot" {
   subnet_ids         = module.network.private_subnet_ids
 
   instance_config = {
-    name     = "spot"
-    image_id = module.os_ami.image_id
-    count    = 2
+    name      = "spot"
+    image_id  = module.os_ami.image_id
+    count     = 2
+    max_count = 10
     ec2_type = [
       "m5.large",
       "m4.large"
