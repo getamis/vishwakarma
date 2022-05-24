@@ -136,6 +136,7 @@ variable "instance_config" {
   description = "Desired worker nodes configuration."
   type = object({
     count            = number
+    max_count        = number
     name             = string
     image_id         = string
     ec2_type         = list(string)
