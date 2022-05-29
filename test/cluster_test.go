@@ -22,7 +22,7 @@ func TestKubernetesCluster(t *testing.T) {
 	// tests running in parallel
 	// uniqueID := "rn2ws0"
 	uniqueID := strings.ToLower(random.UniqueId())
-	awsRegion := "us-west-1"
+	awsRegion := "us-west-2"
 
 	// Preapre all terraform options
 	terraformOptionsNetwork := configureTerraformOptions(t, exampleFolder, "module.network", uniqueID, awsRegion)

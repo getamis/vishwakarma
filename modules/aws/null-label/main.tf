@@ -63,6 +63,6 @@ locals {
 
   generated_tags = { for l in keys(local.tags_context) : title(l) => local.tags_context[l] if length(local.tags_context[l]) > 0 }
 
-  id = lower(join(local.delimiter, list(local.environment, local.project, var.name)))
+  id = lower(join(local.delimiter, [local.environment, local.project, var.name]))
 }
 

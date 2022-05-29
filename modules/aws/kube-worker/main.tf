@@ -41,7 +41,7 @@ resource "aws_autoscaling_group" "worker" {
     }
   }
 
-  dynamic launch_template {
+  dynamic "launch_template" {
     for_each = var.asg_warm_pool["enabled"] ? [1] : []
 
     content {
@@ -50,7 +50,7 @@ resource "aws_autoscaling_group" "worker" {
     }
   }
 
-  dynamic warm_pool {
+  dynamic "warm_pool" {
     for_each = var.asg_warm_pool["enabled"] ? [1] : []
 
     content {
@@ -65,7 +65,7 @@ resource "aws_autoscaling_group" "worker" {
   }
 
   # Cannot add a warm pool to Auto Scaling groups that have a mixed instances policy.
-  dynamic mixed_instances_policy {
+  dynamic "mixed_instances_policy" {
     for_each = var.asg_warm_pool["enabled"] ? [] : [1]
 
     content {
@@ -94,38 +94,24 @@ resource "aws_autoscaling_group" "worker" {
     }
   }
 
-  tags = concat(local.asg_extra_tags, [
-    {
-      key                 = "Name"
-      value               = "${var.name}-worker-${var.instance_config["name"]}"
-      propagate_at_launch = true
-    },
-    {
-      key                 = "kubernetes.io/cluster/${var.name}"
-      value               = "owned"
-      propagate_at_launch = true
-    },
-    {
-      key                 = "Role"
-      value               = "k8s-worker"
-      propagate_at_launch = true
-    },
-    (var.enable_autoscaler != "true") ? {} : {
-      key                 = "k8s.io/cluster-autoscaler/enabled"
-      value               = "true"
-      propagate_at_launch = true
-    },
-    (var.enable_node_termination_handler != "true") ? {} : {
-      key                 = "aws-node-termination-handler/managed"
-      value               = "true"
-      propagate_at_launch = true
-    },
-    (var.instance_spot_max_price == "") ? {} : {
-      key                 = "spot-max-price"
-      value               = var.instance_spot_max_price
+  dynamic "tag" {
+    for_each = merge(var.extra_tags,
+      {
+        "Name"                              = "${var.name}-worker-${var.instance_config["name"]}"
+        "Role"                              = "k8s-worker"
+        "kubernetes.io/cluster/${var.name}" = "owned"
+      },
+      (var.enable_autoscaler != "true") ? {} : { "k8s.io/cluster-autoscaler/enabled" = "true" },
+      (var.enable_node_termination_handler != "true") ? {} : { "aws-node-termination-handler/managed" = "true" },
+      (var.instance_spot_max_price == "") ? {} : { "spot-max-price" = var.instance_spot_max_price }
+    )
+
+    content {
+      key                 = tag.key
+      value               = tag.value
       propagate_at_launch = true
     }
-  ])
+  }
 
   lifecycle {
     ignore_changes = [
@@ -172,7 +158,8 @@ resource "aws_launch_template" "worker" {
 }
 
 module "lifecycle_hook" {
-  source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v0.1.0"
+  count  = var.enable_asg_life_cycle ? 1 : 0
+  source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v1.19.16.0"
 
   name                           = "${var.name}-worker-${var.instance_config["name"]}"
   cluster_name                   = var.name

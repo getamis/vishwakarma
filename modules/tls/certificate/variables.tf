@@ -12,9 +12,8 @@ variable "ca_config" {
   description = "Certificate Authority configuration"
   type        = map(string)
   default = {
-    algorithm = "RSA"
-    key_pem   = ""
-    cert_pem  = ""
+    key_pem  = ""
+    cert_pem = ""
   }
 }
 

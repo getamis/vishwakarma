@@ -6,7 +6,7 @@ data "aws_iam_policy_document" "s3_echoer_policy" {
 
     principals {
       type        = "Federated"
-      identifiers = ["${var.oidc_provider_arn}"]
+      identifiers = [var.oidc_provider_arn]
     }
 
     condition {

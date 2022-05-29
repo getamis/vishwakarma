@@ -73,3 +73,9 @@ variable "enable_eni_prefix" {
   type        = bool
   default     = false
 }
+
+variable "enable_asg_life_cycle" {
+  description = "(Optional) enable ASG life cycle hook or not"
+  type        = bool
+  default     = false
+}

@@ -12,7 +12,6 @@ resource "tls_private_key" "pk" {
 resource "tls_cert_request" "request" {
   count = var.self_signed ? 1 : 0
 
-  key_algorithm   = tls_private_key.pk[count.index].algorithm
   private_key_pem = tls_private_key.pk[count.index].private_key_pem
 
   subject {
@@ -30,10 +29,9 @@ resource "tls_locally_signed_cert" "cert" {
 
   cert_request_pem = tls_cert_request.request[count.index].cert_request_pem
 
-  ca_key_algorithm      = var.ca_config["algorithm"]
   ca_private_key_pem    = var.ca_config["key_pem"]
   ca_cert_pem           = var.ca_config["cert_pem"]
   validity_period_hours = var.cert_config["validity_period_hours"]
 
-  allowed_uses = concat(list("key_encipherment"), var.cert_uses)
+  allowed_uses = concat(["key_encipherment"], var.cert_uses)
 }

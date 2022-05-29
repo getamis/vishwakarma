@@ -56,7 +56,7 @@ module "master" {
   }
 
   master_instance_config = {
-    count    = 2
+    count    = 1
     image_id = module.os_ami.image_id
     ec2_type = [
       "t3.medium",
@@ -95,6 +95,7 @@ module "master" {
   ssh_key                = var.key_pair_name
   allowed_ssh_cidr       = [module.network.vpc_cidr]
   enable_eni_prefix      = var.enable_eni_prefix
+  enable_asg_life_cycle  = var.enable_asg_life_cycle
   debug_mode             = var.debug_mode
 
   extra_tags = module.label.tags
@@ -157,10 +158,11 @@ module "worker_on_demand" {
     evictionMaxPodGracePeriod = "90"
   }
 
-  s3_bucket         = module.master.ignition_s3_bucket
-  ssh_key           = var.key_pair_name
-  enable_eni_prefix = var.enable_eni_prefix
-  debug_mode        = var.debug_mode
+  s3_bucket             = module.master.ignition_s3_bucket
+  ssh_key               = var.key_pair_name
+  enable_eni_prefix     = var.enable_eni_prefix
+  enable_asg_life_cycle = var.enable_asg_life_cycle
+  debug_mode            = var.debug_mode
 
   extra_tags = module.label.tags
 }
@@ -183,7 +185,7 @@ module "worker_spot" {
   instance_config = {
     name      = "spot"
     image_id  = module.os_ami.image_id
-    count     = 2
+    count     = 1
     max_count = 10
     ec2_type = [
       "m5.large",
@@ -215,10 +217,11 @@ module "worker_spot" {
     evictionMaxPodGracePeriod = "90"
   }
 
-  s3_bucket         = module.master.ignition_s3_bucket
-  ssh_key           = var.key_pair_name
-  enable_eni_prefix = var.enable_eni_prefix
-  debug_mode        = var.debug_mode
+  s3_bucket             = module.master.ignition_s3_bucket
+  ssh_key               = var.key_pair_name
+  enable_eni_prefix     = var.enable_eni_prefix
+  enable_asg_life_cycle = var.enable_asg_life_cycle
+  debug_mode            = var.debug_mode
 
   extra_tags = module.label.tags
 }

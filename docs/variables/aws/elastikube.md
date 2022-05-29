@@ -3,7 +3,10 @@
 This document gives an overview of variables used in the AWS platform of the elastikube module.
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.1 |
+| <a name="requirement_ignition"></a> [ignition](#requirement\_ignition) | ~> 1.2.1 |
 
 ## Providers
 
@@ -24,6 +27,7 @@ No requirements.
 |------|------|
 | [aws_route53_zone.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone) | resource |
 | [aws_s3_bucket.ignition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
+| [aws_s3_bucket_acl.ignition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_acl) | resource |
 | [aws_s3_bucket_public_access_block.ignition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_security_group.workers](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.master_ingress_flannel_from_worker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -43,9 +47,11 @@ No requirements.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_allowed_ssh_cidr"></a> [allowed\_ssh\_cidr](#input\_allowed\_ssh\_cidr) | (Optional) A list of CIDR networks to allow ssh access to. | `list(string)` | n/a | yes |
+| <a name="input_annotate_pod_ip"></a> [annotate\_pod\_ip](#input\_annotate\_pod\_ip) | (Optional) enable to fix pod startup connectivity issue on installing Calico with aws-vpc-cni plugin. (Issue: https://github.com/aws/amazon-vpc-cni-k8s/issues/493) | `bool` | `false` | no |
 | <a name="input_auth_webhook_kubeconfig_path"></a> [auth\_webhook\_kubeconfig\_path](#input\_auth\_webhook\_kubeconfig\_path) | The path of webhook kubeconfig for kube-apiserver. | `string` | `"/etc/kubernetes/config/aws-iam-authenticator/kubeconfig"` | no |
 | <a name="input_certs_validity_period_hours"></a> [certs\_validity\_period\_hours](#input\_certs\_validity\_period\_hours) | Validity period of the self-signed certificates (in hours). Default is 10 years. | `string` | `87600` | no |
 | <a name="input_debug_mode"></a> [debug\_mode](#input\_debug\_mode) | Enable the functionailty for trouble shooting, e.g. sshd | `bool` | `false` | no |
+| <a name="input_enable_asg_life_cycle"></a> [enable\_asg\_life\_cycle](#input\_enable\_asg\_life\_cycle) | (Optional) enable ASG life cycle hook or not | `bool` | `true` | no |
 | <a name="input_enable_eni_prefix"></a> [enable\_eni\_prefix](#input\_enable\_eni\_prefix) | (Optional) assign prefix to AWS EC2 network interface | `bool` | `true` | no |
 | <a name="input_enable_iam_auth"></a> [enable\_iam\_auth](#input\_enable\_iam\_auth) | Enable AWS IAM authenticator or not. | `bool` | `false` | no |
 | <a name="input_enable_irsa"></a> [enable\_irsa](#input\_enable\_irsa) | (Optional) Enable AWS IAM role service account or not | `bool` | `false` | no |
@@ -69,11 +75,13 @@ No requirements.
 | <a name="input_kubelet_node_taints"></a> [kubelet\_node\_taints](#input\_kubelet\_node\_taints) | Register the node with the given list of taints ("<key>=<value>:<effect>"). | `list(string)` | `[]` | no |
 | <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Desired Kubernetes version. | `string` | `"v1.19.16"` | no |
 | <a name="input_lb_security_group_ids"></a> [lb\_security\_group\_ids](#input\_lb\_security\_group\_ids) | (Optional) List of security group IDs for the cross-account elastic network interfaces<br>    to use to allow communication to the kubernetes api server load balancer. | `list(string)` | `[]` | no |
-| <a name="input_master_instance_config"></a> [master\_instance\_config](#input\_master\_instance\_config) | (Optional) Desired master nodes configuration. | <pre>object({<br>    count            = number<br>    image_id         = string<br>    ec2_type         = list(string)<br>    root_volume_iops = number<br>    root_volume_size = number<br>    root_volume_type = string<br><br>    instance_warmup        = number<br>    min_healthy_percentage = number<br><br>    on_demand_base_capacity                  = number<br>    on_demand_percentage_above_base_capacity = number<br>    spot_instance_pools                      = number<br>  })</pre> | <pre>{<br>  "count": 1,<br>  "ec2_type": [<br>    "t3.medium",<br>    "t2.medium"<br>  ],<br>  "image_id": "ami-0b75e2f157200889f",<br>  "instance_warmup": 30,<br>  "min_healthy_percentage": 100,<br>  "on_demand_base_capacity": 0,<br>  "on_demand_percentage_above_base_capacity": 100,<br>  "root_volume_iops": 100,<br>  "root_volume_size": 256,<br>  "root_volume_type": "gp2",<br>  "spot_instance_pools": 1<br>}</pre> | no |
+| <a name="input_master_instance_config"></a> [master\_instance\_config](#input\_master\_instance\_config) | (Optional) Desired master nodes configuration. | <pre>object({<br>    count            = number<br>    image_id         = string<br>    ec2_type         = list(string)<br>    root_volume_iops = number<br>    root_volume_size = number<br>    root_volume_type = string<br><br>    default_cooldown          = number<br>    health_check_grace_period = number<br><br>    instance_warmup        = number<br>    min_healthy_percentage = number<br><br>    on_demand_base_capacity                  = number<br>    on_demand_percentage_above_base_capacity = number<br>    spot_instance_pools                      = number<br>    spot_allocation_strategy                 = string<br>  })</pre> | <pre>{<br>  "count": 1,<br>  "default_cooldown": 300,<br>  "ec2_type": [<br>    "t3.medium",<br>    "t2.medium"<br>  ],<br>  "health_check_grace_period": 300,<br>  "image_id": "ami-0b75e2f157200889f",<br>  "instance_warmup": 30,<br>  "min_healthy_percentage": 100,<br>  "on_demand_base_capacity": 0,<br>  "on_demand_percentage_above_base_capacity": 100,<br>  "root_volume_iops": 100,<br>  "root_volume_size": 256,<br>  "root_volume_type": "gp2",<br>  "spot_allocation_strategy": "lowest-price",<br>  "spot_instance_pools": 1<br>}</pre> | no |
 | <a name="input_master_instance_spot_max_price"></a> [master\_instance\_spot\_max\_price](#input\_master\_instance\_spot\_max\_price) | Desired master nodes spot maximum price, default is the on-demand price. | `string` | `""` | no |
+| <a name="input_max_pods"></a> [max\_pods](#input\_max\_pods) | (Optional) the max pod number in the node when enable eni prefix | `string` | `"110"` | no |
 | <a name="input_name"></a> [name](#input\_name) | (Required) Name of the cluster. | `string` | n/a | yes |
 | <a name="input_network_plugin"></a> [network\_plugin](#input\_network\_plugin) | Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc' | `string` | `"amazon-vpc"` | no |
-| <a name="input_override_binaries"></a> [override\_binaries](#input\_override\_binaries) | Desired binaries(cni\_plugin) url and checksum. | <pre>map(object({<br>    source   = string<br>    checksum = string<br>  }))</pre> | `{}` | no |
+| <a name="input_override_binaries"></a> [override\_binaries](#input\_override\_binaries) | Desired binaries(etcd, kubelet, cni\_plugin) url and checksum. | <pre>map(object({<br>    source   = string<br>    checksum = string<br>  }))</pre> | `{}` | no |
+| <a name="input_override_components_resource"></a> [override\_components\_resource](#input\_override\_components\_resource) | Desired resource requests and limits of kubernetes components(kube-apiserver, kube-controller-manager, kube-scheduler, etc.) | <pre>map(object({<br>    cpu_request    = string<br>    cpu_limit      = string<br>    memory_request = string<br>    memory_limit   = string<br>  }))</pre> | `{}` | no |
 | <a name="input_override_containers"></a> [override\_containers](#input\_override\_containers) | Desired containers(kube-apiserver, kube-controller-manager, cfssl, coredns, and so on) repo and tag. | <pre>map(object({<br>    repo = string<br>    tag  = string<br>  }))</pre> | `{}` | no |
 | <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | (Required) List of private subnet IDs. Must be in at least two different availability zones.<br>    Cross-account elastic network interfaces will be created in these subnets to allow<br>    communication between your worker nodes and the Kubernetes control plane. | `list(string)` | `[]` | no |
 | <a name="input_public_subnet_ids"></a> [public\_subnet\_ids](#input\_public\_subnet\_ids) | (Required) List of public subnet IDs. Must be in at least two different availability zones.<br>    Cross-account elastic network interfaces will be created in these subnets to allow<br>    communication between your worker nodes and the Kubernetes control plane. | `list(string)` | `[]` | no |

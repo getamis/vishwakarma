@@ -16,7 +16,7 @@ sudo pip3 install awscli --upgrade
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
 sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
 sudo apt-get update
-sudo apt-get install terraform=0.12.31
+sudo apt-get install terraform=0.13.7
 
 # install k8s release tools
 curl -L -O https://github.com/ahmetb/kubectx/releases/download/v0.9.4/kubectx_v0.9.4_linux_x86_64.tar.gz

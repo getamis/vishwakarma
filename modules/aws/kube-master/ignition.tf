@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.5.0"
+  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.19.16.0"
 
   binaries              = var.binaries
   containers            = var.containers
@@ -94,33 +94,33 @@ module "ignition_kubernetes" {
 }
 
 module "ignition_docker" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.19.16.0"
 }
 
 module "ignition_locksmithd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.19.16.0"
 
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.19.16.0"
 }
 
 module "ignition_sshd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.19.16.0"
 
   enable = var.debug_mode
 }
 
 module "ignition_systemd_networkd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.19.16.0"
 
   debug = var.debug_mode
 }
 
 module "ignition_legacy_cgroups" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups?ref=v1.19.16.0"
 }
 
 data "ignition_config" "main" {
@@ -153,7 +153,7 @@ data "ignition_config" "main" {
 }
 
 // TODO: use AWS Secrets Manager to store this, or encryption by KMS.
-resource "aws_s3_bucket_object" "admin_kubeconfig" {
+resource "aws_s3_object" "admin_kubeconfig" {
   bucket  = var.s3_bucket
   key     = "admin.conf"
   content = module.ignition_kubernetes.admin_kubeconfig_content
@@ -162,15 +162,15 @@ resource "aws_s3_bucket_object" "admin_kubeconfig" {
   server_side_encryption = "AES256"
   content_type           = "text/plain"
 
-  tags = merge(var.extra_tags, map(
-    "Name", "admin.conf",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "k8s-master"
-  ))
+  tags = merge(var.extra_tags, {
+    "Name"                              = "admin.conf"
+    "Role"                              = "k8s-master"
+    "kubernetes.io/cluster/${var.name}" = "owned"
+  })
 }
 
 // TODO: use AWS Secrets Manager to store this, or encryption by KMS.
-resource "aws_s3_bucket_object" "bootstrapping_kubeconfig" {
+resource "aws_s3_object" "bootstrapping_kubeconfig" {
   bucket  = var.s3_bucket
   key     = "bootstrap-kubelet.conf"
   content = module.ignition_kubernetes.bootstrap_kubeconfig_content
@@ -179,31 +179,30 @@ resource "aws_s3_bucket_object" "bootstrapping_kubeconfig" {
   server_side_encryption = "AES256"
   content_type           = "text/plain"
 
-  tags = merge(var.extra_tags, map(
-    "Name", "bootstrap-kubelet.conf",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "k8s-master"
-  ))
+  tags = merge(var.extra_tags, {
+    "Name"                              = "bootstrap-kubelet.conf"
+    "Role"                              = "k8s-master"
+    "kubernetes.io/cluster/${var.name}" = "owned"
+  })
 }
 
-resource "aws_s3_bucket_object" "ignition" {
+resource "aws_s3_object" "ignition" {
   bucket  = var.s3_bucket
   key     = "ign-master-${var.name}.json"
   content = data.ignition_config.main.rendered
-  acl     = "private"
 
   server_side_encryption = "AES256"
 
-  tags = merge(var.extra_tags, map(
-    "Name", "ign-master-${var.name}.json",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "k8s-master",
-  ))
+  tags = merge(var.extra_tags, {
+    "Name"                              = "ign-master-${var.name}.json"
+    "Role"                              = "k8s-master"
+    "kubernetes.io/cluster/${var.name}" = "owned"
+  })
 }
 
 data "ignition_config" "s3" {
   replace {
-    source       = format("s3://%s/%s", var.s3_bucket, aws_s3_bucket_object.ignition.key)
+    source       = format("s3://%s/%s", var.s3_bucket, aws_s3_object.ignition.key)
     verification = "sha512-${sha512(data.ignition_config.main.rendered)}"
   }
 }

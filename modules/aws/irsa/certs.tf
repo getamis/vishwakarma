@@ -15,9 +15,8 @@ module "webhook_cert" {
   source = "../../tls/certificate"
 
   ca_config = {
-    algorithm = module.webhook_ca.algorithm
-    key_pem   = module.webhook_ca.private_key_pem
-    cert_pem  = module.webhook_ca.cert_pem
+    key_pem  = module.webhook_ca.private_key_pem
+    cert_pem = module.webhook_ca.cert_pem
   }
 
   cert_config = {

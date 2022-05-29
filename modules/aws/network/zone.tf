@@ -6,8 +6,8 @@ resource "aws_route53_zone" "zone" {
     vpc_id = aws_vpc.new_vpc.id
   }
 
-  tags = merge(var.extra_tags, map(
-    "Name", "${var.name}.com",
-    "Role", "dns",
-  ))
+  tags = merge(var.extra_tags, {
+    "Name" = "${var.name}.com"
+    "Role" = "dns"
+  })
 }

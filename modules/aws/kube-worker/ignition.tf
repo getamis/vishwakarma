@@ -2,47 +2,47 @@ locals {
   cluster_dns_ip = cidrhost(var.service_network_cidr, 10)
 
   kubelet_node_labels = compact(concat(
-    list("node.kubernetes.io/role=${var.instance_config["name"]}"),
+    ["node.kubernetes.io/role=${var.instance_config["name"]}"],
     var.kubelet_node_labels
   ))
 }
 
 module "ignition_docker" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.19.16.0"
 }
 
 module "ignition_locksmithd" {
-  source          = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.1.5"
+  source          = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.19.16.0"
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.19.16.0"
 }
 
 module "ignition_sshd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.19.16.0"
 
   enable = var.debug_mode
 }
 
 module "ignition_systemd_networkd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.19.16.0"
 
   debug = var.debug_mode
 }
 
 module "ignition_legacy_cgroups" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups?ref=v1.19.16.0"
 }
 
-data "aws_s3_bucket_object" "bootstrapping_kubeconfig" {
+data "aws_s3_object" "bootstrapping_kubeconfig" {
   bucket = var.s3_bucket
   key    = "bootstrap-kubelet.conf"
 }
 
 module "ignition_kubelet" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.5.0"
+  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.19.16.0"
 
   binaries             = var.binaries
   containers           = var.containers
@@ -63,7 +63,7 @@ module "ignition_kubelet" {
     path     = ""
   }
 
-  bootstrap_kubeconfig_content = data.aws_s3_bucket_object.bootstrapping_kubeconfig.body
+  bootstrap_kubeconfig_content = data.aws_s3_object.bootstrapping_kubeconfig.body
 }
 
 data "ignition_config" "main" {
@@ -94,7 +94,7 @@ data "ignition_config" "main" {
   ))
 }
 
-resource "aws_s3_bucket_object" "ignition" {
+resource "aws_s3_object" "ignition" {
   bucket  = var.s3_bucket
   key     = "ign-worker-${var.instance_config["name"]}.json"
   content = data.ignition_config.main.rendered
@@ -102,16 +102,16 @@ resource "aws_s3_bucket_object" "ignition" {
 
   server_side_encryption = "AES256"
 
-  tags = merge(var.extra_tags, map(
-    "Name", "ign-worker-${var.instance_config["name"]}.json",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "k8s-worker"
-  ))
+  tags = merge(var.extra_tags, {
+    "Name"                              = "ign-worker-${var.instance_config["name"]}.json"
+    "Role"                              = "k8s-worker"
+    "kubernetes.io/cluster/${var.name}" = "owned"
+  })
 }
 
 data "ignition_config" "s3" {
   replace {
-    source       = format("s3://%s/%s", var.s3_bucket, aws_s3_bucket_object.ignition.key)
+    source       = format("s3://%s/%s", var.s3_bucket, aws_s3_object.ignition.key)
     verification = "sha512-${sha512(data.ignition_config.main.rendered)}"
   }
 }

@@ -126,6 +126,12 @@ variable "enable_eni_prefix" {
   default     = true
 }
 
+variable "enable_asg_life_cycle" {
+  description = "(Optional) enable ASG life cycle hook or not"
+  type        = bool
+  default     = true
+}
+
 variable "max_pods" {
   description = "(Optional) the max pod number in the node when enable eni prefix"
   type        = string

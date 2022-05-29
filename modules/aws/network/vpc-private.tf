@@ -2,10 +2,10 @@ resource "aws_route_table" "private_routes" {
   count  = length(local.aws_azs)
   vpc_id = aws_vpc.new_vpc.id
 
-  tags = merge(var.extra_tags, map(
-    "Name", "${var.name}-private-${local.aws_azs[count.index]}",
-    "Role", "network"
-  ))
+  tags = merge(var.extra_tags, {
+    "Name" = "${var.name}-private-${local.aws_azs[count.index]}"
+    "Role" = "network"
+  })
 }
 
 resource "aws_route" "to_nat_gw" {
@@ -22,10 +22,10 @@ resource "aws_subnet" "private_subnet" {
   cidr_block        = cidrsubnet(aws_vpc.new_vpc.cidr_block, 4, count.index + length(local.aws_azs))
   availability_zone = local.aws_azs[count.index]
 
-  tags = merge(var.extra_tags, map(
-    "Name", "${var.name}-private-${local.aws_azs[count.index]}",
-    "Role", "network"
-  ), )
+  tags = merge(var.extra_tags, {
+    "Name" = "${var.name}-private-${local.aws_azs[count.index]}"
+    "Role" = "network"
+  })
 }
 
 resource "aws_route_table_association" "private_routing" {

@@ -6,11 +6,11 @@ resource "aws_security_group" "master" {
   name_prefix = "${var.name}-master-"
   vpc_id      = data.aws_vpc.master.id
 
-  tags = merge(var.extra_tags, map(
-    "Name", "${var.name}-master",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "k8s-master"
-  ))
+  tags = merge(var.extra_tags, {
+    "Name"                              = "${var.name}-master"
+    "Role"                              = "k8s-master"
+    "kubernetes.io/cluster/${var.name}" = "owned"
+  })
 
   count = var.master_security_group_id == "" ? 1 : 0
 }

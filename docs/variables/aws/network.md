@@ -3,7 +3,9 @@
 This document gives an overview of variables used in the AWS platform of the network module.
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.1 |
 
 ## Providers
 

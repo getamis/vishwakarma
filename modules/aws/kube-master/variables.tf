@@ -245,6 +245,12 @@ variable "enable_eni_prefix" {
   default     = true
 }
 
+variable "enable_asg_life_cycle" {
+  description = "(Optional) enable ASG life cycle hook or not"
+  type        = bool
+  default     = true
+}
+
 variable "annotate_pod_ip" {
   description = "(Optional) enable to fix pod startup connectivity issue on installing Calico with aws-vpc-cni plugin. (Issue: https://github.com/aws/amazon-vpc-cni-k8s/issues/493)"
   type        = bool

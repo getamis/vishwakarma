@@ -1,8 +1,6 @@
 locals {
   vpc_id = data.aws_subnet.subnet.vpc_id
 
-  asg_extra_tags = [for k, v in var.extra_tags : { key = k, value = v, propagate_at_launch = true } if k != "Name"]
-
   iops_by_type = {
     root = {
       "gp3" : max(3000, var.instance_config["root_volume_iops"]),
@@ -65,28 +63,22 @@ resource "aws_autoscaling_group" "master" {
     }
   }
 
-  tags = concat(local.asg_extra_tags, [
-    {
-      key                 = "Name"
-      value               = "${var.name}-master"
-      propagate_at_launch = true
-    },
-    {
-      key                 = "kubernetes.io/cluster/${var.name}"
-      value               = "owned"
-      propagate_at_launch = true
-    },
-    {
-      key                 = "Role"
-      value               = "k8s-master"
-      propagate_at_launch = true
-    },
-    (var.instance_spot_max_price == "") ? {} : {
-      key                 = "spot-max-price"
-      value               = var.instance_spot_max_price
+  dynamic "tag" {
+    for_each = merge(var.extra_tags,
+      {
+        "Name"                              = "${var.name}-master"
+        "Role"                              = "k8s-master"
+        "kubernetes.io/cluster/${var.name}" = "owned"
+      },
+      (var.instance_spot_max_price == "") ? {} : { "spot-max-price" = var.instance_spot_max_price }
+    )
+
+    content {
+      key                 = tag.key
+      value               = tag.value
       propagate_at_launch = true
     }
-  ])
+  }
 }
 
 resource "aws_launch_template" "master" {
@@ -96,7 +88,7 @@ resource "aws_launch_template" "master" {
 
   vpc_security_group_ids = compact(concat(
     var.security_group_ids,
-    list(local.master_sg_id)
+    [local.master_sg_id]
   ))
 
   iam_instance_profile {
@@ -129,13 +121,14 @@ resource "aws_launch_template" "master" {
 
 
 module "lifecycle_hook" {
-  source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v0.1.0"
+  count  = var.enable_asg_life_cycle ? 1 : 0
+  source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v1.19.16.0"
 
   name                           = "${var.name}-master"
   cluster_name                   = var.name
   autoscaling_group_name         = aws_autoscaling_group.master.name
   kubeconfig_s3_bucket           = var.s3_bucket
-  kubeconfig_s3_object           = aws_s3_bucket_object.admin_kubeconfig.id
+  kubeconfig_s3_object           = aws_s3_object.admin_kubeconfig.id
   kubernetes_node_role           = "master"
   lambda_function_vpc_subnet_ids = var.private_subnet_ids
 

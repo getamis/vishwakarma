@@ -1,14 +1,24 @@
 terraform {
-  required_version = "~> 0.12.31"
+  required_version = ">= 0.13.1"
+
+  required_providers {
+    ignition = {
+      source  = "terraform-providers/ignition"
+      version = "~> 1.2.1"
+    }
+    aws = {
+      source  = "hashicorp/aws"
+      version = "4.16.0"
+    }
+    local = {
+      source  = "hashicorp/local"
+      version = "2.2.3"
+    }
+  }
 }
 
 provider "aws" {
-  region  = var.aws_region
-  version = "~>v3.59.0"
-}
-
-provider "local" {
-  version = "1.4.0"
+  region = var.aws_region
 }
 
 

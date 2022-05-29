@@ -3,10 +3,10 @@ resource "aws_vpc" "new_vpc" {
   enable_dns_hostnames = true
   enable_dns_support   = true
 
-  tags = merge(var.extra_tags, map(
-    "Name", "${var.name}",
-    "Role", "network"
-  ))
+  tags = merge(var.extra_tags, {
+    "Name" = var.name
+    "Role" = "network"
+  })
 }
 
 data "aws_availability_zones" "available" {
@@ -14,5 +14,6 @@ data "aws_availability_zones" "available" {
 }
 
 locals {
-  aws_azs = data.aws_availability_zones.available.names
+  aws_azs = slice(data.aws_availability_zones.available.names, 0, 2)
+
 }
