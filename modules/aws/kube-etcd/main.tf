@@ -41,15 +41,15 @@ resource "aws_network_interface" "etcd" {
   subnet_id = var.subnet_ids[count.index % length(var.subnet_ids)]
   security_groups = compact(concat(
     var.security_group_ids,
-    list(aws_security_group.etcd.id)
+    [aws_security_group.etcd.id]
   ))
   source_dest_check = false
 
-  tags = merge(var.extra_tags, map(
-    "Name", "${var.name}-etcd-${count.index}",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "etcd"
-  ))
+  tags = merge(var.extra_tags, {
+    "Name"                              = "${var.name}-etcd-${count.index}"
+    "Role"                              = "etcd"
+    "kubernetes.io/cluster/${var.name}" = "owned"
+  })
 }
 
 resource "aws_ebs_volume" "etcd" {
@@ -61,11 +61,11 @@ resource "aws_ebs_volume" "etcd" {
   # aws_ebs_volume always checks the range of throughput.(125 ~ 1000)
   throughput = lookup(local.throughput_by_type.data, var.instance_volume_config.data.type, null)
 
-  tags = merge(var.extra_tags, map(
-    "Name", "${var.name}-etcd-${count.index}",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "etcd"
-  ))
+  tags = merge(var.extra_tags, {
+    "Name"                              = "${var.name}-etcd-${count.index}"
+    "Role"                              = "etcd"
+    "kubernetes.io/cluster/${var.name}" = "owned"
+  })
 }
 
 resource "aws_volume_attachment" "etcd" {
@@ -97,17 +97,17 @@ resource "aws_instance" "etcd" {
     throughput  = lookup(local.throughput_by_type.root, var.instance_volume_config.root.type, null)
   }
 
-  volume_tags = merge(var.extra_tags, map(
-    "Name", "${var.name}-etcd-${count.index}",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "etcd"
-  ))
+  volume_tags = merge(var.extra_tags, {
+    "Name"                              = "${var.name}-etcd-${count.index}"
+    "Role"                              = "etcd"
+    "kubernetes.io/cluster/${var.name}" = "owned"
+  })
 
-  tags = merge(var.extra_tags, map(
-    "Name", "${var.name}-etcd-${count.index}",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "etcd"
-  ))
+  tags = merge(var.extra_tags, {
+    "Name"                              = "${var.name}-etcd-${count.index}"
+    "Role"                              = "etcd"
+    "kubernetes.io/cluster/${var.name}" = "owned"
+  })
 
   lifecycle {
     # Ignore changes in the ami & userdata which force recreation of the resource. This

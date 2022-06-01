@@ -1,29 +1,29 @@
 module "ignition_docker" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.19.16.0"
 }
 
 module "ignition_locksmithd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.19.16.0"
 
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.19.16.0"
 }
 
 module "ignition_node_exporter" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=v1.19.16.0"
 }
 
 module "ignition_sshd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.1.5"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.19.16.0"
 
   enable = var.debug_mode
 }
 
 module "ignition_etcd" {
-  source = "github.com/getamis/terraform-ignition-etcd?ref=v1.1.3"
+  source = "github.com/getamis/terraform-ignition-etcd?ref=v1.19.16.0"
 
   name                  = var.name
   containers            = var.containers
@@ -70,7 +70,7 @@ data "ignition_config" "main" {
   disks       = module.ignition_etcd.disks
 }
 
-resource "aws_s3_bucket_object" "ignition" {
+resource "aws_s3_object" "ignition" {
   bucket  = var.s3_bucket
   key     = "ign-etcd-${var.name}.json"
   content = data.ignition_config.main.rendered
@@ -78,16 +78,17 @@ resource "aws_s3_bucket_object" "ignition" {
 
   server_side_encryption = "AES256"
 
-  tags = merge(var.extra_tags, map(
-    "Name", "ign-etcd-${var.name}.json",
-    "kubernetes.io/cluster/${var.name}", "owned",
-    "Role", "etcd"
-  ))
+  tags = merge(var.extra_tags, {
+    "Name"                              = "ign-etcd-${var.name}.json"
+    "Role"                              = "etcd"
+    "kubernetes.io/cluster/${var.name}" = "owned"
+  })
 }
+
 
 data "ignition_config" "s3" {
   replace {
-    source       = format("s3://%s/%s", var.s3_bucket, aws_s3_bucket_object.ignition.key)
+    source       = format("s3://%s/%s", var.s3_bucket, aws_s3_object.ignition.key)
     verification = "sha512-${sha512(data.ignition_config.main.rendered)}"
   }
 }

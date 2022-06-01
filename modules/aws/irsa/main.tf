@@ -11,7 +11,7 @@ locals {
 data "aws_region" "current" {}
 
 module "ignition_pod_idenity_webhook" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-pod-identity-webhook?ref=v1.5.0"
+  source = "github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-pod-identity-webhook?ref=v1.19.16.0"
 
   container                  = var.container
   service_name               = var.service_name
@@ -62,14 +62,18 @@ resource "null_resource" "generate_oidc_keys_json" {
 
 resource "aws_s3_bucket" "oidc" {
   bucket = var.oidc_s3_bucket
-  acl    = "private"
 
   tags = merge(
-    map("Name", "${var.name}-oidc-${md5("${var.name}-oidc")}"),
+    { "Name" = "${var.name}-oidc-${md5("${var.name}-oidc")}" },
   var.extra_tags)
 }
 
-resource "aws_s3_bucket_object" "discovery_json" {
+resource "aws_s3_bucket_acl" "oidc" {
+  bucket = aws_s3_bucket.oidc.id
+  acl    = "private"
+}
+
+resource "aws_s3_object" "discovery_json" {
   bucket = aws_s3_bucket.oidc.id
 
   key          = ".well-known/openid-configuration"
@@ -80,10 +84,10 @@ resource "aws_s3_bucket_object" "discovery_json" {
     issuer_host = "https://s3-${data.aws_region.current.name}.amazonaws.com/${var.oidc_s3_bucket}"
   })
 
-  tags = merge(map(
-    "Name", "discovery.json",
-    "Role", "k8s-master"
-  ), var.extra_tags)
+  tags = merge({
+    "Name" = "discovery.json"
+    "Role" = "k8s-master"
+  }, var.extra_tags)
 }
 
 data "local_file" "keys_json" {
@@ -93,7 +97,7 @@ data "local_file" "keys_json" {
   depends_on = [null_resource.generate_oidc_keys_json]
 }
 
-resource "aws_s3_bucket_object" "keys_json" {
+resource "aws_s3_object" "keys_json" {
   bucket = aws_s3_bucket.oidc.id
 
   key          = "keys.json"
@@ -101,8 +105,8 @@ resource "aws_s3_bucket_object" "keys_json" {
   acl          = "public-read"
   content_type = "application/json"
 
-  tags = merge(map(
-    "Name", "keys.json",
-    "Role", "k8s-master"
-  ), var.extra_tags)
+  tags = merge({
+    "Name" = "keys.json"
+    "Role" = "k8s-master"
+  }, var.extra_tags)
 }

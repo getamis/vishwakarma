@@ -40,7 +40,7 @@ module "master" {
   kubelet_node_labels = var.kubelet_node_labels
 
   kubelet_node_taints = compact(concat(
-    list("node-role.kubernetes.io/master=:NoSchedule"),
+    ["node-role.kubernetes.io/master=:NoSchedule"],
     var.kubelet_node_taints
   ))
 
@@ -61,6 +61,8 @@ module "master" {
   enable_eni_prefix = var.enable_eni_prefix
   annotate_pod_ip   = var.annotate_pod_ip
   max_pods          = var.max_pods
+
+  enable_asg_life_cycle = var.enable_asg_life_cycle
 
   audit_log_policy_content = var.kube_audit_log_policy_content
 

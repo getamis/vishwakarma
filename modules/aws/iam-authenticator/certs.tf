@@ -15,9 +15,8 @@ module "iam_auth_cert" {
   source = "../../tls/certificate"
 
   ca_config = {
-    algorithm = module.iam_auth_ca.algorithm
-    key_pem   = module.iam_auth_ca.private_key_pem
-    cert_pem  = module.iam_auth_ca.cert_pem
+    key_pem  = module.iam_auth_ca.private_key_pem
+    cert_pem = module.iam_auth_ca.cert_pem
   }
 
   cert_config = {
@@ -27,9 +26,9 @@ module "iam_auth_cert" {
   }
 
   cert_ip_addresses = compact(concat(
-    list(
+    [
       "127.0.0.1"
-    ),
+    ],
   ))
 
   cert_uses = [

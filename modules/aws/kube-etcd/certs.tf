@@ -17,9 +17,8 @@ module "etcd_server_cert" {
   source = "../../tls/certificate"
 
   ca_config = {
-    algorithm = module.etcd_ca.algorithm
-    key_pem   = module.etcd_ca.private_key_pem
-    cert_pem  = module.etcd_ca.cert_pem
+    key_pem  = module.etcd_ca.private_key_pem
+    cert_pem = module.etcd_ca.cert_pem
   }
 
   cert_config = {
@@ -29,19 +28,19 @@ module "etcd_server_cert" {
   }
 
   cert_hostnames = compact(concat(
-    list(
+    [
       "localhost",
       "*.kube-etcd.kube-system.svc.cluster.local",
       "kube-etcd-client.kube-system.svc.cluster.local",
       local.discovery_service,
       "*.${local.discovery_service}",
       "*.${data.aws_region.current.name}.compute.internal"
-    ),
+    ],
     var.certs_hostnames,
   ))
 
   cert_ip_addresses = compact(concat(
-    list("127.0.0.1"),
+    ["127.0.0.1"],
     var.certs_ip_addresses,
   ))
 
@@ -58,9 +57,8 @@ module "etcd_client_cert" {
   source = "../../tls/certificate"
 
   ca_config = {
-    algorithm = module.etcd_ca.algorithm
-    key_pem   = module.etcd_ca.private_key_pem
-    cert_pem  = module.etcd_ca.cert_pem
+    key_pem  = module.etcd_ca.private_key_pem
+    cert_pem = module.etcd_ca.cert_pem
   }
 
   cert_config = {
@@ -81,9 +79,8 @@ module "etcd_peer_cert" {
   source = "../../tls/certificate"
 
   ca_config = {
-    algorithm = module.etcd_ca.algorithm
-    key_pem   = module.etcd_ca.private_key_pem
-    cert_pem  = module.etcd_ca.cert_pem
+    key_pem  = module.etcd_ca.private_key_pem
+    cert_pem = module.etcd_ca.cert_pem
   }
 
   cert_config = {
@@ -93,18 +90,18 @@ module "etcd_peer_cert" {
   }
 
   cert_hostnames = compact(concat(
-    list(
+    [
       "*.kube-etcd.kube-system.svc.cluster.local",
       "kube-etcd-client.kube-system.svc.cluster.local",
       local.discovery_service,
       "*.${local.discovery_service}",
       "*.${data.aws_region.current.name}.compute.internal"
-    ),
+    ],
     var.certs_hostnames,
   ))
 
   cert_ip_addresses = compact(concat(
-    list("127.0.0.1"),
+    ["127.0.0.1"],
     var.certs_ip_addresses,
   ))
 

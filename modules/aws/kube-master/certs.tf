@@ -15,9 +15,8 @@ module "apiserver_cert" {
   source = "../../tls/certificate"
 
   ca_config = {
-    algorithm = module.kubernetes_ca.algorithm
-    key_pem   = module.kubernetes_ca.private_key_pem
-    cert_pem  = module.kubernetes_ca.cert_pem
+    key_pem  = module.kubernetes_ca.private_key_pem
+    cert_pem = module.kubernetes_ca.cert_pem
   }
 
   cert_config = {
@@ -27,7 +26,7 @@ module "apiserver_cert" {
   }
 
   cert_hostnames = compact(concat(
-    list(
+    [
       "localhost",
       "kubernetes",
       "kubernetes.default",
@@ -35,14 +34,14 @@ module "apiserver_cert" {
       // TODO: pass "cluster.local" from variable
       "kubernetes.default.svc.cluster.local",
       aws_elb.master_internal.dns_name,
-    ),
+    ],
   ))
 
   cert_ip_addresses = compact(concat(
-    list(
+    [
       "127.0.0.1",
-      "${cidrhost(var.service_network_cidr, 1)}",
-    ),
+      cidrhost(var.service_network_cidr, 1),
+    ],
   ))
 
   cert_uses = [
@@ -58,9 +57,8 @@ module "admin_cert" {
   source = "../../tls/certificate"
 
   ca_config = {
-    algorithm = module.kubernetes_ca.algorithm
-    key_pem   = module.kubernetes_ca.private_key_pem
-    cert_pem  = module.kubernetes_ca.cert_pem
+    key_pem  = module.kubernetes_ca.private_key_pem
+    cert_pem = module.kubernetes_ca.cert_pem
   }
 
   cert_config = {
@@ -85,9 +83,8 @@ module "controller_manager_cert" {
   source = "../../tls/certificate"
 
   ca_config = {
-    algorithm = module.kubernetes_ca.algorithm
-    key_pem   = module.kubernetes_ca.private_key_pem
-    cert_pem  = module.kubernetes_ca.cert_pem
+    key_pem  = module.kubernetes_ca.private_key_pem
+    cert_pem = module.kubernetes_ca.cert_pem
   }
 
   cert_config = {
@@ -112,9 +109,8 @@ module "scheduler_cert" {
   source = "../../tls/certificate"
 
   ca_config = {
-    algorithm = module.kubernetes_ca.algorithm
-    key_pem   = module.kubernetes_ca.private_key_pem
-    cert_pem  = module.kubernetes_ca.cert_pem
+    key_pem  = module.kubernetes_ca.private_key_pem
+    cert_pem = module.kubernetes_ca.cert_pem
   }
 
   cert_config = {
@@ -139,9 +135,8 @@ module "apiserver_kubelet_client_cert" {
   source = "../../tls/certificate"
 
   ca_config = {
-    algorithm = module.kubernetes_ca.algorithm
-    key_pem   = module.kubernetes_ca.private_key_pem
-    cert_pem  = module.kubernetes_ca.cert_pem
+    key_pem  = module.kubernetes_ca.private_key_pem
+    cert_pem = module.kubernetes_ca.cert_pem
   }
 
   cert_config = {
@@ -163,9 +158,8 @@ module "apiserver_etcd_client_cert" {
   source = "../../tls/certificate"
 
   ca_config = {
-    algorithm = module.kubernetes_ca.algorithm
-    cert_pem  = var.etcd_certs["ca_cert"]
-    key_pem   = var.etcd_certs["ca_key"]
+    cert_pem = var.etcd_certs["ca_cert"]
+    key_pem  = var.etcd_certs["ca_key"]
   }
 
   cert_config = {
@@ -200,9 +194,8 @@ module "front_proxy_client_cert" {
   source = "../../tls/certificate"
 
   ca_config = {
-    algorithm = module.front_proxy_ca.algorithm
-    key_pem   = module.front_proxy_ca.private_key_pem
-    cert_pem  = module.front_proxy_ca.cert_pem
+    key_pem  = module.front_proxy_ca.private_key_pem
+    cert_pem = module.front_proxy_ca.cert_pem
   }
 
   cert_config = {

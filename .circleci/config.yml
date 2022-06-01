@@ -4,13 +4,12 @@ install_tools: &install_tools
   run: 
     name: Install tools
     command: |
-      sudo apt-get install -y ca-certificates
       # Install AWS CLI and AWS IAM Authenticator
       if [ "${INSTALL_AWS_CLI}" == "true" ]; then
-        sudo apt-get --allow-releaseinfo-change update && sudo apt-get install -y python3.7 python3-pip
+        sudo apt-get --allow-releaseinfo-change update && sudo apt-get install -y python3.9 python3-pip
         pip3 install awscli --upgrade --user
-        wget https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/aws-iam-authenticator -O /tmp/aws-iam-authenticator
-        chmod +x /tmp/aws-iam-authenticator && sudo mv /tmp/aws-iam-authenticator /usr/local/bin/aws-iam-authenticator
+        sudo curl -o /usr/local/bin/aws-iam-authenticator https://s3.us-west-2.amazonaws.com/amazon-eks/1.21.2/2021-07-05/bin/linux/amd64/aws-iam-authenticator
+        sudo chmod +x /usr/local/bin/aws-iam-authenticator
       fi
 
       # Install Terraform
@@ -27,12 +26,10 @@ install_tools: &install_tools
 
 default: &default
   docker: 
-    - image: circleci/golang:1.15
-  working_directory: /go/src/github.com/getamis/vishwakarma
+    - image: cimg/go:1.18
   environment:
-    GOPATH: /go
     GO111MODULE: "on"
-    TF_VERSION: "0.12.31"
+    TF_VERSION: "0.13.7"
     KUBE_VERSION: "1.19.16"
     AWS_SDK_LOAD_CONFIG: "True"
     INSTALL_AWS_CLI: "true"
@@ -43,7 +40,7 @@ jobs:
   validate-and-format:
     <<: *default
     environment:
-      TF_VERSION: "0.12.31"
+      TF_VERSION: "0.13.7"
       INSTALL_TERRAFORM: "true"
     steps:
       - checkout

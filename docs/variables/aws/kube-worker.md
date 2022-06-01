@@ -3,26 +3,30 @@
 This document gives an overview of variables used in the AWS platform of the kube-worker module.
 ## Requirements
 
-No requirements.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.1 |
+| <a name="requirement_ignition"></a> [ignition](#requirement\_ignition) | ~> 1.2.1 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
-| <a name="provider_ignition"></a> [ignition](#provider\_ignition) | n/a |
+| <a name="provider_ignition"></a> [ignition](#provider\_ignition) | ~> 1.2.1 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ignition_docker"></a> [ignition\_docker](#module\_ignition\_docker) | github.com/getamis/terraform-ignition-reinforcements//modules/docker | v1.1.5 |
-| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | github.com/getamis/terraform-ignition-kubernetes//modules/kubelet | v1.5.0 |
-| <a name="module_ignition_locksmithd"></a> [ignition\_locksmithd](#module\_ignition\_locksmithd) | github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd | v1.1.5 |
-| <a name="module_ignition_sshd"></a> [ignition\_sshd](#module\_ignition\_sshd) | github.com/getamis/terraform-ignition-reinforcements//modules/sshd | v1.1.5 |
-| <a name="module_ignition_systemd_networkd"></a> [ignition\_systemd\_networkd](#module\_ignition\_systemd\_networkd) | github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd | v1.1.5 |
-| <a name="module_ignition_update_ca_certificates"></a> [ignition\_update\_ca\_certificates](#module\_ignition\_update\_ca\_certificates) | github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates | v1.1.5 |
-| <a name="module_lifecycle_hook"></a> [lifecycle\_hook](#module\_lifecycle\_hook) | github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes | v0.1.0 |
+| <a name="module_ignition_docker"></a> [ignition\_docker](#module\_ignition\_docker) | github.com/getamis/terraform-ignition-reinforcements//modules/docker | v1.19.16.0 |
+| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | github.com/getamis/terraform-ignition-kubernetes//modules/kubelet | v1.19.16.0 |
+| <a name="module_ignition_legacy_cgroups"></a> [ignition\_legacy\_cgroups](#module\_ignition\_legacy\_cgroups) | github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups | v1.19.16.0 |
+| <a name="module_ignition_locksmithd"></a> [ignition\_locksmithd](#module\_ignition\_locksmithd) | github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd | v1.19.16.0 |
+| <a name="module_ignition_sshd"></a> [ignition\_sshd](#module\_ignition\_sshd) | github.com/getamis/terraform-ignition-reinforcements//modules/sshd | v1.19.16.0 |
+| <a name="module_ignition_systemd_networkd"></a> [ignition\_systemd\_networkd](#module\_ignition\_systemd\_networkd) | github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd | v1.19.16.0 |
+| <a name="module_ignition_update_ca_certificates"></a> [ignition\_update\_ca\_certificates](#module\_ignition\_update\_ca\_certificates) | github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates | v1.19.16.0 |
+| <a name="module_lifecycle_hook"></a> [lifecycle\_hook](#module\_lifecycle\_hook) | github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes | v1.19.16.0 |
 
 ## Resources
 
@@ -36,39 +40,44 @@ No requirements.
 | [aws_iam_role_policy_attachment.worker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.worker_vpc_cni](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_launch_template.worker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template) | resource |
-| [aws_s3_bucket_object.ignition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_object) | resource |
+| [aws_s3_object.ignition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_object) | resource |
+| [aws_security_group.worker_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_iam_policy_document.worker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.worker_profile](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.worker_vpc_cni](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
-| [aws_s3_bucket_object.bootstrapping_kubeconfig](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_bucket_object) | data source |
+| [aws_s3_object.bootstrapping_kubeconfig](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_object) | data source |
 | [aws_subnet.subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
-| [ignition_config.main](https://registry.terraform.io/providers/hashicorp/ignition/latest/docs/data-sources/config) | data source |
-| [ignition_config.s3](https://registry.terraform.io/providers/hashicorp/ignition/latest/docs/data-sources/config) | data source |
+| [ignition_config.main](https://registry.terraform.io/providers/terraform-providers/ignition/latest/docs/data-sources/config) | data source |
+| [ignition_config.s3](https://registry.terraform.io/providers/terraform-providers/ignition/latest/docs/data-sources/config) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_asg_warm_pool"></a> [asg\_warm\_pool](#input\_asg\_warm\_pool) | Warm pool arguments of Auto Scaling group. | <pre>object({<br>    enabled                     = bool<br>    min_size                    = number<br>    reuse_on_scale_in           = bool<br>    max_group_prepared_capacity = number<br>  })</pre> | <pre>{<br>  "enabled": false,<br>  "max_group_prepared_capacity": 1,<br>  "min_size": 1,<br>  "reuse_on_scale_in": false<br>}</pre> | no |
 | <a name="input_binaries"></a> [binaries](#input\_binaries) | Desired binaries(cni\_plugin) url and checksum. | <pre>map(object({<br>    source   = string<br>    checksum = string<br>  }))</pre> | `{}` | no |
 | <a name="input_cloud_config"></a> [cloud\_config](#input\_cloud\_config) | The cloud provider configuration. | <pre>object({<br>    provider = string<br>    path     = string<br>  })</pre> | <pre>{<br>  "path": "",<br>  "provider": ""<br>}</pre> | no |
 | <a name="input_containers"></a> [containers](#input\_containers) | Desired containers(kube-apiserver, kube-controller-manager, cfssl, coredns, and so on) repo and tag. | <pre>map(object({<br>    repo = string<br>    tag  = string<br>  }))</pre> | `{}` | no |
 | <a name="input_debug_mode"></a> [debug\_mode](#input\_debug\_mode) | Enable the functionailty for trouble shooting, e.g. sshd | `bool` | `false` | no |
+| <a name="input_enable_asg_life_cycle"></a> [enable\_asg\_life\_cycle](#input\_enable\_asg\_life\_cycle) | (Optional) enable ASG life cycle hook or not | `bool` | `true` | no |
 | <a name="input_enable_autoscaler"></a> [enable\_autoscaler](#input\_enable\_autoscaler) | Enable to add autoscaler tag or not | `string` | `"false"` | no |
 | <a name="input_enable_eni_prefix"></a> [enable\_eni\_prefix](#input\_enable\_eni\_prefix) | (Optional) assign prefix to AWS EC2 network interface | `bool` | `true` | no |
+| <a name="input_enable_extra_sg"></a> [enable\_extra\_sg](#input\_enable\_extra\_sg) | Enable extra security group for worker group. | `bool` | `false` | no |
 | <a name="input_enable_node_termination_handler"></a> [enable\_node\_termination\_handler](#input\_enable\_node\_termination\_handler) | Enable to add aws-node-termination-handler tag or not | `string` | `"false"` | no |
 | <a name="input_extra_ignition_file_ids"></a> [extra\_ignition\_file\_ids](#input\_extra\_ignition\_file\_ids) | Additional ignition file IDs. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details. | `list(string)` | `[]` | no |
 | <a name="input_extra_ignition_systemd_unit_ids"></a> [extra\_ignition\_systemd\_unit\_ids](#input\_extra\_ignition\_systemd\_unit\_ids) | Additional ignition systemd unit IDs. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details. | `list(string)` | `[]` | no |
 | <a name="input_extra_tags"></a> [extra\_tags](#input\_extra\_tags) | Extra AWS tags to be applied to created resources. | `map(string)` | `{}` | no |
-| <a name="input_instance_config"></a> [instance\_config](#input\_instance\_config) | Desired worker nodes configuration. | <pre>object({<br>    count            = number<br>    name             = string<br>    image_id         = string<br>    ec2_type         = list(string)<br>    root_volume_iops = number<br>    root_volume_size = number<br>    root_volume_type = string<br><br>    instance_warmup        = number<br>    min_healthy_percentage = number<br><br>    on_demand_base_capacity                  = number<br>    on_demand_percentage_above_base_capacity = number<br>    spot_instance_pools                      = number<br>  })</pre> | n/a | yes |
+| <a name="input_instance_config"></a> [instance\_config](#input\_instance\_config) | Desired worker nodes configuration. | <pre>object({<br>    count            = number<br>    max_count        = number<br>    name             = string<br>    image_id         = string<br>    ec2_type         = list(string)<br>    root_volume_iops = number<br>    root_volume_size = number<br>    root_volume_type = string<br><br>    default_cooldown          = number<br>    health_check_grace_period = number<br><br>    instance_warmup        = number<br>    min_healthy_percentage = number<br><br>    on_demand_base_capacity                  = number<br>    on_demand_percentage_above_base_capacity = number<br>    spot_instance_pools                      = number<br>    spot_allocation_strategy                 = string<br>  })</pre> | n/a | yes |
 | <a name="input_instance_spot_max_price"></a> [instance\_spot\_max\_price](#input\_instance\_spot\_max\_price) | Desired worker nodes spot maximum price, default is the on-demand price. | `string` | `""` | no |
 | <a name="input_kubelet_config"></a> [kubelet\_config](#input\_kubelet\_config) | The configuration of kubelet. The variables need to follow https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/kubelet/config/v1beta1/types.go. Do not use underline. | `map` | `{}` | no |
 | <a name="input_kubelet_flags"></a> [kubelet\_flags](#input\_kubelet\_flags) | The flags of kubelet. The variables need to follow https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/. Do not use underline. | `map(string)` | `{}` | no |
 | <a name="input_kubelet_node_labels"></a> [kubelet\_node\_labels](#input\_kubelet\_node\_labels) | Labels to add when registering the node in the cluster. Labels must be key=value pairs. | `list(string)` | `[]` | no |
 | <a name="input_kubelet_node_taints"></a> [kubelet\_node\_taints](#input\_kubelet\_node\_taints) | Register the node with the given list of taints ("<key>=<value>:<effect>"). | `list(string)` | `[]` | no |
 | <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Desired Kubernetes version. | `string` | `"v1.19.16"` | no |
+| <a name="input_max_pods"></a> [max\_pods](#input\_max\_pods) | (Optional) the max pod number in the node when enable eni prefix | `string` | `"110"` | no |
 | <a name="input_name"></a> [name](#input\_name) | (Required) Name of the cluster. | `string` | n/a | yes |
 | <a name="input_network_plugin"></a> [network\_plugin](#input\_network\_plugin) | Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc' | `string` | `"amazon-vpc"` | no |
-| <a name="input_reboot_strategy"></a> [reboot\_strategy](#input\_reboot\_strategy) | CoreOS reboot strategies on updates, two option here: etcd-lock or off | `string` | `"etcd-lock"` | no |
+| <a name="input_reboot_strategy"></a> [reboot\_strategy](#input\_reboot\_strategy) | CoreOS reboot strategies on updates, two option here: etcd-lock or off | `string` | `"off"` | no |
 | <a name="input_role_name"></a> [role\_name](#input\_role\_name) | The Amazon Resource Name of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf. | `string` | `""` | no |
 | <a name="input_s3_bucket"></a> [s3\_bucket](#input\_s3\_bucket) | Unique name under which the Amazon S3 bucket will be created. Bucket name must start with a lower case name and is limited to 63 characters.<br>    If name is not provided the installer will construct the name using "name" and current AWS region. | `string` | `""` | no |
 | <a name="input_s3_object"></a> [s3\_object](#input\_s3\_object) | n/a | `string` | `"admin.conf"` | no |
@@ -82,6 +91,7 @@ No requirements.
 | Name | Description |
 |------|-------------|
 | <a name="output_worker_asg_name"></a> [worker\_asg\_name](#output\_worker\_asg\_name) | n/a |
+| <a name="output_worker_extra_sg_id"></a> [worker\_extra\_sg\_id](#output\_worker\_extra\_sg\_id) | n/a |
 | <a name="output_worker_instance_profile_name"></a> [worker\_instance\_profile\_name](#output\_worker\_instance\_profile\_name) | n/a |
 | <a name="output_worker_launch_template_name"></a> [worker\_launch\_template\_name](#output\_worker\_launch\_template\_name) | n/a |
 | <a name="output_worker_role_name"></a> [worker\_role\_name](#output\_worker\_role\_name) | n/a |

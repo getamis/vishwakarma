@@ -7,7 +7,7 @@ This example demonstrates how to setup IAM Authenticator and IRSA(IAM roles for 
 2. Configure your AWS credentials using one of the [supported methods for AWS CLI
    tools](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-getting-started.html), such as setting the
    `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables. If you're using the `~/.aws/config` file for profiles then export `AWS_SDK_LOAD_CONFIG` as "True".
-3. Install [Terraform v0.12+](https://www.terraform.io/) and make sure it's on your `PATH`.
+3. Install [Terraform v1.2+](https://www.terraform.io/) and make sure it's on your `PATH`.
 
 4. Install Golang environment for IRSA preparation
 

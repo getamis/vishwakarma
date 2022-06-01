@@ -10,7 +10,7 @@ variable "kubernetes_version" {
 }
 
 variable "override_binaries" {
-  description = "Desired binaries(cni_plugin) url and checksum."
+  description = "Desired binaries(etcd, kubelet, cni_plugin) url and checksum."
   type = map(object({
     source   = string
     checksum = string
@@ -244,6 +244,12 @@ variable "endpoint_public_access" {
 
 variable "enable_eni_prefix" {
   description = "(Optional) assign prefix to AWS EC2 network interface"
+  type        = bool
+  default     = true
+}
+
+variable "enable_asg_life_cycle" {
+  description = "(Optional) enable ASG life cycle hook or not"
   type        = bool
   default     = true
 }
