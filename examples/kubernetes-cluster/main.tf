@@ -28,7 +28,7 @@ locals {
 module "os_ami" {
   source          = "../../modules/aws/os-ami"
   flavor          = "flatcar"
-  flatcar_version = "3139.2.0"
+  flatcar_version = "3227.2.0"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -53,6 +53,13 @@ module "master" {
     data_device_name   = "/dev/sdf"
     data_device_rename = "/dev/nvme1n1"
     data_path          = "/var/lib/etcd"
+  }
+
+  override_binaries = {
+    envsubst = {
+      source = "https://github.com/a8m/envsubst/releases/download/v1.2.0/envsubst-Linux-x86_64"
+      checksum = "sha512-91dfd502ab14173ac8af35ca318c9872ec3e0b04b34580b65f787faead355e29ca9609aaeb6ca0629d7dd9cfaeaa83769a166eb03923ae19441da04150e865c6"
+    }
   }
 
   master_instance_config = {
