@@ -6,7 +6,7 @@ This document gives an overview of variables used in the AWS platform of the ela
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.1 |
-| <a name="requirement_ignition"></a> [ignition](#requirement\_ignition) | ~> 1.2.1 |
+| <a name="requirement_ignition"></a> [ignition](#requirement\_ignition) | 2.1.2 |
 
 ## Providers
 

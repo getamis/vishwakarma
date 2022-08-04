@@ -64,7 +64,8 @@ module "master" {
 
   master_instance_config = {
     count    = 1
-    image_id = module.os_ami.image_id
+    # image_id = module.os_ami.image_id
+    image_id = "ami-074e7feabf5e1861f"
     ec2_type = [
       "t3.medium",
       "t2.medium"
@@ -127,7 +128,7 @@ module "worker_on_demand" {
     name      = "on-demand"
     count     = 1
     max_count = null
-    image_id  = module.os_ami.image_id
+    image_id  = "ami-074e7feabf5e1861f"
     ec2_type = [
       "t3.medium",
       "t2.medium"

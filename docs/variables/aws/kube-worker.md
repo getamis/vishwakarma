@@ -6,26 +6,26 @@ This document gives an overview of variables used in the AWS platform of the kub
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.1 |
-| <a name="requirement_ignition"></a> [ignition](#requirement\_ignition) | ~> 1.2.1 |
+| <a name="requirement_ignition"></a> [ignition](#requirement\_ignition) | 2.1.2 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
-| <a name="provider_ignition"></a> [ignition](#provider\_ignition) | ~> 1.2.1 |
+| <a name="provider_ignition"></a> [ignition](#provider\_ignition) | 2.1.2 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ignition_docker"></a> [ignition\_docker](#module\_ignition\_docker) | github.com/getamis/terraform-ignition-reinforcements//modules/docker | v1.19.16.0 |
-| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | github.com/getamis/terraform-ignition-kubernetes//modules/kubelet | v1.19.16.0 |
-| <a name="module_ignition_legacy_cgroups"></a> [ignition\_legacy\_cgroups](#module\_ignition\_legacy\_cgroups) | github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups | v1.19.16.0 |
-| <a name="module_ignition_locksmithd"></a> [ignition\_locksmithd](#module\_ignition\_locksmithd) | github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd | v1.19.16.0 |
-| <a name="module_ignition_sshd"></a> [ignition\_sshd](#module\_ignition\_sshd) | github.com/getamis/terraform-ignition-reinforcements//modules/sshd | v1.19.16.0 |
-| <a name="module_ignition_systemd_networkd"></a> [ignition\_systemd\_networkd](#module\_ignition\_systemd\_networkd) | github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd | v1.19.16.0 |
-| <a name="module_ignition_update_ca_certificates"></a> [ignition\_update\_ca\_certificates](#module\_ignition\_update\_ca\_certificates) | github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates | v1.19.16.0 |
+| <a name="module_ignition_docker"></a> [ignition\_docker](#module\_ignition\_docker) | ../../../../terraform-ignition-reinforcements//modules/docker | v1.19.16.0 |
+| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | ../../../../terraform-ignition-kubernetes//modules/kubelet | v1.19.16.0 |
+| <a name="module_ignition_legacy_cgroups"></a> [ignition\_legacy\_cgroups](#module\_ignition\_legacy\_cgroups) | ../../../../terraform-ignition-reinforcements//modules/legacy-cgroups | v1.19.16.0 |
+| <a name="module_ignition_locksmithd"></a> [ignition\_locksmithd](#module\_ignition\_locksmithd) | ../../../../terraform-ignition-reinforcements//modules/locksmithd | v1.19.16.0 |
+| <a name="module_ignition_sshd"></a> [ignition\_sshd](#module\_ignition\_sshd) | ../../../../terraform-ignition-reinforcements//modules/sshd | v1.19.16.0 |
+| <a name="module_ignition_systemd_networkd"></a> [ignition\_systemd\_networkd](#module\_ignition\_systemd\_networkd) | ../../../../terraform-ignition-reinforcements//modules/systemd-networkd | v1.19.16.0 |
+| <a name="module_ignition_update_ca_certificates"></a> [ignition\_update\_ca\_certificates](#module\_ignition\_update\_ca\_certificates) | ../../../../terraform-ignition-reinforcements//modules/update-ca-certificates | v1.19.16.0 |
 | <a name="module_lifecycle_hook"></a> [lifecycle\_hook](#module\_lifecycle\_hook) | github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes | v1.19.16.0 |
 
 ## Resources
@@ -47,8 +47,8 @@ This document gives an overview of variables used in the AWS platform of the kub
 | [aws_iam_policy_document.worker_vpc_cni](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_s3_object.bootstrapping_kubeconfig](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_object) | data source |
 | [aws_subnet.subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
-| [ignition_config.main](https://registry.terraform.io/providers/terraform-providers/ignition/latest/docs/data-sources/config) | data source |
-| [ignition_config.s3](https://registry.terraform.io/providers/terraform-providers/ignition/latest/docs/data-sources/config) | data source |
+| [ignition_config.main](https://registry.terraform.io/providers/community-terraform-providers/ignition/latest/docs/data-sources/config) | data source |
+| [ignition_config.s3](https://registry.terraform.io/providers/community-terraform-providers/ignition/latest/docs/data-sources/config) | data source |
 
 ## Inputs
 
