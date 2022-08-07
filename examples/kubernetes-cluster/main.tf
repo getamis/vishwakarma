@@ -46,7 +46,8 @@ module "master" {
 
   etcd_instance_config = {
     count              = 1
-    image_id           = module.os_ami.image_id
+    # image_id           = module.os_ami.image_id
+    image_id           = "ami-074e7feabf5e1861f"
     ec2_type           = "t3.medium"
     root_volume_size   = 40
     data_volume_size   = 100
@@ -55,15 +56,8 @@ module "master" {
     data_path          = "/var/lib/etcd"
   }
 
-  override_binaries = {
-    envsubst = {
-      source = "https://github.com/a8m/envsubst/releases/download/v1.2.0/envsubst-Linux-x86_64"
-      checksum = "sha512-91dfd502ab14173ac8af35ca318c9872ec3e0b04b34580b65f787faead355e29ca9609aaeb6ca0629d7dd9cfaeaa83769a166eb03923ae19441da04150e865c6"
-    }
-  }
-
   master_instance_config = {
-    count    = 1
+    count = 1
     # image_id = module.os_ami.image_id
     image_id = "ami-074e7feabf5e1861f"
     ec2_type = [

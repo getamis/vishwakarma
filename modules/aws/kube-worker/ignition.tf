@@ -8,32 +8,32 @@ locals {
 }
 
 module "ignition_docker" {
-  source = "../../../../terraform-ignition-reinforcements//modules/docker"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.23.9.0"
 }
 
 module "ignition_locksmithd" {
-  source          = "../../../../terraform-ignition-reinforcements//modules/locksmithd"
+  source          = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.23.9.0"
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "../../../../terraform-ignition-reinforcements//modules/update-ca-certificates"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.23.9.0"
 }
 
 module "ignition_sshd" {
-  source = "../../../../terraform-ignition-reinforcements//modules/sshd"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.23.9.0"
 
   enable = var.debug_mode
 }
 
 module "ignition_systemd_networkd" {
-  source = "../../../../terraform-ignition-reinforcements//modules/systemd-networkd"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.23.9.0"
 
   debug = var.debug_mode
 }
 
 module "ignition_legacy_cgroups" {
-  source = "../../../../terraform-ignition-reinforcements//modules/legacy-cgroups"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups?ref=v1.23.9.0"
 }
 
 data "aws_s3_object" "bootstrapping_kubeconfig" {
@@ -42,7 +42,7 @@ data "aws_s3_object" "bootstrapping_kubeconfig" {
 }
 
 module "ignition_kubelet" {
-  source = "../../../../terraform-ignition-kubernetes//modules/kubelet"
+  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.23.9.0"
 
   binaries             = var.binaries
   containers           = var.containers
