@@ -5,7 +5,7 @@ This document gives an overview of variables used in the AWS platform of the kub
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.1 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.2.0 |
 | <a name="requirement_ignition"></a> [ignition](#requirement\_ignition) | 2.1.2 |
 
 ## Providers
@@ -19,14 +19,14 @@ This document gives an overview of variables used in the AWS platform of the kub
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ignition_docker"></a> [ignition\_docker](#module\_ignition\_docker) | github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.19.16.1 | v1.19.16.0 |
-| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.19.16.1 | v1.19.16.0 |
-| <a name="module_ignition_legacy_cgroups"></a> [ignition\_legacy\_cgroups](#module\_ignition\_legacy\_cgroups) | github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups?ref=v1.19.16.1 | v1.19.16.0 |
-| <a name="module_ignition_locksmithd"></a> [ignition\_locksmithd](#module\_ignition\_locksmithd) | github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.19.16.1 | v1.19.16.0 |
-| <a name="module_ignition_sshd"></a> [ignition\_sshd](#module\_ignition\_sshd) | github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.19.16.1 | v1.19.16.0 |
-| <a name="module_ignition_systemd_networkd"></a> [ignition\_systemd\_networkd](#module\_ignition\_systemd\_networkd) | github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.19.16.1 | v1.19.16.0 |
-| <a name="module_ignition_update_ca_certificates"></a> [ignition\_update\_ca\_certificates](#module\_ignition\_update\_ca\_certificates) | github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.19.16.1 | v1.19.16.0 |
-| <a name="module_lifecycle_hook"></a> [lifecycle\_hook](#module\_lifecycle\_hook) | github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes | v1.19.16.0 |
+| <a name="module_ignition_docker"></a> [ignition\_docker](#module\_ignition\_docker) | github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.23.10.1 | v1.23.10.0 |
+| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.23.10.1 | v1.23.10.0 |
+| <a name="module_ignition_legacy_cgroups"></a> [ignition\_legacy\_cgroups](#module\_ignition\_legacy\_cgroups) | github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups?ref=v1.23.10.1 | v1.23.10.0 |
+| <a name="module_ignition_locksmithd"></a> [ignition\_locksmithd](#module\_ignition\_locksmithd) | github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.23.10.1 | v1.23.10.0 |
+| <a name="module_ignition_sshd"></a> [ignition\_sshd](#module\_ignition\_sshd) | github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.23.10.1 | v1.23.10.0 |
+| <a name="module_ignition_systemd_networkd"></a> [ignition\_systemd\_networkd](#module\_ignition\_systemd\_networkd) | github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.23.10.1 | v1.23.10.0 |
+| <a name="module_ignition_update_ca_certificates"></a> [ignition\_update\_ca\_certificates](#module\_ignition\_update\_ca\_certificates) | github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.23.10.1 | v1.23.10.0 |
+| <a name="module_lifecycle_hook"></a> [lifecycle\_hook](#module\_lifecycle\_hook) | github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes | v1.23.10.0 |
 
 ## Resources
 
@@ -73,7 +73,7 @@ This document gives an overview of variables used in the AWS platform of the kub
 | <a name="input_kubelet_flags"></a> [kubelet\_flags](#input\_kubelet\_flags) | The flags of kubelet. The variables need to follow https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/. Do not use underline. | `map(string)` | `{}` | no |
 | <a name="input_kubelet_node_labels"></a> [kubelet\_node\_labels](#input\_kubelet\_node\_labels) | Labels to add when registering the node in the cluster. Labels must be key=value pairs. | `list(string)` | `[]` | no |
 | <a name="input_kubelet_node_taints"></a> [kubelet\_node\_taints](#input\_kubelet\_node\_taints) | Register the node with the given list of taints ("<key>=<value>:<effect>"). | `list(string)` | `[]` | no |
-| <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Desired Kubernetes version. | `string` | `"v1.19.16"` | no |
+| <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Desired Kubernetes version. | `string` | `"v1.23.10"` | no |
 | <a name="input_max_pods"></a> [max\_pods](#input\_max\_pods) | (Optional) the max pod number in the node when enable eni prefix | `string` | `"110"` | no |
 | <a name="input_name"></a> [name](#input\_name) | (Required) Name of the cluster. | `string` | n/a | yes |
 | <a name="input_network_plugin"></a> [network\_plugin](#input\_network\_plugin) | Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc' | `string` | `"amazon-vpc"` | no |

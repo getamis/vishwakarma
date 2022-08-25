@@ -186,7 +186,7 @@ module "worker_spot" {
 
   instance_config = {
     name      = "spot"
-    image_id  = module.os_ami.image_id
+    image_id = "ami-0b8fef69b7bf66b89"
     count     = 1
     max_count = 10
     ec2_type = [

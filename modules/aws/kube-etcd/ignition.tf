@@ -1,29 +1,35 @@
 module "ignition_docker" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.19.16.1"
+  # source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.19.16.1"
+  source = "../../../../terraform-ignition-reinforcements//modules/docker"
 }
 
 module "ignition_locksmithd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.19.16.1"
+  # source = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.19.16.1"
+  source = "../../../../terraform-ignition-reinforcements//modules/locksmithd"
 
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.19.16.1"
+  # source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.19.16.1"
+  source = "../../../../terraform-ignition-reinforcements//modules/update-ca-certificates"
 }
 
 module "ignition_node_exporter" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=v1.19.16.1"
+  # source = "github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=v1.19.16.1"
+  source = "../../../../terraform-ignition-reinforcements//modules/node-exporter"
 }
 
 module "ignition_sshd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.19.16.1"
+  # source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.19.16.1"
+  source = "../../../../terraform-ignition-reinforcements//modules/sshd"
 
   enable = var.debug_mode
 }
 
 module "ignition_etcd" {
-  source = "github.com/getamis/terraform-ignition-etcd?ref=v1.19.16.1"
+  # source = "github.com/getamis/terraform-ignition-etcd?ref=v1.19.16.1"
+  source = "../../../..//terraform-ignition-etcd"
 
   name                  = var.name
   containers            = var.containers

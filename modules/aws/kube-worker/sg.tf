@@ -5,8 +5,9 @@ resource "aws_security_group" "worker_group" {
   description = "Security group for ${var.instance_config["name"]} workers."
   vpc_id      = local.vpc_id
 
-  tags = merge(var.extra_tags, map(
-    "Name", "${var.name}-worker-${var.instance_config["name"]}",
-    "Role", "k8s-worker"
+  tags = merge(var.extra_tags, tomap({
+    "Name" = "${var.name}-worker-${var.instance_config["name"]}",
+    "Role" = "k8s-worker"
+    }
   ))
 }
