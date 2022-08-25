@@ -1,8 +1,6 @@
 locals {
   vpc_id = data.aws_subnet.subnet.vpc_id
 
-  asg_extra_tags = [for k, v in var.extra_tags : { key = k, value = v, propagate_at_launch = true } if k != "Name"]
-
   iops_by_type = {
     root = {
       "gp3" : max(3000, var.instance_config["root_volume_iops"]),
@@ -95,7 +93,9 @@ resource "aws_autoscaling_group" "worker" {
   }
 
   dynamic "tag" {
-    for_each = merge(var.extra_tags,
+    for_each = merge(
+      var.extra_tags,
+      var.extra_asg_tags,
       {
         "Name"                              = "${var.name}-worker-${var.instance_config["name"]}"
         "Role"                              = "k8s-worker"

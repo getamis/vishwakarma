@@ -229,6 +229,12 @@ variable "extra_tags" {
   default     = {}
 }
 
+variable "extra_asg_tags" {
+  description = "Extra AWS tags to be applied to K8s worker group auto scaling group."
+  type        = map(string)
+  default     = {}
+}
+
 variable "enable_extra_sg" {
   description = "Enable extra security group for worker group."
   type        = bool
