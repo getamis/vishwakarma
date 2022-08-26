@@ -22,7 +22,7 @@ default: validate
 
 .PHONY: validate
 validate:
-	@for m in $(TF_EXAMPLES); do terraform init "$$m" > /dev/null 2>&1; echo "$$m: "; terraform validate "$$m"; done
+	@for m in $(TF_TESTS); do terraform init "$$m" > /dev/null 2>&1; echo "$$m: "; cd "$$m" ;terraform validate "."; cd -; done
 .PHONY: fmt
 fmt:
 	@for m in $(TF_FILES); do (terraform fmt -diff "$$m" && echo "√ $$m"); done
