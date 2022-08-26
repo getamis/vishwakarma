@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.19.16"
+  default     = "v1.23.10"
 }
 
 variable "service_cidr" {
