@@ -20,7 +20,7 @@ This document gives an overview of variables used in the AWS platform of the kub
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_ignition_docker"></a> [ignition\_docker](#module\_ignition\_docker) | github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.23.10.0 | v1.23.10.0 |
-| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.23.10.0 | v1.23.10.0 |
+| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.23.10.1 | v1.23.10.1 |
 | <a name="module_ignition_legacy_cgroups"></a> [ignition\_legacy\_cgroups](#module\_ignition\_legacy\_cgroups) | github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups?ref=v1.23.10.0 | v1.23.10.0 |
 | <a name="module_ignition_locksmithd"></a> [ignition\_locksmithd](#module\_ignition\_locksmithd) | github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.23.10.0 | v1.23.10.0 |
 | <a name="module_ignition_sshd"></a> [ignition\_sshd](#module\_ignition\_sshd) | github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.23.10.0 | v1.23.10.0 |

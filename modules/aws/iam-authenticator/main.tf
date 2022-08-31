@@ -1,5 +1,5 @@
 module "ignition_iam_auth" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-iam-authenticator?ref=v1.23.10.0"
+  source = "github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-iam-authenticator?ref=v1.23.10.1"
 
   cluster_name        = var.name
   container           = var.container
