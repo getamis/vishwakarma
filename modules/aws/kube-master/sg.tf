@@ -34,7 +34,7 @@ resource "aws_security_group_rule" "master_ingress_icmp" {
   security_group_id = local.master_sg_id
 
   protocol    = "icmp"
-  cidr_blocks = ["0.0.0.0/0"]
+  cidr_blocks = [data.aws_vpc.master.cidr_block]
   from_port   = 0
   to_port     = 0
 }
