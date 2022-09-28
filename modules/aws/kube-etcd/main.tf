@@ -1,9 +1,10 @@
 locals {
-  vpc_id             = data.aws_subnet.etcd[0].vpc_id
-  az_num             = length(data.aws_availability_zones.available.names)
-  client_port        = 2379
-  peer_port          = 2380
-  node_exporter_port = 9100
+  vpc_id                     = data.aws_subnet.etcd[0].vpc_id
+  az_num                     = length(data.aws_availability_zones.available.names)
+  client_port                = 2379
+  peer_port                  = 2380
+  etcd_metrics_exporter_port = 2381
+  node_exporter_port         = 9100
 
   iops_by_type = {
     root = {
