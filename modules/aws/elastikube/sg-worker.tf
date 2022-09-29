@@ -122,3 +122,82 @@ resource "aws_security_group_rule" "worker_ingress_flannel_from_master" {
   from_port = 4789
   to_port   = 4789
 }
+
+# Reference: https://docs.cilium.io/en/v1.11/operations/system_requirements/#firewall-rules
+## Worker -> Master
+resource "aws_security_group_rule" "master_ingress_cilium_vxlan_from_worker" {
+  count                    = var.network_plugin == "cilium-vxlan" ? 1 : 0
+  type                     = "ingress"
+  security_group_id        = module.master.master_sg_id
+  source_security_group_id = aws_security_group.workers.id
+
+  protocol  = "udp"
+  from_port = 8472
+  to_port   = 8472
+}
+
+resource "aws_security_group_rule" "master_ingress_cilium_tcp_healthcheck_from_worker" {
+  count                    = var.network_plugin == "cilium-vxlan" ? 1 : 0
+  type                     = "ingress"
+  security_group_id        = module.master.master_sg_id
+  source_security_group_id = aws_security_group.workers.id
+
+  protocol  = "tcp"
+  from_port = 4240
+  to_port   = 4240
+}
+
+resource "aws_security_group_rule" "master_ingress_cilium_icmp_healthcheck_from_worker" {
+  count                    = var.network_plugin == "cilium-vxlan" ? 1 : 0
+  type                     = "ingress"
+  security_group_id        = module.master.master_sg_id
+  source_security_group_id = aws_security_group.workers.id
+
+  protocol  = "icmp"
+  from_port = 8
+  to_port   = 0
+}
+
+resource "aws_security_group_rule" "master_ingress_cilium_hubble_relay_from_worker" {
+  count                    = var.network_plugin == "cilium-vxlan" ? 1 : 0
+  type                     = "ingress"
+  security_group_id        = module.master.master_sg_id
+  source_security_group_id = aws_security_group.workers.id
+
+  protocol  = "tcp"
+  from_port = 4244
+  to_port   = 4244
+}
+## Master -> Worker
+resource "aws_security_group_rule" "worker_ingress_cilium_vxlan_from_master" {
+  count                    = var.network_plugin == "cilium-vxlan" ? 1 : 0
+  type                     = "ingress"
+  security_group_id        = aws_security_group.workers.id
+  source_security_group_id = module.master.master_sg_id
+
+  protocol  = "udp"
+  from_port = 8472
+  to_port   = 8472
+}
+
+resource "aws_security_group_rule" "worker_ingress_cilium_tcp_healthcheck_from_master" {
+  count                    = var.network_plugin == "cilium-vxlan" ? 1 : 0
+  type                     = "ingress"
+  security_group_id        = aws_security_group.workers.id
+  source_security_group_id = module.master.master_sg_id
+
+  protocol  = "tcp"
+  from_port = 4240
+  to_port   = 4240
+}
+
+resource "aws_security_group_rule" "worker_ingress_cilium_icmp_healthcheck_from_master" {
+  count                    = var.network_plugin == "cilium-vxlan" ? 1 : 0
+  type                     = "ingress"
+  security_group_id        = aws_security_group.workers.id
+  source_security_group_id = module.master.master_sg_id
+
+  protocol  = "icmp"
+  from_port = 8
+  to_port   = 0
+}

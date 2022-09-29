@@ -19,14 +19,14 @@ This document gives an overview of variables used in the AWS platform of the kub
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ignition_docker"></a> [ignition\_docker](#module\_ignition\_docker) | github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.23.10.0 | v1.23.10.0 |
-| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.23.10.1 | v1.23.10.1 |
-| <a name="module_ignition_legacy_cgroups"></a> [ignition\_legacy\_cgroups](#module\_ignition\_legacy\_cgroups) | github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups?ref=v1.23.10.0 | v1.23.10.0 |
-| <a name="module_ignition_locksmithd"></a> [ignition\_locksmithd](#module\_ignition\_locksmithd) | github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.23.10.0 | v1.23.10.0 |
-| <a name="module_ignition_sshd"></a> [ignition\_sshd](#module\_ignition\_sshd) | github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.23.10.0 | v1.23.10.0 |
-| <a name="module_ignition_systemd_networkd"></a> [ignition\_systemd\_networkd](#module\_ignition\_systemd\_networkd) | github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.23.10.0 | v1.23.10.0 |
-| <a name="module_ignition_update_ca_certificates"></a> [ignition\_update\_ca\_certificates](#module\_ignition\_update\_ca\_certificates) | github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.23.10.0 | v1.23.10.0 |
-| <a name="module_lifecycle_hook"></a> [lifecycle\_hook](#module\_lifecycle\_hook) | github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes | v1.23.10.0 |
+| <a name="module_ignition_docker"></a> [ignition\_docker](#module\_ignition\_docker) | github.com/getamis/terraform-ignition-reinforcements//modules/docker | v1.23.10.0 |
+| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | github.com/getamis/terraform-ignition-kubernetes//modules/kubelet | v1.23.10.3 |
+| <a name="module_ignition_legacy_cgroups"></a> [ignition\_legacy\_cgroups](#module\_ignition\_legacy\_cgroups) | github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups | v1.23.10.0 |
+| <a name="module_ignition_locksmithd"></a> [ignition\_locksmithd](#module\_ignition\_locksmithd) | github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd | v1.23.10.0 |
+| <a name="module_ignition_sshd"></a> [ignition\_sshd](#module\_ignition\_sshd) | github.com/getamis/terraform-ignition-reinforcements//modules/sshd | v1.23.10.0 |
+| <a name="module_ignition_systemd_networkd"></a> [ignition\_systemd\_networkd](#module\_ignition\_systemd\_networkd) | github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd | v1.23.10.0 |
+| <a name="module_ignition_update_ca_certificates"></a> [ignition\_update\_ca\_certificates](#module\_ignition\_update\_ca\_certificates) | github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates | v1.23.10.0 |
+| <a name="module_lifecycle_hook"></a> [lifecycle\_hook](#module\_lifecycle\_hook) | github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes | v1.19.16.0 |
 
 ## Resources
 
@@ -47,8 +47,8 @@ This document gives an overview of variables used in the AWS platform of the kub
 | [aws_iam_policy_document.worker_vpc_cni](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_s3_object.bootstrapping_kubeconfig](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/s3_object) | data source |
 | [aws_subnet.subnet](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
-| [ignition_config.main](https://registry.terraform.io/providers/community-terraform-providers/ignition/latest/docs/data-sources/config) | data source |
-| [ignition_config.s3](https://registry.terraform.io/providers/community-terraform-providers/ignition/latest/docs/data-sources/config) | data source |
+| [ignition_config.main](https://registry.terraform.io/providers/community-terraform-providers/ignition/2.1.2/docs/data-sources/config) | data source |
+| [ignition_config.s3](https://registry.terraform.io/providers/community-terraform-providers/ignition/2.1.2/docs/data-sources/config) | data source |
 
 ## Inputs
 
@@ -64,6 +64,7 @@ This document gives an overview of variables used in the AWS platform of the kub
 | <a name="input_enable_eni_prefix"></a> [enable\_eni\_prefix](#input\_enable\_eni\_prefix) | (Optional) assign prefix to AWS EC2 network interface | `bool` | `true` | no |
 | <a name="input_enable_extra_sg"></a> [enable\_extra\_sg](#input\_enable\_extra\_sg) | Enable extra security group for worker group. | `bool` | `false` | no |
 | <a name="input_enable_node_termination_handler"></a> [enable\_node\_termination\_handler](#input\_enable\_node\_termination\_handler) | Enable to add aws-node-termination-handler tag or not | `string` | `"false"` | no |
+| <a name="input_extra_asg_tags"></a> [extra\_asg\_tags](#input\_extra\_asg\_tags) | Extra AWS tags to be applied to K8s worker group auto scaling group. | `map(string)` | `{}` | no |
 | <a name="input_extra_ignition_file_ids"></a> [extra\_ignition\_file\_ids](#input\_extra\_ignition\_file\_ids) | Additional ignition file IDs. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details. | `list(string)` | `[]` | no |
 | <a name="input_extra_ignition_systemd_unit_ids"></a> [extra\_ignition\_systemd\_unit\_ids](#input\_extra\_ignition\_systemd\_unit\_ids) | Additional ignition systemd unit IDs. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details. | `list(string)` | `[]` | no |
 | <a name="input_extra_tags"></a> [extra\_tags](#input\_extra\_tags) | Extra AWS tags to be applied to created resources. | `map(string)` | `{}` | no |
@@ -76,7 +77,7 @@ This document gives an overview of variables used in the AWS platform of the kub
 | <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Desired Kubernetes version. | `string` | `"v1.23.10"` | no |
 | <a name="input_max_pods"></a> [max\_pods](#input\_max\_pods) | (Optional) the max pod number in the node when enable eni prefix | `string` | `"110"` | no |
 | <a name="input_name"></a> [name](#input\_name) | (Required) Name of the cluster. | `string` | n/a | yes |
-| <a name="input_network_plugin"></a> [network\_plugin](#input\_network\_plugin) | Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc' | `string` | `"amazon-vpc"` | no |
+| <a name="input_network_plugin"></a> [network\_plugin](#input\_network\_plugin) | Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc', 'cilium-vxlan' | `string` | `"amazon-vpc"` | no |
 | <a name="input_reboot_strategy"></a> [reboot\_strategy](#input\_reboot\_strategy) | CoreOS reboot strategies on updates, two option here: etcd-lock or off | `string` | `"off"` | no |
 | <a name="input_role_name"></a> [role\_name](#input\_role\_name) | The Amazon Resource Name of the IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations on your behalf. | `string` | `""` | no |
 | <a name="input_s3_bucket"></a> [s3\_bucket](#input\_s3\_bucket) | Unique name under which the Amazon S3 bucket will be created. Bucket name must start with a lower case name and is limited to 63 characters.<br>    If name is not provided the installer will construct the name using "name" and current AWS region. | `string` | `""` | no |
