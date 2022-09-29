@@ -23,7 +23,7 @@ module "ignition_sshd" {
 }
 
 module "ignition_etcd" {
-  source = "github.com/getamis/terraform-ignition-etcd?ref=v1.19.16.0"
+  source = "github.com/getamis/terraform-ignition-etcd?ref=v1.19.16.2"
 
   name                  = var.name
   containers            = var.containers
