@@ -32,6 +32,7 @@ module "master" {
 
   service_network_cidr = var.kube_service_network_cidr
   cluster_network_cidr = var.kube_cluster_network_cidr
+  node_cidr_mask_size  = var.kube_node_cidr_mask_size
 
   kube_extra_flags     = var.kube_extra_flags
   kubelet_extra_config = var.kubelet_extra_config

@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.23.10.2"
+  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.23.10.3"
 
   binaries              = var.binaries
   containers            = var.containers
@@ -20,6 +20,7 @@ module "ignition_kubernetes" {
   apiserver_secure_port = var.apiserver_secure_port
   service_network_cidr  = var.service_network_cidr
   pod_network_cidr      = var.cluster_network_cidr
+  node_cidr_mask_size   = var.node_cidr_mask_size
   network_plugin        = var.network_plugin
   internal_endpoint     = "https://${aws_elb.master_internal.dns_name}"
   etcd_endpoints        = join(",", var.etcd_endpoints)

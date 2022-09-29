@@ -52,7 +52,7 @@ variable "key_pair_name" {
 }
 
 variable "network_plugin" {
-  description = "(Optional) Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc'"
+  description = "(Optional) Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc', 'cilium-vxlan'"
   type        = string
   default     = "amazon-vpc"
 }
