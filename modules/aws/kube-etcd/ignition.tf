@@ -13,7 +13,7 @@ module "ignition_update_ca_certificates" {
 }
 
 module "ignition_node_exporter" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=v1.23.10.0"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=v1.23.10.1"
 }
 
 module "ignition_sshd" {
