@@ -147,6 +147,11 @@ variable "allowed_ssh_cidr" {
   type        = list(string)
 }
 
+variable "allowed_etcd_mgmt_cidr" {
+  description = "(Option) A list of CIDR networks to allow to manage etcd cluster."
+  type        = list(string)
+}
+
 variable "s3_bucket" {
   description = <<EOF
     (Optional) Unique name under which the Amazon S3 bucket will be created. Bucket name must start with a lower case name and is limited to 63 characters.

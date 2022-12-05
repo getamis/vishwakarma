@@ -386,6 +386,11 @@ variable "allowed_ssh_cidr" {
   type        = list(string)
 }
 
+variable "allowed_etcd_mgmt_cidr" {
+  description = "(Option) A list of CIDR networks to allow to manage etcd cluster."
+  type        = list(string)
+}
+
 variable "hostzone" {
   description = "(Optional) The cluster private hostname. If not specified, <cluster name>.com will be used."
   type        = string
