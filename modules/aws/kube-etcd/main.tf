@@ -53,6 +53,13 @@ resource "aws_network_interface" "etcd" {
   })
 }
 
+resource "aws_network_interface_attachment" "etcd" {
+  count                = var.instance_config["count"]
+  device_index         = 1
+  network_interface_id = aws_network_interface.etcd[count.index].id
+  instance_id          = aws_instance.etcd[count.index].id
+}
+
 resource "aws_ebs_volume" "etcd" {
   count             = var.instance_config["count"]
   availability_zone = data.aws_subnet.etcd[count.index].availability_zone
@@ -81,15 +88,12 @@ resource "aws_instance" "etcd" {
 
   ami                  = var.instance_config["image_id"]
   instance_type        = var.instance_config["ec2_type"]
+  subnet_id            = var.subnet_ids[count.index % length(var.subnet_ids)]
   key_name             = var.debug_mode ? var.ssh_key : ""
   iam_instance_profile = aws_iam_instance_profile.etcd.id
 
-  user_data = data.ignition_config.s3.rendered
-
-  network_interface {
-    device_index         = 0
-    network_interface_id = aws_network_interface.etcd[count.index].id
-  }
+  user_data                   = data.ignition_config.s3.rendered
+  user_data_replace_on_change = true
 
   root_block_device {
     volume_size = var.instance_config["root_volume_size"]
@@ -109,11 +113,4 @@ resource "aws_instance" "etcd" {
     "Role"                              = "etcd"
     "kubernetes.io/cluster/${var.name}" = "owned"
   })
-
-  lifecycle {
-    # Ignore changes in the ami & userdata which force recreation of the resource. This
-    # avoids accidental deletion of nodes whenever a new CoreOS Release comes
-    # out.
-    ignore_changes = [ami, user_data]
-  }
 }
