@@ -22,13 +22,14 @@ module "ignition_sshd" {
 }
 
 module "ignition_etcd" {
-  source = "github.com/getamis/terraform-ignition-etcd?ref=v1.23.10.0"
+  source = "github.com/getamis/terraform-ignition-etcd?ref=v1.23.10.1"
 
   name                  = var.name
   containers            = var.containers
   discovery_service_srv = local.discovery_service
   client_port           = local.client_port
   peer_port             = local.peer_port
+  proxy_port            = local.proxy_port
   device_name           = var.instance_config["data_device_rename"]
   data_path             = var.instance_config["data_path"]
   log_level             = var.debug_mode ? "debug" : "error"
