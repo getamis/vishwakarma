@@ -308,6 +308,7 @@ variable "ssh_key" {
 variable "allowed_ssh_cidr" {
   description = "(Optional) A list of CIDR networks to allow ssh access to."
   type        = list(string)
+  default     = []
 }
 
 variable "s3_bucket" {

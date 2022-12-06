@@ -43,7 +43,7 @@ resource "aws_security_group_rule" "etcd_ingress_from_master" {
 }
 
 resource "aws_security_group_rule" "etcd_ssh" {
-  count             = var.debug_mode ? 1 : 0
+  count             = (var.debug_mode && length(var.allowed_ssh_cidr) != 0) ? 1 : 0
   type              = "ingress"
   security_group_id = aws_security_group.etcd.id
 
@@ -54,6 +54,7 @@ resource "aws_security_group_rule" "etcd_ssh" {
 }
 
 resource "aws_security_group_rule" "etcd_management" {
+  count             = length(var.allowed_etcd_mgmt_cidr) != 0 ? 1 : 0
   type              = "ingress"
   security_group_id = aws_security_group.etcd.id
 
