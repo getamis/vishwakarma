@@ -53,6 +53,7 @@ This document gives an overview of variables used in the AWS platform of the ela
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_allowed_etcd_mgmt_cidr"></a> [allowed\_etcd\_mgmt\_cidr](#input\_allowed\_etcd\_mgmt\_cidr) | (Option) A list of CIDR networks to allow to manage etcd cluster. | `list(string)` | n/a | yes |
 | <a name="input_allowed_ssh_cidr"></a> [allowed\_ssh\_cidr](#input\_allowed\_ssh\_cidr) | (Optional) A list of CIDR networks to allow ssh access to. | `list(string)` | n/a | yes |
 | <a name="input_annotate_pod_ip"></a> [annotate\_pod\_ip](#input\_annotate\_pod\_ip) | (Optional) enable to fix pod startup connectivity issue on installing Calico with aws-vpc-cni plugin. (Issue: https://github.com/aws/amazon-vpc-cni-k8s/issues/493) | `bool` | `false` | no |
 | <a name="input_auth_webhook_kubeconfig_path"></a> [auth\_webhook\_kubeconfig\_path](#input\_auth\_webhook\_kubeconfig\_path) | The path of webhook kubeconfig for kube-apiserver. | `string` | `"/etc/kubernetes/config/aws-iam-authenticator/kubeconfig"` | no |
