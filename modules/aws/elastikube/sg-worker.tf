@@ -77,7 +77,7 @@ resource "aws_security_group_rule" "workers_to_coredns_metrics" {
 }
 
 resource "aws_security_group_rule" "workers_ingress_ssh" {
-  count             = var.debug_mode ? 1 : 0
+  count             = (var.debug_mode && length(var.allowed_ssh_cidr) != 0) ? 1 : 0
   type              = "ingress"
   description       = "Allow access from ssh."
   security_group_id = aws_security_group.workers.id

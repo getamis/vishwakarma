@@ -1,11 +1,12 @@
 module "etcd" {
   source = "../../aws/kube-etcd"
 
-  name             = var.name
-  ssh_key          = var.ssh_key
-  allowed_ssh_cidr = var.allowed_ssh_cidr
-  instance_config  = var.etcd_instance_config
-  containers       = var.override_containers
+  name                   = var.name
+  ssh_key                = var.ssh_key
+  allowed_ssh_cidr       = var.allowed_ssh_cidr
+  allowed_etcd_mgmt_cidr = var.allowed_etcd_mgmt_cidr
+  instance_config        = var.etcd_instance_config
+  containers             = var.override_containers
 
   instance_volume_config = var.etcd_instance_volume_config
 

@@ -43,7 +43,7 @@ resource "aws_security_group_rule" "etcd_ingress_from_master" {
 }
 
 resource "aws_security_group_rule" "etcd_ssh" {
-  count             = var.debug_mode ? 1 : 0
+  count             = (var.debug_mode && length(var.allowed_ssh_cidr) != 0) ? 1 : 0
   type              = "ingress"
   security_group_id = aws_security_group.etcd.id
 
@@ -51,6 +51,17 @@ resource "aws_security_group_rule" "etcd_ssh" {
   cidr_blocks = var.allowed_ssh_cidr
   from_port   = 22
   to_port     = 22
+}
+
+resource "aws_security_group_rule" "etcd_management" {
+  count             = length(var.allowed_etcd_mgmt_cidr) != 0 ? 1 : 0
+  type              = "ingress"
+  security_group_id = aws_security_group.etcd.id
+
+  protocol    = "tcp"
+  cidr_blocks = var.allowed_etcd_mgmt_cidr
+  from_port   = local.client_port
+  to_port     = local.client_port
 }
 
 resource "aws_security_group_rule" "ingress_node_exporter_from_worker" {
@@ -61,4 +72,14 @@ resource "aws_security_group_rule" "ingress_node_exporter_from_worker" {
   cidr_blocks = [data.aws_vpc.etcd.cidr_block]
   from_port   = local.node_exporter_port
   to_port     = local.node_exporter_port
+}
+
+resource "aws_security_group_rule" "ingress_etcd_metrics_exporter_from_worker" {
+  type              = "ingress"
+  security_group_id = aws_security_group.etcd.id
+
+  protocol    = "tcp"
+  cidr_blocks = [data.aws_vpc.etcd.cidr_block]
+  from_port   = local.proxy_port
+  to_port     = local.proxy_port
 }
