@@ -6,6 +6,7 @@ locals {
   # then, we would have a brand new `keys.json` when we use the content of the `local_file.keys_json` data source.
   keys_json_local_cache_exist = fileexists("${path.root}/.secret/keys.json")
   keys_json_from_local_cache  = local.keys_json_local_cache_exist
+  odic_servername             = data.aws_region.current == "us-east-1" ? "https://s3.amazonaws.com" : "https://s3-${data.aws_region.current.name}.amazonaws.com"
 }
 
 data "aws_region" "current" {}
@@ -30,7 +31,7 @@ data "external" "thumbprint" {
 }
 
 resource "aws_iam_openid_connect_provider" "irsa" {
-  url = "https://s3-${data.aws_region.current.name}.amazonaws.com/${var.oidc_s3_bucket}"
+  url = "${local.odic_servername}/${var.oidc_s3_bucket}"
 
   client_id_list  = [var.oidc_api_audiences]
   thumbprint_list = [lower(data.external.thumbprint.result.thumbprint)]
@@ -81,7 +82,7 @@ resource "aws_s3_object" "discovery_json" {
   content_type = "application/json"
 
   content = templatefile("${path.module}/templates/discovery.json.tpl", {
-    issuer_host = "https://s3-${data.aws_region.current.name}.amazonaws.com/${var.oidc_s3_bucket}"
+    issuer_host = "${local.odic_servername}/${var.oidc_s3_bucket}"
   })
 
   tags = merge({
