@@ -95,7 +95,8 @@ module "etcd_peer_cert" {
       "kube-etcd-client.kube-system.svc.cluster.local",
       local.discovery_service,
       "*.${local.discovery_service}",
-      "*.${data.aws_region.current.name}.compute.internal"
+      "*.${data.aws_region.current.name}.compute.internal",
+      "*.ec2.internal"
     ],
     var.certs_hostnames,
   ))
