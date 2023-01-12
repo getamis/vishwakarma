@@ -1,5 +1,6 @@
 #!/bin/bash
-if [ "$1" == "us-east-1" ] then
+if [ "$1" == "us-east-1" ]
+then
     OIDC_SERVERNAME="s3.amazonaws.com"
 else
     OIDC_SERVERNAME="s3-$1.amazonaws.com"
