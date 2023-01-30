@@ -6,7 +6,7 @@ locals {
   # then, we would have a brand new `keys.json` when we use the content of the `local_file.keys_json` data source.
   keys_json_local_cache_exist = fileexists("${path.root}/.secret/keys.json")
   keys_json_from_local_cache  = local.keys_json_local_cache_exist
-  odic_servername             = data.aws_region.current == "us-east-1" ? "https://s3.amazonaws.com" : "https://s3-${data.aws_region.current.name}.amazonaws.com"
+  odic_servername             = data.aws_region.current.name == "us-east-1" ? "https://s3.amazonaws.com" : "https://s3-${data.aws_region.current.name}.amazonaws.com"
 }
 
 data "aws_region" "current" {}
