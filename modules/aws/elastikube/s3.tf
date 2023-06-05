@@ -8,7 +8,17 @@ resource "aws_s3_bucket" "ignition" {
   })
 }
 
+resource "aws_s3_bucket_ownership_controls" "ignition" {
+  bucket = aws_s3_bucket.ignition.id
+
+  rule {
+    object_ownership = "BucketOwnerPreferred"
+  }
+}
+
 resource "aws_s3_bucket_acl" "ignition" {
+  depends_on = [aws_s3_bucket_ownership_controls.ignition]
+
   bucket = aws_s3_bucket.ignition.id
   acl    = "private"
 }
