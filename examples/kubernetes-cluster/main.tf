@@ -28,7 +28,7 @@ locals {
 module "os_ami" {
   source          = "../../modules/aws/os-ami"
   flavor          = "flatcar"
-  flatcar_version = "3227.2.0"
+  flatcar_version = "3510.2.1"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -46,8 +46,7 @@ module "master" {
 
   etcd_instance_config = {
     count = 1
-    # image_id           = module.os_ami.image_id
-    image_id           = "ami-0b8fef69b7bf66b89"
+    image_id           = module.os_ami.image_id
     ec2_type           = "t3.medium"
     root_volume_size   = 40
     data_volume_size   = 100
@@ -58,8 +57,7 @@ module "master" {
 
   master_instance_config = {
     count = 1
-    # image_id = module.os_ami.image_id
-    image_id = "ami-0b8fef69b7bf66b89"
+    image_id = module.os_ami.image_id
     ec2_type = [
       "t3.medium",
       "t2.medium"
