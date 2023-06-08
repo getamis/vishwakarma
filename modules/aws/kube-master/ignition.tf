@@ -12,7 +12,8 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.27.2.0"
+  # source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.27.2.0"
+  source = "github.com/getamis/terraform-ignition-kubernetes?ref=imo-test"
 
   binaries              = var.binaries
   containers            = var.containers
@@ -113,16 +114,16 @@ module "ignition_sshd" {
   enable = var.debug_mode
 }
 
+module "ignition_containerd" {
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/containerd?ref=imo-test"
+
+}
+
 module "ignition_systemd_networkd" {
   source = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.23.10.1"
 
   debug = var.debug_mode
 }
-
-module "ignition_legacy_cgroups" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups?ref=v1.23.10.1"
-}
-
 data "ignition_config" "main" {
   files = compact(concat(
     module.ignition_docker.files,
@@ -130,9 +131,9 @@ data "ignition_config" "main" {
     module.ignition_update_ca_certificates.files,
     module.ignition_sshd.files,
     module.ignition_systemd_networkd.files,
-    # module.ignition_legacy_cgroups.files,
     module.ignition_kubernetes.files,
     module.ignition_kubernetes.cert_files,
+    module.ignition_containerd.files,
     var.extra_ignition_file_ids,
   ))
 
@@ -142,14 +143,10 @@ data "ignition_config" "main" {
     module.ignition_update_ca_certificates.systemd_units,
     module.ignition_sshd.systemd_units,
     module.ignition_systemd_networkd.systemd_units,
-    # module.ignition_legacy_cgroups.systemd_units,
     module.ignition_kubernetes.systemd_units,
     var.extra_ignition_systemd_unit_ids,
   ))
 
-  # filesystems = compact(concat(
-  #   module.ignition_legacy_cgroups.filesystems,
-  # ))
 }
 
 // TODO: use AWS Secrets Manager to store this, or encryption by KMS.

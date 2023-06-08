@@ -33,8 +33,9 @@ module "ignition_systemd_networkd" {
   debug = var.debug_mode
 }
 
-module "ignition_legacy_cgroups" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups?ref=v1.23.10.1"
+module "ignition_containerd" {
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/containerd?ref=imo-test"
+
 }
 
 data "aws_s3_object" "bootstrapping_kubeconfig" {
@@ -43,7 +44,8 @@ data "aws_s3_object" "bootstrapping_kubeconfig" {
 }
 
 module "ignition_kubelet" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.27.2.0"
+  # source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.27.2.0"
+  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=imo-test"
 
   binaries             = var.binaries
   containers           = var.containers
@@ -74,8 +76,8 @@ data "ignition_config" "main" {
     module.ignition_update_ca_certificates.files,
     module.ignition_sshd.files,
     module.ignition_systemd_networkd.files,
-    # module.ignition_legacy_cgroups.files,
     module.ignition_kubelet.files,
+    module.ignition_containerd.files,
     var.extra_ignition_file_ids,
   ))
 
@@ -85,14 +87,9 @@ data "ignition_config" "main" {
     module.ignition_update_ca_certificates.systemd_units,
     module.ignition_sshd.systemd_units,
     module.ignition_systemd_networkd.systemd_units,
-    # module.ignition_legacy_cgroups.systemd_units,
     module.ignition_kubelet.systemd_units,
     var.extra_ignition_systemd_unit_ids,
   ))
-
-  # filesystems = compact(concat(
-  #   module.ignition_legacy_cgroups.filesystems,
-  # ))
 }
 
 resource "aws_s3_object" "ignition" {
