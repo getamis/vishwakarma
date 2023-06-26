@@ -39,6 +39,10 @@ module "ignition_containerd" {
 
 }
 
+module "ignition_ecr_credentail_provider" {
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/ecr-credential-provider?ref=v1.27.2.0"
+}
+
 data "aws_s3_object" "bootstrapping_kubeconfig" {
   bucket = var.s3_bucket
   key    = "bootstrap-kubelet.conf"
@@ -78,6 +82,7 @@ data "ignition_config" "main" {
     module.ignition_systemd_networkd.files,
     module.ignition_kubelet.files,
     module.ignition_containerd.files,
+    module.ignition_ecr_credentail_provider.files,
     var.extra_ignition_file_ids,
   ))
 
