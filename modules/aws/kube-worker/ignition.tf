@@ -8,7 +8,8 @@ locals {
 }
 
 module "ignition_docker" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.23.10.1"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.2.0"
+  docker_cgroup_driver = "systemd"
 }
 
 module "ignition_locksmithd" {
@@ -36,6 +37,10 @@ module "ignition_systemd_networkd" {
 module "ignition_containerd" {
   source = "github.com/getamis/terraform-ignition-reinforcements//modules/containerd?ref=v1.27.2.0"
 
+}
+
+module "ignition_ecr_credentail_provider" {
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/ecr-credential-provider?ref=v1.27.2.0"
 }
 
 data "aws_s3_object" "bootstrapping_kubeconfig" {
@@ -77,6 +82,7 @@ data "ignition_config" "main" {
     module.ignition_systemd_networkd.files,
     module.ignition_kubelet.files,
     module.ignition_containerd.files,
+    module.ignition_ecr_credentail_provider.files,
     var.extra_ignition_file_ids,
   ))
 
