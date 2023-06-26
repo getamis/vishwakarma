@@ -45,7 +45,7 @@ module "master" {
   kube_cluster_network_cidr = local.cluster_cidr
 
   etcd_instance_config = {
-    count = 1
+    count              = 1
     image_id           = module.os_ami.image_id
     ec2_type           = "t3.medium"
     root_volume_size   = 40
@@ -55,8 +55,23 @@ module "master" {
     data_path          = "/var/lib/etcd"
   }
 
+  override_containers = {
+    kube_apiserver = {
+      repo = "563782659551.dkr.ecr.ap-southeast-1.amazonaws.com/k8s/kube-apiserver"
+      tag  = "v1.27.2"
+    }
+    kube_controller_manager = {
+      repo = "563782659551.dkr.ecr.ap-southeast-1.amazonaws.com/k8s/kube-controller-manager"
+      tag  = "v1.27.2"
+    }
+    kube_scheduler = {
+      repo = "563782659551.dkr.ecr.ap-southeast-1.amazonaws.com/k8s/kube-scheduler"
+      tag  = "v1.27.2"
+    }
+  }
+
   master_instance_config = {
-    count = 1
+    count    = 1
     image_id = module.os_ami.image_id
     ec2_type = [
       "t3.medium",
