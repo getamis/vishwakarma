@@ -1,5 +1,5 @@
 module "ignition_iam_auth" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-iam-authenticator?ref=v1.23.10.3"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes.git//modules/extra-addons/aws-iam-authenticator?ref=feat/update-cilium-to-v1-13-4"
 
   cluster_name        = var.name
   container           = var.container

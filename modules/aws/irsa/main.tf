@@ -12,7 +12,7 @@ locals {
 data "aws_region" "current" {}
 
 module "ignition_pod_idenity_webhook" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-pod-identity-webhook?ref=v1.27.2.0"
+  source = "git::ssh://git@github.com//getamis/terraform-ignition-kubernetes.git//modules/extra-addons/aws-pod-identity-webhook?ref=feat/update-cilium-to-v1-13-4"
 
   container                  = var.container
   service_name               = var.service_name
