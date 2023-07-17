@@ -19,9 +19,10 @@ This document gives an overview of variables used in the AWS platform of the kub
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_ignition_containerd"></a> [ignition\_containerd](#module\_ignition\_containerd) | github.com/getamis/terraform-ignition-reinforcements//modules/containerd | v1.27.2.0 |
 | <a name="module_ignition_docker"></a> [ignition\_docker](#module\_ignition\_docker) | github.com/getamis/terraform-ignition-reinforcements//modules/docker | v1.27.2.0 |
+| <a name="module_ignition_ecr_credentail_provider"></a> [ignition\_ecr\_credentail\_provider](#module\_ignition\_ecr\_credentail\_provider) | github.com/getamis/terraform-ignition-reinforcements//modules/ecr-credential-provider | v1.27.2.0 |
 | <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | github.com/getamis/terraform-ignition-kubernetes//modules/kubelet | v1.27.2.1 |
-| <a name="module_ignition_legacy_cgroups"></a> [ignition\_legacy\_cgroups](#module\_ignition\_legacy\_cgroups) | github.com/getamis/terraform-ignition-reinforcements//modules/legacy-cgroups | v1.23.10.1 |
 | <a name="module_ignition_locksmithd"></a> [ignition\_locksmithd](#module\_ignition\_locksmithd) | github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd | v1.23.10.1 |
 | <a name="module_ignition_sshd"></a> [ignition\_sshd](#module\_ignition\_sshd) | github.com/getamis/terraform-ignition-reinforcements//modules/sshd | v1.23.10.1 |
 | <a name="module_ignition_systemd_networkd"></a> [ignition\_systemd\_networkd](#module\_ignition\_systemd\_networkd) | github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd | v1.23.10.1 |

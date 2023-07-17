@@ -28,6 +28,7 @@ This document gives an overview of variables used in the AWS platform of the ela
 | [aws_route53_zone.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route53_zone) | resource |
 | [aws_s3_bucket.ignition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
 | [aws_s3_bucket_acl.ignition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_acl) | resource |
+| [aws_s3_bucket_ownership_controls.ignition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_ownership_controls) | resource |
 | [aws_s3_bucket_public_access_block.ignition](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_security_group.workers](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_security_group_rule.master_ingress_cilium_hubble_relay_from_worker](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group_rule) | resource |
@@ -53,8 +54,8 @@ This document gives an overview of variables used in the AWS platform of the ela
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_allowed_etcd_mgmt_cidr"></a> [allowed\_etcd\_mgmt\_cidr](#input\_allowed\_etcd\_mgmt\_cidr) | (Option) A list of CIDR networks to allow to manage etcd cluster. | `list(string)` | n/a | yes |
-| <a name="input_allowed_ssh_cidr"></a> [allowed\_ssh\_cidr](#input\_allowed\_ssh\_cidr) | (Optional) A list of CIDR networks to allow ssh access to. | `list(string)` | n/a | yes |
+| <a name="input_allowed_etcd_mgmt_cidr"></a> [allowed\_etcd\_mgmt\_cidr](#input\_allowed\_etcd\_mgmt\_cidr) | (Option) A list of CIDR networks to allow to manage etcd cluster. | `list(string)` | `[]` | no |
+| <a name="input_allowed_ssh_cidr"></a> [allowed\_ssh\_cidr](#input\_allowed\_ssh\_cidr) | (Optional) A list of CIDR networks to allow ssh access to. | `list(string)` | `[]` | no |
 | <a name="input_annotate_pod_ip"></a> [annotate\_pod\_ip](#input\_annotate\_pod\_ip) | (Optional) enable to fix pod startup connectivity issue on installing Calico with aws-vpc-cni plugin. (Issue: https://github.com/aws/amazon-vpc-cni-k8s/issues/493) | `bool` | `false` | no |
 | <a name="input_auth_webhook_kubeconfig_path"></a> [auth\_webhook\_kubeconfig\_path](#input\_auth\_webhook\_kubeconfig\_path) | The path of webhook kubeconfig for kube-apiserver. | `string` | `"/etc/kubernetes/config/aws-iam-authenticator/kubeconfig"` | no |
 | <a name="input_certs_validity_period_hours"></a> [certs\_validity\_period\_hours](#input\_certs\_validity\_period\_hours) | Validity period of the self-signed certificates (in hours). Default is 10 years. | `string` | `87600` | no |
