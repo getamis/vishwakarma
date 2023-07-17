@@ -28,8 +28,12 @@ fmt:
 	@for m in $(TF_FILES); do (terraform fmt -diff "$$m" && echo "√ $$m"); done
 
 .PHONY: test-kubernetes-cluster
-test-kubernetes-cluster:
-	(cd test && go test -timeout 60m -v -run TestKubernetesCluster)
+test-kubernetes-cluster-aws-vpc:
+	(cd test && TF_FOLDER_PATH="examples/kubernetes-cluster-aws-vpc" go test -timeout 60m -v -run TestKubernetesCluster)
+
+.PHONY: test-kubernetes-cluster-cilium-vxlan
+test-kubernetes-cluster-cilium-vxlan:
+	(cd test && TF_FOLDER_PATH="examples/kubernetes-cluster-cilium-vxlan" go test -timeout 60m -v -run TestKubernetesCluster)
 
 .PHONY: changelog
 changelog:

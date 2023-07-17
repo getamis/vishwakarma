@@ -16,7 +16,7 @@ func TestKubernetesCluster(t *testing.T) {
 	t.Parallel()
 
 	// Copy example to temp folder
-	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../", "examples/kubernetes-cluster")
+	exampleFolder := test_structure.CopyTerraformFolderToTemp(t, "../", os.Getenv("TF_FOLDER_PATH"))
 
 	// A unique ID we can use to namespace resources so we don't clash with anything already in the AWS account or
 	// tests running in parallel

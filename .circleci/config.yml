@@ -51,15 +51,23 @@ jobs:
       - run:
           name: Terraform check format
           command: make fmt
-  run-kubernetes-cluster:
+  run-kubernetes-cluster-aws-vpc:
     <<: *default   
     steps:
       - checkout 
       - *install_tools
       - run: 
-          name: Run tests for Kubernetes cluster
-          command: make test-kubernetes-cluster
-          
+          name: Run tests for Kubernetes cluster (AWS VPC CNI)
+          command: make test-kubernetes-cluster-aws-vpc
+  run-kubernetes-cluster-cilium-vxlan:
+    <<: *default   
+    steps:
+      - checkout 
+      - *install_tools
+      - run: 
+          name: Run tests for Kubernetes cluster (Cilium VXLAN CNI)
+          command: make test-kubernetes-cluster-cilium-vxlan
+
 workflows:
   version: 2
   test:
@@ -69,6 +77,9 @@ workflows:
           type: approval
           requires:
             - validate-and-format
-      - run-kubernetes-cluster:
+      - run-kubernetes-cluster-aws-vpc:
+          requires:
+            - approval-run-kubernetes-cluster
+      - run-kubernetes-cluster-cilium-vxlan:
           requires:
             - approval-run-kubernetes-cluster
