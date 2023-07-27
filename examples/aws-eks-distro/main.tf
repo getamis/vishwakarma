@@ -176,10 +176,7 @@ module "worker_on_demand" {
   }
 
   asg_warm_pool = {
-    enabled                     = true
-    min_size                    = 1
-    reuse_on_scale_in           = false
-    max_group_prepared_capacity = 1
+    enabled                     = false
   }
 
   s3_bucket = module.master.ignition_s3_bucket

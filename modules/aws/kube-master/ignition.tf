@@ -12,7 +12,8 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.27.2.1"
+  # source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.27.2.1"
+  source = "github.com/getamis/terraform-ignition-kubernetes?ref=imo-test"
 
   binaries              = var.binaries
   containers            = var.containers
@@ -32,10 +33,7 @@ module "ignition_kubernetes" {
 
   kubelet_config = var.kubelet_extra_config
 
-  cloud_config = {
-    provider = "aws"
-    path     = ""
-  }
+  cloud_provider = "aws"
 
   kube_proxy_config = var.kube_proxy_config
   coredns_config = merge(var.coredns_config, {
