@@ -147,7 +147,7 @@ data "aws_iam_policy_document" "worker_ccm" {
 
 resource "aws_iam_policy" "worker_ccm" {
   count       = var.role_name == "" ? 1 : 0
-  name        = "${var.name}-worker-ccm"
+  name_prefix = "${var.name}-worker-${var.instance_config["name"]}-ccm-"
   path        = "/"
   description = "AWS cloud controller policy for Kubernetes workers"
   policy      = data.aws_iam_policy_document.worker_ccm.json
