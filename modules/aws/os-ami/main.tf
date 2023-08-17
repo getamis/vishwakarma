@@ -15,7 +15,7 @@ locals {
 
     ubuntu = {
       owner_id = "099720109477"
-      name     = "ubuntu/images/hvm-ssd/ubuntu-lunar-23.04-amd64-server-*"
+      name     = "ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"
     }
   }
 }
