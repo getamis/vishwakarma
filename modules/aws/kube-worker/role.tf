@@ -124,3 +124,36 @@ resource "aws_iam_role_policy_attachment" "worker_vpc_cni" {
   policy_arn = aws_iam_policy.worker_vpc_cni[0].arn
   role       = aws_iam_role.worker[0].name
 }
+
+data "aws_iam_policy_document" "worker_ccm" {
+  statement {
+    sid = "CCMWorker"
+    actions = [
+      "ec2:DescribeInstances",
+      "ec2:DescribeRegions",
+      "ecr:GetAuthorizationToken",
+      "ecr:BatchCheckLayerAvailability",
+      "ecr:GetDownloadUrlForLayer",
+      "ecr:GetRepositoryPolicy",
+      "ecr:DescribeRepositories",
+      "ecr:ListImages",
+      "ecr:BatchGetImage"
+    ]
+    resources = [
+      "*"
+    ]
+  }
+}
+
+resource "aws_iam_policy" "worker_ccm" {
+  count       = var.role_name == "" ? 1 : 0
+  name        = "${var.name}-worker-ccm"
+  path        = "/"
+  description = "AWS cloud controller policy for Kubernetes workers"
+  policy      = data.aws_iam_policy_document.worker_ccm.json
+}
+
+resource "aws_iam_role_policy_attachment" "worker_ccm" {
+  policy_arn = aws_iam_policy.worker_ccm[0].arn
+  role       = aws_iam_role.worker[0].name
+}
