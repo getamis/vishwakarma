@@ -29,18 +29,19 @@ data "aws_iam_policy_document" "master" {
     sid = "EC2"
 
     actions = [
-      "ec2:DescribeAccountAttributes",
+      "autoscaling:DescribeAutoScalingGroups",
+      "autoscaling:DescribeLaunchConfigurations",
+      "autoscaling:DescribeTags",
       "ec2:DescribeInstances",
-      "ec2:DescribeInternetGateways",
       "ec2:DescribeRegions",
       "ec2:DescribeRouteTables",
       "ec2:DescribeSecurityGroups",
       "ec2:DescribeSubnets",
       "ec2:DescribeVolumes",
+      "ec2:DescribeAvailabilityZones",
       "ec2:CreateSecurityGroup",
       "ec2:CreateTags",
       "ec2:CreateVolume",
-      "ec2:DescribeVolumesModifications",
       "ec2:ModifyInstanceAttribute",
       "ec2:ModifyVolume",
       "ec2:AttachVolume",
@@ -51,9 +52,7 @@ data "aws_iam_policy_document" "master" {
       "ec2:DeleteVolume",
       "ec2:DetachVolume",
       "ec2:RevokeSecurityGroupIngress",
-      "ec2:DescribeLaunchTemplateVersions",
-      "autoscaling:DescribeAutoScalingGroups",
-      "autoscaling:DescribeAutoScalingInstances"
+      "ec2:DescribeVpcs",
     ]
     resources = [
       "*"

@@ -49,7 +49,7 @@ data "aws_s3_object" "bootstrapping_kubeconfig" {
 }
 
 module "ignition_kubelet" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.27.2.1"
+  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.27.2.2"
 
   binaries             = var.binaries
   containers           = var.containers
@@ -65,10 +65,7 @@ module "ignition_kubelet" {
     register-with-taints = join(",", var.kubelet_node_taints)
   })
 
-  cloud_config = {
-    provider = "aws"
-    path     = ""
-  }
+  cloud_provider = "aws"
 
   bootstrap_kubeconfig_content = data.aws_s3_object.bootstrapping_kubeconfig.body
 }

@@ -142,10 +142,10 @@ module "worker_on_demand" {
   }
 
   asg_warm_pool = {
-    enabled                     = true
-    min_size                    = 1
+    enabled                     = false
+    max_group_prepared_capacity = 0
+    min_size                    = 0
     reuse_on_scale_in           = false
-    max_group_prepared_capacity = 1
   }
 
   kubelet_config = {
