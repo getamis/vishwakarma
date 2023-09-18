@@ -12,7 +12,8 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.27.2.2"
+  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.27.4.0"
+
 
   binaries              = var.binaries
   containers            = var.containers
