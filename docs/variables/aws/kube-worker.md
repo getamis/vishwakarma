@@ -22,7 +22,7 @@ This document gives an overview of variables used in the AWS platform of the kub
 | <a name="module_ignition_containerd"></a> [ignition\_containerd](#module\_ignition\_containerd) | github.com/getamis/terraform-ignition-reinforcements//modules/containerd | v1.27.2.0 |
 | <a name="module_ignition_docker"></a> [ignition\_docker](#module\_ignition\_docker) | github.com/getamis/terraform-ignition-reinforcements//modules/docker | v1.27.2.0 |
 | <a name="module_ignition_ecr_credentail_provider"></a> [ignition\_ecr\_credentail\_provider](#module\_ignition\_ecr\_credentail\_provider) | github.com/getamis/terraform-ignition-reinforcements//modules/ecr-credential-provider | v1.27.2.0 |
-| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | github.com/getamis/terraform-ignition-kubernetes//modules/kubelet | v1.27.2.1 |
+| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | github.com/getamis/terraform-ignition-kubernetes//modules/kubelet | v1.27.4.0 |
 | <a name="module_ignition_locksmithd"></a> [ignition\_locksmithd](#module\_ignition\_locksmithd) | github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd | v1.23.10.1 |
 | <a name="module_ignition_sshd"></a> [ignition\_sshd](#module\_ignition\_sshd) | github.com/getamis/terraform-ignition-reinforcements//modules/sshd | v1.23.10.1 |
 | <a name="module_ignition_systemd_networkd"></a> [ignition\_systemd\_networkd](#module\_ignition\_systemd\_networkd) | github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd | v1.23.10.1 |
@@ -57,7 +57,7 @@ This document gives an overview of variables used in the AWS platform of the kub
 |------|-------------|------|---------|:--------:|
 | <a name="input_asg_warm_pool"></a> [asg\_warm\_pool](#input\_asg\_warm\_pool) | Warm pool arguments of Auto Scaling group. | <pre>object({<br>    enabled                     = bool<br>    min_size                    = number<br>    reuse_on_scale_in           = bool<br>    max_group_prepared_capacity = number<br>  })</pre> | <pre>{<br>  "enabled": false,<br>  "max_group_prepared_capacity": 1,<br>  "min_size": 1,<br>  "reuse_on_scale_in": false<br>}</pre> | no |
 | <a name="input_binaries"></a> [binaries](#input\_binaries) | Desired binaries(cni\_plugin) url and checksum. | <pre>map(object({<br>    source   = string<br>    checksum = string<br>  }))</pre> | `{}` | no |
-| <a name="input_cloud_provider"></a> [cloud\_provider](#input\_cloud\_provider) | The cloud provider configuration. | string | "" | no |
+| <a name="input_cloud_provider"></a> [cloud\_provider](#input\_cloud\_provider) | The cloud provider configuration. | `string` | `"aws"` | no |
 | <a name="input_containers"></a> [containers](#input\_containers) | Desired containers(kube-apiserver, kube-controller-manager, cfssl, coredns, and so on) repo and tag. | <pre>map(object({<br>    repo = string<br>    tag  = string<br>  }))</pre> | `{}` | no |
 | <a name="input_debug_mode"></a> [debug\_mode](#input\_debug\_mode) | Enable the functionailty for trouble shooting, e.g. sshd | `bool` | `false` | no |
 | <a name="input_enable_asg_life_cycle"></a> [enable\_asg\_life\_cycle](#input\_enable\_asg\_life\_cycle) | (Optional) enable ASG life cycle hook or not | `bool` | `true` | no |
@@ -75,7 +75,7 @@ This document gives an overview of variables used in the AWS platform of the kub
 | <a name="input_kubelet_flags"></a> [kubelet\_flags](#input\_kubelet\_flags) | The flags of kubelet. The variables need to follow https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/. Do not use underline. | `map(string)` | `{}` | no |
 | <a name="input_kubelet_node_labels"></a> [kubelet\_node\_labels](#input\_kubelet\_node\_labels) | Labels to add when registering the node in the cluster. Labels must be key=value pairs. | `list(string)` | `[]` | no |
 | <a name="input_kubelet_node_taints"></a> [kubelet\_node\_taints](#input\_kubelet\_node\_taints) | Register the node with the given list of taints ("<key>=<value>:<effect>"). | `list(string)` | `[]` | no |
-| <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Desired Kubernetes version. | `string` | `"v1.27.2"` | no |
+| <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Desired Kubernetes version. | `string` | `"v1.27.4"` | no |
 | <a name="input_max_pods"></a> [max\_pods](#input\_max\_pods) | (Optional) the max pod number in the node when enable eni prefix | `string` | `"110"` | no |
 | <a name="input_name"></a> [name](#input\_name) | (Required) Name of the cluster. | `string` | n/a | yes |
 | <a name="input_network_plugin"></a> [network\_plugin](#input\_network\_plugin) | Desired network plugin which is use for Kubernetes cluster. e.g. 'flannel', 'amazon-vpc', 'cilium-vxlan' | `string` | `"amazon-vpc"` | no |
