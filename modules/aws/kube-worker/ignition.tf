@@ -49,7 +49,7 @@ data "aws_s3_object" "bootstrapping_kubeconfig" {
 }
 
 module "ignition_kubelet" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.27.4.1"
 
   binaries             = var.binaries
   containers           = var.containers
