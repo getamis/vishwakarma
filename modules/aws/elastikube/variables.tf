@@ -285,6 +285,8 @@ variable "master_instance_config" {
     default_cooldown          = number
     health_check_grace_period = number
 
+    suspended_processes = list(string)
+
     instance_warmup        = number
     min_healthy_percentage = number
 
@@ -306,6 +308,8 @@ variable "master_instance_config" {
 
     default_cooldown          = 300
     health_check_grace_period = 300
+
+    suspended_processes = []
 
     instance_warmup        = 30
     min_healthy_percentage = 100
