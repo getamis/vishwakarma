@@ -90,6 +90,8 @@ module "master" {
     default_cooldown          = 30
     health_check_grace_period = 30
 
+    suspended_processes = []
+
     instance_warmup        = 30
     min_healthy_percentage = 100
 

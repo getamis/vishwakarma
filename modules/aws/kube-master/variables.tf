@@ -282,6 +282,8 @@ variable "instance_config" {
     default_cooldown          = number
     health_check_grace_period = number
 
+    suspended_processes = list(string)
+
     instance_warmup        = number
     min_healthy_percentage = number
 

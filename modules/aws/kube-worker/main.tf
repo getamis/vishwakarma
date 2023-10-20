@@ -31,6 +31,8 @@ resource "aws_autoscaling_group" "worker" {
   default_cooldown          = var.instance_config["default_cooldown"]
   health_check_grace_period = var.instance_config["health_check_grace_period"]
 
+  suspended_processes = var.instance_config["suspended_processes"]
+
   instance_refresh {
     strategy = "Rolling"
     preferences {
