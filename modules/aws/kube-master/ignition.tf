@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.27.4.2"
 
   binaries              = var.binaries
   containers            = var.containers
@@ -91,10 +91,10 @@ module "ignition_kubernetes" {
   }
 }
 
-module "ignition_docker" {
-  source               = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.2.0"
-  docker_cgroup_driver = "systemd"
-}
+# module "ignition_docker" {
+#   source               = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.2.0"
+#   docker_cgroup_driver = "systemd"
+# }
 
 module "ignition_locksmithd" {
   source          = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.27.2.0"
@@ -127,7 +127,7 @@ module "ignition_systemd_networkd" {
 }
 data "ignition_config" "main" {
   files = compact(concat(
-    module.ignition_docker.files,
+    # module.ignition_docker.files,
     module.ignition_locksmithd.files,
     module.ignition_update_ca_certificates.files,
     module.ignition_sshd.files,
@@ -140,7 +140,7 @@ data "ignition_config" "main" {
   ))
 
   systemd = compact(concat(
-    module.ignition_docker.systemd_units,
+    # module.ignition_docker.systemd_units,
     module.ignition_locksmithd.systemd_units,
     module.ignition_update_ca_certificates.systemd_units,
     module.ignition_sshd.systemd_units,

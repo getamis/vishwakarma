@@ -7,10 +7,10 @@ locals {
   ))
 }
 
-module "ignition_docker" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.2.0"
-  docker_cgroup_driver = "systemd"
-}
+# module "ignition_docker" {
+#   source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.2.0"
+#   docker_cgroup_driver = "systemd"
+# }
 
 module "ignition_locksmithd" {
   source = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.23.10.1"
@@ -49,7 +49,7 @@ data "aws_s3_object" "bootstrapping_kubeconfig" {
 }
 
 module "ignition_kubelet" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.27.4.2"
 
   binaries             = var.binaries
   containers           = var.containers
@@ -72,7 +72,7 @@ module "ignition_kubelet" {
 
 data "ignition_config" "main" {
   files = compact(concat(
-    module.ignition_docker.files,
+    # module.ignition_docker.files,
     module.ignition_locksmithd.files,
     module.ignition_update_ca_certificates.files,
     module.ignition_sshd.files,
@@ -84,7 +84,7 @@ data "ignition_config" "main" {
   ))
 
   systemd = compact(concat(
-    module.ignition_docker.systemd_units,
+    # module.ignition_docker.systemd_units,
     module.ignition_locksmithd.systemd_units,
     module.ignition_update_ca_certificates.systemd_units,
     module.ignition_sshd.systemd_units,

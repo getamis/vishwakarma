@@ -23,10 +23,11 @@ module "ignition_sshd" {
 }
 
 module "ignition_etcd" {
-  source = "github.com/getamis/terraform-ignition-etcd?ref=v1.23.10.1"
+  source = "github.com/getamis/terraform-ignition-etcd?ref=v1.27.4.0"
 
   name                  = var.name
   containers            = var.containers
+  binaries              = var.binaries
   discovery_service_srv = local.discovery_service
   client_port           = local.client_port
   peer_port             = local.peer_port

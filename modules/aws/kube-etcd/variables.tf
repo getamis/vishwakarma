@@ -12,6 +12,15 @@ variable "containers" {
   default = {}
 }
 
+variable "binaries" {
+  description = "Desired addon binaries url and checksum."
+  type = map(object({
+    source   = string
+    checksum = string
+  }))
+  default = {}
+}
+
 variable "certs_hostnames" {
   description = <<EOF
     (Optional) This declares the hostnames to be used in the certificates.
