@@ -45,7 +45,7 @@ module "master" {
   kube_cluster_network_cidr = local.cluster_cidr
 
   etcd_instance_config = {
-    count = 1
+    count              = 1
     image_id           = module.os_ami.image_id
     ec2_type           = "t3.medium"
     root_volume_size   = 40
@@ -56,7 +56,7 @@ module "master" {
   }
 
   master_instance_config = {
-    count = 1
+    count    = 1
     image_id = module.os_ami.image_id
     ec2_type = [
       "t3.medium",

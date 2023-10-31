@@ -180,7 +180,7 @@ module "worker_on_demand" {
   }
 
   asg_warm_pool = {
-    enabled                     = false
+    enabled = false
   }
 
   s3_bucket = module.master.ignition_s3_bucket
