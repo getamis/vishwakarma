@@ -20,7 +20,7 @@ module "network" {
 module "os_ami" {
   source          = "../../modules/aws/os-ami"
   flavor          = "flatcar"
-  flatcar_version = "2905.2.3"
+  flatcar_version = "3510.2.8"
 }
 
 module "etcd" {
