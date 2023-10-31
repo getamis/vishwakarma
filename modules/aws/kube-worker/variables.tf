@@ -40,7 +40,7 @@ variable "network_plugin" {
 
 variable "cloud_provider" {
   description = "The cloud provider configuration."
-  type        = string 
+  type        = string
   default     = "aws"
 }
 

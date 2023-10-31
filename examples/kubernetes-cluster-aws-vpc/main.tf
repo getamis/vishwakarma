@@ -98,6 +98,7 @@ module "master" {
   allowed_ssh_cidr       = [module.network.vpc_cidr]
   enable_eni_prefix      = var.enable_eni_prefix
   enable_asg_life_cycle  = var.enable_asg_life_cycle
+  external_snat          = var.external_snat
   debug_mode             = var.debug_mode
 
   extra_tags = module.label.tags

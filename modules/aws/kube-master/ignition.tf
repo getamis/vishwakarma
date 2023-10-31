@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.27.4.2"
+  source = "github.com/getamis/terraform-ignition-kubernetes?ref=v1.27.4.3"
 
   binaries              = var.binaries
   containers            = var.containers
@@ -57,6 +57,7 @@ module "ignition_kubernetes" {
   oidc_config              = var.oidc_config
   enable_eni_prefix        = var.enable_eni_prefix
   annotate_pod_ip          = var.annotate_pod_ip
+  external_snat            = var.external_snat
   max_pods                 = var.max_pods
 
   certs = {

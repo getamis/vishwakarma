@@ -1,5 +1,5 @@
 module "ignition_docker" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.2.0"
+  source               = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.2.0"
   docker_cgroup_driver = "systemd"
 }
 
