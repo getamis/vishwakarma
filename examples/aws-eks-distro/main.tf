@@ -72,7 +72,7 @@ locals {
 module "os_ami" {
   source          = "../../modules/aws/os-ami"
   flavor          = "flatcar"
-  flatcar_version = "2905.2.3"
+  flatcar_version = "3510.2.8"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -180,7 +180,7 @@ module "worker_on_demand" {
   }
 
   asg_warm_pool = {
-    enabled                     = false
+    enabled = false
   }
 
   s3_bucket = module.master.ignition_s3_bucket

@@ -61,6 +61,7 @@ module "master" {
 
   enable_eni_prefix = var.enable_eni_prefix
   annotate_pod_ip   = var.annotate_pod_ip
+  external_snat     = var.external_snat
   max_pods          = var.max_pods
 
   enable_asg_life_cycle = var.enable_asg_life_cycle

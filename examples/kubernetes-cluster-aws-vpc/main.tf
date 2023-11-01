@@ -28,7 +28,7 @@ locals {
 module "os_ami" {
   source          = "../../modules/aws/os-ami"
   flavor          = "flatcar"
-  flatcar_version = "3510.2.1"
+  flatcar_version = "3510.2.8"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -45,7 +45,7 @@ module "master" {
   kube_cluster_network_cidr = local.cluster_cidr
 
   etcd_instance_config = {
-    count = 1
+    count              = 1
     image_id           = module.os_ami.image_id
     ec2_type           = "t3.medium"
     root_volume_size   = 40
@@ -56,7 +56,7 @@ module "master" {
   }
 
   master_instance_config = {
-    count = 1
+    count    = 1
     image_id = module.os_ami.image_id
     ec2_type = [
       "t3.medium",
@@ -98,6 +98,7 @@ module "master" {
   allowed_ssh_cidr       = [module.network.vpc_cidr]
   enable_eni_prefix      = var.enable_eni_prefix
   enable_asg_life_cycle  = var.enable_asg_life_cycle
+  external_snat          = var.external_snat
   debug_mode             = var.debug_mode
 
   extra_tags = module.label.tags

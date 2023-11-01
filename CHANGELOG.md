@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this
 project adheres to [Semantic Versioning](http://semver.org/).
 
 
+<a name="v1.27.4.2"></a>
+## [v1.27.4.2] - 2023-10-23
+
+- replace docker to nerdctl ([#173](https://github.com/getamis/vishwakarma/issues/173))
+
+
+<a name="v1.27.4.1"></a>
+## [v1.27.4.1] - 2023-10-20
+
+- add asg suspended processes arg ([#171](https://github.com/getamis/vishwakarma/issues/171))
+
+
 <a name="v1.27.4.0"></a>
 ## [v1.27.4.0] - 2023-09-19
 
@@ -338,7 +350,9 @@ ENHANCEMENTS:
 - update README.md ([#85](https://github.com/getamis/vishwakarma/issues/85))
 
 
-[Unreleased]: https://github.com/getamis/vishwakarma/compare/v1.27.4.0...HEAD
+[Unreleased]: https://github.com/getamis/vishwakarma/compare/v1.27.4.2...HEAD
+[v1.27.4.2]: https://github.com/getamis/vishwakarma/compare/v1.27.4.1...v1.27.4.2
+[v1.27.4.1]: https://github.com/getamis/vishwakarma/compare/v1.27.4.0...v1.27.4.1
 [v1.27.4.0]: https://github.com/getamis/vishwakarma/compare/v1.27.2.2...v1.27.4.0
 [v1.27.2.2]: https://github.com/getamis/vishwakarma/compare/v1.27.2.1...v1.27.2.2
 [v1.27.2.1]: https://github.com/getamis/vishwakarma/compare/v1.27.2.0...v1.27.2.1
