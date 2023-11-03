@@ -79,3 +79,22 @@ variable "enable_asg_life_cycle" {
   type        = bool
   default     = false
 }
+
+variable "log_level" {
+  description = "Log level and verbosity of each components"
+  type        = any
+  default = {
+    aws_cloud_controller_manager = "4"     # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    aws_vpc_cni                  = "DEBUG" # DEBUG, INFO, WARN, ERROR, FATAL
+    containerd                   = "debug" # trace, debug, info, warn, error, fatal, panic
+    cilium_cni                   = "None"  # DEBUG: enable debug logging, INFO: disable debug logging
+    docker                       = "debug" # debug, info, warn, error, fatal
+    etcd                         = "info"  # debug, info, warn, error, panic, fatal
+    kube_apiserver               = "4"     # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    kube_controller_manager      = "4"     # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    kube_scheduler               = "4"     # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    kube_proxy                   = "4"     # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    kubelet                      = "4"     # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    systemd_networkd             = "debug" # emerg, alert, crit, err, warning, notice, info, debug
+  }
+}

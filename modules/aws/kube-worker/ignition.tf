@@ -7,10 +7,18 @@ locals {
   ))
 }
 
-# module "ignition_docker" {
-#   source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.2.0"
-#   docker_cgroup_driver = "systemd"
-# }
+module "ignition_docker" {
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=feat/log-level"
+
+  docker_cgroup_driver = "systemd"
+  log_level            = var.log_level["docker"]
+}
+
+module "ignition_containerd" {
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/containerd?ref=feat/log-level"
+
+  log_level = var.log_level["containerd"]
+}
 
 module "ignition_locksmithd" {
   source = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.23.10.1"
@@ -29,14 +37,9 @@ module "ignition_sshd" {
 }
 
 module "ignition_systemd_networkd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.23.10.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=feat/log-level"
 
-  debug = var.debug_mode
-}
-
-module "ignition_containerd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/containerd?ref=v1.27.2.0"
-
+  log_level = var.log_level["systemd_networkd"]
 }
 
 module "ignition_ecr_credentail_provider" {
@@ -58,6 +61,7 @@ module "ignition_kubelet" {
   network_plugin       = var.network_plugin
   enable_eni_prefix    = var.enable_eni_prefix
   max_pods             = var.max_pods
+  log_level            = var.log_level["kubelet"]
 
   extra_config = var.kubelet_config
   extra_flags = merge(var.kubelet_flags, {
@@ -72,19 +76,19 @@ module "ignition_kubelet" {
 
 data "ignition_config" "main" {
   files = compact(concat(
-    # module.ignition_docker.files,
+    module.ignition_docker.files,
+    module.ignition_containerd.files,
     module.ignition_locksmithd.files,
     module.ignition_update_ca_certificates.files,
     module.ignition_sshd.files,
     module.ignition_systemd_networkd.files,
     module.ignition_kubelet.files,
-    module.ignition_containerd.files,
     module.ignition_ecr_credentail_provider.files,
     var.extra_ignition_file_ids,
   ))
 
   systemd = compact(concat(
-    # module.ignition_docker.systemd_units,
+    module.ignition_docker.systemd_units,
     module.ignition_locksmithd.systemd_units,
     module.ignition_update_ca_certificates.systemd_units,
     module.ignition_sshd.systemd_units,

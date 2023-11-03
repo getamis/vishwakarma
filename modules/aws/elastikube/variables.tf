@@ -420,3 +420,35 @@ variable "extra_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "log_level" {
+  description = "Log level and verbosity of each components"
+  type = object({
+    aws_cloud_controller_manager = optional(string, "2")       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    aws_vpc_cni                  = optional(string, "DEBUG")   # DEBUG, INFO, WARN, ERROR, FATAL
+    containerd                   = optional(string, "info")    # trace, debug, info, warn, error, fatal, panic
+    cilium_cni                   = optional(string, "DEBUG")   # DEBUG: enable debug logging, INFO: disable debug logging
+    docker                       = optional(string, "info")    # debug, info, warn, error, fatal
+    etcd                         = optional(string, "info")    # debug, info, warn, error, panic, fatal
+    kube_apiserver               = optional(string, "2")       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    kube_controller_manager      = optional(string, "2")       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    kube_scheduler               = optional(string, "2")       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    kube_proxy                   = optional(string, "2")       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    kubelet                      = optional(string, "2")       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    systemd_networkd             = optional(string, "warning") # emerg, alert, crit, err, warning, notice, info, debug
+  })
+  default = {
+    aws_cloud_controller_manager = "2"       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    aws_vpc_cni                  = "DEBUG"   # DEBUG, INFO, WARN, ERROR, FATAL
+    containerd                   = "info"    # trace, debug, info, warn, error, fatal, panic
+    cilium_cni                   = "DEBUG"   # DEBUG: enable debug logging, INFO: disable debug logging
+    docker                       = "info"    # debug, info, warn, error, fatal
+    etcd                         = "info"    # debug, info, warn, error, panic, fatal
+    kube_apiserver               = "2"       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    kube_controller_manager      = "2"       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    kube_scheduler               = "2"       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    kube_proxy                   = "2"       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    kubelet                      = "2"       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    systemd_networkd             = "warning" # emerg, alert, crit, err, warning, notice, info, debug
+  }
+}

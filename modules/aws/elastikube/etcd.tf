@@ -18,6 +18,7 @@ module "etcd" {
   reboot_strategy             = var.reboot_strategy
   certs_validity_period_hours = var.certs_validity_period_hours
   debug_mode                  = var.debug_mode
+  log_level                   = var.log_level
 
   extra_ignition_file_ids         = var.extra_etcd_ignition_file_ids
   extra_ignition_systemd_unit_ids = var.extra_etcd_ignition_systemd_unit_ids

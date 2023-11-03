@@ -85,3 +85,9 @@ variable "external_snat" {
   type        = bool
   default     = true # AWS NAT Gateway is enabled by network module
 }
+
+variable "log_level" {
+  description = "Log level and verbosity of each components"
+  type        = any
+  default     = {}
+}

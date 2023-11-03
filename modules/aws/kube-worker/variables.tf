@@ -236,3 +236,19 @@ variable "enable_extra_sg" {
   type        = bool
   default     = false
 }
+
+variable "log_level" {
+  description = "Log level and verbosity of each components"
+  type = object({
+    containerd       = optional(string, "info")    # trace, debug, info, warn, error, fatal, panic
+    docker           = optional(string, "info")    # debug, info, warn, error, fatal
+    kubelet          = optional(string, "2")       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    systemd_networkd = optional(string, "warning") # emerg, alert, crit, err, warning, notice, info, debug
+  })
+  default = {
+    containerd       = "info"    # trace, debug, info, warn, error, fatal, panic
+    docker           = "info"    # debug, info, warn, error, fatal
+    kubelet          = "2"       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
+    systemd_networkd = "warning" # emerg, alert, crit, err, warning, notice, info, debug
+  }
+}
