@@ -29,8 +29,8 @@ default: &default
     - image: cimg/go:1.18
   environment:
     GO111MODULE: "on"
-    TF_VERSION: "1.2.8"
     KUBE_VERSION: "1.19.16"
+    TF_VERSION: "1.5.7"
     AWS_SDK_LOAD_CONFIG: "True"
     INSTALL_AWS_CLI: "true"
     INSTALL_TERRAFORM: "true"
@@ -40,7 +40,7 @@ jobs:
   validate-and-format:
     <<: *default
     environment:
-      TF_VERSION: "1.2.8"
+      TF_VERSION: "1.5.7"
       INSTALL_TERRAFORM: "true"
     steps:
       - checkout
