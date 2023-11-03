@@ -21,17 +21,17 @@ module "ignition_containerd" {
 }
 
 module "ignition_locksmithd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.23.10.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=feat/log-level"
 
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.23.10.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=feat/log-level"
 }
 
 module "ignition_sshd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.23.10.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=feat/log-level"
 
   enable = var.debug_mode
 }
@@ -43,7 +43,7 @@ module "ignition_systemd_networkd" {
 }
 
 module "ignition_ecr_credentail_provider" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/ecr-credential-provider?ref=v1.27.2.0"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/ecr-credential-provider?ref=feat/log-level"
 }
 
 data "aws_s3_object" "bootstrapping_kubeconfig" {
@@ -52,7 +52,7 @@ data "aws_s3_object" "bootstrapping_kubeconfig" {
 }
 
 module "ignition_kubelet" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.27.4.3"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=feat/log-level-configuration"
 
   binaries             = var.binaries
   containers           = var.containers

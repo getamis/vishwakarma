@@ -1,5 +1,6 @@
 module "ignition_docker" {
-  source               = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.2.0"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=feat/log-level"
+
   docker_cgroup_driver = "systemd"
   log_level            = var.log_level["docker"]
 }
@@ -11,21 +12,21 @@ module "ignition_containerd" {
 }
 
 module "ignition_locksmithd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.23.10.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=feat/log-level"
 
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.23.10.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=feat/log-level"
 }
 
 module "ignition_node_exporter" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=v1.23.10.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=feat/log-level"
 }
 
 module "ignition_sshd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.23.10.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=feat/log-level"
 
   enable = var.debug_mode
 }
