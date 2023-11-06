@@ -5,7 +5,7 @@ This document gives an overview of variables used in the AWS platform of the net
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.2.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0 |
 
 ## Providers
 
