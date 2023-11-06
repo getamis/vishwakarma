@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//?ref=feat/log-level-configuration"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//?ref=v1.27.4.4"
 
   binaries              = var.binaries
   containers            = var.containers
@@ -94,39 +94,39 @@ module "ignition_kubernetes" {
 }
 
 module "ignition_docker" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=feat/log-level"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.4.0"
 
   docker_cgroup_driver = "systemd"
   log_level            = var.log_level["docker"]
 }
 
 module "ignition_containerd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/containerd?ref=feat/log-level"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/containerd?ref=v1.27.4.0"
 
   log_level = var.log_level["containerd"]
 }
 
 module "ignition_locksmithd" {
-  source          = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=feat/log-level"
+  source          = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.27.4.0"
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=feat/log-level"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.27.4.0"
 }
 
 module "ignition_sshd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=feat/log-level"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.27.4.0"
 
   enable = var.debug_mode
 }
 
 module "ignition_ecr_credentail_provider" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/ecr-credential-provider?ref=feat/log-level"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/ecr-credential-provider?ref=v1.27.4.0"
 }
 
 module "ignition_systemd_networkd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=feat/log-level"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.27.4.0"
 
   log_level = var.log_level["systemd_networkd"]
 }

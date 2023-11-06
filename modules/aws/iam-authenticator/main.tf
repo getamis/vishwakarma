@@ -1,5 +1,5 @@
 module "ignition_iam_auth" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-iam-authenticator?ref=feat/log-level-configuration"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-iam-authenticator?ref=v1.27.4.4"
 
   cluster_name        = var.name
   container           = var.container

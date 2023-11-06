@@ -1,38 +1,38 @@
 module "ignition_docker" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=feat/log-level"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.4.0"
 
   docker_cgroup_driver = "systemd"
   log_level            = var.log_level["docker"]
 }
 
 module "ignition_containerd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/containerd?ref=feat/log-level"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/containerd?ref=v1.27.4.0"
 
   log_level = var.log_level["containerd"]
 }
 
 module "ignition_locksmithd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=feat/log-level"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.27.4.0"
 
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=feat/log-level"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.27.4.0"
 }
 
 module "ignition_node_exporter" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=feat/log-level"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=v1.27.4.0"
 }
 
 module "ignition_sshd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=feat/log-level"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.27.4.0"
 
   enable = var.debug_mode
 }
 
 module "ignition_etcd" {
-  source = "github.com/getamis/terraform-ignition-etcd?ref=v1.27.4.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-etcd?ref=v1.27.4.1"
 
   name                  = var.name
   containers            = var.containers
