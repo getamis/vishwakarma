@@ -1,29 +1,38 @@
 module "ignition_docker" {
-  source               = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.2.0"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.4.0"
+
   docker_cgroup_driver = "systemd"
+  log_level            = var.log_level["docker"]
+}
+
+module "ignition_containerd" {
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/containerd?ref=v1.27.4.0"
+
+  log_level = var.log_level["containerd"]
 }
 
 module "ignition_locksmithd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.23.10.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.27.4.0"
 
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.23.10.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.27.4.0"
 }
 
 module "ignition_node_exporter" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=v1.23.10.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/node-exporter?ref=v1.27.4.0"
 }
 
 module "ignition_sshd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.23.10.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.27.4.0"
+
   enable = var.debug_mode
 }
 
 module "ignition_etcd" {
-  source = "github.com/getamis/terraform-ignition-etcd?ref=v1.27.4.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-etcd?ref=v1.27.4.1"
 
   name                  = var.name
   containers            = var.containers
@@ -34,7 +43,7 @@ module "ignition_etcd" {
   proxy_port            = local.proxy_port
   device_name           = var.instance_config["data_device_rename"]
   data_path             = var.instance_config["data_path"]
-  log_level             = var.debug_mode ? "debug" : "error"
+  log_level             = var.log_level["etcd"]
 
   certs = {
     ca_cert     = module.etcd_ca.cert_pem
@@ -50,6 +59,7 @@ module "ignition_etcd" {
 data "ignition_config" "main" {
   files = compact(concat(
     module.ignition_docker.files,
+    module.ignition_containerd.files,
     module.ignition_locksmithd.files,
     module.ignition_update_ca_certificates.files,
     module.ignition_etcd.files,

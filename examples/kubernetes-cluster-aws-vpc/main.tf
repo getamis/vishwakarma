@@ -28,7 +28,7 @@ locals {
 module "os_ami" {
   source          = "../../modules/aws/os-ami"
   flavor          = "flatcar"
-  flatcar_version = "3510.2.8"
+  flatcar_version = "3602.2.1"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -100,6 +100,7 @@ module "master" {
   enable_asg_life_cycle  = var.enable_asg_life_cycle
   external_snat          = var.external_snat
   debug_mode             = var.debug_mode
+  log_level              = var.log_level
 
   extra_tags = module.label.tags
 }
@@ -168,6 +169,7 @@ module "worker_on_demand" {
   enable_eni_prefix     = var.enable_eni_prefix
   enable_asg_life_cycle = var.enable_asg_life_cycle
   debug_mode            = var.debug_mode
+  log_level             = var.log_level
 
   extra_tags = module.label.tags
 }
@@ -229,6 +231,7 @@ module "worker_spot" {
   enable_eni_prefix     = var.enable_eni_prefix
   enable_asg_life_cycle = var.enable_asg_life_cycle
   debug_mode            = var.debug_mode
+  log_level             = var.log_level
 
   extra_tags = module.label.tags
 }

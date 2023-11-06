@@ -183,3 +183,17 @@ variable "extra_tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "log_level" {
+  description = "Log level and verbosity of each components"
+  type = object({
+    containerd = optional(string, "info") # trace, debug, info, warn, error, fatal, panic
+    docker     = optional(string, "info") # debug, info, warn, error, fatal
+    etcd       = optional(string, "info") # debug, info, warn, error, panic, fatal
+  })
+  default = {
+    containerd = "info" # trace, debug, info, warn, error, fatal, panic
+    docker     = "info" # debug, info, warn, error, fatal
+    etcd       = "info" # debug, info, warn, error, panic, fatal
+  }
+}

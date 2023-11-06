@@ -156,7 +156,7 @@ resource "aws_launch_template" "worker" {
 
 module "lifecycle_hook" {
   count  = var.enable_asg_life_cycle ? 1 : 0
-  source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v1.19.16.0"
+  source = "git::ssh://git@github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v1.27.4.0"
 
   name                           = "${var.name}-worker-${var.instance_config["name"]}"
   cluster_name                   = var.name
