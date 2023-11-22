@@ -1,6 +1,6 @@
 output "endpoints" {
   value = [
-    for etcd_ip in aws_network_interface.etcd.*.private_ips[0] :
+    for etcd_ip in flatten(aws_network_interface.etcd.*.private_ips) :
     "https://ip-${replace(etcd_ip, ".", "-")}.${local.discovery_service}:${local.client_port}"
   ]
 }
