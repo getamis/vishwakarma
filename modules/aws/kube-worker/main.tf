@@ -33,11 +33,14 @@ resource "aws_autoscaling_group" "worker" {
 
   suspended_processes = var.instance_config["suspended_processes"]
 
-  instance_refresh {
-    strategy = "Rolling"
-    preferences {
-      instance_warmup        = var.instance_config["instance_warmup"]
-      min_healthy_percentage = var.instance_config["min_healthy_percentage"]
+  dynamic "instance_refresh" {
+    for_each = var.instance_config["instance_refresh"] ? [1] : []
+    content {
+      strategy = "Rolling"
+      preferences {
+        instance_warmup        = var.instance_config["instance_warmup"]
+        min_healthy_percentage = var.instance_config["min_healthy_percentage"]
+      }
     }
   }
 

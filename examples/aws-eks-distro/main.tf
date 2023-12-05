@@ -116,6 +116,7 @@ module "master" {
 
     suspended_processes = []
 
+    instance_refresh       = false
     instance_warmup        = 30
     min_healthy_percentage = 100
 
@@ -170,6 +171,7 @@ module "worker_on_demand" {
 
     suspended_processes = []
 
+    instance_refresh       = false
     instance_warmup        = 30
     min_healthy_percentage = 100
 
@@ -223,6 +225,7 @@ module "worker_spot" {
 
     suspended_processes = []
 
+    instance_refresh       = false
     instance_warmup        = 30
     min_healthy_percentage = 100
 

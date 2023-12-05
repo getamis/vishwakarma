@@ -92,6 +92,7 @@ module "master" {
 
     suspended_processes = []
 
+    instance_refresh       = false
     instance_warmup        = 30
     min_healthy_percentage = 100
 

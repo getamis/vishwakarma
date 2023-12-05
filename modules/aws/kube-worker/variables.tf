@@ -149,6 +149,7 @@ variable "instance_config" {
 
     suspended_processes = list(string)
 
+    instance_refresh       = bool
     instance_warmup        = number
     min_healthy_percentage = number
 
