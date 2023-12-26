@@ -100,6 +100,7 @@ module "master" {
   enable_eni_prefix      = var.enable_eni_prefix
   enable_asg_life_cycle  = var.enable_asg_life_cycle
   external_snat          = var.external_snat
+  enable_network_policy  = var.enable_network_policy
   debug_mode             = var.debug_mode
   log_level              = var.log_level
 
