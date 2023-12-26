@@ -12,8 +12,8 @@ This document gives an overview of variables used in the AWS platform of the kub
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
-| <a name="provider_ignition"></a> [ignition](#provider\_ignition) | 2.1.2 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.29.0 |
+| <a name="provider_ignition"></a> [ignition](#provider\_ignition) | 1.2.1 |
 
 ## Modules
 
@@ -22,7 +22,7 @@ This document gives an overview of variables used in the AWS platform of the kub
 | <a name="module_ignition_containerd"></a> [ignition\_containerd](#module\_ignition\_containerd) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/containerd | v1.27.4.0 |
 | <a name="module_ignition_docker"></a> [ignition\_docker](#module\_ignition\_docker) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker | v1.27.4.0 |
 | <a name="module_ignition_ecr_credentail_provider"></a> [ignition\_ecr\_credentail\_provider](#module\_ignition\_ecr\_credentail\_provider) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/ecr-credential-provider | v1.27.4.0 |
-| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/kubelet | v1.27.7.0 |
+| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/kubelet | feat/replace-aws-calico-by-aws-network-policy-agent |
 | <a name="module_ignition_locksmithd"></a> [ignition\_locksmithd](#module\_ignition\_locksmithd) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd | v1.27.4.0 |
 | <a name="module_ignition_sshd"></a> [ignition\_sshd](#module\_ignition\_sshd) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/sshd | v1.27.4.0 |
 | <a name="module_ignition_systemd_networkd"></a> [ignition\_systemd\_networkd](#module\_ignition\_systemd\_networkd) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd | v1.27.4.0 |
@@ -69,7 +69,7 @@ This document gives an overview of variables used in the AWS platform of the kub
 | <a name="input_extra_ignition_file_ids"></a> [extra\_ignition\_file\_ids](#input\_extra\_ignition\_file\_ids) | Additional ignition file IDs. See https://www.terraform.io/docs/providers/ignition/d/file.html for more details. | `list(string)` | `[]` | no |
 | <a name="input_extra_ignition_systemd_unit_ids"></a> [extra\_ignition\_systemd\_unit\_ids](#input\_extra\_ignition\_systemd\_unit\_ids) | Additional ignition systemd unit IDs. See https://www.terraform.io/docs/providers/ignition/d/systemd_unit.html for more details. | `list(string)` | `[]` | no |
 | <a name="input_extra_tags"></a> [extra\_tags](#input\_extra\_tags) | Extra AWS tags to be applied to created resources. | `map(string)` | `{}` | no |
-| <a name="input_instance_config"></a> [instance\_config](#input\_instance\_config) | Desired worker nodes configuration. | <pre>object({<br>    count            = number<br>    max_count        = number<br>    name             = string<br>    image_id         = string<br>    ec2_type         = list(string)<br>    root_volume_iops = number<br>    root_volume_size = number<br>    root_volume_type = string<br><br>    default_cooldown          = number<br>    health_check_grace_period = number<br><br>    suspended_processes = list(string)<br><br>    instance_warmup        = number<br>    min_healthy_percentage = number<br><br>    on_demand_base_capacity                  = number<br>    on_demand_percentage_above_base_capacity = number<br>    spot_instance_pools                      = number<br>    spot_allocation_strategy                 = string<br>  })</pre> | n/a | yes |
+| <a name="input_instance_config"></a> [instance\_config](#input\_instance\_config) | Desired worker nodes configuration. | <pre>object({<br>    count            = number<br>    max_count        = number<br>    name             = string<br>    image_id         = string<br>    ec2_type         = list(string)<br>    root_volume_iops = number<br>    root_volume_size = number<br>    root_volume_type = string<br><br>    default_cooldown          = number<br>    health_check_grace_period = number<br><br>    suspended_processes = list(string)<br><br>    instance_refresh       = bool<br>    instance_warmup        = number<br>    min_healthy_percentage = number<br><br>    on_demand_base_capacity                  = number<br>    on_demand_percentage_above_base_capacity = number<br>    spot_instance_pools                      = number<br>    spot_allocation_strategy                 = string<br>  })</pre> | n/a | yes |
 | <a name="input_instance_spot_max_price"></a> [instance\_spot\_max\_price](#input\_instance\_spot\_max\_price) | Desired worker nodes spot maximum price, default is the on-demand price. | `string` | `""` | no |
 | <a name="input_kubelet_config"></a> [kubelet\_config](#input\_kubelet\_config) | The configuration of kubelet. The variables need to follow https://github.com/kubernetes/kubernetes/blob/master/staging/src/k8s.io/kubelet/config/v1beta1/types.go. Do not use underline. | `map` | `{}` | no |
 | <a name="input_kubelet_flags"></a> [kubelet\_flags](#input\_kubelet\_flags) | The flags of kubelet. The variables need to follow https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/. Do not use underline. | `map(string)` | `{}` | no |
