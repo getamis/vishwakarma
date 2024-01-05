@@ -89,7 +89,7 @@ variable "external_snat" {
 variable "enable_network_policy" {
   description = "(Optional) [AWS VPC CNI] Enable AWS Network Policy Agent."
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "log_level" {
