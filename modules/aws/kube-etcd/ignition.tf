@@ -32,7 +32,7 @@ module "ignition_sshd" {
 }
 
 module "ignition_etcd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-etcd?ref=revert/nerdctl"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-etcd?ref=v1.27.4.2"
 
   name                  = var.name
   containers            = var.containers

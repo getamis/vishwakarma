@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//?ref=feat/replace-aws-calico-by-aws-network-policy-agent"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//?ref=v1.27.7.1"
 
   binaries              = var.binaries
   containers            = var.containers
