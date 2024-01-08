@@ -106,11 +106,11 @@ resource "aws_s3_object" "ignition" {
 
   server_side_encryption = "AES256"
 
-  tags = merge(var.extra_tags, {
+  tags = {
     "Name"                              = "ign-worker-${var.instance_config["name"]}.json"
     "Role"                              = "k8s-worker"
     "kubernetes.io/cluster/${var.name}" = "owned"
-  })
+  }
 }
 
 data "ignition_config" "s3" {

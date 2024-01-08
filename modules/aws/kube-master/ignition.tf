@@ -167,11 +167,11 @@ resource "aws_s3_object" "admin_kubeconfig" {
   server_side_encryption = "AES256"
   content_type           = "text/plain"
 
-  tags = merge(var.extra_tags, {
+  tags = {
     "Name"                              = "admin.conf"
     "Role"                              = "k8s-master"
     "kubernetes.io/cluster/${var.name}" = "owned"
-  })
+  }
 }
 
 // TODO: use AWS Secrets Manager to store this, or encryption by KMS.
@@ -184,11 +184,11 @@ resource "aws_s3_object" "bootstrapping_kubeconfig" {
   server_side_encryption = "AES256"
   content_type           = "text/plain"
 
-  tags = merge(var.extra_tags, {
+  tags = {
     "Name"                              = "bootstrap-kubelet.conf"
     "Role"                              = "k8s-master"
     "kubernetes.io/cluster/${var.name}" = "owned"
-  })
+  }
 }
 
 resource "aws_s3_object" "ignition" {
@@ -198,11 +198,11 @@ resource "aws_s3_object" "ignition" {
 
   server_side_encryption = "AES256"
 
-  tags = merge(var.extra_tags, {
+  tags = {
     "Name"                              = "ign-master-${var.name}.json"
     "Role"                              = "k8s-master"
     "kubernetes.io/cluster/${var.name}" = "owned"
-  })
+  }
 }
 
 data "ignition_config" "s3" {

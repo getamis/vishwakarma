@@ -65,8 +65,9 @@ resource "aws_s3_bucket" "oidc" {
   bucket = var.oidc_s3_bucket
 
   tags = merge(
+    var.extra_tags,
     { "Name" = "${var.name}-oidc-${md5("${var.name}-oidc")}" },
-  var.extra_tags)
+  )
 }
 
 resource "aws_s3_bucket_acl" "oidc" {
@@ -85,10 +86,10 @@ resource "aws_s3_object" "discovery_json" {
     issuer_host = "https://${local.odic_servername}/${var.oidc_s3_bucket}"
   })
 
-  tags = merge({
+  tags = {
     "Name" = "discovery.json"
     "Role" = "k8s-master"
-  }, var.extra_tags)
+  }
 }
 
 data "local_file" "keys_json" {
@@ -106,8 +107,8 @@ resource "aws_s3_object" "keys_json" {
   acl          = "public-read"
   content_type = "application/json"
 
-  tags = merge({
+  tags = {
     "Name" = "keys.json"
     "Role" = "k8s-master"
-  }, var.extra_tags)
+  }
 }

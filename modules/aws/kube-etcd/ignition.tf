@@ -89,11 +89,11 @@ resource "aws_s3_object" "ignition" {
 
   server_side_encryption = "AES256"
 
-  tags = merge(var.extra_tags, {
+  tags = {
     "Name"                              = "ign-etcd-${var.name}.json"
     "Role"                              = "etcd"
     "kubernetes.io/cluster/${var.name}" = "owned"
-  })
+  }
 }
 
 
