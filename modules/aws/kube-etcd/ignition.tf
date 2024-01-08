@@ -32,11 +32,10 @@ module "ignition_sshd" {
 }
 
 module "ignition_etcd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-etcd?ref=v1.27.4.1"
+  source = "git::ssh://git@github.com/getamis/terraform-ignition-etcd?ref=revert/nerdctl"
 
   name                  = var.name
   containers            = var.containers
-  binaries              = var.binaries
   discovery_service_srv = local.discovery_service
   client_port           = local.client_port
   peer_port             = local.peer_port
