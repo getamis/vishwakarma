@@ -7,7 +7,6 @@ module "etcd" {
   allowed_etcd_mgmt_cidr = var.allowed_etcd_mgmt_cidr
   instance_config        = var.etcd_instance_config
   containers             = var.override_containers
-  binaries               = var.override_binaries
 
   instance_volume_config = var.etcd_instance_volume_config
 

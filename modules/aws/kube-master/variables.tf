@@ -269,6 +269,12 @@ variable "external_snat" {
   default     = false
 }
 
+variable "enable_network_policy" {
+  description = "(Optional) [AWS VPC CNI] Enable AWS Network Policy Agent."
+  type        = bool
+  default     = false
+}
+
 variable "max_pods" {
   description = "(Optional) the max pod number in the node when enable eni prefix"
   type        = string
