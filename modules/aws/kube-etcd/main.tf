@@ -92,6 +92,11 @@ resource "aws_instance" "etcd" {
   key_name             = var.debug_mode ? var.ssh_key : ""
   iam_instance_profile = aws_iam_instance_profile.etcd.id
 
+  vpc_security_group_ids = compact(concat(
+    var.security_group_ids,
+    [aws_security_group.etcd.id]
+  ))
+
   user_data                   = data.ignition_config.s3.rendered
   user_data_replace_on_change = true
 
