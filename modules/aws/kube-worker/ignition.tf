@@ -8,42 +8,42 @@ locals {
 }
 
 module "ignition_docker" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.4.0"
 
   docker_cgroup_driver = "systemd"
   log_level            = var.log_level["docker"]
 }
 
 module "ignition_containerd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/containerd?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/containerd?ref=v1.27.4.0"
 
   log_level = var.log_level["containerd"]
 }
 
 module "ignition_locksmithd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.27.4.0"
 
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.27.4.0"
 }
 
 module "ignition_sshd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.27.4.0"
 
   enable = var.debug_mode
 }
 
 module "ignition_systemd_networkd" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.27.4.0"
 
   log_level = var.log_level["systemd_networkd"]
 }
 
 module "ignition_ecr_credentail_provider" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/ecr-credential-provider?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/ecr-credential-provider?ref=v1.27.4.0"
 }
 
 data "aws_s3_object" "bootstrapping_kubeconfig" {
@@ -52,7 +52,7 @@ data "aws_s3_object" "bootstrapping_kubeconfig" {
 }
 
 module "ignition_kubelet" {
-  source = "git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.27.7.1"
+  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.27.7.1"
 
   binaries             = var.binaries
   containers           = var.containers
