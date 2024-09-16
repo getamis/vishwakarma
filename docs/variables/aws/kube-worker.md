@@ -19,15 +19,15 @@ This document gives an overview of variables used in the AWS platform of the kub
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ignition_containerd"></a> [ignition\_containerd](#module\_ignition\_containerd) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/containerd | v1.27.4.0 |
-| <a name="module_ignition_docker"></a> [ignition\_docker](#module\_ignition\_docker) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker | v1.27.4.0 |
-| <a name="module_ignition_ecr_credentail_provider"></a> [ignition\_ecr\_credentail\_provider](#module\_ignition\_ecr\_credentail\_provider) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/ecr-credential-provider | v1.27.4.0 |
-| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/kubelet | v1.27.7.1 |
-| <a name="module_ignition_locksmithd"></a> [ignition\_locksmithd](#module\_ignition\_locksmithd) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd | v1.27.4.0 |
-| <a name="module_ignition_sshd"></a> [ignition\_sshd](#module\_ignition\_sshd) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/sshd | v1.27.4.0 |
-| <a name="module_ignition_systemd_networkd"></a> [ignition\_systemd\_networkd](#module\_ignition\_systemd\_networkd) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd | v1.27.4.0 |
-| <a name="module_ignition_update_ca_certificates"></a> [ignition\_update\_ca\_certificates](#module\_ignition\_update\_ca\_certificates) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates | v1.27.4.0 |
-| <a name="module_lifecycle_hook"></a> [lifecycle\_hook](#module\_lifecycle\_hook) | git::ssh://git@github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes | v1.27.4.0 |
+| <a name="module_ignition_containerd"></a> [ignition\_containerd](#module\_ignition\_containerd) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/containerd | v1.31.0.0 |
+| <a name="module_ignition_docker"></a> [ignition\_docker](#module\_ignition\_docker) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/docker | v1.31.0.0 |
+| <a name="module_ignition_ecr_credentail_provider"></a> [ignition\_ecr\_credentail\_provider](#module\_ignition\_ecr\_credentail\_provider) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/ecr-credential-provider | v1.31.0.0 |
+| <a name="module_ignition_kubelet"></a> [ignition\_kubelet](#module\_ignition\_kubelet) | git::ssh://git@github.com/getamis/terraform-ignition-kubernetes//modules/kubelet | v1.31.0.0 |
+| <a name="module_ignition_locksmithd"></a> [ignition\_locksmithd](#module\_ignition\_locksmithd) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd | v1.31.0.0 |
+| <a name="module_ignition_sshd"></a> [ignition\_sshd](#module\_ignition\_sshd) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/sshd | v1.31.0.0 |
+| <a name="module_ignition_systemd_networkd"></a> [ignition\_systemd\_networkd](#module\_ignition\_systemd\_networkd) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd | v1.31.0.0 |
+| <a name="module_ignition_update_ca_certificates"></a> [ignition\_update\_ca\_certificates](#module\_ignition\_update\_ca\_certificates) | git::ssh://git@github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates | v1.31.0.0 |
+| <a name="module_lifecycle_hook"></a> [lifecycle\_hook](#module\_lifecycle\_hook) | git::ssh://git@github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes | v1.31.0.0 |
 
 ## Resources
 
@@ -75,7 +75,7 @@ This document gives an overview of variables used in the AWS platform of the kub
 | <a name="input_kubelet_flags"></a> [kubelet\_flags](#input\_kubelet\_flags) | The flags of kubelet. The variables need to follow https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/. Do not use underline. | `map(string)` | `{}` | no |
 | <a name="input_kubelet_node_labels"></a> [kubelet\_node\_labels](#input\_kubelet\_node\_labels) | Labels to add when registering the node in the cluster. Labels must be key=value pairs. | `list(string)` | `[]` | no |
 | <a name="input_kubelet_node_taints"></a> [kubelet\_node\_taints](#input\_kubelet\_node\_taints) | Register the node with the given list of taints ("<key>=<value>:<effect>"). | `list(string)` | `[]` | no |
-| <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Desired Kubernetes version. | `string` | `"v1.27.7"` | no |
+| <a name="input_kubernetes_version"></a> [kubernetes\_version](#input\_kubernetes\_version) | Desired Kubernetes version. | `string` | `"v1.31.0"` | no |
 | <a name="input_log_level"></a> [log\_level](#input\_log\_level) | Log level and verbosity of each components | <pre>object({<br>    containerd       = optional(string, "info")    # trace, debug, info, warn, error, fatal, panic<br>    docker           = optional(string, "info")    # debug, info, warn, error, fatal<br>    kubelet          = optional(string, "2")       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace<br>    systemd_networkd = optional(string, "warning") # emerg, alert, crit, err, warning, notice, info, debug<br>  })</pre> | <pre>{<br>  "containerd": "info",<br>  "docker": "info",<br>  "kubelet": "2",<br>  "systemd_networkd": "warning"<br>}</pre> | no |
 | <a name="input_max_pods"></a> [max\_pods](#input\_max\_pods) | (Optional) the max pod number in the node when enable eni prefix | `string` | `"110"` | no |
 | <a name="input_name"></a> [name](#input\_name) | (Required) Name of the cluster. | `string` | n/a | yes |
