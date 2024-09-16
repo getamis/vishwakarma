@@ -1,7 +1,7 @@
 variable "aws_region" {
   description = "(Optional) The AWS region"
   type        = string
-  default     = "us-west-2"
+  default     = "ap-southeast-1"
 }
 
 variable "kubernetes_version" {
@@ -25,6 +25,7 @@ variable "cluster_cidr" {
 variable "key_pair_name" {
   description = "The ssh key name for all instance, e.g. bastion, master, etcd, worker"
   type        = string
+  default     = "alex-test"
 }
 
 variable "network_plugin" {
@@ -48,7 +49,7 @@ variable "project" {
 variable "name" {
   description = "(Optional) name, used to compose the resource name"
   type        = string
-  default     = "k8s"
+  default     = ""
 }
 
 variable "service" {
