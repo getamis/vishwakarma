@@ -123,7 +123,7 @@ module "worker_on_demand" {
     name      = "on-demand"
     count     = 1
     max_count = null
-    image_id  = "ami-0e0fc2134dc3bbf89"
+    image_id  = module.os_ami.image_id
     ec2_type = [
       "t3.medium",
       "t2.medium"
@@ -190,7 +190,7 @@ module "worker_spot" {
 
   instance_config = {
     name      = "spot"
-    image_id  = "ami-0e0fc2134dc3bbf89"
+    image_id  = module.os_ami.image_id
     count     = 1
     max_count = 10
     ec2_type = [
