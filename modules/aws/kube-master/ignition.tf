@@ -12,8 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//?ref=v1.27.7.1"
-
+  source = "github.com/getamis/terraform-ignition-kubernetes//?ref=v1.31.0.0"
   binaries              = var.binaries
   containers            = var.containers
   kubernetes_version    = var.kubernetes_version
@@ -95,39 +94,39 @@ module "ignition_kubernetes" {
 }
 
 module "ignition_docker" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/docker?ref=v1.31.0.0"
 
   docker_cgroup_driver = "systemd"
   log_level            = var.log_level["docker"]
 }
 
 module "ignition_containerd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/containerd?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/containerd?ref=v1.31.0.0"
 
   log_level = var.log_level["containerd"]
 }
 
 module "ignition_locksmithd" {
-  source          = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.27.4.0"
+  source          = "github.com/getamis/terraform-ignition-reinforcements//modules/locksmithd?ref=v1.31.0.0"
   reboot_strategy = var.reboot_strategy
 }
 
 module "ignition_update_ca_certificates" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/update-ca-certificates?ref=v1.31.0.0"
 }
 
 module "ignition_sshd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/sshd?ref=v1.31.0.0"
 
   enable = var.debug_mode
 }
 
 module "ignition_ecr_credentail_provider" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/ecr-credential-provider?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/ecr-credential-provider?ref=v1.31.0.0"
 }
 
 module "ignition_systemd_networkd" {
-  source = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/systemd-networkd?ref=v1.31.0.0"
 
   log_level = var.log_level["systemd_networkd"]
 }

@@ -6,7 +6,7 @@ variable "name" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.27.7"
+  default     = "v1.31.0"
 }
 
 variable "binaries" {

@@ -28,7 +28,7 @@ locals {
 module "os_ami" {
   source          = "../../modules/aws/os-ami"
   flavor          = "flatcar"
-  flatcar_version = "3602.2.1"
+  flatcar_version = "3815.2.5"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -126,7 +126,7 @@ module "worker_on_demand" {
     name      = "on-demand"
     count     = 1
     max_count = null
-    image_id  = "ami-0b8fef69b7bf66b89"
+    image_id  = module.os_ami.image_id
     ec2_type = [
       "t3.medium",
       "t2.medium"
@@ -194,7 +194,7 @@ module "worker_spot" {
 
   instance_config = {
     name      = "spot"
-    image_id  = "ami-0b8fef69b7bf66b89"
+    image_id  = module.os_ami.image_id
     count     = 1
     max_count = 10
     ec2_type = [
