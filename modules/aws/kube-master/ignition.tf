@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//?ref=feat/coredns-and-awsccm"
+  source = "github.com/getamis/terraform-ignition-kubernetes//?ref=feat%2Fcoredns-and-awsccm"
   binaries              = var.binaries
   containers            = var.containers
   kubernetes_version    = var.kubernetes_version
