@@ -6,7 +6,7 @@ Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging Hash
 
 ## Features
 
-* Kubernetes v1.31.0+.
+* Kubernetes v1.31.1+.
 * Supported [AWS VPC CNI](https://github.com/aws/amazon-vpc-cni-k8s), [flannel](https://github.com/coreos/flannel), [cilium](https://cilium.io/) networking.
 * RBAC-enabled, Audit log, and etcd data encryption.
 * etcd v3.5.0+.
@@ -16,7 +16,7 @@ Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging Hash
 
 - **Terraform**: All of the AWS resource will be create by Terraform, hence, you need to [**install it**](https://www.terraform.io/intro/getting-started/install.html) and confirm the [**permission setup**](https://www.terraform.io/docs/providers/aws/index.html) correctly, then Terraform have the permission to create AWS resource automatically. **Minimum required version of Terraform is v1.2.0**.
 
-- **kubectl**: After the cluster created completely, there is a Kubernetes ConfigMap aws-auth need to be created through kubectl, so need to [**install it**](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl). **Minimum required version of Kubernetes is v1.31.0**.
+- **kubectl**: After the cluster created completely, there is a Kubernetes ConfigMap aws-auth need to be created through kubectl, so need to [**install it**](https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl). **Minimum required version of Kubernetes is v1.31.1**.
 
 - **[aws-iam-authenticator](https://docs.aws.amazon.com/zh_tw/eks/latest/userguide/install-aws-iam-authenticator.html)**: The clsuter access permission integrate with AWS IAM, in order to let the cluster know whether you have the right to access, aws-iam-authenticator need to be [**installed**](https://docs.aws.amazon.com/eks/latest/userguide/configure-kubectl.html) in the client side.
 
@@ -74,12 +74,12 @@ $ export KUBECONFIG=#{The Path You Put kubeconfig}/kubeconfig
 $ kubectl get node
 
 NAME                          STATUS    ROLES     AGE       VERSION
-ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.31.0
-ip-10-0-48-117.ec2.internal   Ready     master    9m        v1.31.0
-ip-10-0-66-127.ec2.internal   Ready     on-demand 5m        v1.31.0
-ip-10-0-66-127.ec2.internal   Ready     on-demand 6m        v1.31.0
-ip-10-0-71-121.ec2.internal   Ready     spot      3m        v1.31.0
-ip-10-0-86-182.ec2.internal   Ready     spot      4m        v1.31.0
+ip-10-0-48-247.ec2.internal   Ready     master    9m        v1.31.1
+ip-10-0-48-117.ec2.internal   Ready     master    9m        v1.31.1
+ip-10-0-66-127.ec2.internal   Ready     on-demand 5m        v1.31.1
+ip-10-0-66-127.ec2.internal   Ready     on-demand 6m        v1.31.1
+ip-10-0-71-121.ec2.internal   Ready     spot      3m        v1.31.1
+ip-10-0-86-182.ec2.internal   Ready     spot      4m        v1.31.1
 ```
 
 ## What’s Going On?
