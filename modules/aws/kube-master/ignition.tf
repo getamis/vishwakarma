@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//?ref=feature/update-aws-vpc-cni-to-v1-19-2"
+  source = "github.com/getamis/terraform-ignition-kubernetes//?ref=feature%2Fupdate-aws-vpc-cni-to-v1-19-2"
   binaries              = var.binaries
   containers            = var.containers
   kubernetes_version    = var.kubernetes_version
