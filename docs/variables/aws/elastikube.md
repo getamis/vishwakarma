@@ -56,7 +56,6 @@ This document gives an overview of variables used in the AWS platform of the ela
 |------|-------------|------|---------|:--------:|
 | <a name="input_allowed_etcd_mgmt_cidr"></a> [allowed\_etcd\_mgmt\_cidr](#input\_allowed\_etcd\_mgmt\_cidr) | (Option) A list of CIDR networks to allow to manage etcd cluster. | `list(string)` | `[]` | no |
 | <a name="input_allowed_ssh_cidr"></a> [allowed\_ssh\_cidr](#input\_allowed\_ssh\_cidr) | (Optional) A list of CIDR networks to allow ssh access to. | `list(string)` | `[]` | no |
-| <a name="input_annotate_pod_ip"></a> [annotate\_pod\_ip](#input\_annotate\_pod\_ip) | (Optional) enable to fix pod startup connectivity issue on installing Calico with aws-vpc-cni plugin. (Issue: https://github.com/aws/amazon-vpc-cni-k8s/issues/493) | `bool` | `false` | no |
 | <a name="input_auth_webhook_kubeconfig_path"></a> [auth\_webhook\_kubeconfig\_path](#input\_auth\_webhook\_kubeconfig\_path) | The path of webhook kubeconfig for kube-apiserver. | `string` | `"/etc/kubernetes/config/aws-iam-authenticator/kubeconfig"` | no |
 | <a name="input_certs_validity_period_hours"></a> [certs\_validity\_period\_hours](#input\_certs\_validity\_period\_hours) | Validity period of the self-signed certificates (in hours). Default is 10 years. | `string` | `87600` | no |
 | <a name="input_debug_mode"></a> [debug\_mode](#input\_debug\_mode) | Enable the functionailty for trouble shooting, e.g. sshd | `bool` | `false` | no |
