@@ -60,7 +60,6 @@ module "master" {
   oidc_config = var.irsa_oidc_config
 
   enable_eni_prefix     = var.enable_eni_prefix
-  annotate_pod_ip       = var.annotate_pod_ip
   external_snat         = var.external_snat
   enable_network_policy = var.enable_network_policy
   max_pods              = var.max_pods
