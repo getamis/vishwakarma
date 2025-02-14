@@ -28,7 +28,7 @@ locals {
 module "os_ami" {
   source          = "../../modules/aws/os-ami"
   flavor          = "flatcar"
-  flatcar_version = "3815.2.5"
+  flatcar_version = "4152.2.0"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
