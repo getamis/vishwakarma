@@ -31,6 +31,13 @@ module "ignition_sshd" {
   enable = var.debug_mode
 }
 
+module "ignition_amazon_ec2_net_utils" {
+  # source = "github.com/getamis/terraform-ignition-reinforcements//modules/amazon-ec2-net-utils?ref=v1.31.1.1"
+  source = "github.com/getamis/terraform-ignition-reinforcements//modules/amazon-ec2-net-utils?ref=feat%2Fadd-amazon-ec2-net-utils"
+
+  enable = var.apply_amazon_ec2_net_utils
+}
+
 module "ignition_etcd" {
   source = "github.com/getamis/terraform-ignition-etcd?ref=v1.31.1.0"
 
@@ -64,6 +71,7 @@ data "ignition_config" "main" {
     module.ignition_etcd.files,
     module.ignition_node_exporter.files,
     module.ignition_sshd.files,
+    module.ignition_amazon_ec2_net_utils.files,
     var.extra_ignition_file_ids
   ))
 
@@ -74,6 +82,8 @@ data "ignition_config" "main" {
     module.ignition_etcd.systemd_units,
     module.ignition_node_exporter.systemd_units,
     module.ignition_sshd.systemd_units,
+    module.ignition_amazon_ec2_net_utils.systemd_units,
+    module.ignition_amazon_ec2_net_utils.networkd_units,
     var.extra_ignition_systemd_unit_ids
   ))
 

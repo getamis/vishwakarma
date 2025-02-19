@@ -68,6 +68,12 @@ variable "debug_mode" {
   default     = true
 }
 
+variable "apply_amazon_ec2_net_utils" {
+  description = "Enable the functionailty for Amazon EC2 Net Utils"
+  type        = bool
+  default     = true
+}
+
 variable "enable_eni_prefix" {
   description = "(Optional) assign prefix to AWS EC2 network interface"
   type        = bool
