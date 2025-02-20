@@ -35,7 +35,7 @@ module "ignition_amazon_ec2_net_utils" {
   # source = "github.com/getamis/terraform-ignition-reinforcements//modules/amazon-ec2-net-utils?ref=v1.31.1.1"
   source = "github.com/getamis/terraform-ignition-reinforcements//modules/amazon-ec2-net-utils?ref=feat%2Fadd-amazon-ec2-net-utils"
 
-  enable = var.apply_amazon_ec2_net_utils
+  enabled = var.apply_amazon_ec2_net_utils
 }
 
 module "ignition_etcd" {
