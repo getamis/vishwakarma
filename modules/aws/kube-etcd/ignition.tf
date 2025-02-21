@@ -83,7 +83,6 @@ data "ignition_config" "main" {
     module.ignition_node_exporter.systemd_units,
     module.ignition_sshd.systemd_units,
     module.ignition_amazon_ec2_net_utils.systemd_units,
-    module.ignition_amazon_ec2_net_utils.networkd_units,
     var.extra_ignition_systemd_unit_ids
   ))
 

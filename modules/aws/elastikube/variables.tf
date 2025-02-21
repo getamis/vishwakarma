@@ -417,6 +417,12 @@ variable "debug_mode" {
   default     = false
 }
 
+variable "apply_amazon_ec2_net_utils" {
+  description = "Enable the functionailty for Amazon EC2 Net Utils"
+  type        = bool
+  default     = true
+}
+
 variable "extra_tags" {
   description = "(Optional) Extra AWS tags to be applied to the resources."
   type        = map(string)
