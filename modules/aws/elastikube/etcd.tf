@@ -7,6 +7,7 @@ module "etcd" {
   allowed_etcd_mgmt_cidr = var.allowed_etcd_mgmt_cidr
   instance_config        = var.etcd_instance_config
   containers             = var.override_containers
+  apply_amazon_ec2_net_utils = var.apply_amazon_ec2_net_utils
 
   instance_volume_config = var.etcd_instance_volume_config
 
