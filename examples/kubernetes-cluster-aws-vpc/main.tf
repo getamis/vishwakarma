@@ -144,6 +144,7 @@ module "worker_on_demand" {
     instance_warmup        = 30
     min_healthy_percentage = 100
 
+    capacity_rebalance                       = false
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 100
     spot_instance_pools                      = null
@@ -214,6 +215,7 @@ module "worker_spot" {
     instance_warmup        = 30
     min_healthy_percentage = 100
 
+    capacity_rebalance                       = false
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 0
     spot_instance_pools                      = 1
