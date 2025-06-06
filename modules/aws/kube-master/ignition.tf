@@ -12,7 +12,7 @@ resource "random_password" "encryption_secret" {
 }
 
 module "ignition_kubernetes" {
-  source                = "github.com/getamis/terraform-ignition-kubernetes//?ref=feat%2Faws-vpc-cni-ip-allocation-strategy"
+  source                = "github.com/getamis/terraform-ignition-kubernetes//?ref=v1.31.1.2"
   binaries              = var.binaries
   containers            = var.containers
   kubernetes_version    = var.kubernetes_version

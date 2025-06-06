@@ -52,7 +52,7 @@ data "aws_s3_object" "bootstrapping_kubeconfig" {
 }
 
 module "ignition_kubelet" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=feat%2Faws-vpc-cni-ip-allocation-strategy"
+  source = "github.com/getamis/terraform-ignition-kubernetes//modules/kubelet?ref=v1.31.1.2"
 
   binaries             = var.binaries
   containers           = var.containers
