@@ -1,5 +1,5 @@
 module "ignition_iam_auth" {
-  source = "github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-iam-authenticator?ref=v1.31.1.1"
+  source = "github.com/getamis/terraform-ignition-kubernetes//modules/extra-addons/aws-iam-authenticator?ref=feat%2Faws-vpc-cni-ip-allocation-strategy"
 
   cluster_name        = var.name
   container           = var.container
