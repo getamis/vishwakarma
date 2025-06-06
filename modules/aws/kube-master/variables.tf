@@ -389,19 +389,19 @@ variable "log_level" {
 
 variable "ip_allocation_strategy" {
   description = "The IP allocation strategy of AWS VPC CNI, Ref: https://github.com/aws/amazon-vpc-cni-k8s/blob/master/README.md"
-  type        = object({
-    warm_eni_target = optional(string, null)
+  type = object({
+    warm_eni_target    = optional(string, null)
     warm_prefix_target = optional(string, null)
-    warm_ip_target = optional(string, null)
-    minimum_ip_target = optional(string, null)
+    warm_ip_target     = optional(string, null)
+    minimum_ip_target  = optional(string, null)
   })
   # When enable_eni_prefix is true, prefer to use warm_ip_target and minimum_ip_target to allocate IP addresses
   # It can prevent the CNI from keeping an entire excess prefix attached to the node.
   # Ref: https://docs.aws.amazon.com/eks/latest/best-practices/prefix-mode-linux.html
-  default     = {
-    warm_eni_target = null
+  default = {
+    warm_eni_target    = null
     warm_prefix_target = null
-    warm_ip_target = "3"
-    minimum_ip_target = "5"
+    warm_ip_target     = "3"
+    minimum_ip_target  = "5"
   }
 }
