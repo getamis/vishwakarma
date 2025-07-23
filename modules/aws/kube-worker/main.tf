@@ -67,6 +67,8 @@ resource "aws_autoscaling_group" "worker" {
     }
   }
 
+  capacity_rebalance = var.instance_config["capacity_rebalance"]
+
   # Cannot add a warm pool to Auto Scaling groups that have a mixed instances policy.
   dynamic "mixed_instances_policy" {
     for_each = var.asg_warm_pool["enabled"] ? [] : [1]

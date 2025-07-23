@@ -59,10 +59,11 @@ module "master" {
   enable_irsa = var.enable_irsa
   oidc_config = var.irsa_oidc_config
 
-  enable_eni_prefix     = var.enable_eni_prefix
-  external_snat         = var.external_snat
-  enable_network_policy = var.enable_network_policy
-  max_pods              = var.max_pods
+  enable_eni_prefix      = var.enable_eni_prefix
+  external_snat          = var.external_snat
+  enable_network_policy  = var.enable_network_policy
+  ip_allocation_strategy = var.ip_allocation_strategy
+  max_pods               = var.max_pods
 
   enable_asg_life_cycle = var.enable_asg_life_cycle
 
