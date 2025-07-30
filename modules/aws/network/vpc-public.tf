@@ -46,8 +46,8 @@ resource "aws_route_table_association" "route_net" {
 }
 
 resource "aws_eip" "nat_eip" {
-  count = length(local.aws_azs)
-  vpc   = true
+  count  = length(local.aws_azs)
+  domain = "vpc"
 
   # Terraform does not declare an explicit dependency towards the internet gateway.
   # this can cause the internet gateway to be deleted/detached before the EIPs.
