@@ -121,7 +121,7 @@ resource "aws_launch_template" "master" {
 
 
 module "lifecycle_hook" {
-  count  = var.enable_asg_life_cycle ? 1 : 0
+  count = var.enable_asg_life_cycle ? 1 : 0
   #source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v1.31.1.0"
   source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=update-python-313"
 
