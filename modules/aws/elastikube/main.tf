@@ -8,13 +8,16 @@ module "master" {
   instance_config         = var.master_instance_config
   instance_spot_max_price = var.master_instance_spot_max_price
 
-  role_name              = var.role_name
-  security_group_ids     = var.security_group_ids
-  lb_security_group_ids  = var.lb_security_group_ids
-  public_subnet_ids      = var.public_subnet_ids
-  private_subnet_ids     = var.private_subnet_ids
-  endpoint_public_access = var.endpoint_public_access
-  s3_bucket              = aws_s3_bucket.ignition.id
+  role_name                             = var.role_name
+  security_group_ids                    = var.security_group_ids
+  lb_security_group_ids                 = var.lb_security_group_ids
+  lb_master_connection_draining         = var.lb_master_connection_draining
+  lb_master_connection_draining_timeout = var.lb_master_connection_draining_timeout
+  lb_master_idle_timeout                = var.lb_master_idle_timeout
+  public_subnet_ids                     = var.public_subnet_ids
+  private_subnet_ids                    = var.private_subnet_ids
+  endpoint_public_access                = var.endpoint_public_access
+  s3_bucket                             = aws_s3_bucket.ignition.id
 
   containers          = var.override_containers
   binaries            = var.override_binaries
