@@ -222,6 +222,21 @@ EOF
   default     = []
 }
 
+variable "lb_master_connection_draining" {
+  type    = bool
+  default = true
+}
+
+variable "lb_master_connection_draining_timeout" {
+  type    = number
+  default = 300
+}
+
+variable "lb_master_idle_timeout" {
+  type    = number
+  default = 3600
+}
+
 variable "public_subnet_ids" {
   description = <<EOF
     (Required) List of public subnet IDs. Must be in at least two different availability zones.

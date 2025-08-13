@@ -8,9 +8,9 @@ resource "aws_elb" "master_internal" {
     var.lb_security_group_ids
   ))
 
-  idle_timeout                = 3600
-  connection_draining         = true
-  connection_draining_timeout = 300
+  idle_timeout                = var.lb_master_idle_timeout
+  connection_draining         = var.lb_master_connection_draining
+  connection_draining_timeout = var.lb_master_connection_draining_timeout
 
   listener {
     instance_port     = var.apiserver_secure_port
