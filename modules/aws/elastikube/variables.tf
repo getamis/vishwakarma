@@ -6,7 +6,7 @@ variable "name" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.27.7"
+  default     = "v1.31.1"
 }
 
 variable "override_binaries" {
@@ -222,6 +222,21 @@ EOF
   default     = []
 }
 
+variable "lb_master_connection_draining" {
+  type    = bool
+  default = true
+}
+
+variable "lb_master_connection_draining_timeout" {
+  type    = number
+  default = 300
+}
+
+variable "lb_master_idle_timeout" {
+  type    = number
+  default = 3600
+}
+
 variable "public_subnet_ids" {
   description = <<EOF
     (Required) List of public subnet IDs. Must be in at least two different availability zones.
@@ -260,14 +275,14 @@ variable "enable_asg_life_cycle" {
   default     = true
 }
 
-variable "annotate_pod_ip" {
-  description = "(Optional) enable to fix pod startup connectivity issue on installing Calico with aws-vpc-cni plugin. (Issue: https://github.com/aws/amazon-vpc-cni-k8s/issues/493)"
+variable "external_snat" {
+  description = "(Optional) [AWS VPC CNI] Specifies whether an external NAT gateway should be used to provide SNAT of secondary ENI IP addresses. If set to true, the SNAT iptables rule and off-VPC IP rule are not applied, and these rules are removed if they have already been applied."
   type        = bool
   default     = false
 }
 
-variable "external_snat" {
-  description = "(Optional) [AWS VPC CNI] Specifies whether an external NAT gateway should be used to provide SNAT of secondary ENI IP addresses. If set to true, the SNAT iptables rule and off-VPC IP rule are not applied, and these rules are removed if they have already been applied."
+variable "enable_network_policy" {
+  description = "(Optional) [AWS VPC CNI] Enable AWS Network Policy Agent."
   type        = bool
   default     = false
 }
@@ -293,6 +308,7 @@ variable "master_instance_config" {
 
     suspended_processes = list(string)
 
+    instance_refresh       = bool
     instance_warmup        = number
     min_healthy_percentage = number
 
@@ -317,6 +333,7 @@ variable "master_instance_config" {
 
     suspended_processes = []
 
+    instance_refresh       = false
     instance_warmup        = 30
     min_healthy_percentage = 100
 
@@ -415,6 +432,12 @@ variable "debug_mode" {
   default     = false
 }
 
+variable "apply_amazon_ec2_net_utils" {
+  description = "Enable the functionailty for Amazon EC2 Net Utils"
+  type        = bool
+  default     = true
+}
+
 variable "extra_tags" {
   description = "(Optional) Extra AWS tags to be applied to the resources."
   type        = map(string)
@@ -450,5 +473,24 @@ variable "log_level" {
     kube_proxy                   = "2"       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
     kubelet                      = "2"       # 2: Info, 3: Extended Info, 4: Debug, 5: Trace
     systemd_networkd             = "warning" # emerg, alert, crit, err, warning, notice, info, debug
+  }
+}
+
+variable "ip_allocation_strategy" {
+  description = "The IP allocation strategy of AWS VPC CNI, Ref: https://github.com/aws/amazon-vpc-cni-k8s/blob/master/README.md"
+  type = object({
+    warm_eni_target    = optional(string, null)
+    warm_prefix_target = optional(string, null)
+    warm_ip_target     = optional(string, null)
+    minimum_ip_target  = optional(string, null)
+  })
+  # When enable_eni_prefix is true, prefer to use warm_ip_target and minimum_ip_target to allocate IP addresses
+  # It can prevent the CNI from keeping an entire excess prefix attached to the node.
+  # Ref: https://docs.aws.amazon.com/eks/latest/best-practices/prefix-mode-linux.html
+  default = {
+    warm_eni_target    = null
+    warm_prefix_target = null
+    warm_ip_target     = "3"
+    minimum_ip_target  = "5"
   }
 }

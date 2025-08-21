@@ -33,11 +33,14 @@ resource "aws_autoscaling_group" "worker" {
 
   suspended_processes = var.instance_config["suspended_processes"]
 
-  instance_refresh {
-    strategy = "Rolling"
-    preferences {
-      instance_warmup        = var.instance_config["instance_warmup"]
-      min_healthy_percentage = var.instance_config["min_healthy_percentage"]
+  dynamic "instance_refresh" {
+    for_each = var.instance_config["instance_refresh"] ? [1] : []
+    content {
+      strategy = "Rolling"
+      preferences {
+        instance_warmup        = var.instance_config["instance_warmup"]
+        min_healthy_percentage = var.instance_config["min_healthy_percentage"]
+      }
     }
   }
 
@@ -63,6 +66,8 @@ resource "aws_autoscaling_group" "worker" {
       }
     }
   }
+
+  capacity_rebalance = var.instance_config["capacity_rebalance"]
 
   # Cannot add a warm pool to Auto Scaling groups that have a mixed instances policy.
   dynamic "mixed_instances_policy" {
@@ -156,7 +161,7 @@ resource "aws_launch_template" "worker" {
 
 module "lifecycle_hook" {
   count  = var.enable_asg_life_cycle ? 1 : 0
-  source = "git::ssh://git@github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v1.31.2"
 
   name                           = "${var.name}-worker-${var.instance_config["name"]}"
   cluster_name                   = var.name

@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.27.7"
+  default     = "v1.31.1"
 }
 
 variable "service_cidr" {
@@ -68,6 +68,12 @@ variable "debug_mode" {
   default     = true
 }
 
+variable "apply_amazon_ec2_net_utils" {
+  description = "Enable the functionailty for Amazon EC2 Net Utils"
+  type        = bool
+  default     = true
+}
+
 variable "enable_eni_prefix" {
   description = "(Optional) assign prefix to AWS EC2 network interface"
   type        = bool
@@ -84,6 +90,12 @@ variable "external_snat" {
   description = "(Optional) [AWS VPC CNI] Specifies whether an external NAT gateway should be used to provide SNAT of secondary ENI IP addresses. If set to true, the SNAT iptables rule and off-VPC IP rule are not applied, and these rules are removed if they have already been applied."
   type        = bool
   default     = true # AWS NAT Gateway is enabled by network module
+}
+
+variable "enable_network_policy" {
+  description = "(Optional) [AWS VPC CNI] Enable AWS Network Policy Agent."
+  type        = bool
+  default     = true
 }
 
 variable "log_level" {

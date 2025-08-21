@@ -7,7 +7,7 @@ variable "aws_region" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.27.7"
+  default     = "v1.31.1"
 }
 
 variable "service_cidr" {
@@ -64,6 +64,12 @@ variable "endpoint_public_access" {
 
 variable "debug_mode" {
   description = "Enable the functionailty for trouble shooting, e.g. sshd"
+  type        = bool
+  default     = true
+}
+
+variable "apply_amazon_ec2_net_utils" {
+  description = "Enable the functionailty for Amazon EC2 Net Utils"
   type        = bool
   default     = true
 }

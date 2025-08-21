@@ -20,8 +20,9 @@ install_tools: &install_tools
 
       # Install kubectl
       if [ "${INSTALL_KUBECTL}" == "true" ]; then
-        wget https://storage.googleapis.com/kubernetes-release/release/v${KUBE_VERSION}/bin/linux/amd64/kubectl -O /tmp/kubectl
-        chmod +x /tmp/kubectl && sudo mv /tmp/kubectl /usr/local/bin/kubectl
+        wget https://dl.k8s.io/v1.31.9/kubernetes-client-linux-amd64.tar.gz -O /tmp/kubernetes-client.tar.gz
+        cd /tmp && tar -xzf kubernetes-client.tar.gz
+        chmod +x /tmp/kubernetes/client/bin/kubectl && sudo mv /tmp/kubernetes/client/bin/kubectl /usr/local/bin/kubectl
       fi
 
 default: &default
@@ -29,8 +30,8 @@ default: &default
     - image: cimg/go:1.21
   environment:
     GO111MODULE: "on"
-    TF_VERSION: "1.5.7"
-    KUBE_VERSION: "1.27.4"
+    TF_VERSION: "1.12.1"
+    KUBE_VERSION: "1.31.1"
     AWS_SDK_LOAD_CONFIG: "True"
     INSTALL_AWS_CLI: "true"
     INSTALL_TERRAFORM: "true"

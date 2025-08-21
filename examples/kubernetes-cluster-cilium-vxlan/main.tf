@@ -28,7 +28,7 @@ locals {
 module "os_ami" {
   source          = "../../modules/aws/os-ami"
   flavor          = "flatcar"
-  flatcar_version = "3602.2.1"
+  flatcar_version = "4152.2.0"
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -71,6 +71,7 @@ module "master" {
 
     suspended_processes = []
 
+    instance_refresh       = false
     instance_warmup        = 30
     min_healthy_percentage = 100
 
@@ -122,7 +123,7 @@ module "worker_on_demand" {
     name      = "on-demand"
     count     = 1
     max_count = null
-    image_id  = "ami-0b8fef69b7bf66b89"
+    image_id  = module.os_ami.image_id
     ec2_type = [
       "t3.medium",
       "t2.medium"
@@ -136,9 +137,11 @@ module "worker_on_demand" {
 
     suspended_processes = []
 
+    instance_refresh       = false
     instance_warmup        = 30
     min_healthy_percentage = 100
 
+    capacity_rebalance                       = false
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 100
     spot_instance_pools                      = null
@@ -188,7 +191,7 @@ module "worker_spot" {
 
   instance_config = {
     name      = "spot"
-    image_id  = "ami-0b8fef69b7bf66b89"
+    image_id  = module.os_ami.image_id
     count     = 1
     max_count = 10
     ec2_type = [
@@ -204,9 +207,11 @@ module "worker_spot" {
 
     suspended_processes = []
 
+    instance_refresh       = false
     instance_warmup        = 30
     min_healthy_percentage = 100
 
+    capacity_rebalance                       = false
     on_demand_base_capacity                  = 0
     on_demand_percentage_above_base_capacity = 0
     spot_instance_pools                      = 1

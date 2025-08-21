@@ -6,7 +6,7 @@ variable "name" {
 variable "kubernetes_version" {
   description = "Desired Kubernetes version."
   type        = string
-  default     = "v1.27.7"
+  default     = "v1.31.1"
 }
 
 variable "binaries" {
@@ -149,9 +149,11 @@ variable "instance_config" {
 
     suspended_processes = list(string)
 
+    instance_refresh       = bool
     instance_warmup        = number
     min_healthy_percentage = number
 
+    capacity_rebalance                       = bool
     on_demand_base_capacity                  = number
     on_demand_percentage_above_base_capacity = number
     spot_instance_pools                      = number

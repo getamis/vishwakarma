@@ -32,11 +32,14 @@ resource "aws_autoscaling_group" "master" {
 
   suspended_processes = var.instance_config["suspended_processes"]
 
-  instance_refresh {
-    strategy = "Rolling"
-    preferences {
-      instance_warmup        = var.instance_config["instance_warmup"]
-      min_healthy_percentage = var.instance_config["min_healthy_percentage"]
+  dynamic "instance_refresh" {
+    for_each = var.instance_config["instance_refresh"] ? [1] : []
+    content {
+      strategy = "Rolling"
+      preferences {
+        instance_warmup        = var.instance_config["instance_warmup"]
+        min_healthy_percentage = var.instance_config["min_healthy_percentage"]
+      }
     }
   }
 
@@ -119,7 +122,7 @@ resource "aws_launch_template" "master" {
 
 module "lifecycle_hook" {
   count  = var.enable_asg_life_cycle ? 1 : 0
-  source = "git::ssh://git@github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v1.27.4.0"
+  source = "github.com/getamis/terraform-aws-asg-lifecycle//modules/kubernetes?ref=v1.31.2"
 
   name                           = "${var.name}-master"
   cluster_name                   = var.name

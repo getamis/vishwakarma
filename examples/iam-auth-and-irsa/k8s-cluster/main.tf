@@ -20,7 +20,7 @@ locals {
 module "os_ami" {
   source          = "../../../modules/aws/os-ami"
   flavor          = "flatcar"
-  flatcar_version = "3602.2.1"
+  flatcar_version = "4152.2.0"
 }
 
 module "service_account" {
@@ -92,6 +92,7 @@ module "master" {
 
     suspended_processes = []
 
+    instance_refresh       = false
     instance_warmup        = 30
     min_healthy_percentage = 100
 
