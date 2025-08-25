@@ -11,6 +11,8 @@ module "master" {
   role_name                             = var.role_name
   security_group_ids                    = var.security_group_ids
   lb_security_group_ids                 = var.lb_security_group_ids
+  lb_master_access_log_bucket           = var.lb_master_access_log_bucket
+  lb_master_access_log_prefix           = var.lb_master_access_log_prefix
   lb_master_connection_draining         = var.lb_master_connection_draining
   lb_master_connection_draining_timeout = var.lb_master_connection_draining_timeout
   lb_master_idle_timeout                = var.lb_master_idle_timeout
