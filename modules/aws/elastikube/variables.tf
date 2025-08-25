@@ -222,6 +222,18 @@ EOF
   default     = []
 }
 
+variable "lb_master_access_log_bucket" {
+  description = "(Optional) The S3 bucket name to store the access logs."
+  type        = string
+  default     = ""
+}
+
+variable "lb_master_access_log_prefix" {
+  description = "(Optional) The S3 bucket prefix to store the access logs."
+  type        = string
+  default     = ""
+}
+
 variable "lb_master_connection_draining" {
   type    = bool
   default = true

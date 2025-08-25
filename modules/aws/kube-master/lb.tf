@@ -8,6 +8,14 @@ resource "aws_elb" "master_internal" {
     var.lb_security_group_ids
   ))
 
+  dynamic "access_logs" {
+    for_each = var.lb_master_access_log_bucket != "" ? [1] : []
+    content {
+      bucket        = var.lb_master_access_log_bucket
+      bucket_prefix = var.lb_master_access_log_prefix != "" ? var.lb_master_access_log_prefix : "${var.name}-master"
+    }
+  }
+
   idle_timeout                = var.lb_master_idle_timeout
   connection_draining         = var.lb_master_connection_draining
   connection_draining_timeout = var.lb_master_connection_draining_timeout
