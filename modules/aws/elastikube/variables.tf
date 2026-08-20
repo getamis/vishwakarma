@@ -34,7 +34,7 @@ variable "override_components_resource" {
     cpu_limit      = string
     memory_request = string
     memory_limit   = string
-    gomemlimit     = string
+    gomemlimit     = optional(string, null)
   }))
   default = {}
 }
