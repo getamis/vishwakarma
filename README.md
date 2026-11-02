@@ -24,6 +24,13 @@ Vishwakarma can be used to create a Kubernetes cluster in AWS by leveraging Hash
 
 - **jq**: It's a necessary command-line for filtering JSON in many operations.
 
+- **OpenSSL**: IRSA plans require the OpenSSL CLI with hostname verification and a current trusted CA store.
+  The thumbprint script verifies TLS and fingerprints the highest intermediate CA, excluding the leaf and
+  any self-issued root. Missing tools, failed verification, missing intermediates, and invalid fingerprints
+  fail the plan instead of returning empty JSON. Review the IAM provider plan when upgrading from a version
+  that fingerprints the leaf. Run offline regression tests with
+  `bash modules/aws/irsa/tools/thumbprint-test.sh`.
+
 - **python**: In order to support node rolling udate, need the lambda function, hence, this tf module need **python 3.7** and python package management tool **pip**
 
 ## Getting Started

@@ -45,6 +45,9 @@ jobs:
       INSTALL_TERRAFORM: "true"
     steps:
       - checkout
+      - run:
+          name: Test IRSA thumbprint CA selection and failures
+          command: bash modules/aws/irsa/tools/thumbprint-test.sh
       - *install_tools
       - run:
           name: Terraform validate
