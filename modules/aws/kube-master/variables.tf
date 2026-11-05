@@ -322,6 +322,8 @@ variable "instance_config" {
     instance_warmup        = number
     min_healthy_percentage = number
 
+    use_mixed_instances_policy = optional(bool, true)
+
     on_demand_base_capacity                  = number
     on_demand_percentage_above_base_capacity = number
     spot_instance_pools                      = number
