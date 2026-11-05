@@ -43,28 +43,50 @@ resource "aws_autoscaling_group" "master" {
     }
   }
 
-  mixed_instances_policy {
-    launch_template {
-      launch_template_specification {
-        launch_template_id = aws_launch_template.master.id
-        version            = aws_launch_template.master.latest_version
-      }
+  dynamic "launch_template" {
+    for_each = var.instance_config.use_mixed_instances_policy ? [] : [1]
+    content {
+      id      = aws_launch_template.master.id
+      version = aws_launch_template.master.latest_version
+    }
+  }
 
-      dynamic "override" {
-        for_each = var.instance_config["ec2_type"]
+  dynamic "mixed_instances_policy" {
+    for_each = var.instance_config.use_mixed_instances_policy ? [1] : []
+    content {
+      launch_template {
+        launch_template_specification {
+          launch_template_id = aws_launch_template.master.id
+          version            = aws_launch_template.master.latest_version
+        }
 
-        content {
-          instance_type = override.value
+        dynamic "override" {
+          for_each = var.instance_config["ec2_type"]
+
+          content {
+            instance_type = override.value
+          }
         }
       }
-    }
 
-    instances_distribution {
-      on_demand_base_capacity                  = var.instance_config["on_demand_base_capacity"]
-      on_demand_percentage_above_base_capacity = var.instance_config["on_demand_percentage_above_base_capacity"]
-      spot_instance_pools                      = var.instance_config["spot_instance_pools"]
-      spot_allocation_strategy                 = var.instance_config["spot_allocation_strategy"]
-      spot_max_price                           = var.instance_spot_max_price
+      instances_distribution {
+        on_demand_base_capacity                  = var.instance_config["on_demand_base_capacity"]
+        on_demand_percentage_above_base_capacity = var.instance_config["on_demand_percentage_above_base_capacity"]
+        spot_instance_pools                      = var.instance_config["spot_instance_pools"]
+        spot_allocation_strategy                 = var.instance_config["spot_allocation_strategy"]
+        spot_max_price                           = var.instance_spot_max_price
+      }
+    }
+  }
+
+  lifecycle {
+    precondition {
+      condition = var.instance_config.use_mixed_instances_policy || (
+        length(var.instance_config.ec2_type) == 1 &&
+        var.instance_config.on_demand_percentage_above_base_capacity == 100 &&
+        var.instance_spot_max_price == ""
+      )
+      error_message = "Plain launch templates require exactly one instance type, 100 percent On-Demand, and no Spot maximum price."
     }
   }
 

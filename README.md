@@ -96,6 +96,14 @@ Create one AWS VPC including private and public subnet, and one ec2 instance cal
 ### aws/elastikube
 This module creates the Kubernetes control plane, Terraform is responsible for the complicated Kubernetes compoments, and it takes about 10~15 minutes to complete, refer [**aws/elastikube**](Documentation/variables/aws/elastikube.md) for the detail variable inputs.
 
+Set `master_instance_config.use_mixed_instances_policy = false` to use a plain
+launch template for the master Auto Scaling group. This requires exactly one
+instance type, `on_demand_percentage_above_base_capacity = 100`, and an empty
+`master_instance_spot_max_price`. The option defaults to `true`, preserving the
+existing mixed-instances policy. Direct users of `aws/kube-master` can set the
+same option in `instance_config`. This option does not change capacity or enable
+instance refresh.
+
 ### aws/kube-worker
 Create a AWS auto-scaling group with CoreOS container linux and leverage ignition to provision and register to ElastiKube automatically.
 
